@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using Assets.ScriptableObjects.PlayerMovement;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    float stepDistance = 1.0f;
+    public PlayerMovementData data;
 
     // Use this for initialization
     void Start()
@@ -20,13 +20,11 @@ public class Player : MonoBehaviour
 
     IEnumerator WalkWait()
     {
-        for (int i = 0; i < 99; i++)
+        while (true)
         {
-
-            float input = Input.GetAxis("Vertical");
             yield return new WaitUntil(() => Input.GetAxis("Vertical") != 0);
 
-            StartCoroutine(WalkForward());
+            yield return StartCoroutine(WalkForward());
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -34,13 +32,13 @@ public class Player : MonoBehaviour
 
     IEnumerator WalkForward()
     {
-        Vector3 destination = transform.position + new Vector3(stepDistance, 0, 0);
-        Vector3 destinationFake = transform.position + new Vector3(stepDistance * 1.8f, 0, 0);
-        float offset = Vector3.Distance(transform.position, destinationFake);
-        while (offset > 0.8f)
+        Vector3 destination = transform.position + new Vector3(data.StepSize, 0, 0);
+        float offset = Vector3.Distance(transform.position, destination);
+        while (offset > data.OffsetTolerance)
         {
-            offset = Vector3.Distance(transform.position, destinationFake);
-            transform.position = Vector3.Lerp(transform.position, destinationFake, stepDistance * Time.deltaTime);
+            
+            offset = Vector3.Distance(transform.position, destination);
+            transform.position = Vector3.Lerp(transform.position, destination, data.MovementSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }
