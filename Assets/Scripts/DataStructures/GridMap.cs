@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.DataStructures {
-    public class Map<T> : IReadOnlyCollection<MapEntry<T>> {
+    
+    public class GridMap<T> : IReadOnlyCollection<GridCell<T>> {
         private readonly T[,] _map;
 
         /// <summary>
@@ -10,7 +13,7 @@ namespace Assets.Scripts.DataStructures {
         /// </summary>
         /// <param name="width">The width of the map</param>
         /// <param name="height">The height of the map</param>
-        public Map(int width, int height) {
+        public GridMap(int width, int height) {
             Width = width;
             Height = height;
             _map = new T[width, height];
@@ -43,7 +46,7 @@ namespace Assets.Scripts.DataStructures {
         /// Returns the value of a map entry at a given entry.
         /// </summary>
         /// <param name="entry">The entry containing the x and y position in the map</param>
-        public T this[MapEntry<T> entry] {
+        public T this[GridCell<T> entry] {
             get { return this[entry.X, entry.Y]; }
             set { this[entry.X, entry.Y] = value; }
         }
@@ -63,7 +66,7 @@ namespace Assets.Scripts.DataStructures {
         /// Checks whether a given map entry is within the map bounds.
         /// </summary>
         /// <param name="entry">The map entry to check</param>
-        public bool IsValidTile(MapEntry<T> entry)
+        public bool IsValidTile(GridCell<T> entry)
         {
             return IsValidTile(entry.X, entry.Y);
         }
@@ -71,10 +74,10 @@ namespace Assets.Scripts.DataStructures {
         #region IEnumerable implementation
 
         /// <inheritdoc />
-        public IEnumerator<MapEntry<T>> GetEnumerator() {
+        public IEnumerator<GridCell<T>> GetEnumerator() {
             for (int y = 0; y < this.Height; y++) {
                 for (int x = 0; x < this.Width; x++) {
-                    yield return new MapEntry<T>(this, x, y);
+                    yield return new GridCell<T>(this, x, y);
                 }
             }
         }
