@@ -8,25 +8,24 @@ public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
 
-    List<Func<IEnumerator>> commands;
+    List<ICommand> commands;
 
     // Use this for initialization
     void Start()
     {
-        commands = new List<Func<IEnumerator>>();
+        commands = new List<ICommand>();
 
 
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-
+        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        commands.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
+        commands.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
+        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         StartCoroutine(ExecuteCommands());
-
-        //StartCoroutine(WalkWait());
     }
 
     // Update is called once per frame
@@ -36,9 +35,9 @@ public class Player : MonoBehaviour
 
     IEnumerator ExecuteCommands()
     {
-        foreach (Func<IEnumerator> command in commands)
+        foreach (ICommand command in commands)
         {
-            StartCoroutine(command.Invoke());
+            StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);
         }
     }
@@ -59,14 +58,15 @@ public class Player : MonoBehaviour
     {
         Vector3 destination = transform.position + (transform.forward * data.StepSize);
         float offset = Vector3.Distance(transform.position, destination);
+
         while (offset > data.OffsetTolerance)
         {
-            
             offset = Vector3.Distance(transform.position, destination);
             transform.position = Vector3.Lerp(transform.position, destination, data.MovementSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }
+
         transform.position = destination;
     }
 

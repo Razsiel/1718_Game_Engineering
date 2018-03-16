@@ -5,5 +5,5 @@ using UnityEngine;
 public interface ICommand
 {
     Sprite Icon { get; set; }
-    void Execute();
+    IEnumerator Execute(Player player);
 }
