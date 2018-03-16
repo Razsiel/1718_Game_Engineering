@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.ScriptableObjects.Tiles {
     [CreateAssetMenu(menuName = "Data/Tiles/Decoration")]
-    public abstract class TileDecoration : ScriptableObject {
+    public abstract class TileDecorationData : ScriptableObject {
         public Mesh Mesh;
         public abstract bool IsWalkable();
     }

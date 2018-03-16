@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Name: Level_0
   m_EditorClassIdentifier: 
   Name: Level 0 - The Test Level
-  BackgroundImage: {fileID: 0}
-  Goals: []
+  BackgroundImage: {fileID: 10305, guid: 0000000000000000f000000000000000, type: 0}
+  Goals:
+  - Conquer the level!
+  GridMap: {fileID: 11400000, guid: 66f0c2a37b21d164db84cc1ceacd3d46, type: 2}

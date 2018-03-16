@@ -5,11 +5,14 @@ namespace Assets.ScriptableObjects.Tiles {
     [CreateAssetMenu(menuName = "Data/Tiles/Tile")]
     public class TileData : ScriptableObject {
         public Mesh TileMesh;
-        public TileDecoration[] Decorations;
+        public TileDecorationData[] DecorationsData;
         public Material TileMaterial;
+		
+		//private event OnPlayerTileEnter;
+		//private event OnPlayerTileLeave;
 
         public bool IsWalkable() {
-            return Decorations?.All(d => d.IsWalkable()) ?? false;
+            return DecorationsData?.All(d => d.IsWalkable()) ?? false;
         }
     }
 }
