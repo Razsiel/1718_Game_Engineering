@@ -41,47 +41,4 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
     }
-
-    IEnumerator WalkWait()
-    {
-        while (true)
-        {
-            yield return new WaitUntil(() => Input.GetAxis("Vertical") != 0);
-
-            yield return StartCoroutine(WalkForward());
-
-            yield return new WaitForSeconds(0.5f);
-        }
-    }
-
-    IEnumerator WalkForward()
-    {
-        Vector3 destination = transform.position + (transform.forward * data.StepSize);
-        float offset = Vector3.Distance(transform.position, destination);
-
-        while (offset > data.OffsetTolerance)
-        {
-            offset = Vector3.Distance(transform.position, destination);
-            transform.position = Vector3.Lerp(transform.position, destination, data.MovementSpeed * Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        transform.position = destination;
-    }
-
-    IEnumerator Turn(TurnDirection dir)
-    {
-        if (dir == TurnDirection.Right)
-            transform.Rotate(0, 90, 0);
-        else
-            transform.Rotate(0, -90, 0);
-
-        yield return new WaitForEndOfFrame();
-    }
-
-    enum TurnDirection
-    {
-        Right, Left
-    }
 }
