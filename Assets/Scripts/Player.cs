@@ -8,12 +8,12 @@ public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
 
-    List<ICommand> commands;
+    List<BaseCommand> commands;
 
     // Use this for initialization
     void Start()
     {
-        commands = new List<ICommand>();
+        commands = new List<BaseCommand>();
 
 
         commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     IEnumerator ExecuteCommands()
     {
-        foreach (ICommand command in commands)
+        foreach (BaseCommand command in commands)
         {
             StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);

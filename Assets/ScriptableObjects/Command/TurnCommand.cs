@@ -2,10 +2,8 @@
 using System.Collections;
 
 [CreateAssetMenu]
-public class TurnCommand : ScriptableObject, ICommand
+public class TurnCommand : BaseCommand
 {
-    public Sprite Icon { get; set; }
-
     [Header("TurnAngle: 90 for RightTurn, -90 for LeftTurn")]
     public int angle = 90;
 
@@ -15,7 +13,7 @@ public class TurnCommand : ScriptableObject, ICommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public IEnumerator Execute(Player player)
+    public override IEnumerator Execute(Player player)
     {
         player.transform.Rotate(0, angle, 0);
 

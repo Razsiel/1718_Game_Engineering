@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu]
-public class MoveCommand : ScriptableObject, ICommand
+[CreateAssetMenu(fileName = "MoveCommand", menuName = "Data/Commands")]
+public class MoveCommand : BaseCommand
 {
-    public Sprite Icon { get; set; }
-
     /// <summary>
     ///     Move the player 1 step forward.
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public IEnumerator Execute(Player player)
+    public override IEnumerator Execute(Player player)
     {
         Vector3 destination = player.transform.position + (player.transform.forward * player.data.StepSize);
         float offset = Vector3.Distance(player.transform.position, destination);

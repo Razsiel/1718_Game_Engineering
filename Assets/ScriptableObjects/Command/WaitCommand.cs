@@ -2,9 +2,8 @@
 using System.Collections;
 
 [CreateAssetMenu]
-public class WaitCommand : ScriptableObject, ICommand
+public class WaitCommand : BaseCommand
 {
-    public Sprite Icon { get; set; }
 
     /// <summary>
     ///     Allows the player to skip 1 turn
@@ -12,7 +11,7 @@ public class WaitCommand : ScriptableObject, ICommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public IEnumerator Execute(Player player)
+    public override IEnumerator Execute(Player player)
     {
         //WaitAnimation?
 

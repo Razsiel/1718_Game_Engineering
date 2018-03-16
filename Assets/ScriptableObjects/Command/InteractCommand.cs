@@ -2,12 +2,12 @@
 using System.Collections;
 
 [CreateAssetMenu]
-public class InteractCommand : ScriptableObject, ICommand
+public class InteractCommand : BaseCommand
 {
     public Sprite Icon { get; set; }
     private GameObject other;
 
-    public IEnumerator Execute(Player player)
+    public override IEnumerator Execute(Player player)
     {
         // MATTHIJS TODO: interact with tile
 
