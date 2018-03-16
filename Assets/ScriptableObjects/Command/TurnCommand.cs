@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "TurnCommand", menuName = "Data/Commands/TurnCommand")]
 public class TurnCommand : BaseCommand
 {
     [Header("TurnAngle: 90 for RightTurn, -90 for LeftTurn")]

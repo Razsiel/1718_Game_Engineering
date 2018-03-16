@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "WaitCommand", menuName = "Data/Commands/WaitCommand")]
 public class WaitCommand : BaseCommand
 {
 

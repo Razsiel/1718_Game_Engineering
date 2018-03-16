@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "InteractCommand", menuName = "Data/Commands/InteractCommand")]
 public class InteractCommand : BaseCommand
 {
     public Sprite Icon { get; set; }
