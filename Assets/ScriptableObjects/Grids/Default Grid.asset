@@ -8,9 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a4780e1727e6948b1b9eee64295a04, type: 3}
-  m_Name: LongDistance
+  m_Script: {fileID: 11500000, guid: eaa2169745e098d46814bed62c591821, type: 3}
+  m_Name: Default Grid
   m_EditorClassIdentifier: 
-  StepSize: 8
-  MovementSpeed: 3
-  OffsetTolerance: 0.001
+  DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
