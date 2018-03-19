@@ -6,6 +6,7 @@ class GameManager : MonoBehaviour
 
     public Player playerA;
     public Player playerB;
+    public CommandLibrary commandLibrary;
 
     void Start()
     {
