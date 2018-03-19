@@ -55,4 +55,14 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
     }
+
+    public void AddCommand(BaseCommand command)
+    {
+        sequence.Add(command);
+    }
+
+    public void ClearCommands()
+    {
+        sequence.Clear();
+    }
 }
