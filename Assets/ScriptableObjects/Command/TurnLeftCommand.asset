@@ -8,9 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5a4780e1727e6948b1b9eee64295a04, type: 3}
-  m_Name: LongDistance
+  m_Script: {fileID: 11500000, guid: 4adab4a194a119c4685a3ac843a89d01, type: 3}
+  m_Name: TurnLeftCommand 1
   m_EditorClassIdentifier: 
-  StepSize: 8
-  MovementSpeed: 3
-  OffsetTolerance: 0.001
+  icon: {fileID: 0}
+  angle: 90
