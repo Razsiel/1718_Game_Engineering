@@ -8,80 +8,61 @@ public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
 
-    List<Func<IEnumerator>> commands;
+    List<BaseCommand> sequence;
 
     // Use this for initialization
     void Start()
     {
-        commands = new List<Func<IEnumerator>>();
+        sequence = new List<BaseCommand>();
 
 
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-        commands.Add(() => Turn(TurnDirection.Right));
-        commands.Add(() => WalkForward());
-
-        StartCoroutine(ExecuteCommands());
-
-        //StartCoroutine(WalkWait());
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
+        sequence.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        StartCoroutine(WaitForInput());
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    //Press Spacebar to run sequence
+    IEnumerator WaitForInput()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
+
+            yield return StartCoroutine(ExecuteCommands());
+
+            yield return new WaitForSeconds(2);
+        }
     }
 
     IEnumerator ExecuteCommands()
     {
-        foreach (Func<IEnumerator> command in commands)
+        foreach (BaseCommand command in sequence)
         {
-            StartCoroutine(command.Invoke());
+            StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);
         }
     }
 
-    IEnumerator WalkWait()
+    public void AddCommand(BaseCommand command)
     {
-        while (true)
-        {
-            yield return new WaitUntil(() => Input.GetAxis("Vertical") != 0);
-
-            yield return StartCoroutine(WalkForward());
-
-            yield return new WaitForSeconds(0.5f);
-        }
+        sequence.Add(command);
     }
 
-    IEnumerator WalkForward()
+    public void ClearCommands()
     {
-        Vector3 destination = transform.position + (transform.forward * data.StepSize);
-        float offset = Vector3.Distance(transform.position, destination);
-        while (offset > data.OffsetTolerance)
-        {
-            
-            offset = Vector3.Distance(transform.position, destination);
-            transform.position = Vector3.Lerp(transform.position, destination, data.MovementSpeed * Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-        transform.position = destination;
-    }
-
-    IEnumerator Turn(TurnDirection dir)
-    {
-        if (dir == TurnDirection.Right)
-            transform.Rotate(0, 90, 0);
-        else
-            transform.Rotate(0, -90, 0);
-
-        yield return new WaitForEndOfFrame();
-    }
-
-    enum TurnDirection
-    {
-        Right, Left
+        sequence.Clear();
     }
 }
