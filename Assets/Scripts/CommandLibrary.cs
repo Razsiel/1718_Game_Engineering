@@ -7,7 +7,7 @@ using Assets.ScriptableObjects;
 using UnityEditor;
 using UnityEngine;
 
-[Serializable]
+[CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
 class CommandLibrary : ScriptableObject
 {
     [SerializeField]
