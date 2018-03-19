@@ -35,11 +35,20 @@ namespace Assets.Scripts.Editor {
             this.DrawDefaultInspector();
             ExposeProperties.Expose(_fields);
 
+            if (GUILayout.Button("Recalculate")) {
+                _instance.RecalculateGrid();
+                CreatePreview();
+            }
+
             // draw custom grid editor here
             if (GUILayout.Button("Recreate preview")) {
-                _previewObject = CreatePreviewObjectFromGridMap(_instance);
-                _mapEditor = UnityEditor.Editor.CreateEditor(_previewObject);
+                CreatePreview();
             }
+        }
+
+        private void CreatePreview() {
+            _previewObject = CreatePreviewObjectFromGridMap(_instance);
+            _mapEditor = UnityEditor.Editor.CreateEditor(_previewObject);
         }
 
         public override bool HasPreviewGUI() {
@@ -47,8 +56,6 @@ namespace Assets.Scripts.Editor {
         }
 
         public override void OnPreviewGUI(Rect r, GUIStyle background) {
-            Debug.Log("OnPreviewGUI");
-            
             if (_mapEditor != null && _previewObject != null) {
                 _mapEditor.OnPreviewGUI(r, background);
             }
@@ -58,18 +65,13 @@ namespace Assets.Scripts.Editor {
             Debug.Log("Creating preview object");
             DestroyImmediate(GameObject.Find("Level Preview Object")); // clear previous preview
             var root = EditorUtility.CreateGameObjectWithHideFlags("Level Preview Object", HideFlags.HideAndDontSave);
-            
-
-            Debug.Log($"Map: {mapData.Width} x {mapData.Height}");
 
             for (int y = 0; y < mapData.Height; y++) {
                 for (int x = 0; x < mapData.Width; x++) {
-                    var tile = mapData.DefaultTile;
-                    Debug.Log(tile);
+                    var tile = mapData[x, y];
                     if (tile == null) {
                         continue;
                     }
-                    Debug.Log(tile.TileMesh);
                     var tileObject =
                         EditorUtility.CreateGameObjectWithHideFlags($"Tile ({x},{y})",
                                                                     HideFlags.HideAndDontSave,
@@ -85,58 +87,14 @@ namespace Assets.Scripts.Editor {
                     }
                     var transform = tileObject.transform;
                     transform.parent = root.transform;
-                    transform.position = new Vector3(x, 0, y);
+                    transform.position = new Vector3(x - (mapData.Width - 1) * 0.5f,
+                                                     0,
+                                                     y - (mapData.Height - 1) * 0.5f);
+                    transform.localScale /= 32;
                 }
             }
 
             return root;
-        }
-    }
-
-    //[CustomPropertyDrawer(typeof(GridMapData))]
-    public class GridMapDrawer : PropertyDrawer {
-        private Vector2 _scrollPosition = Vector2.zero;
-        public readonly int ButtonSize = 50;
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label) {
-            EditorGUI.PrefixLabel(position, label);
-
-            var width = property.FindPropertyRelative(nameof(GridMapData.Width));
-            var height = property.FindPropertyRelative(nameof(GridMapData.Height));
-
-            //EditorGUILayout.BeginVertical();
-            //EditorGUI.indentLevel += 1;
-            //EditorGUILayout.IntSlider(width, 2, 20);
-            //EditorGUILayout.IntSlider(height, 2, 20);
-            //EditorGUILayout.PrefixLabel(new GUIContent("Layout"));
-            //EditorGUI.indentLevel -= 1;
-            //EditorGUILayout.EndVertical();
-
-            //int controlId = GUIUtility.GetControlID(FocusType.Passive) + 100;
-
-            //_scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition, GUILayout.MaxHeight(500));
-            //EditorGUILayout.BeginVertical();
-            //for (int y = 0; y < height.intValue; y++) {
-            //    EditorGUILayout.BeginHorizontal();
-            //    for (int x = 0; x < width.intValue; x++) {
-            //        var button = GUILayout.Button($"", GUILayout.Width(ButtonSize), GUILayout.Height(ButtonSize));
-            //        if (button) {
-            //            EditorGUIUtility.ShowObjectPicker<TileData>(null, false, "", controlId);
-            //        }
-            //    }
-            //    EditorGUILayout.EndHorizontal();
-            //}
-            //EditorGUILayout.EndVertical();
-            //EditorGUILayout.EndScrollView();
-
-            //string commandName = Event.current.commandName;
-            //if (commandName == "ObjectSelectorUpdated" || commandName == "ObjectSelectorClosed") {
-            //    var selectedObject = EditorGUIUtility.GetObjectPickerObject();
-            //    if (selectedObject is TileData) {
-            //        //todo: save to mapData
-            //        Debug.Log(selectedObject);
-            //    }
-            //}
         }
     }
 }
