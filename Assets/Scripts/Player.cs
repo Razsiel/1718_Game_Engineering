@@ -8,34 +8,48 @@ public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
 
-    List<BaseCommand> commands;
+    List<BaseCommand> sequence;
 
     // Use this for initialization
     void Start()
     {
-        commands = new List<BaseCommand>();
+        sequence = new List<BaseCommand>();
 
 
-        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        commands.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
-        commands.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
-        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        StartCoroutine(ExecuteCommands());
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
+        sequence.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        StartCoroutine(WaitForInput());
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    //Press Spacebar to run sequence
+    IEnumerator WaitForInput()
+    {
+        while (true)
+        {
+            yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
+
+            yield return StartCoroutine(ExecuteCommands());
+
+            yield return new WaitForSeconds(2);
+        }
     }
 
     IEnumerator ExecuteCommands()
     {
-        foreach (BaseCommand command in commands)
+        foreach (BaseCommand command in sequence)
         {
             StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);
