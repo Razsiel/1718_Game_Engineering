@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
         commands = new List<BaseCommand>();
 
 
-        commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        commands.Add(ScriptableObject.CreateInstance("MoveCommand") as BaseCommand);
         commands.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
         commands.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         commands.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
@@ -40,5 +40,15 @@ public class Player : MonoBehaviour
             StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);
         }
+    }
+
+    public void AddCommand(BaseCommand command)
+    {
+        commands.Add(command);
+    }
+
+    public void ClearCommands()
+    {
+        commands.Clear();
     }
 }
