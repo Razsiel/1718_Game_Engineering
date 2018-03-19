@@ -5,39 +5,50 @@ using UnityEngine;
 public class CommandController : MonoBehaviour {
 
     public List<BaseCommand> commands = new List<BaseCommand>();
-    
     private CommandLibrary commandLibrary;
+    Player playerA;
+    GameManager gameManager;
 
+    // Use this for initialization
+    void Start()
+    {
+        gameManager = GameManager.GetInstance();
+        playerA = gameManager.playerA;
+        commandLibrary = gameManager.commandLibrary;
+    }
 
     public void OnMoveButtonClicked()
     {
-        commands.Add(commandLibrary.moveCommand);        
+        playerA.AddCommand(commandLibrary.moveCommand);
     }
 
     public void OnTurnLeftButtonClicked()
     {
         //Turn left or turn right?
-        commands.Add(commandLibrary.turnLeftCommand);
+        playerA.AddCommand(commandLibrary.turnLeftCommand);
     }
 
     public void OnTurnRightButtonClicked()
     {
-        commands.Add(commandLibrary.turnRightCommand);
+        playerA.AddCommand(commandLibrary.turnRightCommand);
     }
 
     public void WaitCommand()
     {
-        commands.Add(commandLibrary.waitCommand);
+        playerA.AddCommand(commandLibrary.waitCommand);
     }
 
     public void InteractCommand()
     {
-        commands.Add(commandLibrary.interactCommand);
+        Player playerA = gameManager.playerA;
+        playerA.AddCommand(commandLibrary.interactCommand);
     }
 
     public void ClearButtonClicked()
     {
-        commands.Clear();
+        GameManager gameManager = GameManager.GetInstance();
+        Player playerA = gameManager.playerA;
+        playerA.ClearCommands();
     }
 
     public void ReadyButtonClicked()
@@ -45,13 +56,10 @@ public class CommandController : MonoBehaviour {
         
     }
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
 }
