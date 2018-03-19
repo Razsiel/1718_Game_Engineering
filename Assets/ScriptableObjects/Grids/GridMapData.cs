@@ -6,18 +6,15 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Grids
-{
+namespace Assets.ScriptableObjects.Grids {
     [Serializable]
     [CreateAssetMenu(fileName = "Default Grid", menuName = "Data/Grid")]
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {
-        [SerializeField]
-        public TileData DefaultTile;
+        [SerializeField] public TileData DefaultTile;
 
-        [SerializeField]
-        private GridRow[] _map;
-        private int _width;
-        private int _height;
+        [SerializeField] private GridRow[] _map;
+        [SerializeField] [HideInInspector] private int _width;
+        [SerializeField] [HideInInspector] private int _height;
 
         /// <summary>
         /// Creates a mapData with a given width and height.
@@ -36,10 +33,7 @@ namespace Assets.ScriptableObjects.Grids
         [ExposeProperty]
         public int Width {
             get { return _width; }
-            set {
-                _width = value;
-                RecalculateGrid();
-            }
+            set { _width = value; }
         }
 
         /// <summary>
@@ -48,10 +42,7 @@ namespace Assets.ScriptableObjects.Grids
         [ExposeProperty]
         public int Height {
             get { return _height; }
-            set {
-                _height = value;
-                RecalculateGrid();
-            }
+            set { _height = value; }
         }
 
         /// <inheritdoc />
@@ -99,24 +90,16 @@ namespace Assets.ScriptableObjects.Grids
         /// <summary>
         /// Recreates the mapData according to the mapData's width and height. Preserves previous data, but resizing smaller will cause 'out of bounds' data to be lost!
         /// </summary>
-        public void RecalculateGrid()
-        {
-            var old = _map;
+        public void RecalculateGrid() {
+            //var old = _map;
             _map = new GridRow[Width];
-            for (int i = 0; i < _map.Length; i++)
-            {
-                _map[i] = new GridRow(Height);
-                for (int j = 0; j < Height; j++)
-                {
-                    if (old != null) {
-                        _map[i][j] = old[i][j]; // copy old elements over
-                    }
-                    else {
-                        _map[i][j] = DefaultTile;
-                    }
-                    
-                }
+            //Debug.Log($"Map size: W{Width} x H{Height}");
+            for (int i = 0; i < Width; i++) {
+                _map[i] = new GridRow(Height, defaultTileData: DefaultTile);
+                //Debug.Log($"Row #{i}, length {_map[i].Length}");
             }
+
+            //todo: Save old into new map
         }
 
         #region IEnumerable implementation
