@@ -192,15 +192,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4484071266757366, guid: f94ab01e1ad9ef24a93b8fc874535d14, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 85.510994
       objectReference: {fileID: 0}
     - target: {fileID: 4484071266757366, guid: f94ab01e1ad9ef24a93b8fc874535d14, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -102.31895
       objectReference: {fileID: 0}
     - target: {fileID: 4484071266757366, guid: f94ab01e1ad9ef24a93b8fc874535d14, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -48.190834
       objectReference: {fileID: 0}
     - target: {fileID: 4484071266757366, guid: f94ab01e1ad9ef24a93b8fc874535d14, type: 2}
       propertyPath: m_LocalRotation.x
@@ -227,6 +227,12 @@ Prefab:
       propertyPath: playerA
       value: 
       objectReference: {fileID: 1919128640}
+    - target: {fileID: 114819057405445294, guid: f94ab01e1ad9ef24a93b8fc874535d14,
+        type: 2}
+      propertyPath: commandLibrary
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f94ab01e1ad9ef24a93b8fc874535d14, type: 2}
   m_IsPrefabParent: 0
@@ -757,8 +763,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1591043127}
-  m_LocalRotation: {x: 0.37443182, y: -0.028314844, z: 0.011439938, w: 0.92675143}
-  m_LocalPosition: {x: 2, y: 4, z: -3}
+  m_LocalRotation: {x: 0.19826135, y: 0.79392594, z: -0.33923784, w: 0.46399546}
+  m_LocalPosition: {x: -5.5518875, y: 5.645157, z: 0.7256088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -823,7 +829,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1952163834}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5a01be0e6793d54e8ba81f8b70d9832, type: 3}
   m_Name: 
