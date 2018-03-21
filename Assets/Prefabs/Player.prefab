@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 136138882786210578}
   - component: {fileID: 23026901389391690}
   - component: {fileID: 114646280960837306}
-  - component: {fileID: 54900235489324096}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -85,21 +84,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1113587650327536}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54900235489324096
-Rigidbody:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1113587650327536}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &114646280960837306
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96f8579c1015754d92abb1dc407e726, type: 3}
+  m_Name: CommandLibrary
+  m_EditorClassIdentifier: 
+  moveCommand: {fileID: 11400000, guid: 1779f822fdc43fb408e0c6f026fee2dd, type: 2}
+  turnRightCommand: {fileID: 11400000, guid: 3f0a14aaf9152c049a657f8c83ed1b72, type: 2}
+  turnLeftCommand: {fileID: 11400000, guid: fe7071e224272ab40be90486de2776b5, type: 2}
+  waitCommand: {fileID: 11400000, guid: 667b1a74c0f1d9142a55af274a428c96, type: 2}
+  interactCommand: {fileID: 11400000, guid: 1bce884bcfb59ef4ba53c170093b6bf9, type: 2}
