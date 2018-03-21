@@ -6,14 +6,12 @@ namespace Assets.Scripts.Editor {
     [CustomEditor(typeof(GridMapData))]
     public class GridMapEditor : UnityEditor.Editor {
         GridMapData _instance;
-        PropertyField[] _fields;
 
         private GameObject _previewObject;
         private UnityEditor.Editor _mapEditor;
 
         public void OnEnable() {
             _instance = target as GridMapData;
-            _fields = ExposeProperties.GetProperties(_instance);
         }
 
         public void OnDisable() {
@@ -26,7 +24,6 @@ namespace Assets.Scripts.Editor {
                 return;
 
             this.DrawDefaultInspector();
-            ExposeProperties.Expose(_fields);
 
             if (GUILayout.Button("Recalculate")) {
                 _instance.RecalculateGrid();
