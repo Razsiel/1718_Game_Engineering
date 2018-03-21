@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.ScriptableObjects.Tiles;
-using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
@@ -13,8 +12,8 @@ namespace Assets.ScriptableObjects.Grids {
         [SerializeField] public TileData DefaultTile;
 
         [SerializeField] private GridRow[] _map;
-        [SerializeField] [HideInInspector] private int _width;
-        [SerializeField] [HideInInspector] private int _height;
+        [SerializeField] private int _width;
+        [SerializeField] private int _height;
 
         /// <summary>
         /// Creates a mapData with a given width and height.
@@ -30,7 +29,6 @@ namespace Assets.ScriptableObjects.Grids {
         /// <summary>
         /// Gets the width of the mapData.
         /// </summary>
-        [ExposeProperty]
         public int Width {
             get { return _width; }
             set { _width = value; }
@@ -39,7 +37,6 @@ namespace Assets.ScriptableObjects.Grids {
         /// <summary>
         /// Gets the height of the mapData.
         /// </summary>
-        [ExposeProperty]
         public int Height {
             get { return _height; }
             set { _height = value; }

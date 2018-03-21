@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.ScriptableObjects.Grids;
-using Assets.ScriptableObjects.Tiles;
-using Assets.Scripts.DataStructures;
+﻿using Assets.ScriptableObjects.Grids;
 using UnityEditor;
 using UnityEngine;
 
