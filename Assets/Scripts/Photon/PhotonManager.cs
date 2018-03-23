@@ -17,6 +17,13 @@ public class PhotonManager
     //Backing field of our singleton instance
     private static PhotonManager instance;
 
+    public RoomManager RoomManager
+    {
+        get { if(roomManager == null) roomManager = new RoomManager(); return roomManager; }
+        private set { roomManager = value; }
+    }
+    public RoomManager roomManager;
+
     public event UnityAction TGEOnJoinedLobby;
     public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
     public event UnityAction<object[]> TGEOnJoinLobbyFailed;

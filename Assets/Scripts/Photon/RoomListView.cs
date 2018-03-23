@@ -14,7 +14,7 @@ public class RoomListView : MonoBehaviour
     {
         buttons.Clear();
 
-        for(int i = 0; i < rooms.Count; i++)
+        for(int i = 0; i < 50/*rooms.Count*/; i++)
         {
             GameObject button;
             if(i == 0)

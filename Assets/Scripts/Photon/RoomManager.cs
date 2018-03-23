@@ -22,7 +22,7 @@ public class RoomManager : TGEMonoBehaviour
         Debug.Log("In Photon Start.");
         PhotonNetwork.autoJoinLobby = true;
         Debug.Log(PhotonNetwork.connectionState);
-        PhotonManager.Instance.TGEOnJoinedLobby += () => 
+        PhotonManager.Instance.TGEOnJoinedLobby += () =>
         {
 
             Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
@@ -43,13 +43,16 @@ public class RoomManager : TGEMonoBehaviour
                 PhotonManager.Instance.TGEOnJoinLobbyFailed += (object[] codeAndMsg) => {
                     Assert.IsTrue(PhotonNetwork.CreateRoom(null));
                 };
-                
+
                 Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
             };
         };
-
-        
     }
+        void UpdateGUI()
+        {
+             roomView.UpdateListView(photonRooms);
+        }
+    
 
     
     
