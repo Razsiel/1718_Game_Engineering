@@ -12,8 +12,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
-using SupportClassPun = ExitGames.Client.Photon.SupportClass;
+//using Hashtable = ExitGames.Client.Photon.Hashtable;
+//using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 
 /// <summary>
@@ -118,10 +118,10 @@ public static class Extensions
     /// <remarks>Should only be used for debugging as necessary.</remarks>
     /// <param name="origin">Some Dictionary or Hashtable.</param>
     /// <returns>String of the content of the IDictionary.</returns>
-    public static string ToStringFull(this IDictionary origin)
-    {
-        return SupportClassPun.DictionaryToString(origin, false);
-    }
+    //public static string ToStringFull(this IDictionary origin)
+    //{
+    //    return SupportClassPun.DictionaryToString(origin, false);
+    //}
 
 
     /// <summary>Helper method for debugging of object[] content. Using this is not performant.</summary>
