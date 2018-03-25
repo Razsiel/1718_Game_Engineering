@@ -6,7 +6,7 @@ using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Reflection;
 
-public class PhotonManager
+public class PhotonManager : Photon.PunBehaviour
 {
     //Our singleton instance of the Photonmanager
     public static PhotonManager Instance
@@ -18,19 +18,19 @@ public class PhotonManager
     //Backing field of our singleton instance
     private static PhotonManager instance;
 
+    #region RoomManager SingleTon
     public RoomManager RoomManager
     {
         get { if(roomManager == null) roomManager = new RoomManager(); return roomManager; }
         private set { roomManager = value; }
     }
     public RoomManager roomManager;
+    #endregion
 
     public event UnityAction TGEOnJoinedLobby;
     public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
     public event UnityAction<object[]> TGEOnJoinLobbyFailed;
-
-    //private PhotonCallbacks callbacks = new PhotonCallbacks();
-
+   
     private PhotonManager() { }
  
     public void FireEvent(Guid instanceId, string handler)
@@ -53,46 +53,48 @@ public class PhotonManager
     }
 
     #region PhotonCallbacks
-    void OnJoinedLobby()
+    public override void OnJoinedLobby()
     {
         Debug.Log("InPUNCAll");
         TGEOnJoinedLobby.Invoke();
     }
 
-    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
     {
         TGEOnPhotonPlayerConnected.Invoke(newPlayer);
     }
 
-    void OnConnectedToPhoton()
+    public override void OnConnectedToPhoton()
     {
         Debug.Log("Connected");
     }
     #endregion
 }
 
-public class PhotonCallbackReceiver : MonoBehaviour
-{
+#region Deprecated
+//public class PhotonCallbackReceiver : MonoBehaviour
+//{
 
-    private void FireEvent(string eventName)
-    {
-        PhotonManager.Instance.FireEvent(new Guid(), eventName);
-    }
+//    private void FireEvent(string eventName)
+//    {
+//        PhotonManager.Instance.FireEvent(new Guid(), eventName);
+//    }
 
-    void OnJoinedLobby()
-    {
-        Debug.Log("InPUNCAll");
-        //TGEOnJoinedLobby.Invoke();
-        FireEvent(nameof(PhotonManager.Instance.TGEOnJoinedLobby));
-    }
+//    void OnJoinedLobby()
+//    {
+//        Debug.Log("InPUNCAll");
+//        //TGEOnJoinedLobby.Invoke();
+//        FireEvent(nameof(PhotonManager.Instance.TGEOnJoinedLobby));
+//    }
 
-    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-    {
-        //TGEOnPhotonPlayerConnected.Invoke(newPlayer);
-    }
+//    void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+//    {
+//        //TGEOnPhotonPlayerConnected.Invoke(newPlayer);
+//    }
 
-    void OnConnectedToPhoton()
-    {
-        Debug.Log("Connected");
-    }
-}
+//    void OnConnectedToPhoton()
+//    {
+//        Debug.Log("Connected");
+//    }
+//}
+#endregion

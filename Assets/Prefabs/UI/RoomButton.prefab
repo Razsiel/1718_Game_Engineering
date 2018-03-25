@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 222346863140374294}
   - component: {fileID: 114929575137967196}
   - component: {fileID: 114528840749775542}
+  - component: {fileID: 114052742608670418}
   m_Layer: 5
   m_Name: RoomButton
   m_TagString: Untagged
@@ -46,6 +47,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114052742608670418
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1430792806484630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 797b02c075d2b8a4c8b7655ee14a100a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonComponent: {fileID: 0}
 --- !u!114 &114528840749775542
 MonoBehaviour:
   m_ObjectHideFlags: 1
