@@ -28,6 +28,8 @@ namespace Assets.ScriptableObjects.Tiles {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
             };
 
+            tile.transform.parent = parent;
+
             // Fill in components
             var meshFilter = tile.GetComponent<MeshFilter>();
             if (meshFilter != null) {

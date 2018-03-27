@@ -63,7 +63,7 @@ namespace Assets.Scripts.Editor {
                         continue;
                     }
 
-                    var tileObject = tile.GenerateGameObject(root);
+                    var tileObject = tile.GenerateGameObject(root, true);
                     tileObject.name = $"Tile ({x},{y})";
                    
                     var transform = tileObject.transform;
