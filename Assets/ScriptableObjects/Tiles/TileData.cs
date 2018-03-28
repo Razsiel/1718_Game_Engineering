@@ -18,6 +18,12 @@ namespace Assets.ScriptableObjects.Tiles {
             return DecorationsData.Length == 0 || DecorationsData.All(d => d.IsWalkable(direction));
         }
 
+        public virtual bool CanExit(CardinalDirection direction)
+        {
+            var oppositeDirection = direction.ToOppositeDirection();
+            return IsWalkable(oppositeDirection);
+        }
+
         public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
             return GenerateGameObject(parent.transform, hidden);
         }
