@@ -82,7 +82,7 @@ namespace Assets.ScriptableObjects.Grids {
         public bool IsValidTile(GridCell entry) {
             return IsValidTile(entry.X, entry.Y);
         }
-        
+
         /// <summary>
         /// Recreates the mapData according to the mapData's width and height. Preserves previous data, but resizing smaller will cause 'out of bounds' data to be lost!
         /// </summary>
@@ -111,5 +111,14 @@ namespace Assets.ScriptableObjects.Grids {
         }
 
         #endregion
+
+        public bool TryGetCell(int x, int y, out GridCell cell) {
+            if (IsValidTile(x, y)) {
+                cell = new GridCell(this, x, y);
+                return true;
+            }
+            cell = new GridCell(this, 0, 0);
+            return false;
+        }
     }
 }
