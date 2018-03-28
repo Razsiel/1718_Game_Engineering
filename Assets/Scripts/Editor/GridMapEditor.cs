@@ -31,7 +31,7 @@ namespace Assets.Scripts.Editor {
             }
 
             // draw custom grid editor here
-            if (GUILayout.Button("Recreate preview")) {
+            if (GUILayout.Button("(Re)create preview")) {
                 CreatePreview();
             }
         }
@@ -62,21 +62,11 @@ namespace Assets.Scripts.Editor {
                     if (tile == null) {
                         continue;
                     }
-                    var tileObject =
-                        EditorUtility.CreateGameObjectWithHideFlags($"Tile ({x},{y})",
-                                                                    HideFlags.HideAndDontSave,
-                                                                    typeof(MeshFilter),
-                                                                    typeof(MeshRenderer));
-                    var meshFilter = tileObject.GetComponent<MeshFilter>();
-                    if (meshFilter != null) {
-                        meshFilter.mesh = tile.TileMesh;
-                    }
-                    var meshRenderer = tileObject.GetComponent<MeshRenderer>();
-                    if (meshRenderer != null) {
-                        meshRenderer.sharedMaterial = tile.TileMaterial;
-                    }
+
+                    var tileObject = tile.GenerateGameObject(root, true);
+                    tileObject.name = $"Tile ({x},{y})";
+
                     var transform = tileObject.transform;
-                    transform.parent = root.transform;
                     transform.position = new Vector3(x - (mapData.Width - 1) * 0.5f,
                                                      0,
                                                      y - (mapData.Height - 1) * 0.5f);
