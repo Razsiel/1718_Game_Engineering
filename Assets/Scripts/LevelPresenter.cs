@@ -30,21 +30,9 @@ public class LevelPresenter : MonoBehaviour {
                 if (tile == null) {
                     continue;
                 }
-                var tileObject = new GameObject($"Tile ({x}, {y})",
-                                                typeof(MeshFilter),
-                                                typeof(MeshRenderer)) {
-                    hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
-                };
-                var meshFilter = tileObject.GetComponent<MeshFilter>();
-                if (meshFilter != null) {
-                    meshFilter.mesh = tile.TileMesh;
-                }
-                var meshRenderer = tileObject.GetComponent<MeshRenderer>();
-                if (meshRenderer != null) {
-                    meshRenderer.sharedMaterial = tile.TileMaterial;
-                }
+                var tileObject = tile.GenerateGameObject(root);
+                tileObject.name = $"Tile ({x}, {y})";
                 var transform = tileObject.transform;
-                transform.parent = root.transform;
                 transform.position = new Vector3(x - (grid.Width - 1) * 0.5f,
                                                  0,
                                                  y - (grid.Height - 1) * 0.5f);

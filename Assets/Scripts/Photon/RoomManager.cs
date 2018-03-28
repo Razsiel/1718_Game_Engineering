@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Assertions;
 using System;
 
-public class RoomManager : TGEMonoBehaviour
+public class RoomManager : Photon.MonoBehaviour
 {
     public GameObject playerPrefab;
     private event UnityAction SpawnReplicated;
@@ -17,6 +17,8 @@ public class RoomManager : TGEMonoBehaviour
     //Lets connect two users to Photon and a lobby (+room)
     void Start()
     {
+        photonRooms = new List<RoomInfo>();
+
         PhotonNetwork.ConnectUsingSettings("1.0");
         roomView = new RoomListView();
         Debug.Log("In Photon Start.");
@@ -24,7 +26,6 @@ public class RoomManager : TGEMonoBehaviour
         Debug.Log(PhotonNetwork.connectionState);
         PhotonManager.Instance.TGEOnJoinedLobby += () =>
         {
-
             Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
             roomView.UpdateListView(photonRooms);
             Debug.Log("We joined the lobby!");
@@ -40,7 +41,8 @@ public class RoomManager : TGEMonoBehaviour
 
                 if(!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom(null));
 
-                PhotonManager.Instance.TGEOnJoinLobbyFailed += (object[] codeAndMsg) => {
+                PhotonManager.Instance.TGEOnJoinLobbyFailed += (object[] codeAndMsg) =>
+                {
                     Assert.IsTrue(PhotonNetwork.CreateRoom(null));
                 };
 
@@ -48,13 +50,23 @@ public class RoomManager : TGEMonoBehaviour
             };
         };
     }
-        public void UpdateGUI()
-        {
-             roomView.UpdateListView(photonRooms);
-        }
-    
 
-    
-    
+    public void UpdateGUI()
+    {
+        roomView.UpdateListView(photonRooms);
+    }
+
+    public void AddRoom(RoomInfo room)
+    {
+        this.photonRooms.Add(room);
+    }
+
+    public void CloseRoom(RoomInfo room)
+    {
+        this.photonRooms.Remove(room);
+    }
+
+
+
 
 }
