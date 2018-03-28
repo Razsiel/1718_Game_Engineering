@@ -82,21 +82,16 @@ namespace Assets.ScriptableObjects.Grids {
         public bool IsValidTile(GridCell entry) {
             return IsValidTile(entry.X, entry.Y);
         }
-
-
+        
         /// <summary>
         /// Recreates the mapData according to the mapData's width and height. Preserves previous data, but resizing smaller will cause 'out of bounds' data to be lost!
         /// </summary>
+        /// <returns></returns>
         public void RecalculateGrid() {
-            //var old = _map;
-            _map = new GridRow[Width];
-            //Debug.Log($"Map size: W{Width} x H{Height}");
-            for (int i = 0; i < Width; i++) {
-                _map[i] = new GridRow(Height, defaultTileData: DefaultTile);
-                //Debug.Log($"Row #{i}, length {_map[i].Length}");
+            Array.Resize(ref _map, Width);
+            foreach (var row in _map) {
+                row.Resize(Height);
             }
-
-            //todo: Save old into new map
         }
 
         #region IEnumerable implementation

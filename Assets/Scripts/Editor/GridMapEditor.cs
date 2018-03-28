@@ -31,7 +31,7 @@ namespace Assets.Scripts.Editor {
             }
 
             // draw custom grid editor here
-            if (GUILayout.Button("Recreate preview")) {
+            if (GUILayout.Button("(Re)create preview")) {
                 CreatePreview();
             }
         }
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Editor {
 
                     var tileObject = tile.GenerateGameObject(root, true);
                     tileObject.name = $"Tile ({x},{y})";
-                   
+
                     var transform = tileObject.transform;
                     transform.position = new Vector3(x - (mapData.Width - 1) * 0.5f,
                                                      0,

@@ -24,5 +24,9 @@ namespace Assets.Scripts.Grid.DataStructure
         }
 
         public int Length => _tiles.Length;
+
+        public void Resize(int newSize) {
+            Array.Resize(ref _tiles, newSize);
+        }
     }
 }
