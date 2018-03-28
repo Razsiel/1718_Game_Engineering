@@ -48,7 +48,7 @@ public class RoomManager : TGEMonoBehaviour
             };
         };
     }
-        void UpdateGUI()
+        public void UpdateGUI()
         {
              roomView.UpdateListView(photonRooms);
         }

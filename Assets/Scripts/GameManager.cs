@@ -14,6 +14,8 @@ class GameManager : MonoBehaviour
             instance = this;
         else
             Destroy(this.gameObject);
+
+        PhotonManager.Instance.RoomManager.UpdateGUI();
     }
    
     public static GameManager GetInstance()
