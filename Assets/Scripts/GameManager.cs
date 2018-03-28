@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Assets.ScriptableObjects.Levels;
 
 class GameManager : MonoBehaviour
 {
@@ -7,8 +8,9 @@ class GameManager : MonoBehaviour
     public Player playerA;
     public Player playerB;
     public CommandLibrary commandLibrary;
+    public LevelData levelData;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
             instance = this;

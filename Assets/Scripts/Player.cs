@@ -3,16 +3,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.DataStructures;
 
 public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
+    private GameManager gameManager;
+    public CardinalDirection viewDirection;
 
     List<BaseCommand> sequence;
 
     // Use this for initialization
     void Start()
     {
+        gameManager = GameManager.GetInstance();
         sequence = new List<BaseCommand>();
 
 
