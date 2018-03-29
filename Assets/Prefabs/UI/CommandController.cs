@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandController : MonoBehaviour {
-
+public class CommandController : MonoBehaviour
+{
     public List<BaseCommand> commands = new List<BaseCommand>();
     private CommandLibrary commandLibrary;
     Player player;
@@ -19,28 +19,28 @@ public class CommandController : MonoBehaviour {
 
     public void OnMoveButtonClicked()
     {
-        player.AddCommand(commandLibrary.moveCommand);
+        player.AddCommand(commandLibrary.MoveCommand);
     }
 
     public void OnTurnLeftButtonClicked()
     {
         //Turn left or turn right?
-        player.AddCommand(commandLibrary.turnLeftCommand);
+        player.AddCommand(commandLibrary.TurnLeftCommand);
     }
 
     public void OnTurnRightButtonClicked()
     {
-        player.AddCommand(commandLibrary.turnRightCommand);
+        player.AddCommand(commandLibrary.TurnRightCommand);
     }
 
     public void WaitCommand()
     {
-        player.AddCommand(commandLibrary.waitCommand);
+        player.AddCommand(commandLibrary.WaitCommand);
     }
 
     public void InteractCommand()
     {
-        player.AddCommand(commandLibrary.interactCommand);
+        player.AddCommand(commandLibrary.InteractCommand);
     }
 
     public void ClearButtonClicked()
@@ -50,13 +50,10 @@ public class CommandController : MonoBehaviour {
 
     public void ReadyButtonClicked()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
-
 }

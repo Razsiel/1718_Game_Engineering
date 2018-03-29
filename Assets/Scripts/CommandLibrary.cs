@@ -9,18 +9,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
 public class CommandLibrary : ScriptableObject
 {
-    [SerializeField]
-    public MoveCommand moveCommand;
+    [SerializeField] public MoveCommand MoveCommand;
 
-    [SerializeField]
-    public TurnCommand turnRightCommand;
+    [SerializeField] public TurnCommand TurnRightCommand;
 
-    [SerializeField]
-    public TurnCommand turnLeftCommand;
+    [SerializeField] public TurnCommand TurnLeftCommand;
 
-    [SerializeField]
-    public WaitCommand waitCommand;
+    [SerializeField] public WaitCommand WaitCommand;
 
-    [SerializeField]
-    public InteractCommand interactCommand;
+    [SerializeField] public InteractCommand InteractCommand;
 }

@@ -7,9 +7,9 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     //Temp scene players (testing purposes)
-    public Player playerA;
-    public Player playerB;
-    
+    public Player PlayerA;
+    public Player PlayerB;
+
     public List<Player> Players = new List<Player>();
     public CommandLibrary CommandLibrary;
     public LevelData LevelData;
@@ -21,13 +21,13 @@ public class GameManager : MonoBehaviour
         else
             Destroy(this.gameObject);
     }
-   
+
     void Start()
     {
         // Start level
         // add players to players-list
-        Players.Add(playerA);
-        Players.Add(playerB);
+        Players.Add(PlayerA);
+        Players.Add(PlayerB);
 
         // Set players on start positions
         LevelData.Init();
