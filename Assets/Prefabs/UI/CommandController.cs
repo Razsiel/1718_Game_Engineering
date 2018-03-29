@@ -6,49 +6,46 @@ public class CommandController : MonoBehaviour {
 
     public List<BaseCommand> commands = new List<BaseCommand>();
     private CommandLibrary commandLibrary;
-    Player playerA;
+    Player player;
     GameManager gameManager;
 
     // Use this for initialization
     void Start()
     {
         gameManager = GameManager.GetInstance();
-        playerA = gameManager.playerA;
+        player = gameManager.players[0]; // TODO: make dynamic for 2 players
         commandLibrary = gameManager.commandLibrary;
     }
 
     public void OnMoveButtonClicked()
     {
-        playerA.AddCommand(commandLibrary.moveCommand);
+        player.AddCommand(commandLibrary.moveCommand);
     }
 
     public void OnTurnLeftButtonClicked()
     {
         //Turn left or turn right?
-        playerA.AddCommand(commandLibrary.turnLeftCommand);
+        player.AddCommand(commandLibrary.turnLeftCommand);
     }
 
     public void OnTurnRightButtonClicked()
     {
-        playerA.AddCommand(commandLibrary.turnRightCommand);
+        player.AddCommand(commandLibrary.turnRightCommand);
     }
 
     public void WaitCommand()
     {
-        playerA.AddCommand(commandLibrary.waitCommand);
+        player.AddCommand(commandLibrary.waitCommand);
     }
 
     public void InteractCommand()
     {
-        Player playerA = gameManager.playerA;
-        playerA.AddCommand(commandLibrary.interactCommand);
+        player.AddCommand(commandLibrary.interactCommand);
     }
 
     public void ClearButtonClicked()
     {
-        GameManager gameManager = GameManager.GetInstance();
-        Player playerA = gameManager.playerA;
-        playerA.ClearCommands();
+        player.ClearCommands();
     }
 
     public void ReadyButtonClicked()

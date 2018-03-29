@@ -14,9 +14,10 @@ public class MoveCommand : BaseCommand
         // Can i move forward? if not: return
         if (!GameManager.GetInstance().levelData.TryMoveInDirection(player, player.viewDirection))
             yield break;
-
+        
         // Visual movement
-        Vector3 destination = player.transform.position + (player.transform.forward * player.data.StepSize);
+        float stepDistance = player.data.StepSize * GameManager.GetInstance().levelData.TileScale;
+        Vector3 destination = player.transform.position + (player.transform.forward * stepDistance);
         float offset = Vector3.Distance(player.transform.position, destination);
 
         while (offset > player.data.OffsetTolerance)
