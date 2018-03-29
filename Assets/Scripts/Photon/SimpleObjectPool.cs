@@ -8,30 +8,33 @@ using UnityEngine;
 namespace Assets.Scripts.Photon
 {
     /// <summary>
-    /// A simple objectpool for recycling listview items
+    /// A simple objectpool for recycling objects like buttons in a listview for example.
+    /// Works like a recyclerview in Android.
     /// </summary>
     public class SimpleObjectPool : MonoBehaviour
     {
         public GameObject prefab;
 
         private Stack<GameObject> inactiveInstances = new Stack<GameObject>();
-
-        void Awake()
-        {
-            //prefab = GameObject.Find("RoomButton");
-        }
-
+       
+        /// <summary>
+        /// Gets a object from our recycler
+        /// </summary>
+        /// <returns>A object from our pool</returns>
         public GameObject GetObject()
-        {
+        {            
             GameObject spawnedGameObject;
 
             if(inactiveInstances.Count > 0)
+                //We have an inactive object to give back
                 spawnedGameObject = inactiveInstances.Pop();
             else
             {
                 Debug.Log(prefab);
+                //Create a new one of given prefab set in editor
                 spawnedGameObject = Instantiate(prefab);
 
+                //Set the pool the object belongs to
                 PooledObject pooledObject = spawnedGameObject.AddComponent<PooledObject>();
                 pooledObject.pool = this;
             }
@@ -42,6 +45,10 @@ namespace Assets.Scripts.Photon
             return spawnedGameObject;
         }
 
+        /// <summary>
+        /// Returns 'destroys' the inactive object back to the recycler
+        /// </summary>
+        /// <param name="toReturn">The object we don't need anymore</param>
         public void ReturnObject(GameObject toReturn)
         {
             PooledObject pooledObject = toReturn.GetComponent<PooledObject>();

@@ -12,8 +12,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-//using Hashtable = ExitGames.Client.Photon.Hashtable;
-//using SupportClassPun = ExitGames.Client.Photon.SupportClass;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 
 /// <summary>
@@ -114,14 +114,14 @@ public static class Extensions
         }
     }
 
-    /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information. Using this is not performant.</summary>
+    /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information.Using this is not performant.</summary>
     /// <remarks>Should only be used for debugging as necessary.</remarks>
-    /// <param name="origin">Some Dictionary or Hashtable.</param>
+    /// <param name = "origin" > Some Dictionary or Hashtable.</param>
     /// <returns>String of the content of the IDictionary.</returns>
-    //public static string ToStringFull(this IDictionary origin)
-    //{
-    //    return SupportClassPun.DictionaryToString(origin, false);
-    //}
+    public static string ToStringFull(this IDictionary origin)
+    {
+        return SupportClassPun.DictionaryToString(origin, false);
+    }
 
 
     /// <summary>Helper method for debugging of object[] content. Using this is not performant.</summary>
@@ -152,9 +152,9 @@ public static class Extensions
     /// </remarks>
     /// <param name="original">The original IDictonary to get string-typed keys from.</param>
     /// <returns>New Hashtable containing only string-typed keys of the original.</returns>
-    public static Hashtable StripToStringKeys(this IDictionary original)
+    public static ExitGames.Client.Photon.Hashtable StripToStringKeys(this IDictionary original)
     {
-        Hashtable target = new Hashtable();
+        ExitGames.Client.Photon.Hashtable target = new ExitGames.Client.Photon.Hashtable();
         if (original != null)
         {
             foreach (object key in original.Keys)
