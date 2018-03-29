@@ -2,39 +2,33 @@
 using Assets.ScriptableObjects.Levels;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour
-{
+public class GameManager : MonoBehaviour {
     private static GameManager _instance;
 
     //Temp scene players (testing purposes)
-    public Player playerA;
-    public Player playerB;
-    
+    public Player PlayerA;
+    public Player PlayerB;
+
+    public GameObject PlayerPrefab;
     public List<Player> Players = new List<Player>();
     public CommandLibrary CommandLibrary;
     public LevelData LevelData;
 
-    void Awake()
-    {
+    void Awake() {
         if (_instance == null)
             _instance = this;
         else
             Destroy(this.gameObject);
-    }
-   
-    void Start()
-    {
-        // Start level
-        // add players to players-list
-        Players.Add(playerA);
-        Players.Add(playerB);
 
-        // Set players on start positions
+        // Setup level
         LevelData.Init();
     }
+    
+    void Start() {
 
-    public static GameManager GetInstance()
-    {
+    }
+
+    public static GameManager GetInstance() {
         return _instance;
     }
 }

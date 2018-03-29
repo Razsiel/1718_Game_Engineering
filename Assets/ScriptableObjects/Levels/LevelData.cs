@@ -79,5 +79,11 @@ namespace Assets.ScriptableObjects.Levels {
 
             return canMove;
         }
+
+        public Vector2Int GetPlayerStartPosition(Player player) {
+            Vector2Int playerPos;
+            
+            return _playerPositions.TryGetValue(player, out playerPos) ? playerPos : new Vector2Int(-1, -1);
+        }
     }
 }
