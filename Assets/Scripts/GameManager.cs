@@ -2,14 +2,14 @@
 using Assets.ScriptableObjects.Levels;
 using System.Collections.Generic;
 
-class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
 
     //Temp scene players (testing purposes)
     public Player playerA;
     public Player playerB;
-
+    
     public List<Player> Players = new List<Player>();
     public CommandLibrary CommandLibrary;
     public LevelData LevelData;

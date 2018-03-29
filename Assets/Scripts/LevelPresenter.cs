@@ -16,17 +16,18 @@ public class LevelPresenter : MonoBehaviour {
     // Use this for initialization
     void Start() {
         if (_levelData != null) {
-            CreateGameObjectFromLevelData(_levelData);
+            CreateGameObjectFromLevelData(_levelData, this.transform);
         }
     }
 
-    public static GameObject CreateGameObjectFromLevelData(LevelData data, bool hideInHierarchy = false) {
+    public static GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
         Destroy(levelObject);
         var grid = data.GridMapData;
 
         GameObject root = new GameObject("Level Object") {
             hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
         };
+        root.transform.parent = parent;
 
         for (int y = 0; y < grid.Height; y++) {
             for (int x = 0; x < grid.Width; x++) {

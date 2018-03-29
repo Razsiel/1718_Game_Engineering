@@ -7,7 +7,7 @@ using Assets.ScriptableObjects;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
-class CommandLibrary : ScriptableObject
+public class CommandLibrary : ScriptableObject
 {
     [SerializeField]
     public MoveCommand moveCommand;
