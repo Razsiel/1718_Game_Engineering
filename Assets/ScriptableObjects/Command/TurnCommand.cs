@@ -18,7 +18,7 @@ public class TurnCommand : BaseCommand
     {
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;
-        player.viewDirection = (CardinalDirection)(((int)player.viewDirection + directionShiftOffset) % 8);
+        player.ViewDirection = (CardinalDirection) (((int) player.ViewDirection + directionShiftOffset) % 8);
 
         player.transform.Rotate(0, angle, 0);
 

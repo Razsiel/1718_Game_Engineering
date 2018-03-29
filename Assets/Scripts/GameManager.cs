@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour {
     private static GameManager _instance;
 
     //Temp scene players (testing purposes)
-    public Player playerA;
-    public Player playerB;
+    public Player PlayerA;
+    public Player PlayerB;
 
     public GameObject PlayerPrefab;
     public List<Player> Players = new List<Player>();
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour {
         // Setup level
         LevelData.Init();
     }
-
+    
     void Start() {
 
     }

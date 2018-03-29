@@ -4,19 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class CommandController : MonoBehaviour {
-
+    
     private CommandLibrary commandLibrary;
     public SequenceBar1 sequenceBar;
     Player player;
-    GameManager gameManager;
+    GameManager _gameManager;
     
-
-    // Use this for initialization
     void Start()
     {
-        gameManager = GameManager.GetInstance();
-        player = gameManager.Players[0]; // TODO: make dynamic for 2 players
-        commandLibrary = gameManager.CommandLibrary;
+        _gameManager = GameManager.GetInstance();
+        player = _gameManager.Players[0]; // TODO: make dynamic for 2 players
+        commandLibrary = _gameManager.CommandLibrary;
     }
 
     public void OnMoveButtonClicked()
@@ -24,19 +22,16 @@ public class CommandController : MonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.moveCommand;
-
-        player.AddCommand(commandLibrary.moveCommand);
-
+        player.AddCommand(commandLibrary.MoveCommand);
     }
 
     public void OnTurnLeftButtonClicked()
     {
-        //Turn left or turn right?
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnLeftCommand;
-
-        player.AddCommand(commandLibrary.turnLeftCommand);
+        player.AddCommand(commandLibrary.TurnLeftCommand);
+            
     }
 
     public void OnTurnRightButtonClicked()
@@ -44,8 +39,7 @@ public class CommandController : MonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnRightCommand;
-
-        player.AddCommand(commandLibrary.turnRightCommand);
+        player.AddCommand(commandLibrary.TurnRightCommand);
     }
 
     public void WaitCommand()
@@ -53,8 +47,8 @@ public class CommandController : MonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.waitCommand;
-
-        player.AddCommand(commandLibrary.waitCommand);
+        player.AddCommand(commandLibrary.WaitCommand);
+            
     }
 
     public void InteractCommand()
@@ -62,8 +56,7 @@ public class CommandController : MonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.interactCommand;
-
-        player.AddCommand(commandLibrary.interactCommand);
+        player.AddCommand(commandLibrary.InteractCommand);
     }
 
     public void ClearButtonClicked()
@@ -82,7 +75,5 @@ public class CommandController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-
     }
-
 }
