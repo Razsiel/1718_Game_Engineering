@@ -9,14 +9,18 @@ public class LevelPresenter : MonoBehaviour {
 
     private static GameObject levelObject;
 
-    void Awake() {
-        _levelData = GameManager.GetInstance().LevelData;
-    }
-
     // Use this for initialization
     void Start() {
+        var gameManager = GameManager.GetInstance();
+        _levelData = gameManager.LevelData;
         if (_levelData != null) {
             CreateGameObjectFromLevelData(_levelData, this.transform);
+            
+            //init players in level
+            foreach (var player in gameManager.Players)
+            {
+                Instantiate(gameManager.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            }
         }
     }
 

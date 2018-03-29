@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     {
         _gameManager = GameManager.GetInstance();
         _sequence = new List<BaseCommand>
-        {
+        { 
             (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
             (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
             (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
