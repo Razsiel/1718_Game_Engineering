@@ -20,14 +20,16 @@ public class GameManager : MonoBehaviour
             _instance = this;
         else
             Destroy(this.gameObject);
+
+        // add players to players-list
+        Players.Add(PlayerA);
+        Players.Add(PlayerB);
     }
 
     void Start()
     {
         // Start level
-        // add players to players-list
-        Players.Add(PlayerA);
-        Players.Add(PlayerB);
+
 
         // Set players on start positions
         LevelData.Init();
