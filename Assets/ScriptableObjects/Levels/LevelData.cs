@@ -42,11 +42,12 @@ namespace Assets.ScriptableObjects.Levels {
         /// <param name="player">The player that wants to move</param>
         /// <param name="direction">The direction the player wants to go from it's current position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool CanMoveInDirection(Player player, CardinalDirection direction) {
+        public bool TryMoveInDirection(Player player, CardinalDirection direction) {
             var directionVector = direction.ToVector2();
             GridCell destination;
             if (!GridMapData.TryGetCell(directionVector.x, directionVector.y, out destination))
                 return false;
+
             // Get current player pos
             Vector2Int playerPos;
             if (!_playerPositions.TryGetValue(player, out playerPos)) {
@@ -68,11 +69,15 @@ namespace Assets.ScriptableObjects.Levels {
             // Checks the destination tile to see whether it can be entered/walked into from the given direction
             var canEnterDestination = destination.Value.IsWalkable(direction);
 
-            return canLeaveCurrent && canEnterDestination;
-        }
+            // Final check whether the player can actually move
+            var canMove = canLeaveCurrent && canEnterDestination;
 
-        public bool MovePlayerInDirection(Player player, CardinalDirection direction) {
-            return true;
+            // Move player in grid
+            if (canMove) {
+                SetPlayerPosition(player, destination.XY);
+            }
+
+            return canMove;
         }
     }
 }

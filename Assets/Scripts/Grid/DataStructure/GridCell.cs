@@ -10,7 +10,7 @@ namespace Assets.Scripts.Grid.DataStructure {
         private readonly GridMapData _gridMapData;
         public int X { get; }
         public int Y { get; }
-        public Vector2 XY => new Vector2(X, Y);
+        public Vector2Int XY => new Vector2Int(X, Y);
 
         /// <summary>
         /// Creates a new mapData entry reference
