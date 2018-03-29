@@ -47,6 +47,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ReadyButtonClicked()
+    {
+        StartCoroutine(ExecuteCommands());
+    }
+
     IEnumerator ExecuteCommands()
     {
         foreach (BaseCommand command in sequence)
