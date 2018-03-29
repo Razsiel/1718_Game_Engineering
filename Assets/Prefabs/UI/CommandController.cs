@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CommandController : MonoBehaviour {
 
     private CommandLibrary commandLibrary;
-    public SequenceBar1 sequenceBar;
+    public SequenceBar sequenceBar;
     Player player;
     GameManager gameManager;
     

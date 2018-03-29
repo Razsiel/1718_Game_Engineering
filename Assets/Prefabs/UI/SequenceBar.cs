@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SequenceBar1 : MonoBehaviour {
+public class SequenceBar : MonoBehaviour {
 
     public GameObject slots;
     public int amountOfCommandsAllowed;
