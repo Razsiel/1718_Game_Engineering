@@ -30,7 +30,7 @@ namespace Assets.ScriptableObjects.Levels {
         public void Init() {
             var gameManager = GameManager.GetInstance();
             _playerPositions = new Dictionary<Player, Vector2Int>();
-            for (int i = 0; i < gameManager.Players.Length; i++) {
+            for (int i = 0; i < gameManager.Players.Count; i++) {
                 var player = gameManager.Players[i];
                 _playerPositions[player] = GridMapData.PlayerStartPositions[i];
             }

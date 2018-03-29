@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    private static GameManager _instance;
 
     //Temp scene players (testing purposes)
     public Player playerA;
     public Player playerB;
 
-    public List<Player> players = new List<Player>();
-    public CommandLibrary commandLibrary;
-    public LevelData levelData;
+    public List<Player> Players = new List<Player>();
+    public CommandLibrary CommandLibrary;
+    public LevelData LevelData;
 
     void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (_instance == null)
+            _instance = this;
         else
             Destroy(this.gameObject);
     }
@@ -26,17 +26,15 @@ class GameManager : MonoBehaviour
     {
         // Start level
         // add players to players-list
-        players.Add(playerA);
-        players.Add(playerB);
+        Players.Add(playerA);
+        Players.Add(playerB);
 
         // Set players on start positions
-        levelData.InitPlayers();
-
-
+        LevelData.Init();
     }
 
     public static GameManager GetInstance()
     {
-        return instance;
+        return _instance;
     }
 }

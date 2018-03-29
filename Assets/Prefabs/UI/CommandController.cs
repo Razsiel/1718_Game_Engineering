@@ -13,8 +13,8 @@ public class CommandController : MonoBehaviour {
     void Start()
     {
         gameManager = GameManager.GetInstance();
-        player = gameManager.players[0]; // TODO: make dynamic for 2 players
-        commandLibrary = gameManager.commandLibrary;
+        player = gameManager.Players[0]; // TODO: make dynamic for 2 players
+        commandLibrary = gameManager.CommandLibrary;
     }
 
     public void OnMoveButtonClicked()
