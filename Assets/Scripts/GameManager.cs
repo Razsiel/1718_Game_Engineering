@@ -19,11 +19,13 @@ public class GameManager : MonoBehaviour {
             _instance = this;
         else
             Destroy(this.gameObject);
+
+        // Setup level
+        LevelData.Init();
     }
 
     void Start() {
-        // Setup level
-        LevelData.Init();
+
     }
 
     public static GameManager GetInstance() {

@@ -13,14 +13,23 @@ public class LevelPresenter : MonoBehaviour {
     void Start() {
         var gameManager = GameManager.GetInstance();
         _levelData = gameManager.LevelData;
-        if (_levelData != null) {
-            CreateGameObjectFromLevelData(_levelData, this.transform);
+        if (_levelData == null)
+            return;
+
+        // create level objects in scene
+        levelObject = CreateGameObjectFromLevelData(_levelData, this.transform);
             
-            //init players in level
-            foreach (var player in gameManager.Players)
-            {
-                Instantiate(gameManager.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
-            }
+        // create player objects in scene
+        foreach (var player in gameManager.Players)
+        {
+            /*TODO: 
+             * Get player grid start position
+             * Transform grid position to world position
+             */
+            var startGridPosition = _levelData.GetPlayerStartPosition(player);
+            var playerWorldPosition = GridHelper.GridToWorldPosition(_levelData, startGridPosition);
+            //var playerDirection = player.viewDirection.ToQuaternion();
+            Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
         }
     }
 
@@ -42,14 +51,21 @@ public class LevelPresenter : MonoBehaviour {
                 var tileObject = tile.GenerateGameObject(root);
                 tileObject.name = $"Tile ({x}, {y})";
                 var transform = tileObject.transform;
-                transform.position = new Vector3(x - (grid.Width - 1) * 0.5f,
-                                                 0,
-                                                 y - (grid.Height - 1) * 0.5f);
+                transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
                 transform.localScale /= data.TileScale;
             }
         }
-
-        levelObject = root;
+        
         return root;
+    }
+}
+
+public class GridHelper {
+    public static Vector3 GridToWorldPosition(LevelData levelData, Vector2Int gridPosition) {
+        var grid = levelData.GridMapData;
+        var worldPos = new Vector3(gridPosition.x - (grid.Width - 1) * 0.5f,
+                                  0,
+                                  gridPosition.y - (grid.Height - 1) * 0.5f);
+        return worldPos;
     }
 }
