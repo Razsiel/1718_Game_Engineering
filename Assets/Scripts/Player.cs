@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
     private GameManager gameManager;
-    public CardinalDirection viewDirection;
+    public CardinalDirection viewDirection = CardinalDirection.North;
 
     List<BaseCommand> sequence;
 
@@ -19,12 +19,15 @@ public class Player : MonoBehaviour
         gameManager = GameManager.GetInstance();
         sequence = new List<BaseCommand>();
 
-
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
-        sequence.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
