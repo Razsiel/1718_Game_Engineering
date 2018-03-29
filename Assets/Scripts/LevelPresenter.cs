@@ -36,7 +36,7 @@ public class LevelPresenter : MonoBehaviour {
                 transform.position = new Vector3(x - (grid.Width - 1) * 0.5f,
                                                  0,
                                                  y - (grid.Height - 1) * 0.5f);
-                transform.localScale /= 32;
+                transform.localScale /= data.TileScale;
             }
         }
 

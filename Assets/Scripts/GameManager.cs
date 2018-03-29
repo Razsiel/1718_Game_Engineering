@@ -20,8 +20,7 @@ class GameManager : MonoBehaviour
    
     void Start()
     {
-        levelData.InitPlayers();
-        levelData.SetPlayerPosition(playerA, new Vector2Int(0, 0));
+        levelData.Init();
     }
 
     public static GameManager GetInstance()

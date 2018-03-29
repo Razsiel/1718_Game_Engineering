@@ -27,13 +27,13 @@ namespace Assets.ScriptableObjects.Levels {
             return true;
         }
 
-        public void InitPlayers() {
+        public void Init() {
+            var gameManager = GameManager.GetInstance();
             _playerPositions = new Dictionary<Player, Vector2Int>();
-        }
-
-        public void SetPlayerPosition(Player player, Vector2Int position)
-        {
-            _playerPositions[player] = position;
+            for (int i = 0; i < gameManager.Players.Length; i++) {
+                var player = gameManager.Players[i];
+                _playerPositions[player] = GridMapData.PlayerStartPositions[i];
+            }
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Assets.ScriptableObjects.Levels {
 
             // Move player in grid
             if (canMove) {
-                SetPlayerPosition(player, destination.XY);
+                _playerPositions[player] = destination.XY;
             }
 
             return canMove;
