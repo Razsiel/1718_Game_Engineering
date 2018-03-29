@@ -5,9 +5,13 @@ using Assets.ScriptableObjects.Levels;
 using UnityEngine;
 
 public class LevelPresenter : MonoBehaviour {
-    [SerializeField] private LevelData _levelData;
+    private LevelData _levelData;
 
     private static GameObject levelObject;
+
+    void Awake() {
+        _levelData = GameManager.GetInstance().LevelData;
+    }
 
     // Use this for initialization
     void Start() {
