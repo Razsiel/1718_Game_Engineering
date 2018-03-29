@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Grid.DataStructure;
 
 public class Player : MonoBehaviour
 {

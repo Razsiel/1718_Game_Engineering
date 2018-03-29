@@ -11,6 +11,14 @@ public class MoveCommand : BaseCommand
     /// <returns></returns>
     public override IEnumerator Execute(Player player)
     {
+        // Can i move forward? if not: return
+        if (!GameManager.GetInstance().levelData.CanMoveInDirection(player, player.viewDirection))
+            yield break;
+
+        // Move player on internal gridmap
+        GameManager.GetInstance().levelData.MovePlayerInDirection(player, player.viewDirection);
+
+        // Visual movement
         Vector3 destination = player.transform.position + (player.transform.forward * player.data.StepSize);
         float offset = Vector3.Distance(player.transform.position, destination);
 

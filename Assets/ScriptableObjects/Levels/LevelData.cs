@@ -31,6 +31,11 @@ namespace Assets.ScriptableObjects.Levels {
             _playerPositions = new Dictionary<Player, Vector2Int>();
         }
 
+        public void SetPlayerPosition(Player player, Vector2Int position)
+        {
+            _playerPositions[player] = position;
+        }
+
         /// <summary>
         /// Checks whether the given player is allowed to move in the direction given on the map
         /// </summary>

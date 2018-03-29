@@ -18,6 +18,12 @@ class GameManager : MonoBehaviour
             Destroy(this.gameObject);
     }
    
+    void Start()
+    {
+        levelData.InitPlayers();
+        levelData.SetPlayerPosition(playerA, new Vector2Int(0, 0));
+    }
+
     public static GameManager GetInstance()
     {
         return instance;
