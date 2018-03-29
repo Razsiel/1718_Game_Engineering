@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.ScriptableObjects.Tiles;
-using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
@@ -11,10 +10,11 @@ namespace Assets.ScriptableObjects.Grids {
     [CreateAssetMenu(fileName = "Default Grid", menuName = "Data/Grid")]
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {
         [SerializeField] public TileData DefaultTile;
+        [SerializeField] public Vector2Int[] PlayerStartPositions;
 
         [SerializeField] private GridRow[] _map;
-        [SerializeField] [HideInInspector] private int _width;
-        [SerializeField] [HideInInspector] private int _height;
+        [SerializeField] private int _width;
+        [SerializeField] private int _height;
 
         /// <summary>
         /// Creates a mapData with a given width and height.
@@ -30,7 +30,6 @@ namespace Assets.ScriptableObjects.Grids {
         /// <summary>
         /// Gets the width of the mapData.
         /// </summary>
-        [ExposeProperty]
         public int Width {
             get { return _width; }
             set { _width = value; }
@@ -39,7 +38,6 @@ namespace Assets.ScriptableObjects.Grids {
         /// <summary>
         /// Gets the height of the mapData.
         /// </summary>
-        [ExposeProperty]
         public int Height {
             get { return _height; }
             set { _height = value; }
@@ -86,20 +84,15 @@ namespace Assets.ScriptableObjects.Grids {
             return IsValidTile(entry.X, entry.Y);
         }
 
-
         /// <summary>
         /// Recreates the mapData according to the mapData's width and height. Preserves previous data, but resizing smaller will cause 'out of bounds' data to be lost!
         /// </summary>
+        /// <returns></returns>
         public void RecalculateGrid() {
-            //var old = _map;
-            _map = new GridRow[Width];
-            //Debug.Log($"Map size: W{Width} x H{Height}");
-            for (int i = 0; i < Width; i++) {
-                _map[i] = new GridRow(Height, defaultTileData: DefaultTile);
-                //Debug.Log($"Row #{i}, length {_map[i].Length}");
+            Array.Resize(ref _map, Width);
+            foreach (var row in _map) {
+                row.Resize(Height);
             }
-
-            //todo: Save old into new map
         }
 
         #region IEnumerable implementation
@@ -119,5 +112,14 @@ namespace Assets.ScriptableObjects.Grids {
         }
 
         #endregion
+
+        public bool TryGetCell(int x, int y, out GridCell cell) {
+            if (IsValidTile(x, y)) {
+                cell = new GridCell(this, x, y);
+                return true;
+            }
+            cell = new GridCell(this, 0, 0);
+            return false;
+        }
     }
 }

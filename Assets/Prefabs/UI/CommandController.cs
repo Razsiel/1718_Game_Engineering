@@ -7,7 +7,7 @@ public class CommandController : MonoBehaviour {
 
     private CommandLibrary commandLibrary;
     public SequenceBar1 sequenceBar;
-    Player playerA;
+    Player player;
     GameManager gameManager;
     
 
@@ -15,8 +15,8 @@ public class CommandController : MonoBehaviour {
     void Start()
     {
         gameManager = GameManager.GetInstance();
-        playerA = gameManager.playerA;
-        commandLibrary = gameManager.commandLibrary;
+        player = gameManager.Players[0]; // TODO: make dynamic for 2 players
+        commandLibrary = gameManager.CommandLibrary;
     }
 
     public void OnMoveButtonClicked()
@@ -25,7 +25,7 @@ public class CommandController : MonoBehaviour {
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.moveCommand;
 
-        playerA.AddCommand(commandLibrary.moveCommand);
+        player.AddCommand(commandLibrary.moveCommand);
 
     }
 
@@ -36,7 +36,7 @@ public class CommandController : MonoBehaviour {
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnLeftCommand;
 
-        playerA.AddCommand(commandLibrary.turnLeftCommand);
+        player.AddCommand(commandLibrary.turnLeftCommand);
     }
 
     public void OnTurnRightButtonClicked()
@@ -45,7 +45,7 @@ public class CommandController : MonoBehaviour {
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnRightCommand;
 
-        playerA.AddCommand(commandLibrary.turnRightCommand);
+        player.AddCommand(commandLibrary.turnRightCommand);
     }
 
     public void WaitCommand()
@@ -54,7 +54,7 @@ public class CommandController : MonoBehaviour {
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.waitCommand;
 
-        playerA.AddCommand(commandLibrary.waitCommand);
+        player.AddCommand(commandLibrary.waitCommand);
     }
 
     public void InteractCommand()
@@ -63,21 +63,20 @@ public class CommandController : MonoBehaviour {
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.interactCommand;
 
-        Player playerA = gameManager.playerA;
-        playerA.AddCommand(commandLibrary.interactCommand);
+        player.AddCommand(commandLibrary.interactCommand);
     }
 
     public void ClearButtonClicked()
     {
         sequenceBar.ClearImages();
         GameManager gameManager = GameManager.GetInstance();
-        Player playerA = gameManager.playerA;
-        playerA.ClearCommands();
+
+        player.ClearCommands();
     }
 
     public void ReadyButtonClicked()
     {
-        playerA.ReadyButtonClicked();
+        player.ReadyButtonClicked();
     }
 
     // Update is called once per frame

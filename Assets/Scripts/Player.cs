@@ -3,24 +3,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.DataStructures;
+using Assets.Scripts.Grid.DataStructure;
 
 public class Player : MonoBehaviour
 {
     public PlayerMovementData data;
+    private GameManager gameManager;
+    public CardinalDirection viewDirection = CardinalDirection.North;
 
     List<BaseCommand> sequence;
 
     // Use this for initialization
     void Start()
     {
+        gameManager = GameManager.GetInstance();
         sequence = new List<BaseCommand>();
-
 
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
-        sequence.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
+        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
+        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
         sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));

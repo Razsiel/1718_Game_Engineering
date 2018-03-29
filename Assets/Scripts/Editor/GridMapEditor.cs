@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Assets.ScriptableObjects.Grids;
-using Assets.ScriptableObjects.Tiles;
-using Assets.Scripts.DataStructures;
+﻿using Assets.ScriptableObjects.Grids;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,14 +6,12 @@ namespace Assets.Scripts.Editor {
     [CustomEditor(typeof(GridMapData))]
     public class GridMapEditor : UnityEditor.Editor {
         GridMapData _instance;
-        PropertyField[] _fields;
 
         private GameObject _previewObject;
         private UnityEditor.Editor _mapEditor;
 
         public void OnEnable() {
             _instance = target as GridMapData;
-            _fields = ExposeProperties.GetProperties(_instance);
         }
 
         public void OnDisable() {
@@ -33,7 +24,6 @@ namespace Assets.Scripts.Editor {
                 return;
 
             this.DrawDefaultInspector();
-            ExposeProperties.Expose(_fields);
 
             if (GUILayout.Button("Recalculate")) {
                 _instance.RecalculateGrid();
@@ -41,7 +31,7 @@ namespace Assets.Scripts.Editor {
             }
 
             // draw custom grid editor here
-            if (GUILayout.Button("Recreate preview")) {
+            if (GUILayout.Button("(Re)create preview")) {
                 CreatePreview();
             }
         }
@@ -72,21 +62,11 @@ namespace Assets.Scripts.Editor {
                     if (tile == null) {
                         continue;
                     }
-                    var tileObject =
-                        EditorUtility.CreateGameObjectWithHideFlags($"Tile ({x},{y})",
-                                                                    HideFlags.HideAndDontSave,
-                                                                    typeof(MeshFilter),
-                                                                    typeof(MeshRenderer));
-                    var meshFilter = tileObject.GetComponent<MeshFilter>();
-                    if (meshFilter != null) {
-                        meshFilter.mesh = tile.TileMesh;
-                    }
-                    var meshRenderer = tileObject.GetComponent<MeshRenderer>();
-                    if (meshRenderer != null) {
-                        meshRenderer.sharedMaterial = tile.TileMaterial;
-                    }
+
+                    var tileObject = tile.GenerateGameObject(root, true);
+                    tileObject.name = $"Tile ({x},{y})";
+
                     var transform = tileObject.transform;
-                    transform.parent = root.transform;
                     transform.position = new Vector3(x - (mapData.Width - 1) * 0.5f,
                                                      0,
                                                      y - (mapData.Height - 1) * 0.5f);

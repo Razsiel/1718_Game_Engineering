@@ -1,23 +1,40 @@
 ﻿using UnityEngine;
+using Assets.ScriptableObjects.Levels;
+using System.Collections.Generic;
 
-class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    private static GameManager _instance;
 
+    //Temp scene players (testing purposes)
     public Player playerA;
     public Player playerB;
-    public CommandLibrary commandLibrary;
+    
+    public List<Player> Players = new List<Player>();
+    public CommandLibrary CommandLibrary;
+    public LevelData LevelData;
 
-    void Start()
+    void Awake()
     {
-        if (instance == null)
-            instance = this;
+        if (_instance == null)
+            _instance = this;
         else
             Destroy(this.gameObject);
     }
    
+    void Start()
+    {
+        // Start level
+        // add players to players-list
+        Players.Add(playerA);
+        Players.Add(playerB);
+
+        // Set players on start positions
+        LevelData.Init();
+    }
+
     public static GameManager GetInstance()
     {
-        return instance;
+        return _instance;
     }
 }
