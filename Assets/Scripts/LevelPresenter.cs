@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Assets.ScriptableObjects.Levels;
 using UnityEngine;
 
-public class LevelPresenter : MonoBehaviour {
+public class LevelPresenter : MonoBehaviour
+{
+
     private LevelData _levelData;
 
     private static GameObject levelObject;
@@ -20,16 +22,15 @@ public class LevelPresenter : MonoBehaviour {
         levelObject = CreateGameObjectFromLevelData(_levelData, this.transform);
             
         // create player objects in scene
-        foreach (var player in gameManager.Players)
-        {
-            /*TODO: 
-             * Get player grid start position
-             * Transform grid position to world position
-             */
-            var startGridPosition = _levelData.GetPlayerStartPosition(player);
+        for (int i = 0; i < gameManager.Players.Count; i++) {
+            var startGridPosition = _levelData.GetPlayerStartPosition(i);
             var playerWorldPosition = GridHelper.GridToWorldPosition(_levelData, startGridPosition);
+            playerWorldPosition.y = 1;
             //var playerDirection = player.viewDirection.ToQuaternion();
-            Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
+            var playerObject = Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
+            var playerComponent = playerObject.GetComponent<Player>();
+            playerComponent.PlayerNumber = i;
+            playerComponent.Data = gameManager.Players[i];
         }
     }
 
@@ -57,15 +58,5 @@ public class LevelPresenter : MonoBehaviour {
         }
         
         return root;
-    }
-}
-
-public class GridHelper {
-    public static Vector3 GridToWorldPosition(LevelData levelData, Vector2Int gridPosition) {
-        var grid = levelData.GridMapData;
-        var worldPos = new Vector3(gridPosition.x - (grid.Width - 1) * 0.5f,
-                                  0,
-                                  gridPosition.y - (grid.Height - 1) * 0.5f);
-        return worldPos;
     }
 }
