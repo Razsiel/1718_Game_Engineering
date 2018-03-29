@@ -18,21 +18,22 @@ public class Player : MonoBehaviour
     void Start()
     {
         gameManager = GameManager.GetInstance();
-        sequence = new List<BaseCommand>();
+        sequence = new List<BaseCommand> {
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand")
+        };
 
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         StartCoroutine(WaitForInput());
     }
 
