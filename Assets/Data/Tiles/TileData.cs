@@ -18,18 +18,17 @@ namespace Assets.ScriptableObjects.Tiles {
             return DecorationsData.Length == 0 || DecorationsData.All(d => d.IsWalkable(direction));
         }
 
-        public virtual bool CanExit(CardinalDirection direction)
-        {
+        public virtual bool CanExit(CardinalDirection direction) {
             var oppositeDirection = direction.ToOppositeDirection();
             return IsWalkable(oppositeDirection);
         }
 
-        public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
-            return GenerateGameObject(parent.transform, hidden);
+        public GameObject GenerateGameObject(GameObject parent, int x, int y, bool hidden = false) {
+            return GenerateGameObject(parent.transform, x, y, hidden);
         }
 
-        public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
-            var tile = new GameObject("Tile",
+        public GameObject GenerateGameObject(Transform parent, int x, int y, bool hidden = false) {
+            var tile = new GameObject($"Tile ({x}, {y})",
                                       typeof(MeshFilter),
                                       typeof(MeshRenderer)) {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
@@ -46,7 +45,20 @@ namespace Assets.ScriptableObjects.Tiles {
             if (meshRenderer != null) {
                 meshRenderer.sharedMaterial = this.TileMaterial;
             }
-
+#if UNITY_EDITOR
+            var textObject = new GameObject($"Text", typeof(TextMesh));
+            textObject.transform.parent = tile.transform;
+            textObject.transform.position = new Vector3(0, 20, 0);
+            textObject.transform.Rotate(Vector3.right, 90);
+            var text = textObject.GetComponent<TextMesh>();
+            if (text != null) {
+                text.alignment = TextAlignment.Center;
+                text.anchor = TextAnchor.MiddleCenter;
+                text.characterSize = 4;
+                text.fontStyle = FontStyle.Bold;
+                text.text = tile.name.Substring(5);
+            }
+#endif
             return tile;
         }
     }

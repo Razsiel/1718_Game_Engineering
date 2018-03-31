@@ -43,11 +43,6 @@ namespace Assets.ScriptableObjects.Levels {
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
         public bool TryMoveInDirection(PlayerData player, CardinalDirection direction) {
             var directionVector = direction.ToVector2();
-            GridCell destination;
-            if (!GridMapData.TryGetCell(directionVector.x, directionVector.y, out destination)) {
-                Debug.Log($"Could not move player: Cell at ({directionVector.x}, {directionVector.y}) does not exist");
-                return false;
-            }
 
             // Get current player pos
             Vector2Int playerPos;
@@ -56,6 +51,13 @@ namespace Assets.ScriptableObjects.Levels {
                 Debug.Log(player.GetHashCode());
                 Debug.Log($"Could not move player: Player does not have a position on the grid");
                 return false; // current player does not have a position in this map
+            }
+
+            GridCell destination;
+            Debug.Log($"... Trying to move to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
+            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination)) {
+                Debug.Log($"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
+                return false;
             }
 
             // Check if there are any other players on the destination
