@@ -20,6 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4484071266757366}
   - component: {fileID: 114819057405445294}
+  - component: {fileID: 114915159324505188}
+  - component: {fileID: 114911608387390270}
   m_Layer: 0
   m_Name: GameLoader
   m_TagString: Untagged
@@ -53,4 +55,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerA: {fileID: 0}
   playerB: {fileID: 0}
+  commandLibrary: {fileID: 0}
+--- !u!114 &114911608387390270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331701357149662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de83a8fa9e5165e4693679c078b1dd02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114915159324505188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331701357149662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b26e516676f395843b9c00c141997515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
+    type: 2}
+  roomPanel: {fileID: 0}
   commandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}

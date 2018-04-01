@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Photon
 {
@@ -12,23 +13,45 @@ namespace Assets.Scripts.Photon
     {
         public Button buttonComponent;
         private RoomListView listView;
-        private int roomNumber;
-
-        void Start()
+        private string _roomName;
+        public string RoomName
         {
-            buttonComponent.onClick.AddListener(HandleClick);
+            get
+            {
+                return _roomName;
+            }
+            private set
+            {
+                _roomName = value;
+            }
         }
 
-        public void Setup(int roomNumber, RoomListView listView)
+        void Awake()
+        {            
+            //To:do think of a way to make this button get the component
+            buttonComponent = this.GetComponent<Button>();
+            
+            //buttonComponent.onClick.AddListener(() => HandleClick());
+
+        }
+    
+        public void Setup(string roomName, RoomListView listView)
         {
-            this.roomNumber = roomNumber;
+            this.RoomName = roomName;
             this.listView = listView;
-            buttonComponent.GetComponentInChildren<Text>().text = "Room " + roomNumber;
+            Assert.IsNotNull(buttonComponent);
+            Assert.IsNotNull(listView);
+            buttonComponent.GetComponentInChildren<Text>().text = roomName;
+            
         }
 
+        /// <summary>
+        /// Deprecated
+        /// </summary>
         public void HandleClick()
         {
-            listView.HandleClick(roomNumber);
+            print("In HandleClick of our room");
+            listView.HandleClick(_roomName);
         }
     }
 }
