@@ -18,13 +18,13 @@ namespace Assets.Scripts.Grid.DataStructure {
         /// <param name="gridMapData">The mapData it belongs to</param>
         /// <param name="y">The X position of the entry</param>
         /// <param name="x">The Y position of the entry</param>
-        public GridCell(GridMapData gridMapData, int y, int x) {
+        public GridCell(GridMapData gridMapData, int x, int y) {
             if (gridMapData == null)
                 throw new ArgumentNullException(nameof(gridMapData));
 
             this._gridMapData = gridMapData;
-            this.Y = y;
             this.X = x;
+            this.Y = y;
         }
 
         /// <summary>

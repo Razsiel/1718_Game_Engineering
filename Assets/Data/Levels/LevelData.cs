@@ -52,9 +52,10 @@ namespace Assets.ScriptableObjects.Levels {
                 Debug.Log($"Could not move player: Player does not have a position on the grid");
                 return false; // current player does not have a position in this map
             }
+            
+            Debug.Log($"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
 
             GridCell destination;
-            Debug.Log($"... Trying to move to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
             if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination)) {
                 Debug.Log($"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
                 return false;
@@ -83,6 +84,7 @@ namespace Assets.ScriptableObjects.Levels {
 
             // Move player in grid
             if (canMove) {
+                Debug.Log($"Can move to {destination.XY}");
                 _playerPositions[player] = destination.XY;
             }
 
