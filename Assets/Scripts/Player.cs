@@ -2,17 +2,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Assets.ScriptableObjects;
+using Assets.ScriptableObjects.Player;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 
 public class Player : MonoBehaviour
 {
-    public PlayerMovementData Data;
     private GameManager _gameManager;
-    public CardinalDirection ViewDirection = CardinalDirection.North;
-
     private List<BaseCommand> _sequence;
+
+    public int PlayerNumber;
+    public PlayerData Data;
+    public CardinalDirection ViewDirection = CardinalDirection.North;
 
     // Use this for initialization
     void Start()
@@ -20,19 +23,16 @@ public class Player : MonoBehaviour
         _gameManager = GameManager.GetInstance();
         _sequence = new List<BaseCommand>
         { 
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
-            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
-            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand")
+            ScriptableObject.CreateInstance<MoveCommand>(),
+            ScriptableObject.CreateInstance<TurnCommand>(),
+            ScriptableObject.CreateInstance<MoveCommand>(),
+            ScriptableObject.CreateInstance<TurnCommand>(),
+            ScriptableObject.CreateInstance<MoveCommand>(),
+            ScriptableObject.CreateInstance<TurnCommand>(),
+            ScriptableObject.CreateInstance<MoveCommand>(),
+            ScriptableObject.CreateInstance<TurnCommand>(),
+            ScriptableObject.CreateInstance<MoveCommand>(),
+            ScriptableObject.CreateInstance<TurnCommand>(),
         };
 
         StartCoroutine(WaitForInput());

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Assets.ScriptableObjects.Tiles;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
@@ -73,7 +74,8 @@ namespace Assets.ScriptableObjects.Grids {
         /// <returns></returns>
         public bool IsValidTile(int x, int y) {
             return x >= 0 && x < Width
-                   && y >= 0 && y < Height;
+                   && 
+                   y >= 0 && y < Height;
         }
 
         /// <summary>
