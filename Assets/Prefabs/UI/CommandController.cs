@@ -1,65 +1,79 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CommandController : MonoBehaviour {
-
-    public List<BaseCommand> commands = new List<BaseCommand>();
+    
     private CommandLibrary commandLibrary;
-    Player playerA;
-    GameManager gameManager;
-
-    // Use this for initialization
+    public SequenceBar sequenceBar;
+    Player player;
+    GameManager _gameManager;
+    
     void Start()
     {
-        gameManager = GameManager.GetInstance();
-        playerA = gameManager.playerA;
-        commandLibrary = gameManager.commandLibrary;
+        _gameManager = GameManager.GetInstance();
+        player = _gameManager.Players[0]; // TODO: make dynamic for 2 players
+        commandLibrary = _gameManager.CommandLibrary;
     }
 
     public void OnMoveButtonClicked()
     {
-        playerA.AddCommand(commandLibrary.moveCommand);
+        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        image.sprite = sequenceBar.moveCommand;
+        player.AddCommand(commandLibrary.MoveCommand);
     }
 
     public void OnTurnLeftButtonClicked()
     {
-        //Turn left or turn right?
-        playerA.AddCommand(commandLibrary.turnLeftCommand);
+        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        image.sprite = sequenceBar.turnLeftCommand;
+        player.AddCommand(commandLibrary.TurnLeftCommand);
+            
     }
 
     public void OnTurnRightButtonClicked()
     {
-        playerA.AddCommand(commandLibrary.turnRightCommand);
+        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        image.sprite = sequenceBar.turnRightCommand;
+        player.AddCommand(commandLibrary.TurnRightCommand);
     }
 
     public void WaitCommand()
     {
-        playerA.AddCommand(commandLibrary.waitCommand);
+        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        image.sprite = sequenceBar.waitCommand;
+        player.AddCommand(commandLibrary.WaitCommand);
+            
     }
 
     public void InteractCommand()
     {
-        Player playerA = gameManager.playerA;
-        playerA.AddCommand(commandLibrary.interactCommand);
+        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        image.sprite = sequenceBar.interactCommand;
+        player.AddCommand(commandLibrary.InteractCommand);
     }
 
     public void ClearButtonClicked()
     {
+        sequenceBar.ClearImages();
         GameManager gameManager = GameManager.GetInstance();
-        Player playerA = gameManager.playerA;
-        playerA.ClearCommands();
+
+        player.ClearCommands();
     }
 
     public void ReadyButtonClicked()
     {
-        
+        player.ReadyButtonClicked();
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
-
 }

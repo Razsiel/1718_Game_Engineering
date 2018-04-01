@@ -4,7 +4,9 @@ using UnityEngine;
 using Photon;
 using UnityEngine.Events;
 using UnityEngine.Assertions;
+using Assets.Scripts.Photon;
 using System;
+
 
 public class RoomManager : Photon.MonoBehaviour
 {
@@ -15,10 +17,9 @@ public class RoomManager : Photon.MonoBehaviour
     private RoomListView roomView;
     public GameObject roomPanel;
 
-    
+
     public void Awake()
     {
-        Debug.Log("In Awake");
         photonRooms = new List<RoomInfo>();
 
         roomView = roomPanel.GetComponents<RoomListView>()[0];
@@ -31,7 +32,7 @@ public class RoomManager : Photon.MonoBehaviour
     {
         PhotonNetwork.autoJoinLobby = true;
         Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
-                       
+
         Debug.Log(PhotonNetwork.connectionState);
         PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { print("Join random room Failed"); Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal")); };
         PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { print("Join room failed"); };
@@ -41,14 +42,14 @@ public class RoomManager : Photon.MonoBehaviour
             Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
             UpdateGUI();
             Debug.Log("We joined the lobby!");
-            
+
             if (!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal"));
             print(PhotonNetwork.inRoom);
             PhotonManager.Instance.TGEOnPhotonPlayerConnected += (PhotonPlayer player) =>
             {
                 Debug.Log("Player is here, lets see if somebody else joins");
                 //We can only continue here if we have two players, multiplayer is no fun alone
-                if(PhotonNetwork.playerList.Length < 2) return;
+                if (PhotonNetwork.playerList.Length < 2) return;
                 Debug.Log("Player joined WOHOO");
                 //PhotonNetwork.room.IsOpen = false;
                 int index = PhotonNetwork.isMasterClient ? 0 : 1;
@@ -84,3 +85,4 @@ public class RoomManager : Photon.MonoBehaviour
         this.photonRooms.Remove(room);
     }
 }
+

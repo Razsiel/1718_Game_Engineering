@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Assets.Scripts.DataStructures;
 using UnityEngine;
 
 namespace Assets.ScriptableObjects.Tiles {
@@ -13,8 +14,14 @@ namespace Assets.ScriptableObjects.Tiles {
         //private event OnPlayerTileEnter;
         //private event OnPlayerTileLeave;
 
-        public virtual bool IsWalkable() {
-            return DecorationsData?.All(d => d.IsWalkable()) ?? false;
+        public virtual bool IsWalkable(CardinalDirection direction) {
+            return DecorationsData.Length == 0 || DecorationsData.All(d => d.IsWalkable(direction));
+        }
+
+        public virtual bool CanExit(CardinalDirection direction)
+        {
+            var oppositeDirection = direction.ToOppositeDirection();
+            return IsWalkable(oppositeDirection);
         }
 
         public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {

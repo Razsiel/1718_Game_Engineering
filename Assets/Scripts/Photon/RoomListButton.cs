@@ -13,16 +13,16 @@ namespace Assets.Scripts.Photon
     {
         public Button buttonComponent;
         private RoomListView listView;
-        private string roomName;
+        private string _roomName;
         public string RoomName
         {
             get
             {
-                return roomName;
+                return _roomName;
             }
             private set
             {
-                roomName = value;
+                _roomName = value;
             }
         }
 
@@ -40,6 +40,7 @@ namespace Assets.Scripts.Photon
             this.RoomName = roomName;
             this.listView = listView;
             Assert.IsNotNull(buttonComponent);
+            Assert.IsNotNull(listView);
             buttonComponent.GetComponentInChildren<Text>().text = roomName;
             
         }
@@ -50,7 +51,7 @@ namespace Assets.Scripts.Photon
         public void HandleClick()
         {
             print("In HandleClick of our room");
-            listView.HandleClick(roomName);
+            listView.HandleClick(_roomName);
         }
     }
 }

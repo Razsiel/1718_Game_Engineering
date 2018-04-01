@@ -3,35 +3,44 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Scripts.DataStructures;
+using Assets.Scripts.Grid.DataStructure;
 
 public class Player : MonoBehaviour
 {
-    public PlayerMovementData data;
+    public PlayerMovementData Data;
+    private GameManager _gameManager;
+    public CardinalDirection ViewDirection = CardinalDirection.North;
 
-    List<BaseCommand> sequence;
+    private List<BaseCommand> _sequence;
 
     // Use this for initialization
     void Start()
     {
-        sequence = new List<BaseCommand>();
+        _gameManager = GameManager.GetInstance();
+        _sequence = new List<BaseCommand>
+        { 
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand"),
+            (TurnCommand) ScriptableObject.CreateInstance("TurnCommand"),
+            (MoveCommand) ScriptableObject.CreateInstance("MoveCommand")
+        };
 
-
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((WaitCommand)ScriptableObject.CreateInstance("WaitCommand"));
-        sequence.Add((InteractCommand)ScriptableObject.CreateInstance("InteractCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
-        sequence.Add((TurnCommand)ScriptableObject.CreateInstance("TurnCommand"));
-        sequence.Add((MoveCommand)ScriptableObject.CreateInstance("MoveCommand"));
         StartCoroutine(WaitForInput());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     //Press Spacebar to run sequence
@@ -47,9 +56,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void ReadyButtonClicked()
+    {
+        StartCoroutine(ExecuteCommands());
+    }
+
     IEnumerator ExecuteCommands()
     {
-        foreach (BaseCommand command in sequence)
+        foreach (BaseCommand command in _sequence)
         {
             StartCoroutine(command.Execute(this));
             yield return new WaitForSeconds(1);
@@ -58,11 +72,11 @@ public class Player : MonoBehaviour
 
     public void AddCommand(BaseCommand command)
     {
-        sequence.Add(command);
+        _sequence.Add(command);
     }
 
     public void ClearCommands()
     {
-        sequence.Clear();
+        _sequence.Clear();
     }
 }

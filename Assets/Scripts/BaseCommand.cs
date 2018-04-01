@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class BaseCommand : ScriptableObject
 {
-    public Sprite icon;
+    public Sprite Icon;
     public abstract IEnumerator Execute(Player player);
 }

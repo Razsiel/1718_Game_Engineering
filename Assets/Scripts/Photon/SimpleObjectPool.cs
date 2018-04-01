@@ -29,8 +29,7 @@ namespace Assets.Scripts.Photon
                 //We have an inactive object to give back
                 spawnedGameObject = inactiveInstances.Pop();
             else
-            {
-                Debug.Log(prefab);
+            {                
                 //Create a new one of given prefab set in editor
                 spawnedGameObject = Instantiate(prefab);
 

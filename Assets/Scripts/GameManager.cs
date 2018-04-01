@@ -1,36 +1,40 @@
 ﻿using UnityEngine;
+using Assets.ScriptableObjects.Levels;
+using System.Collections.Generic;
+using Assets.Scripts.Photon;
 
-class GameManager : MonoBehaviour
-{
-    private static GameManager instance;
+public class GameManager : MonoBehaviour {
+    private static GameManager _instance;
 
-    public Player playerA;
-    public Player playerB;
-    public CommandLibrary commandLibrary;
+    //Temp scene players (testing purposes)
+    public Player PlayerA;
+    public Player PlayerB;
+
+    public GameObject PlayerPrefab;
+    public List<Player> Players = new List<Player>();
+    public CommandLibrary CommandLibrary;
+    public LevelData LevelData;
 
     void Awake()
     {
-        Debug.Log("In gamemanager awake");       
-    }
-
-    void Start()
-    {
-        if (instance == null)
-            instance = this;
+        if (_instance == null)
+            _instance = this;
         else
             Destroy(this.gameObject);
-        Debug.Log("In start, updating GUI");
-        print("gonna call this: " + PhotonManager.Instance.RoomManager);
-        //PhotonManager.Instance.RoomManager.UpdateGUI();
+
+        // Setup level
+        LevelData.Init();
     }
 
     public void StartMultiplayerGame()
     {
         //Lets do some GameStarting logic here
+        PhotonManager.Instance.StartMultiplayerGame(LevelData);
     }
-   
-    public static GameManager GetInstance()
-    {
-        return instance;
+
+  
+
+    public static GameManager GetInstance() {
+        return _instance;
     }
 }
