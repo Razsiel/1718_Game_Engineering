@@ -49,8 +49,7 @@ public class LevelPresenter : MonoBehaviour
                 if (tile == null) {
                     continue;
                 }
-                var tileObject = tile.GenerateGameObject(root);
-                tileObject.name = $"Tile ({x}, {y})";
+                var tileObject = tile.GenerateGameObject(root, x, y);
                 var transform = tileObject.transform;
                 transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
                 transform.localScale /= data.TileScale;

@@ -74,7 +74,7 @@ namespace Assets.ScriptableObjects.Grids {
         /// <returns></returns>
         public bool IsValidTile(int x, int y) {
             return x >= 0 && x < Width
-                   && 
+                   &&
                    y >= 0 && y < Height;
         }
 
@@ -116,12 +116,8 @@ namespace Assets.ScriptableObjects.Grids {
         #endregion
 
         public bool TryGetCell(int x, int y, out GridCell cell) {
-            if (IsValidTile(x, y)) {
-                cell = new GridCell(this, x, y);
-                return true;
-            }
-            cell = new GridCell(this, 0, 0);
-            return false;
+            cell = new GridCell(this, x, y);
+            return IsValidTile(x, y) && this[x, y] != null;
         }
     }
 }
