@@ -56,7 +56,7 @@ public class RoomManager : Photon.MonoBehaviour
 
                 //SpawnReplicated += () => { Instantiate(playerPrefab, Vector3.zero, Quaternion.identity); };
 
-                GameManager.GetInstance().StartMultiplayerGame();
+                GameManager.GetInstance().StartMultiplayerGame(PhotonNetwork.playerList);
 
                 PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) =>
                 {

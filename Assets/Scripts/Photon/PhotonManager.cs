@@ -8,6 +8,7 @@ using System.Reflection;
 using UnityEngine.Assertions;
 using Photon;
 using Assets.ScriptableObjects.Levels;
+using Assets.ScriptableObjects.Player;
 
 namespace Assets.Scripts.Photon
 {
@@ -33,7 +34,7 @@ namespace Assets.Scripts.Photon
         /// To be called later when a startbutton is called
         /// </summary>
         /// <param name="levelData"></param>
-        public void StartMultiplayerGame(LevelData levelData)
+        public void StartMultiplayerGame(LevelData levelData, PlayerData[] players)
         {
             foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
             {

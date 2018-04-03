@@ -25,10 +25,12 @@ public class GameManager : MonoBehaviour {
         LevelData.Init(Players);
     }
 
-    public void StartMultiplayerGame()
+    public void StartMultiplayerGame(PhotonPlayer[] players)
     {
+        foreach(PhotonPlayer p in players)
+            Players.Add(new PlayerData());
         //Lets do some GameStarting logic here
-        PhotonManager.Instance.StartMultiplayerGame(LevelData);
+        PhotonManager.Instance.StartMultiplayerGame(LevelData, Players.ToArray());
     }
 
   
