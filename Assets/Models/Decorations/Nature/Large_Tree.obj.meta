@@ -1,25 +1,24 @@
 fileFormatVersion: 2
-guid: 80ad86acdde2cce4e8acd5bf3a23f724
-timeCreated: 1521208231
+guid: ed383b044fc978a43af49118e534ea85
+timeCreated: 1522746557
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: tile_planks
+    100000: Large_Tree
     100002: //RootNode
-    400000: tile_planks
+    400000: Large_Tree
     400002: //RootNode
-    2100000: palette
-    2100002: tile_planksMat
-    2300000: tile_planks
-    3300000: tile_planks
-    4300000: tile_planks
+    2100000: Large_TreeMat
+    2300000: Large_Tree
+    3300000: Large_Tree
+    4300000: Large_Tree
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: palette
-    second: {fileID: 2100000, guid: cbd4002739ad54642ae6f20de650be1b, type: 2}
+      name: Large_TreeMat
+    second: {instanceID: 0}
   materials:
     importMaterials: 1
     materialName: 0

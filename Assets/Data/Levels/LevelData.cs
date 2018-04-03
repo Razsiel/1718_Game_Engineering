@@ -2,7 +2,6 @@
 using System.Linq;
 using Assets.ScriptableObjects.Grids;
 using Assets.ScriptableObjects.Player;
-using Assets.ScriptableObjects.Tiles;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;

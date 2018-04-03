@@ -31,12 +31,17 @@ namespace Assets.Scripts.Editor {
             }
 
             // draw custom grid editor here
-            if (GUILayout.Button("(Re)create preview")) {
+            if (GUILayout.Button("Refresh preview")) {
+                CreatePreview();
+            }
+
+            if (_previewObject == null) {
                 CreatePreview();
             }
         }
 
         private void CreatePreview() {
+            DestroyImmediate(_previewObject); // clear previous preview
             _previewObject = CreatePreviewObjectFromGridMap(_instance);
             _mapEditor = UnityEditor.Editor.CreateEditor(_previewObject);
         }
@@ -52,8 +57,6 @@ namespace Assets.Scripts.Editor {
         }
 
         private GameObject CreatePreviewObjectFromGridMap(GridMapData mapData) {
-            Debug.Log("Creating preview object");
-            DestroyImmediate(GameObject.Find("Level Preview Object")); // clear previous preview
             var root = EditorUtility.CreateGameObjectWithHideFlags("Level Preview Object", HideFlags.HideAndDontSave);
 
             for (int y = 0; y < mapData.Height; y++) {
