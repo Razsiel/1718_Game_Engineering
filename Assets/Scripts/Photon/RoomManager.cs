@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Assertions;
 using Assets.Scripts.Photon;
 using System;
-
+using System.Linq;
 
 public class RoomManager : Photon.MonoBehaviour
 {
@@ -38,7 +38,9 @@ public class RoomManager : Photon.MonoBehaviour
         PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { print("Join room failed"); };
 
         PhotonManager.Instance.TGEOnJoinedLobby += () =>
-        {
+        {           
+            GameManager.GetInstance().Players[0].photonPlayer = PhotonNetwork.player;
+
             Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
             UpdateGUI();
             Debug.Log("We joined the lobby!");
@@ -56,11 +58,20 @@ public class RoomManager : Photon.MonoBehaviour
 
                 //SpawnReplicated += () => { Instantiate(playerPrefab, Vector3.zero, Quaternion.identity); };
 
-                GameManager.GetInstance().StartMultiplayerGame();
+
+                //GameManager.GetInstance().StartMultiplayerGame(PhotonNetwork.playerList);
+
+                PhotonNetwork.room.IsOpen = false;
 
                 PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) =>
                 {
                     Assert.IsTrue(PhotonNetwork.CreateRoom(null));
+                };
+
+                GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.SequenceChanged += (List<BaseCommand> sequence) => 
+                {
+                    //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
+                    photonView.RPC(nameof(Player.UpdateCommands), PhotonTargets.Others, sequence);
                 };
 
                 Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
