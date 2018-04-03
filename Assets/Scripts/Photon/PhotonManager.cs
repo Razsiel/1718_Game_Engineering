@@ -10,41 +10,16 @@ using Photon;
 using Assets.ScriptableObjects.Levels;
 using Assets.ScriptableObjects.Player;
 using Assets.Scripts.DataStructures;
+using System.Linq;
 
 namespace Assets.Scripts.Photon
 {
     public class PhotonManager : PunBehaviour
     {
-        //Our singleton instance of the Photonmanager
-        public static PhotonManager Instance
-        {
-            get { return _instance; }
-            private set { _instance = value; }
-        }
-
         //Backing field of our singleton instance
         private static PhotonManager _instance;
-
-        public RoomManager RoomManager
-        {
-            get { return _roomManager; }
-            set { _roomManager = value; }
-        }
-
-        /// <summary>
-        /// To be called later when a startbutton is called
-        /// </summary>
-        /// <param name="levelData">The level we want to start</param>
-        public void StartMultiplayerGame(LevelData levelData, List<TGEPlayer> players)
-        {
-            foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
-            {
-                //Send RPC on every player to load the level
-            }
-        }
-
         private RoomManager _roomManager;
-       
+
         //Events to react on
         public event UnityAction TGEOnJoinedLobby;
         public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
@@ -53,6 +28,22 @@ namespace Assets.Scripts.Photon
         public event UnityAction TGEOnCreatedRoom;
         public event UnityAction TGEOnJoinedRoom;
 
+        //Our singleton instance of the Photonmanager
+        public static PhotonManager Instance
+        {
+            get { return _instance; }
+            private set { _instance = value; }
+        }
+
+        public RoomManager RoomManager
+        {
+            get { return _roomManager; }
+            set { _roomManager = value; }
+        }
+
+        //Private because of SingleTon
+        private PhotonManager() { }
+
         void Awake()
         {
             Instance = this;
@@ -60,8 +51,18 @@ namespace Assets.Scripts.Photon
             Assert.IsNotNull(_roomManager);
         }
 
-        //Private because of SingleTon
-        private PhotonManager() { }
+        /// <summary>
+        /// To be called later when a startbutton is called
+        /// </summary>
+        /// <param name="levelData">The level we want to start</param>
+        public void StartMultiplayerGame(LevelData levelData, List<TGEPlayer> players)
+        {
+            foreach (TGEPlayer p in players.Where(x => !x.photonPlayer.IsLocal))
+            {
+                //Send RPC on every player to load the level
+                
+            }
+        }
 
         public void CreateRoom(string roomName)
         {

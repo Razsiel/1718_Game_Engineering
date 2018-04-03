@@ -92,6 +92,8 @@ public class Player : MonoBehaviour
     [PunRPC]
     public void UpdateCommands(List<BaseCommand> commands)
     {
-
+        //Here we can update the sequence of the other player with the received commands
+        //Something like: View.UpdateOtherPlayerSequence(commands);
+        print("WE got a RPC with this data: " + commands);
     }
 }
