@@ -12,19 +12,19 @@ public class MoveCommand : BaseCommand
     public override IEnumerator Execute(Player player)
     {
         // Can i move forward? if not: return
-        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player, player.ViewDirection))
+        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player.Data, player.ViewDirection))
             yield break;
-
+            
         // Visual movement
-        float stepDistance = player.Data.StepSize * GameManager.GetInstance().LevelData.TileScale;
+        float stepDistance = player.Data.MovementData.StepSize;// * GameManager.GetInstance().LevelData.TileScale;
         Vector3 destination = player.transform.position + (player.transform.forward * stepDistance);
         float offset = Vector3.Distance(player.transform.position, destination);
 
-        while (offset > player.Data.OffsetTolerance)
+        while (offset > player.Data.MovementData.OffsetTolerance)
         {
             offset = Vector3.Distance(player.transform.position, destination);
             player.transform.position = Vector3.Lerp(player.transform.position, destination,
-                player.Data.MovementSpeed * Time.deltaTime);
+                player.Data.MovementData.MovementSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }

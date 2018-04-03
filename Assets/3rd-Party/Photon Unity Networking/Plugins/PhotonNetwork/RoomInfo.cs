@@ -28,7 +28,7 @@ public class RoomInfo
     public bool removedFromList { get; internal set; }
 
     /// <summary>Backing field for property.</summary>
-    private Hashtable customPropertiesField = new Hashtable();
+    private ExitGames.Client.Photon.Hashtable customPropertiesField = new ExitGames.Client.Photon.Hashtable();
 
     /// <summary>Backing field for property.</summary>
     protected byte maxPlayersField = 0;

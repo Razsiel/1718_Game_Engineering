@@ -63,13 +63,10 @@ namespace Assets.Scripts.Editor {
                         continue;
                     }
 
-                    var tileObject = tile.GenerateGameObject(root, true);
-                    tileObject.name = $"Tile ({x},{y})";
+                    var tileObject = tile.GenerateGameObject(root, x, y, true);
 
                     var transform = tileObject.transform;
-                    transform.position = new Vector3(x - (mapData.Width - 1) * 0.5f,
-                                                     0,
-                                                     y - (mapData.Height - 1) * 0.5f);
+                    transform.position = GridHelper.GridToWorldPosition(mapData, new Vector2Int(x, y));
                     transform.localScale /= 32;
                 }
             }

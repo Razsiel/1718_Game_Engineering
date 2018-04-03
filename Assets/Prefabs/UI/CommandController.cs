@@ -6,14 +6,14 @@ using UnityEngine.UI;
 public class CommandController : MonoBehaviour {
     
     private CommandLibrary commandLibrary;
-    public SequenceBar1 sequenceBar;
+    public SequenceBar sequenceBar;
     Player player;
     GameManager _gameManager;
     
     void Start()
     {
         _gameManager = GameManager.GetInstance();
-        player = _gameManager.Players[0]; // TODO: make dynamic for 2 players
+        //player = _gameManager.Players[0]; // TODO: make dynamic for 2 players
         commandLibrary = _gameManager.CommandLibrary;
     }
 
