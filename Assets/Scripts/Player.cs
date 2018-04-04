@@ -7,6 +7,7 @@ using Assets.ScriptableObjects.Player;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public class Player : MonoBehaviour
 
     public int PlayerNumber;
     public PlayerData Data;
+
+    public UnityAction<List<BaseCommand>> SequenceChanged;
+    public UnityAction OnPlayerReady;
+
     public CardinalDirection ViewDirection = CardinalDirection.North;
 
     // Use this for initialization
@@ -58,6 +63,7 @@ public class Player : MonoBehaviour
 
     public void ReadyButtonClicked()
     {
+        OnPlayerReady.Invoke();
         StartCoroutine(ExecuteCommands());
     }
 
@@ -73,10 +79,19 @@ public class Player : MonoBehaviour
     public void AddCommand(BaseCommand command)
     {
         _sequence.Add(command);
+        SequenceChanged.Invoke(_sequence);
+        
     }
 
     public void ClearCommands()
     {
         _sequence.Clear();
+        SequenceChanged.Invoke(_sequence);
+    }
+
+    [PunRPC]
+    public void UpdateCommands(List<BaseCommand> commands)
+    {
+
     }
 }

@@ -27,10 +27,10 @@ namespace Assets.ScriptableObjects.Levels {
             return true;
         }
 
-        public void Init(List<PlayerData> players) {
+        public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<PlayerData, Vector2Int>();
             for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i], GetPlayerStartPosition(i));
+                _playerPositions.Add(players[i].player.Data, GetPlayerStartPosition(i));
             }
         }
 

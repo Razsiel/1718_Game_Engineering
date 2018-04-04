@@ -30,7 +30,7 @@ public class LevelPresenter : MonoBehaviour
             var playerObject = Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
             var playerComponent = playerObject.GetComponent<Player>();
             playerComponent.PlayerNumber = i;
-            playerComponent.Data = gameManager.Players[i];
+            playerComponent.Data = gameManager.Players[i].player.Data;
         }
     }
 
