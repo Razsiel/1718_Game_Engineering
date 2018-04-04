@@ -1,3 +1,3 @@
-﻿namespace Assets.ScriptableObjects.Tiles {
+﻿namespace Assets.Data.Tiles {
     public abstract class TileEffect { }
 }

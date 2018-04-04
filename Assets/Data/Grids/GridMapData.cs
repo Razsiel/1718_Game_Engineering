@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using Assets.ScriptableObjects.Tiles;
+using Assets.Data.Tiles;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
