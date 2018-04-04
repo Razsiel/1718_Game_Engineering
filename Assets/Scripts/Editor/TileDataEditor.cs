@@ -24,8 +24,7 @@ namespace Assets.Scripts.Editor
 
         public void OnDisable()
         {
-            DestroyImmediate(_previewObject);
-            DestroyImmediate(_preview);
+            Cleanup();
         }
 
         public override void OnInspectorGUI()
@@ -35,9 +34,9 @@ namespace Assets.Scripts.Editor
 
             this.DrawDefaultInspector();
 
-            //if (GUILayout.Button("(Re)create preview"))
+            if (GUILayout.Button("(Re)create preview"))
             {
-                DestroyImmediate(_previewObject); // clear previous preview
+                Cleanup();
                 _previewObject = CreatePreviewFromData(_instance);
                 _preview = CreateEditor(_previewObject);
             }
@@ -53,6 +52,11 @@ namespace Assets.Scripts.Editor
         public override bool HasPreviewGUI()
         {
             return _instance != null;
+        }
+
+        public void Cleanup() {
+            DestroyImmediate(_previewObject);
+            DestroyImmediate(_preview);
         }
     }
 }

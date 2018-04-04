@@ -12,6 +12,7 @@ namespace Assets.Data.Tiles
     public class NonWalkableDecorationData : TileDecorationData
     {
         public override bool IsWalkable(CardinalDirection direction) {
+            Debug.Log("This decoration is not walkable, returning false");
             return false;
         }
     }
