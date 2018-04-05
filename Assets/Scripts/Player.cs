@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
 
     public void ReadyButtonClicked()
     {
-        OnPlayerReady.Invoke();
+        OnPlayerReady?.Invoke();
         StartCoroutine(ExecuteCommands());
     }
 
@@ -79,19 +79,19 @@ public class Player : MonoBehaviour
     public void AddCommand(BaseCommand command)
     {
         _sequence.Add(command);
-        SequenceChanged.Invoke(_sequence);
-        
+        SequenceChanged?.Invoke(_sequence);        
     }
 
     public void ClearCommands()
     {
         _sequence.Clear();
-        SequenceChanged.Invoke(_sequence);
+        SequenceChanged?.Invoke(_sequence);
     }
 
     [PunRPC]
     public void UpdateCommands(List<BaseCommand> commands)
     {
-
+        _sequence.Clear();
+        _sequence.AddRange(commands);
     }
 }

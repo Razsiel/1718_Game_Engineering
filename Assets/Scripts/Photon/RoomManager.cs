@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 using Assets.Scripts.Photon;
 using System;
 using System.Linq;
+using Assets.Scripts.DataStructures;
 
 public class RoomManager : Photon.MonoBehaviour
 {
@@ -34,8 +35,8 @@ public class RoomManager : Photon.MonoBehaviour
         Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
 
         Debug.Log(PhotonNetwork.connectionState);
-        PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { print("Join random room Failed"); Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal")); };
-        PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { print("Join room failed"); };
+        PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { print("Join random room Failed, Code: " + codeAndMsg[0] + " Message: " + codeAndMsg[1] + ""); Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal")); };
+        PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { print("Join room failed, Code: " + codeAndMsg[0] + " Message: " + codeAndMsg[1]); };
 
         PhotonManager.Instance.TGEOnJoinedLobby += () =>
         {           
@@ -49,10 +50,23 @@ public class RoomManager : Photon.MonoBehaviour
             print(PhotonNetwork.inRoom);
             PhotonManager.Instance.TGEOnPhotonPlayerConnected += (PhotonPlayer player) =>
             {
+                PhotonManager.Instance.TGEOnLeftRoom += () => 
+                {
+
+                };
+
+                PhotonManager.Instance.TGEOnPhotonPlayerDisconnected += (PhotonPlayer otherPlayer) =>
+                {
+                    GameManager.GetInstance().Players.RemoveAll(x => x != GameManager.GetInstance().Players.Single());
+                };
+
                 Debug.Log("Player is here, lets see if somebody else joins");
                 //We can only continue here if we have two players, multiplayer is no fun alone
                 if (PhotonNetwork.playerList.Length < 2) return;
                 Debug.Log("Player joined WOHOO");
+
+                GameManager.GetInstance().Players.Add(new TGEPlayer() { photonPlayer = player });
+
                 //PhotonNetwork.room.IsOpen = false;
                 int index = PhotonNetwork.isMasterClient ? 0 : 1;
 
@@ -95,5 +109,7 @@ public class RoomManager : Photon.MonoBehaviour
     {
         this.photonRooms.Remove(room);
     }
+
+   
 }
 

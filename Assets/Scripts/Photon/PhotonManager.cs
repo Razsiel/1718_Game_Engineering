@@ -52,6 +52,8 @@ namespace Assets.Scripts.Photon
         public event UnityAction<object[]> TGEOnJoinRoomFailed;
         public event UnityAction TGEOnCreatedRoom;
         public event UnityAction TGEOnJoinedRoom;
+        public event UnityAction TGEOnLeftRoom;
+        public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
 
         void Awake()
         {
@@ -112,6 +114,16 @@ namespace Assets.Scripts.Photon
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
             TGEOnJoinRandomRoomFailed?.Invoke(codeAndMsg);
+        }
+
+        public override void OnLeftRoom()
+        {
+            TGEOnLeftRoom?.Invoke();
+        }
+
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+        {
+            TGEOnPhotonPlayerDisconnected?.Invoke(otherPlayer);
         }
         #endregion
     }
