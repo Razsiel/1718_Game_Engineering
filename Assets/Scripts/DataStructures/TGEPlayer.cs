@@ -14,6 +14,7 @@ namespace Assets.Scripts.DataStructures
         public PhotonPlayer photonPlayer;
         public Player player;
         //Other fields which could be interesting
-      
+
+        public GameObject PlayerObject;
     }
 }

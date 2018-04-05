@@ -2,35 +2,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.ScriptableObjects.Levels;
+using Assets.Scripts.DataStructures;
+using NUnit.Framework;
 using UnityEngine;
 
 public class LevelPresenter : MonoBehaviour
 {
-
-    private LevelData _levelData;
-
     private static GameObject levelObject;
 
     // Use this for initialization
-    void Start() {
+    public static void Present(LevelData levelData, List<TGEPlayer> players) {
         var gameManager = GameManager.GetInstance();
-        _levelData = gameManager.LevelData;
-        if (_levelData == null)
-            return;
+        Assert.IsNotNull(gameManager);
+        Assert.IsNotNull(levelData);
+        Assert.IsNotNull(players);
+        Assert.IsNotEmpty(players);
 
         // create level objects in scene
-        levelObject = CreateGameObjectFromLevelData(_levelData, this.transform);
-            
-        // create player objects in scene
-        for (int i = 0; i < gameManager.Players.Count; i++) {
-            var startGridPosition = _levelData.GetPlayerStartPosition(i);
-            var playerWorldPosition = GridHelper.GridToWorldPosition(_levelData, startGridPosition);
+        levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
+        
+        // Set players to start position in scene;
+        for (int i = 0; i < players.Count; i++) {
+            var startGridPosition = levelData.GetPlayerStartPosition(i);
+            var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, startGridPosition);
             playerWorldPosition.y = 1;
             //var playerDirection = player.viewDirection.ToQuaternion();
-            var playerObject = Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
-            var playerComponent = playerObject.GetComponent<Player>();
-            playerComponent.PlayerNumber = i;
-            playerComponent.Data = gameManager.Players[i].player.Data;
+            players[i].PlayerObject.transform.position = playerWorldPosition;
         }
     }
 

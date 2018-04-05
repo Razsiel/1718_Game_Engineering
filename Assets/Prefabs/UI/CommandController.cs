@@ -1,20 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class CommandController : MonoBehaviour {
+public class CommandController : TGEMonoBehaviour {
     
     private CommandLibrary commandLibrary;
     public SequenceBar sequenceBar;
     Player player;
     GameManager _gameManager;
-    
-    void Start()
-    {
+
+    public override void Start() {
         _gameManager = GameManager.GetInstance();
-        //player = _gameManager.Players[0]; // TODO: make dynamic for 2 players
+        Assert.IsNotNull(_gameManager);
         commandLibrary = _gameManager.CommandLibrary;
+        Assert.IsNotNull(commandLibrary);
+        _gameManager.PlayerInitialized += playerInitialized => {
+            this.player = playerInitialized;
+        };
     }
 
     public void OnMoveButtonClicked()
@@ -69,11 +74,7 @@ public class CommandController : MonoBehaviour {
 
     public void ReadyButtonClicked()
     {
+        Debug.Log(player);
         player.ReadyButtonClicked();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }
