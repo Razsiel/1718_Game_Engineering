@@ -1,5 +1,5 @@
 ﻿using System;
-using Assets.ScriptableObjects.Tiles;
+using Assets.Data.Tiles;
 using UnityEngine;
 
 namespace Assets.Scripts.Grid.DataStructure

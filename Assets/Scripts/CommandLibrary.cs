@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Assets.ScriptableObjects;
 using UnityEngine;
 
+[Serializable]
 [CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
 public class CommandLibrary : ScriptableObject
 {

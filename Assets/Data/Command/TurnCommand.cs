@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Extensions;
 
 [CreateAssetMenu(fileName = "TurnCommand", menuName = "Data/Commands/TurnCommand")]
 public class TurnCommand : BaseCommand
@@ -18,7 +19,7 @@ public class TurnCommand : BaseCommand
     {
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;
-        player.ViewDirection = (CardinalDirection) (((int) player.ViewDirection + directionShiftOffset) % 8);
+        player.ViewDirection = (CardinalDirection)MathHelper.Mod((int)player.ViewDirection + directionShiftOffset, 8);
 
         player.transform.Rotate(0, angle, 0);
 

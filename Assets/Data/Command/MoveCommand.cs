@@ -17,7 +17,7 @@ public class MoveCommand : BaseCommand
             
         // Visual movement
         float stepDistance = player.Data.MovementData.StepSize;// * GameManager.GetInstance().LevelData.TileScale;
-        Vector3 destination = player.transform.position + (player.transform.forward * stepDistance);
+        Vector3 destination = player.transform.position + (player.transform.forward * stepDistance); //TODO: Refactor to use grid-to-worldPosition for actuall destination
         float offset = Vector3.Distance(player.transform.position, destination);
 
         while (offset > player.Data.MovementData.OffsetTolerance)

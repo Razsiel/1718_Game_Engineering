@@ -3,13 +3,13 @@ using System.Linq;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Tiles {
+namespace Assets.Data.Tiles {
     [Serializable]
     [CreateAssetMenu(menuName = "Data/Tiles/Tile")]
     public class TileData : ScriptableObject {
-        [SerializeField] public Mesh TileMesh;
+        [SerializeField] public Mesh Mesh;
+        [SerializeField] public Material Material;
         [SerializeField] public TileDecorationData[] DecorationsData;
-        [SerializeField] public Material TileMaterial;
 
         //private event OnPlayerTileEnter;
         //private event OnPlayerTileLeave;
@@ -39,12 +39,17 @@ namespace Assets.ScriptableObjects.Tiles {
             // Fill in components
             var meshFilter = tile.GetComponent<MeshFilter>();
             if (meshFilter != null) {
-                meshFilter.mesh = this.TileMesh;
+                meshFilter.mesh = this.Mesh;
             }
             var meshRenderer = tile.GetComponent<MeshRenderer>();
             if (meshRenderer != null) {
-                meshRenderer.sharedMaterial = this.TileMaterial;
+                meshRenderer.sharedMaterial = this.Material;
             }
+
+            foreach (var decorationData in DecorationsData) {
+                decorationData.GenerateGameObject(tile.transform, hidden);
+            }
+
 #if UNITY_EDITOR
             var textObject = new GameObject($"Text", typeof(TextMesh));
             textObject.transform.parent = tile.transform;

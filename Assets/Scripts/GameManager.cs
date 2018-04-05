@@ -5,10 +5,11 @@ using Assets.Scripts.Photon;
 using Assets.ScriptableObjects;
 using Assets.ScriptableObjects.Player;
 using Assets.Scripts.DataStructures;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
     private static GameManager _instance;
-    
+
     public GameObject PlayerPrefab;
     public List<TGEPlayer> Players;
 
@@ -20,46 +21,53 @@ public class GameManager : MonoBehaviour {
     //To Be Added: [HideInInspector]
     public LevelData LevelData;
 
-    void Awake()
-    {
+    #region GLOBAL_EVENTS
+
+    public UnityAction<Player> PlayerInitialized;
+
+    #endregion
+
+    void Awake() {
         if (_instance == null)
             _instance = this;
         else
             Destroy(this.gameObject);
+    }
 
-        Players = new List<TGEPlayer>();
-
+    void Start() {
         // Setup level
+        Players = new List<TGEPlayer>();
         TGEPlayer player = new TGEPlayer();
-        GameObject playerClone = Instantiate(PlayerPrefab, null);
-        player.player = (Player)playerClone.GetComponent("Player");
-
         Players.Add(player);
         StartSinglePlayerGame(player);
-        LevelData.Init(Players);
     }
 
-    void Start()
-    {
-        
-    }
-
-    public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/)
-    {
+    public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/) {
         //TO:DO Start the level given with the local player
-
-        LevelData.Init(new List<TGEPlayer>() { player });
+        var players = new List<TGEPlayer>() {player};
+        CreatePlayers(players);
+        LevelData.Init(players);
+        LevelPresenter.Present(LevelData, players);
     }
 
-    public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/)
-    {
+    private void CreatePlayers(List<TGEPlayer> players) {
+        for (int i = 0; i < players.Count; i++) {
+            var playerObject = Instantiate(this.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var playerComponent = playerObject.GetComponent<Player>();
+            playerComponent.PlayerNumber = i;
+            players[i].PlayerObject = playerObject;
+            players[i].player = playerComponent;
+
+            PlayerInitialized(playerComponent);
+        }
+    }
+
+    public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/) {
         Players = players;
 
         ////Lets do some GameStarting logic here
         PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
     }
-
-  
 
     public static GameManager GetInstance() {
         return _instance;
