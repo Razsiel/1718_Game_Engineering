@@ -15,6 +15,7 @@ public class Player : MonoBehaviour {
 
     public int PlayerNumber;
     public PlayerData Data;
+    public CommandController controller;
 
     public UnityAction<List<BaseCommand>> SequenceChanged;
     public UnityAction OnPlayerReady;
@@ -25,7 +26,7 @@ public class Player : MonoBehaviour {
     void Start() {
         _gameManager = GameManager.GetInstance();
         _sequence = new List<BaseCommand>();
-
+        
         /*
         _sequence = new List<BaseCommand>
         { 

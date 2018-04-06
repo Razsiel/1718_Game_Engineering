@@ -47,7 +47,7 @@ public class RoomManager : Photon.MonoBehaviour
             Debug.Log("We joined the lobby!");
 
             if (!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal"));
-            print(PhotonNetwork.inRoom);
+            
             PhotonManager.Instance.TGEOnPhotonPlayerConnected += (PhotonPlayer player) =>
             {
                 PhotonManager.Instance.TGEOnLeftRoom += () => 
@@ -62,10 +62,13 @@ public class RoomManager : Photon.MonoBehaviour
 
                 Debug.Log("Player is here, lets see if somebody else joins");
                 //We can only continue here if we have two players, multiplayer is no fun alone
-                if (PhotonNetwork.playerList.Length < 2) return;
+                if (PhotonNetwork.playerList.Length < 2 || PhotonNetwork.playerList.Length > 2) return;
                 Debug.Log("Player joined WOHOO");
 
-                GameManager.GetInstance().Players.Add(new TGEPlayer() { photonPlayer = player });
+                GameManager.GetInstance().Players.Add(new TGEPlayer());
+                GameManager.GetInstance().Players[1].photonPlayer = player;
+
+                print(GameManager.GetInstance().Players);
 
                 //PhotonNetwork.room.IsOpen = false;
                 int index = PhotonNetwork.isMasterClient ? 0 : 1;
@@ -82,11 +85,18 @@ public class RoomManager : Photon.MonoBehaviour
                     Assert.IsTrue(PhotonNetwork.CreateRoom(null));
                 };
 
-                GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.SequenceChanged += (List<BaseCommand> sequence) => 
+                PhotonManager.Instance.TGEOnPlayersCreated += () => 
                 {
-                    //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
-                    photonView.RPC(nameof(Player.UpdateCommands), PhotonTargets.Others, sequence);
+                    print("Players are Created!");
+                    GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    {
+                        //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
+                        photonView.RPC(nameof(Player.UpdateCommands), PhotonTargets.Others, sequence);
+                    };
                 };
+
+                GameManager gm = GameManager.GetInstance();
+                gm.StartMultiplayerGame(gm.Players);
 
                 Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
             };

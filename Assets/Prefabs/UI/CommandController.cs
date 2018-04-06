@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -9,6 +9,7 @@ public class CommandController : TGEMonoBehaviour {
     
     private CommandLibrary commandLibrary;
     public SequenceBar sequenceBar;
+    public SequenceBar otherSequencebar;
     Player player;
     GameManager _gameManager;
 
@@ -17,8 +18,9 @@ public class CommandController : TGEMonoBehaviour {
         Assert.IsNotNull(_gameManager);
         commandLibrary = _gameManager.CommandLibrary;
         Assert.IsNotNull(commandLibrary);
-        _gameManager.PlayerInitialized += playerInitialized => {
-            this.player = playerInitialized;
+        _gameManager.PlayerInitialized += (Player playerInitialized) => {
+            this.player = _gameManager.Players[0].player;
+            Assert.IsNotNull(player);
         };
     }
 
@@ -67,8 +69,7 @@ public class CommandController : TGEMonoBehaviour {
     public void ClearButtonClicked()
     {
         sequenceBar.ClearImages();
-        GameManager gameManager = GameManager.GetInstance();
-
+       
         player.ClearCommands();
     }
 
@@ -76,5 +77,15 @@ public class CommandController : TGEMonoBehaviour {
     {
         Debug.Log(player);
         player.ReadyButtonClicked();
+    }
+
+    public void UpdateOtherPlayersSequenceBar(List<BaseCommand> commands)
+    {
+        foreach(BaseCommand c in commands)
+        {
+            int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+            Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+            image.sprite = c.Icon;
+        }
     }
 }

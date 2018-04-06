@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour {
 
     //public GameObject PlayerPrefab;
     public CommandLibrary CommandLibrary;
+    public GameObject commandControllerHolder;
+
+    public bool IsMultiPlayer = false;
 
     //To be filled with the level (from UI layer)
     //For now the editor can handle this for us
@@ -39,37 +42,49 @@ public class GameManager : MonoBehaviour {
         Players = new List<TGEPlayer>();
         TGEPlayer player = new TGEPlayer();
         Players.Add(player);
-        StartSinglePlayerGame(player);
+
+        if(!IsMultiPlayer)
+            StartSinglePlayerGame(player);
     }
 
     public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/) {
         //TO:DO Start the level given with the local player
         var players = new List<TGEPlayer>() {player};
         CreatePlayers(players);
+
         LevelData.Init(players);
         LevelPresenter.Present(LevelData, players);
     }
 
-    private void CreatePlayers(List<TGEPlayer> players) {
-        for (int i = 0; i < players.Count; i++) {
+    public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/) {
+        //PhotonManager.Instance.GetOtherPlayers();
+        CreatePlayers(players);
+        PhotonManager.Instance.PlayersReady();
+        LevelData.Init(players);
+        LevelPresenter.Present(LevelData, players);
+        ////Lets do some GameStarting logic here
+        //PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
+    }
+
+    private void CreatePlayers(List<TGEPlayer> players)
+    {
+        for(int i = 0; i < players.Count; i++)
+        {
             var playerObject = Instantiate(this.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
             var playerComponent = playerObject.GetComponent<Player>();
             playerComponent.PlayerNumber = i;
             players[i].PlayerObject = playerObject;
             players[i].player = playerComponent;
+            players[i].player.controller = commandControllerHolder.GetComponent<CommandController>();
 
-            PlayerInitialized(playerComponent);
+            //PlayerInitialized(playerComponent);
+            PlayerInitialized.Invoke(playerComponent);
         }
-    }
-
-    public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/) {
-        Players = players;
-
-        ////Lets do some GameStarting logic here
-        PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
     }
 
     public static GameManager GetInstance() {
         return _instance;
     }
+
+   
 }
