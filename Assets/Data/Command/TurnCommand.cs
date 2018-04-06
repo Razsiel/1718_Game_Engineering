@@ -21,8 +21,20 @@ public class TurnCommand : BaseCommand
         int directionShiftOffset = angle / 45;
         player.ViewDirection = (CardinalDirection)MathHelper.Mod((int)player.ViewDirection + directionShiftOffset, 8);
 
-        player.transform.Rotate(0, angle, 0);
+        Vector3 targetEuler = player.ViewDirection.ToEuler();
+        Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
+        
 
-        yield break;
+        while (!player.transform.rotation.AlmostEquals(targetRotation, 5))
+        {
+            player.transform.rotation = Quaternion.Lerp(
+                player.transform.rotation,
+                targetRotation,
+                Time.deltaTime * 2);
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        player.transform.rotation = targetRotation;
     }
 }
