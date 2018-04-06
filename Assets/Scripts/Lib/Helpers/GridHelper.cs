@@ -1,5 +1,5 @@
-﻿using Assets.ScriptableObjects.Grids;
-using Assets.ScriptableObjects.Levels;
+﻿using Assets.Data.Grids;
+using Assets.Data.Levels;
 using UnityEngine;
 
 public class GridHelper {

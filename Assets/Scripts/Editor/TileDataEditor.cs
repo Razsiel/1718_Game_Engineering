@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Tiles;
-using Assets.ScriptableObjects.Grids;
 using UnityEditor;
 using UnityEngine;
 

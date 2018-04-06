@@ -1,4 +1,4 @@
-﻿using Assets.ScriptableObjects.Grids;
+﻿using Assets.Data.Grids;
 using UnityEditor;
 using UnityEngine;
 
