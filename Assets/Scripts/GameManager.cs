@@ -12,8 +12,7 @@ public class GameManager : MonoBehaviour {
 
     // Use PrefabContainer to access project-files
     public PrefabContainer PrefabContainer;
-
-    public GameObject PlayerPrefab;
+    
     public List<TGEPlayer> Players;
     
     public CommandLibrary CommandLibrary;
