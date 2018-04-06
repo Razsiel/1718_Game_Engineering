@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
 
 [CreateAssetMenu(fileName = "MoveCommand", menuName = "Data/Commands/MoveCommand")]
 public class MoveCommand : BaseCommand

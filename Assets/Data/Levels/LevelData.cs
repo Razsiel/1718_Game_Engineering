@@ -1,30 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.ScriptableObjects.Grids;
-using Assets.ScriptableObjects.Player;
+using Assets.Data.Goal;
+using Assets.Data.Grids;
+using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Levels {
+namespace Assets.Data.Levels {
     [CreateAssetMenu(fileName = "Level_0", menuName = "Data/Level")]
     [System.Serializable]
     public class LevelData : ScriptableObject {
         [SerializeField] public string Name;
         [SerializeField] public Texture2D BackgroundImage;
-        [SerializeField] public List<string> Goals; // convert to data type later containing additional variables
+        [SerializeField] public List<LevelGoal> Goals;
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
 
         private Dictionary<PlayerData, Vector2Int> _playerPositions;
 
         public bool HasReachedAllGoals() {
-            foreach (var goal in Goals) {
-                /*if (!goal.HasBeenReached) {
-                    return false;
-                }*/
-            }
-            return true;
+            return Goals.All(goal => goal.HasBeenReached(null));
         }
 
         public void Init(List<TGEPlayer> players) {

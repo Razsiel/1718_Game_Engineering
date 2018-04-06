@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Extensions;
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Levels;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
-using Assets.ScriptableObjects.Levels;
 using Assets.Scripts.Photon;
 
 public class LevelManager : MonoBehaviour {

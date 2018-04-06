@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.ScriptableObjects.Levels;
+using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
 using NUnit.Framework;
 using UnityEngine;

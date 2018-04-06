@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
 
 [CreateAssetMenu(fileName = "InteractCommand", menuName = "Data/Commands/InteractCommand")]
 public class InteractCommand : BaseCommand
