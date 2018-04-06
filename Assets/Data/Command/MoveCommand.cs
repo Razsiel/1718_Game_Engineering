@@ -16,7 +16,7 @@ public class MoveCommand : BaseCommand
     {
         // Can i move forward? if not: return
         GridCell destination;
-        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player.Data, player.ViewDirection, out destination)
+        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player, player.ViewDirection, out destination)
             || !destination.IsValid)
             yield break;
 
