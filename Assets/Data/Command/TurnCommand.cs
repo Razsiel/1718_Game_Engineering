@@ -26,12 +26,12 @@ public class TurnCommand : BaseCommand
         Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
         
 
-        while (!player.transform.rotation.AlmostEquals(targetRotation, 5))
+        while (!player.transform.rotation.AlmostEquals(targetRotation, player.Data.MovementData.OffsetAlmostRotation))
         {
             player.transform.rotation = Quaternion.Lerp(
                 player.transform.rotation,
                 targetRotation,
-                Time.deltaTime * 2);
+                player.Data.MovementData.RotationSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }
