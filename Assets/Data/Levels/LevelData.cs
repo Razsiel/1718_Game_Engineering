@@ -35,9 +35,11 @@ namespace Assets.Data.Levels {
         /// </summary>
         /// <param name="player">The player that wants to move</param>
         /// <param name="direction">The direction the player wants to go from it's current position</param>
+        /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(PlayerData player, CardinalDirection direction) {
+        public bool TryMoveInDirection(PlayerData player, CardinalDirection direction, out GridCell destination) {
             var directionVector = direction.ToVector2();
+            destination = new GridCell(GridMapData, -1, -1);
 
             // Get current player pos
             Vector2Int playerPos;
@@ -49,15 +51,15 @@ namespace Assets.Data.Levels {
             }
             
             Debug.Log($"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
-
-            GridCell destination;
+            
             if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination)) {
                 Debug.Log($"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
                 return false;
             }
 
             // Check if there are any other players on the destination
-            if (_playerPositions.Any(p => p.Key != player && p.Value == destination.XY)) {
+            GridCell cell = destination;
+            if (_playerPositions.Any(p => p.Key != player && p.Value == cell.XY)) {
                 Debug.Log($"Could not move player: A player is standing on the destination");
                 return false; // the destination contains a player
             }
