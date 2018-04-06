@@ -13,8 +13,8 @@ public class SequenceBar : MonoBehaviour {
     public Sprite turnRightCommand;
     public Sprite interactCommand;
     public Sprite waitCommand;
-    float xMin = 0f;
-    float xMax = 0.05f;
+    float x = 0.04f;
+    float y = 0.5f;
 
     // Use this for initialization
     void Start () {
@@ -26,15 +26,14 @@ public class SequenceBar : MonoBehaviour {
             commandSlots[i] = slot;
             slot.transform.SetParent(this.gameObject.transform, false);
 
-            slot.GetComponent<RectTransform>().anchorMin = new Vector3(xMin, 0, 0);
-            slot.GetComponent<RectTransform>().anchorMax = new Vector3(xMax, 1, 0);
+            slot.GetComponent<RectTransform>().anchorMin = new Vector3(x, y,0);
+            slot.GetComponent<RectTransform>().anchorMax = new Vector3(x, y,0);
 
-                //Image slotImage = slot.transform.GetChild(0).GetComponent<Image>();
+            //Image slotImage = slot.transform.GetChild(0).GetComponent<Image>();
 
-                //slotImage.sprite = asd;
+            //slotImage.sprite = asd;
 
-            xMin += 0.05f;
-            xMax += 0.05f;
+            x += 0.08f;
         }
 	}
 
