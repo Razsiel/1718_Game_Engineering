@@ -17,16 +17,16 @@ namespace Assets.Data.Levels {
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
 
-        private Dictionary<PlayerData, Vector2Int> _playerPositions;
+        private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
         public bool HasReachedAllGoals() {
             return Goals.All(goal => goal.HasBeenReached(null));
         }
 
         public void Init(List<TGEPlayer> players) {
-            _playerPositions = new Dictionary<PlayerData, Vector2Int>();
+            _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
             for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].player.Data, GetPlayerStartPosition(i));
+                _playerPositions.Add(players[i].player, GetPlayerStartPosition(i));
             }
         }
 
@@ -37,7 +37,7 @@ namespace Assets.Data.Levels {
         /// <param name="direction">The direction the player wants to go from it's current position</param>
         /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(PlayerData player, CardinalDirection direction, out GridCell destination) {
+        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination) {
             var directionVector = direction.ToVector2();
             destination = new GridCell(GridMapData, -1, -1);
 
