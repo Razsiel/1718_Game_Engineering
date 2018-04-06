@@ -71,6 +71,23 @@ namespace Assets.Scripts.DataStructures {
             }
         }
 
+        public static Vector3 ToEuler(this CardinalDirection cardinal)
+        {
+            switch (cardinal)
+            {
+                case CardinalDirection.North:
+                    return new Vector3(0, 0, 0);
+                case CardinalDirection.East:
+                    return new Vector3(0, 90, 0);
+                case CardinalDirection.South:
+                    return new Vector3(0, 180, 0);
+                case CardinalDirection.West:
+                    return new Vector3(0, 270, 0);
+                default:
+                    return new Vector3(0, 0, 0);
+            }
+        }
+
         public static CardinalDirection ToOppositeDirection(this CardinalDirection direction) {
             return (CardinalDirection) (((int)direction + 4) % 8);
         }
