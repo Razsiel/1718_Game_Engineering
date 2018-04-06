@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Data.Tiles;
+using Assets.Scripts.DataStructures;
 using UnityEngine;
 
 namespace Assets.Scripts.Grid.DataStructure
@@ -7,18 +8,18 @@ namespace Assets.Scripts.Grid.DataStructure
     [Serializable]
     public class GridRow {
         [SerializeField]
-        private TileData[] _tiles;
+        private TileConfiguration[] _tiles;
 
-        public GridRow(int size, TileData defaultTileData = null) {
-            _tiles = new TileData[size];
-            if (defaultTileData != null) {
+        public GridRow(int size, TileConfiguration defaultTileConfiguration = null) {
+            _tiles = new TileConfiguration[size];
+            if (defaultTileConfiguration != null) {
                 for (int i = 0; i < size; i++) {
-                    _tiles[i] = defaultTileData;
+                    _tiles[i] = defaultTileConfiguration;
                 }
             }
         }
 
-        public TileData this[int index] {
+        public TileConfiguration this[int index] {
             get { return _tiles[index]; }
             set { _tiles[index] = value; }
         }

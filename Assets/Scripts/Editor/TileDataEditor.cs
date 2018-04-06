@@ -26,6 +26,7 @@ namespace Assets.Scripts.Editor
             Cleanup();
         }
 
+        /*
         public override void OnInspectorGUI()
         {
             if (_instance == null)
@@ -46,7 +47,7 @@ namespace Assets.Scripts.Editor
             var tile = data.GenerateGameObject(root, 0, 0, true);
             tile.transform.localScale /= 32;
             return tile;
-        }
+        }*/
 
         public override bool HasPreviewGUI()
         {
