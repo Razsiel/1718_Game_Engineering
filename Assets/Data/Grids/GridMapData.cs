@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using Assets.Data.Tiles;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Grids {
+namespace Assets.Data.Grids {
     [Serializable]
     [CreateAssetMenu(fileName = "Default Grid", menuName = "Data/Grid")]
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {

@@ -7,6 +7,7 @@ using UnityEngine.Assertions;
 using Assets.Scripts.Photon;
 using System;
 using System.Linq;
+using Assets.Scripts;
 
 public class RoomManager : Photon.MonoBehaviour
 {

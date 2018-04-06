@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
-using Assets.ScriptableObjects.Levels;
 using System.Collections.Generic;
+using Assets.Data.Levels;
 using Assets.Scripts.Photon;
 using Assets.ScriptableObjects;
-using Assets.ScriptableObjects.Player;
+using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine.Events;
 

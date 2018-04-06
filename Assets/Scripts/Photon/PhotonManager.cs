@@ -5,10 +5,9 @@ using UnityEngine.Events;
 using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Reflection;
+using Assets.Data.Levels;
 using UnityEngine.Assertions;
 using Photon;
-using Assets.ScriptableObjects.Levels;
-using Assets.ScriptableObjects.Player;
 using Assets.Scripts.DataStructures;
 
 namespace Assets.Scripts.Photon
