@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
+using Assets.Scripts.Grid.DataStructure;
 
 [CreateAssetMenu(fileName = "MoveCommand", menuName = "Data/Commands/MoveCommand")]
 public class MoveCommand : BaseCommand
@@ -13,7 +14,8 @@ public class MoveCommand : BaseCommand
     public override IEnumerator Execute(Player player)
     {
         // Can i move forward? if not: return
-        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player.Data, player.ViewDirection))
+        GridCell destinationCell;
+        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player, player.ViewDirection, out destinationCell))
             yield break;
             
         // Visual movement
