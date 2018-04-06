@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Data.Grids;
 using Assets.Scripts;
 using Assets.Scripts.Grid.DataStructure;
 
@@ -14,25 +15,27 @@ public class MoveCommand : BaseCommand
     public override IEnumerator Execute(Player player)
     {
         // Can i move forward? if not: return
-        GridCell destinationCell;
-        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player, player.ViewDirection, out destinationCell))
+        GridCell destination;
+        if (!GameManager.GetInstance().LevelData.TryMoveInDirection(player.Data, player.ViewDirection, out destination)
+            || !destination.IsValid)
             yield break;
-            
-        // Visual movement
-        float stepDistance = player.Data.MovementData.StepSize;// * GameManager.GetInstance().LevelData.TileScale;
-        Vector3 destination = player.transform.position + (player.transform.forward * stepDistance); //TODO: Refactor to use grid-to-worldPosition for actuall destination
-        float offset = Vector3.Distance(player.transform.position, destination);
 
-        while (offset > player.Data.MovementData.OffsetTolerance)
+        // Get WorldPosition from destination-GridCell
+        GridMapData gridMap = GameManager.GetInstance().LevelData.GridMapData;
+        Vector3 destinationPosition = GridHelper.GridToWorldPosition(gridMap, destination.XY);
+        destinationPosition.y = player.transform.position.y;
+
+        // Visual movement
+        while (!player.transform.position.AlmostEquals(destinationPosition, player.Data.MovementData.OffsetAlmostPosition))
         {
-            offset = Vector3.Distance(player.transform.position, destination);
-            player.transform.position = Vector3.Lerp(player.transform.position, destination,
+            player.transform.position = Vector3.Lerp(
+                player.transform.position, 
+                destinationPosition,
                 player.Data.MovementData.MovementSpeed * Time.deltaTime);
 
             yield return new WaitForEndOfFrame();
         }
 
-        player.transform.position = destination;
-        yield break;
+        player.transform.position = destinationPosition;
     }
 }
