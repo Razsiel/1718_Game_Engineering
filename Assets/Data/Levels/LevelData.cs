@@ -1,36 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.ScriptableObjects.Grids;
-using Assets.ScriptableObjects.Player;
+using Assets.Data.Goal;
+using Assets.Data.Grids;
+using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Levels {
+namespace Assets.Data.Levels {
     [CreateAssetMenu(fileName = "Level_0", menuName = "Data/Level")]
     [System.Serializable]
     public class LevelData : ScriptableObject {
         [SerializeField] public string Name;
         [SerializeField] public Texture2D BackgroundImage;
-        [SerializeField] public List<string> Goals; // convert to data type later containing additional variables
+        [SerializeField] public List<LevelGoal> Goals;
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
 
-        private Dictionary<PlayerData, Vector2Int> _playerPositions;
+        private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
         public bool HasReachedAllGoals() {
-            foreach (var goal in Goals) {
-                /*if (!goal.HasBeenReached) {
-                    return false;
-                }*/
-            }
-            return true;
+            return Goals.All(goal => goal.HasBeenReached(null));
         }
 
         public void Init(List<TGEPlayer> players) {
-            _playerPositions = new Dictionary<PlayerData, Vector2Int>();
+            _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
             for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].player.Data, GetPlayerStartPosition(i));
+                _playerPositions.Add(players[i].player, GetPlayerStartPosition(i));
             }
         }
 
@@ -39,9 +35,11 @@ namespace Assets.ScriptableObjects.Levels {
         /// </summary>
         /// <param name="player">The player that wants to move</param>
         /// <param name="direction">The direction the player wants to go from it's current position</param>
+        /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(PlayerData player, CardinalDirection direction) {
+        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination) {
             var directionVector = direction.ToVector2();
+            destination = new GridCell(GridMapData, -1, -1);
 
             // Get current player pos
             Vector2Int playerPos;
@@ -53,15 +51,15 @@ namespace Assets.ScriptableObjects.Levels {
             }
             
             Debug.Log($"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
-
-            GridCell destination;
+            
             if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination)) {
                 Debug.Log($"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
                 return false;
             }
 
             // Check if there are any other players on the destination
-            if (_playerPositions.Any(p => p.Key != player && p.Value == destination.XY)) {
+            GridCell cell = destination;
+            if (_playerPositions.Any(p => p.Key != player && p.Value == cell.XY)) {
                 Debug.Log($"Could not move player: A player is standing on the destination");
                 return false; // the destination contains a player
             }

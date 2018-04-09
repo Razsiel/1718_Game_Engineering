@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Scripts;
 
 [CreateAssetMenu(fileName = "WaitCommand", menuName = "Data/Commands/WaitCommand")]
+[System.Serializable]
 public class WaitCommand : BaseCommand
 {
     /// <summary>

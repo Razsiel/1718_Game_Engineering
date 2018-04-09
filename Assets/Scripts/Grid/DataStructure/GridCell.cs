@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Data.Grids;
 using Assets.Data.Tiles;
-using Assets.ScriptableObjects.Grids;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 

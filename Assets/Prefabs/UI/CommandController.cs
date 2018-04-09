@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
+
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -18,17 +20,26 @@ public class CommandController : TGEMonoBehaviour {
         Assert.IsNotNull(_gameManager);
         commandLibrary = _gameManager.CommandLibrary;
         Assert.IsNotNull(commandLibrary);
-        _gameManager.PlayerInitialized += (Player playerInitialized) => {
+        _gameManager.PlayersInitialized += /*(Player playerInitialized)*/ () => {
             this.player = _gameManager.Players[0].player;
+            print("player shoudl be filled");
             Assert.IsNotNull(player);
         };
     }
 
+    private void CheckPlayerIsFound()
+    {
+        if(player == null)
+            player = GameManager.GetInstance().Players[0].player;
+    }
+
     public void OnMoveButtonClicked()
     {
+        CheckPlayerIsFound();
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.moveCommand;
+        Debug.Log(player + "" + sequenceBar + "" + image);
         player.AddCommand(commandLibrary.MoveCommand);
     }
 
@@ -79,13 +90,13 @@ public class CommandController : TGEMonoBehaviour {
         player.ReadyButtonClicked();
     }
 
-    public void UpdateOtherPlayersSequenceBar(List<BaseCommand> commands)
-    {
-        foreach(BaseCommand c in commands)
-        {
-            int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
-            Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
-            image.sprite = c.Icon;
-        }
-    }
+    //public void UpdateOtherPlayersSequenceBar(List<BaseCommand> commands)
+    //{
+    //    foreach(BaseCommand c in commands)
+    //    {
+    //        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+    //        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+    //        image.sprite = c.Icon;
+    //    }
+    //}
 }
