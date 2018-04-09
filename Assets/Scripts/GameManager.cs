@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour {
     #region GLOBAL_EVENTS
 
     public UnityAction<Player> PlayerInitialized;
+    public UnityAction PlayersInitialized;
+    //public UnityAction 
 
     #endregion
 
@@ -35,16 +37,17 @@ public class GameManager : MonoBehaviour {
             _instance = this;
         else
             Destroy(this.gameObject);
+
+        Players = new List<TGEPlayer>();
+        TGEPlayer player = new TGEPlayer();
+        Players.Add(player);
     }
 
     void Start() {
         // Setup level
-        Players = new List<TGEPlayer>();
-        TGEPlayer player = new TGEPlayer();
-        Players.Add(player);
-
+      
         if(!IsMultiPlayer)
-            StartSinglePlayerGame(player);
+            StartSinglePlayerGame(Players[0]);
     }
 
     public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/) {
@@ -75,11 +78,12 @@ public class GameManager : MonoBehaviour {
             playerComponent.PlayerNumber = i;
             players[i].PlayerObject = playerObject;
             players[i].player = playerComponent;
-            players[i].player.controller = commandControllerHolder.GetComponent<CommandController>();
+            //players[i].player.controller = commandControllerHolder.GetComponent<CommandController>();
 
             //PlayerInitialized(playerComponent);
-            PlayerInitialized.Invoke(playerComponent);
+            PlayerInitialized?.Invoke(playerComponent);
         }
+        PlayersInitialized?.Invoke();
     }
 
     public static GameManager GetInstance() {
