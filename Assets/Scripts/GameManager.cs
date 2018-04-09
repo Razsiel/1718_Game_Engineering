@@ -10,10 +10,11 @@ using UnityEngine.Events;
 public class GameManager : MonoBehaviour {
     private static GameManager _instance;
 
-    public GameObject PlayerPrefab;
+    // Use PrefabContainer to access project-files
+    public PrefabContainer PrefabContainer;
+    
     public List<TGEPlayer> Players;
-
-    //public GameObject PlayerPrefab;
+    
     public CommandLibrary CommandLibrary;
 
     //To be filled with the level (from UI layer)
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour {
 
     private void CreatePlayers(List<TGEPlayer> players) {
         for (int i = 0; i < players.Count; i++) {
-            var playerObject = Instantiate(this.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var playerObject = Instantiate(this.PrefabContainer.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
             var playerComponent = playerObject.GetComponent<Player>();
             playerComponent.PlayerNumber = i;
             players[i].PlayerObject = playerObject;
