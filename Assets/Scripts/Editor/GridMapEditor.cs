@@ -42,6 +42,7 @@ namespace Assets.Scripts.Editor {
 
         private void CreatePreview() {
             DestroyImmediate(_previewObject); // clear previous preview
+            DestroyImmediate(_mapEditor);
             _previewObject = CreatePreviewObjectFromGridMap(_instance);
             _mapEditor = UnityEditor.Editor.CreateEditor(_previewObject);
         }
@@ -61,12 +62,12 @@ namespace Assets.Scripts.Editor {
 
             for (int y = 0; y < mapData.Height; y++) {
                 for (int x = 0; x < mapData.Width; x++) {
-                    var tile = mapData[x, y];
-                    if (tile == null) {
+                    var tileConfiguration = mapData[x, y];
+                    if (tileConfiguration == null) {
                         continue;
                     }
 
-                    var tileObject = tile.GenerateGameObject(root, x, y, true);
+                    var tileObject = tileConfiguration.GenerateGameObject(root, x, y, true);
 
                     var transform = tileObject.transform;
                     transform.position = GridHelper.GridToWorldPosition(mapData, new Vector2Int(x, y));
