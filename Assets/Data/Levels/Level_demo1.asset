@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
+  m_Name: Level_demo1
+  m_EditorClassIdentifier: 
+  Name: Demo 1
+  BackgroundImage: {fileID: 2800000, guid: d197b6ca2c89c7340bbe1522a3240855, type: 3}
+  Goals: []
+  GridMapData: {fileID: 11400000, guid: fcd9a7b6db48bb34282fde0e78ab668d, type: 2}
+  TileScale: 32
