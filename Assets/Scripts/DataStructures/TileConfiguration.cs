@@ -40,18 +40,21 @@ namespace Assets.Scripts.DataStructures {
             }
 
 #if UNITY_EDITOR
-            var textObject = new GameObject($"Text", typeof(TextMesh));
-            textObject.transform.parent = tileConfigObject.transform;
-            textObject.transform.position = new Vector3(0, 20, 0);
-            textObject.transform.Rotate(Vector3.right, 90);
-            var text = textObject.GetComponent<TextMesh>();
-            if (text != null)
+            if (Tile != null)
             {
-                text.alignment = TextAlignment.Center;
-                text.anchor = TextAnchor.MiddleCenter;
-                text.characterSize = 4;
-                text.fontStyle = FontStyle.Bold;
-                text.text = $"({x}, {y})";
+                var textObject = new GameObject($"Text", typeof(TextMesh));
+                textObject.transform.parent = tileConfigObject.transform;
+                textObject.transform.position = new Vector3(0, 20, 0);
+                textObject.transform.Rotate(Vector3.right, 90);
+                var text = textObject.GetComponent<TextMesh>();
+                if (text != null)
+                {
+                    text.alignment = TextAlignment.Center;
+                    text.anchor = TextAnchor.MiddleCenter;
+                    text.characterSize = 4;
+                    text.fontStyle = FontStyle.Bold;
+                    text.text = $"({x}, {y})";
+                }
             }
 #endif
 
