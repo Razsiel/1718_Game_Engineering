@@ -176,7 +176,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &948435387
 Prefab:
@@ -347,8 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31ea26321a51773498049afe1ef61991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
-    type: 2}
+  PrefabContainer: {fileID: 11400000, guid: f5496ff2a16b4af4594d194df7cf63ce, type: 2}
   CommandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}
   LevelData: {fileID: 11400000, guid: 0eb54dd4cf28d8d4a828c034883155bf, type: 2}
 --- !u!4 &1794598145
@@ -362,5 +361,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
