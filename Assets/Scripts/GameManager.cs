@@ -5,6 +5,7 @@ using Assets.Scripts.Photon;
 using Assets.ScriptableObjects;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour {
     //For now the editor can handle this for us
     //To Be Added: [HideInInspector]
     public LevelData LevelData;
+
 
     #region GLOBAL_EVENTS
 
@@ -46,9 +48,27 @@ public class GameManager : MonoBehaviour {
 
     void Start() {
         // Setup level
-      
+           
+        // Temp Players setup (done in awake)
+        //Players = new List<TGEPlayer>();
+        //TGEPlayer player = new TGEPlayer();
+        //Players.Add(player);
+
+        // Start Level Events
+        // Make sure de scene contains required GameObjects
+
+        // PrefabContainer filled and available
+        AssertAllNotNull();
+
+        // Initialize LevelData with Players
         if(!IsMultiPlayer)
             StartSinglePlayerGame(Players[0]);
+
+        // Initialize UI
+        EventManager.OnInitializeUi();
+
+        // Link Player2 to Photon instance
+        // Start Level
     }
 
     public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/) {
@@ -82,6 +102,8 @@ public class GameManager : MonoBehaviour {
 
             //PlayerInitialized(playerComponent);
             PlayerInitialized?.Invoke(playerComponent);
+            // layerInitialized(playerComponent);
+
         }
         PlayersInitialized?.Invoke();
     }
@@ -90,5 +112,21 @@ public class GameManager : MonoBehaviour {
         return _instance;
     }
 
-   
+    private bool AssertAllNotNull()
+    {
+        Assert.IsNotNull(PrefabContainer);
+        Assert.IsNotNull(PrefabContainer.PlayerPrefab);
+        //Assert.IsNotNull(PrefabContainer.ImageNotFound);
+        Assert.IsNotNull(CommandLibrary);
+
+        //These are now private
+        //Assert.IsNotNull(CommandLibrary.MoveCommand);
+        //Assert.IsNotNull(CommandLibrary.TurnRightCommand);
+        //Assert.IsNotNull(CommandLibrary.TurnLeftCommand);
+        //Assert.IsNotNull(CommandLibrary.WaitCommand);
+        //Assert.IsNotNull(CommandLibrary.InteractCommand);
+
+        return true;
+    }
 }
+
