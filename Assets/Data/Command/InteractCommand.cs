@@ -19,4 +19,9 @@ public class InteractCommand : BaseCommand
         // trigger.Execute()
         yield break;
     }
+
+    public override string ToString()
+    {
+        return this.GetType() + ":" + base.ToString();
+    }
 }

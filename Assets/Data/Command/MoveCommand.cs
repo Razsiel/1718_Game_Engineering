@@ -39,4 +39,9 @@ public class MoveCommand : BaseCommand
 
         player.transform.position = destinationPosition;
     }
+
+    public override string ToString()
+    {
+        return this.GetType() + ":" + base.ToString();
+    }
 }

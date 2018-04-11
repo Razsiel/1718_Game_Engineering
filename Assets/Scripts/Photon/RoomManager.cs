@@ -95,10 +95,14 @@ public class RoomManager : Photon.MonoBehaviour
                     {
                         //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
                         print("about to send rpc");
-                        ListContainer<BaseCommand> listCommands = new ListContainer<BaseCommand>() { list = sequence };
+                        ListContainer<CommandHolder> listCommands = new ListContainer<CommandHolder>() { list = new List<CommandHolder>() };
+                        var commandOptions = GameManager.GetInstance().CommandLibrary.Commands;
+                        //listCommands.list = sequence.Select(x => commandOptions.GetKey(x));  //GameManager.GetInstance().CommandLibrary.Commands
+                        foreach(BaseCommand c in sequence)
+                            listCommands.list.Add(new CommandHolder(commandOptions.GetKey(c)));
                         string seqJson = JsonUtility.ToJson(listCommands);
                         string methodToCall = nameof(UpdateOtherPlayersCommands);
-                        this.photonView.RPC(methodToCall, PhotonTargets.All, seqJson);
+                        this.photonView.RPC(methodToCall, PhotonTargets.Others, seqJson);
                         print("done sending");
                     };
                     
@@ -114,7 +118,7 @@ public class RoomManager : Photon.MonoBehaviour
     private bool alreadyStarted = false;
     void FixedUpdate()
     {
-        if(!alreadyStarted && PhotonNetwork.playerList.Count() > 1)
+        if(!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && GameManager.GetInstance().IsMultiPlayer)
         {
             GameManager.GetInstance().StartMultiplayerGame(GameManager.GetInstance().Players);
             alreadyStarted = true;
@@ -143,9 +147,9 @@ public class RoomManager : Photon.MonoBehaviour
     public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
     {
         print("Got RPC");
-        ListContainer<BaseCommand> commands = JsonUtility.FromJson<ListContainer<BaseCommand>>(commandsJson);
-        //GameManager.GetInstance().commandControllerHolder.GetComponent<CommandController>().UpdateOtherPlayersSequenceBar(commands);
-        networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
+        ListContainer<CommandHolder> commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
+        
+        networkPlayerSequenceBarView.UpdateSequenceBar(commands.list.Select(x => x.command).ToList());
     }
 
 }

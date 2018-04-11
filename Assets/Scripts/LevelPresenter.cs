@@ -43,11 +43,11 @@ public class LevelPresenter : MonoBehaviour
 
         for (int y = 0; y < grid.Height; y++) {
             for (int x = 0; x < grid.Width; x++) {
-                var tile = grid[x, y];
-                if (tile == null) {
+                var tileConfiguration = grid[x, y];
+                if (tileConfiguration == null) {
                     continue;
                 }
-                var tileObject = tile.GenerateGameObject(root, x, y);
+                var tileObject = tileConfiguration.GenerateGameObject(root, x, y);
                 var transform = tileObject.transform;
                 transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
                 transform.localScale /= data.TileScale;

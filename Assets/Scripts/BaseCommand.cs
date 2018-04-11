@@ -9,4 +9,8 @@ public abstract class BaseCommand : ScriptableObject
 {
     public Sprite Icon;
     public abstract IEnumerator Execute(Player player);
+    public override string ToString()
+    {
+        return this.GetType().Name;
+    }
 }

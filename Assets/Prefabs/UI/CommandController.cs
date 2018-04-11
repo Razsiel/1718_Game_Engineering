@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts;
 
 using UnityEngine;
@@ -34,13 +35,12 @@ public class CommandController : TGEMonoBehaviour {
     }
 
     public void OnMoveButtonClicked()
-    {
-        CheckPlayerIsFound();
+    {        
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.moveCommand;
         Debug.Log(player + "" + sequenceBar + "" + image);
-        player.AddCommand(commandLibrary.MoveCommand);
+        player.AddCommand(commandLibrary.Commands.GetValue(CommandEnum.MoveCommand));
     }
 
     public void OnTurnLeftButtonClicked()
@@ -48,7 +48,7 @@ public class CommandController : TGEMonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnLeftCommand;
-        player.AddCommand(commandLibrary.TurnLeftCommand);
+        player.AddCommand(commandLibrary.Commands.GetValue(CommandEnum.TurnLeftCommand));
             
     }
 
@@ -57,7 +57,7 @@ public class CommandController : TGEMonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.turnRightCommand;
-        player.AddCommand(commandLibrary.TurnRightCommand);
+        player.AddCommand(commandLibrary.Commands.GetValue(CommandEnum.TurnRightCommand));
     }
 
     public void WaitCommand()
@@ -65,7 +65,7 @@ public class CommandController : TGEMonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.waitCommand;
-        player.AddCommand(commandLibrary.WaitCommand);
+        player.AddCommand(commandLibrary.Commands.GetValue(CommandEnum.WaitCommand));
             
     }
 
@@ -74,7 +74,7 @@ public class CommandController : TGEMonoBehaviour {
         int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
         Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
         image.sprite = sequenceBar.interactCommand;
-        player.AddCommand(commandLibrary.InteractCommand);
+        player.AddCommand(commandLibrary.Commands.GetValue(CommandEnum.InteractCommand));
     }
 
     public void ClearButtonClicked()

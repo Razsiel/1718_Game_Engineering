@@ -18,4 +18,9 @@ public class WaitCommand : BaseCommand
 
         yield break;
     }
+
+    public override string ToString()
+    {
+        return this.GetType() + ":" + base.ToString();
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Tiles;
+using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
@@ -51,7 +52,7 @@ namespace Assets.Data.Grids {
         /// </summary>
         /// <param name="x">The x position in the mapData</param>
         /// <param name="y">The y position in the mapData</param>
-        public TileData this[int x, int y] {
+        public TileConfiguration this[int x, int y] {
             get { return this._map[x][y]; }
             set { this._map[x][y] = value; }
         }
@@ -60,7 +61,7 @@ namespace Assets.Data.Grids {
         /// Returns the value of a mapData entry at a given entry.
         /// </summary>
         /// <param name="entry">The entry containing the x and y position in the mapData</param>
-        public TileData this[GridCell entry] {
+        public TileConfiguration this[GridCell entry] {
             get { return this[entry.X, entry.Y]; }
             set { this[entry.X, entry.Y] = value; }
         }

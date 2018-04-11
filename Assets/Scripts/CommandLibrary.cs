@@ -10,13 +10,25 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
 public class CommandLibrary : ScriptableObject
 {
-    [SerializeField] public MoveCommand MoveCommand;
+    [SerializeField] private MoveCommand MoveCommand;
 
-    [SerializeField] public TurnCommand TurnRightCommand;
+    [SerializeField] private TurnCommand TurnRightCommand;
 
-    [SerializeField] public TurnCommand TurnLeftCommand;
+    [SerializeField] private TurnCommand TurnLeftCommand;
 
-    [SerializeField] public WaitCommand WaitCommand;
+    [SerializeField] private WaitCommand WaitCommand;
 
-    [SerializeField] public InteractCommand InteractCommand;
+    [SerializeField] private InteractCommand InteractCommand;
+
+    void OnEnable()
+    {
+        Commands = new List<CommandKVP>();
+        Commands.Add(new CommandKVP() { Key = CommandEnum.InteractCommand, Value = InteractCommand });
+        Commands.Add(new CommandKVP() { Key = CommandEnum.MoveCommand, Value = MoveCommand });
+        Commands.Add(new CommandKVP() { Key = CommandEnum.TurnLeftCommand, Value = TurnLeftCommand });
+        Commands.Add(new CommandKVP() { Key = CommandEnum.TurnRightCommand, Value = TurnRightCommand });
+        Commands.Add(new CommandKVP() { Key = CommandEnum.WaitCommand, Value = WaitCommand });
+    }
+
+    [SerializeField] public List<CommandKVP> Commands;
 }

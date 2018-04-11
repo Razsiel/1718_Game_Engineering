@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65a7e7e2a16653147bcb67893a41d12a, type: 3}
+  m_Name: PrefabContainer
+  m_EditorClassIdentifier: 
+  PlayerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
+    type: 2}
+  ImageNotFound: {fileID: 2800000, guid: a9fe65a630c14e0439a359a34c4cef6c, type: 3}
+  MoveCommand: {fileID: 2800000, guid: 2f8208f0db3e7c74d87023d7d0054b2f, type: 3}
+  TurnCommandLeft: {fileID: 2800000, guid: 1bd31c45e14f59842a23e0393475100d, type: 3}
+  TurnCommandRight: {fileID: 2800000, guid: 6bcefe00689d9d649860919d5c526177, type: 3}
+  InteractCommand: {fileID: 2800000, guid: 268a173df2f064c47b61e297d19892d0, type: 3}
+  WaitCommand: {fileID: 2800000, guid: 7cb5389fb00da9d4687414d7976230a0, type: 3}

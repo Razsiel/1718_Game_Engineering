@@ -16,6 +16,10 @@ namespace Assets.Data.Tiles {
             return true;
         }
 
+        public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
+            return GenerateGameObject(parent.transform, hidden);
+        }
+
         public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
             var decoration = new GameObject("Decoration",
                                             typeof(MeshFilter),
@@ -27,7 +31,6 @@ namespace Assets.Data.Tiles {
             var transform = decoration.transform;
             transform.position = RelativePosition;
             transform.localScale = Vector3.one * Scale;
-
 
             var meshFilter = decoration.GetComponent<MeshFilter>();
             if (meshFilter != null)

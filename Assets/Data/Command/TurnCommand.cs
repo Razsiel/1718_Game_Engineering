@@ -39,4 +39,9 @@ public class TurnCommand : BaseCommand
 
         player.transform.rotation = targetRotation;
     }
+
+    public override string ToString()
+    {
+        return this.GetType() + ":" + base.ToString();
+    }
 }

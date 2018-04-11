@@ -30,6 +30,7 @@ namespace Assets.Scripts.Photon
             set { _roomManager = value; }
         }
 
+       
         /// <summary>
         /// To be called later when a startbutton is called
         /// </summary>
@@ -89,13 +90,15 @@ namespace Assets.Scripts.Photon
 
         public void ReturnOtherPlayers()
         {
-            photonView.RPC(nameof(ReceiveOtherPlayers), PhotonTargets.Others, LevelManager.Instance.Players[0]);
+            photonView.RPC(nameof(ReceiveOtherPlayers), PhotonTargets.Others, GameManager.GetInstance().Players[0]);
         }
 
         public void ReceiveOtherPlayers(GameObject playerObject)
         {
             LevelManager.Instance.Players[1].PlayerObject = playerObject;
+            GameManager.GetInstance().Players[1].PlayerObject = playerObject;
             LevelManager.Instance.Players[1].player = playerObject.GetComponent<Player>();
+            GameManager.GetInstance().Players[1].player = playerObject.GetComponent<Player>();
         }
 
         #region PhotonCallbacks

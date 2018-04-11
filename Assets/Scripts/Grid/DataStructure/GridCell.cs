@@ -30,7 +30,7 @@ namespace Assets.Scripts.Grid.DataStructure {
         /// <summary>
         /// Gets the object associated with this entry
         /// </summary>
-        public TileData Value => this._gridMapData[this.X, this.Y];
+        public TileConfiguration Value => this._gridMapData[this.X, this.Y];
 
         /// <summary>
         /// Returns true if the entry is within the mapData bounds
