@@ -13,14 +13,16 @@ public class CommandController : TGEMonoBehaviour {
     Player player;
     GameManager _gameManager;
 
-    public override void Start() {
+    public override void Awake()
+    {
+        EventManager.InitializeUi += Initialize;
+    }
+
+    public void Initialize() {
         _gameManager = GameManager.GetInstance();
-        Assert.IsNotNull(_gameManager);
         commandLibrary = _gameManager.CommandLibrary;
-        Assert.IsNotNull(commandLibrary);
-        _gameManager.PlayerInitialized += playerInitialized => {
-            this.player = playerInitialized;
-        };
+
+        player = _gameManager.Players[0].player;
     }
 
     public void OnMoveButtonClicked()

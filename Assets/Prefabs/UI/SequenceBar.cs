@@ -16,8 +16,12 @@ public class SequenceBar : MonoBehaviour {
     float x = 0.04f;
     float y = 0.5f;
 
-    // Use this for initialization
-    void Start () {
+    void Awake()
+    {
+        EventManager.InitializeUi += Initialize;
+    }
+
+    void Initialize() {
 
         commandSlots = new GameObject[amountOfCommandsAllowed];
         for (int i = 0; i < amountOfCommandsAllowed; i++)
