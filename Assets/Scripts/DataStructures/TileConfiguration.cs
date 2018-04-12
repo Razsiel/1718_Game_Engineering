@@ -7,11 +7,11 @@ namespace Assets.Scripts.DataStructures {
     [Serializable]
     public class TileConfiguration {
         [SerializeField] public TileData Tile;
-        [SerializeField] public TileDecorationData[] Decorations;
+        [SerializeField] public DecorationConfiguration[] Decorations;
         
         public virtual bool IsWalkable(CardinalDirection direction)
         {
-            return Decorations.Length == 0 || Decorations.All(d => d.IsWalkable(direction));
+            return Decorations.Length == 0 || Decorations.All(d => d.DecorationData.IsWalkable(direction));
         }
 
         public virtual bool CanExit(CardinalDirection direction)

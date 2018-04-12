@@ -9,8 +9,6 @@ namespace Assets.Data.Tiles {
         [SerializeField] public Mesh Mesh;
         [SerializeField] public Material Material;
         [SerializeField] public CardinalDirection Orientation;
-        [SerializeField] public Vector3 RelativePosition;
-        [SerializeField] public float Scale = 1f;
 
         public virtual bool IsWalkable(CardinalDirection direction) {
             return true;
@@ -27,10 +25,6 @@ namespace Assets.Data.Tiles {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
             };
             decoration.transform.parent = parent;
-
-            var transform = decoration.transform;
-            transform.position = RelativePosition;
-            transform.localScale = Vector3.one * Scale;
 
             var meshFilter = decoration.GetComponent<MeshFilter>();
             if (meshFilter != null)
