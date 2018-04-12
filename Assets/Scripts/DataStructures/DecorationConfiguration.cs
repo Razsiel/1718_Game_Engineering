@@ -13,7 +13,7 @@ namespace Assets.Scripts.DataStructures
     public class DecorationConfiguration {
         [SerializeField] public TileDecorationData DecorationData;
         [SerializeField] public Vector3 RelativePosition;
-        [SerializeField] public int Scale;
+        [SerializeField] public int Scale = 1;
         [SerializeField] public int Rotation;
 
         public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {

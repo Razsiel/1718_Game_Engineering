@@ -12,7 +12,7 @@ namespace Assets.Data.Grids {
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {
         [SerializeField] public TileData DefaultTile;
         [SerializeField] public Vector2Int[] PlayerStartPositions;
-
+        
         [SerializeField] private GridRow[] _map;
         [SerializeField] private int _width;
         [SerializeField] private int _height;
