@@ -55,8 +55,8 @@ namespace Assets.Scripts.Editor {
                 foreach (var decorationConfiguration in _instance.DecorationConfigs)
                 {
                     decorationConfiguration.DecorationData =
-                        (TileDecorationData)EditorGUILayout.ObjectField(decorationConfiguration.DecorationData,
-                                                                        typeof(TileDecorationData), false);
+                        (DecorationData)EditorGUILayout.ObjectField(decorationConfiguration.DecorationData,
+                                                                        typeof(DecorationData), false);
                 }
             }
 

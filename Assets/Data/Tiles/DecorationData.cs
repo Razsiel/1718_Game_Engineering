@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Data.Tiles {
     [Serializable]
     [CreateAssetMenu(menuName = "Data/Tiles/Decoration")]
-    public class TileDecorationData : ScriptableObject {
+    public class DecorationData : ScriptableObject {
         [SerializeField] public Mesh Mesh;
         [SerializeField] public Material Material;
         [SerializeField] public CardinalDirection Orientation;
