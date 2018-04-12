@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Levels;
+using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine.Assertions;
 using UnityEngine;
