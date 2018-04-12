@@ -1,23 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EventManager
 {
-    public delegate void Call();
-
-    public static event Call LevelSelected;
-    public static event Call LoadingCompleted;
-    public static event Call AllLevelGoalsReached;
-
-    public static event Call InitializeUi;
-    public static event Call InitializePhoton;
-
-    public static event Call EnableUserInput;
-    public static event Call DisableUserInput;
-    public static event Call ReadyButtonClicked;
-    public static event Call PhotonSynchronized;
-    public static event Call MonologueEnded;
+    public static UnityAction LevelSelected;
+    public static UnityAction LoadingCompleted;
+    public static UnityAction AllLevelGoalsReached;
+           
+    public static UnityAction InitializeUi;
+    public static UnityAction InitializePhoton;
+           
+    public static UnityAction EnableUserInput;
+    public static UnityAction DisableUserInput;
+    public static UnityAction ReadyButtonClicked;
+    public static UnityAction PhotonSynchronized;
+    public static UnityAction MonologueEnded;
 
     public static void OnInitializeUi()
     {
