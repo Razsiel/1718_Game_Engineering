@@ -119,13 +119,6 @@ namespace Assets.Scripts {
             //Assert.IsNotNull(PrefabContainer.ImageNotFound);
             Assert.IsNotNull(CommandLibrary);
 
-            //These are now private
-            //Assert.IsNotNull(CommandLibrary.MoveCommand);
-            //Assert.IsNotNull(CommandLibrary.TurnRightCommand);
-            //Assert.IsNotNull(CommandLibrary.TurnLeftCommand);
-            //Assert.IsNotNull(CommandLibrary.WaitCommand);
-            //Assert.IsNotNull(CommandLibrary.InteractCommand);
-
             return true;
         }
     }
