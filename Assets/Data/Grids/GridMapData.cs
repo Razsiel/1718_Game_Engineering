@@ -117,7 +117,7 @@ namespace Assets.Data.Grids {
 
         public bool TryGetCell(int x, int y, out GridCell cell) {
             cell = new GridCell(this, x, y);
-            return IsValidTile(x, y) && this[x, y] != null;
+            return IsValidTile(x, y) && this[x, y]?.Tile != null;
         }
     }
 }

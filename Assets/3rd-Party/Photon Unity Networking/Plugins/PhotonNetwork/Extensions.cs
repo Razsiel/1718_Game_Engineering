@@ -114,9 +114,9 @@ public static class Extensions
         }
     }
 
-    /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information.Using this is not performant.</summary>
+    /// <summary>Helper method for debugging of IDictionary content, inlcuding type-information. Using this is not performant.</summary>
     /// <remarks>Should only be used for debugging as necessary.</remarks>
-    /// <param name = "origin" > Some Dictionary or Hashtable.</param>
+    /// <param name="origin">Some Dictionary or Hashtable.</param>
     /// <returns>String of the content of the IDictionary.</returns>
     public static string ToStringFull(this IDictionary origin)
     {
@@ -152,9 +152,9 @@ public static class Extensions
     /// </remarks>
     /// <param name="original">The original IDictonary to get string-typed keys from.</param>
     /// <returns>New Hashtable containing only string-typed keys of the original.</returns>
-    public static ExitGames.Client.Photon.Hashtable StripToStringKeys(this IDictionary original)
+    public static Hashtable StripToStringKeys(this IDictionary original)
     {
-        ExitGames.Client.Photon.Hashtable target = new ExitGames.Client.Photon.Hashtable();
+        Hashtable target = new Hashtable();
         if (original != null)
         {
             foreach (object key in original.Keys)

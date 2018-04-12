@@ -17,6 +17,12 @@ public class PrefabContainer : ScriptableObject {
     // Images
     [SerializeField] public Texture2D ImageNotFound;
 
+    [SerializeField] public Texture2D MoveCommand;
+    [SerializeField] public Texture2D TurnCommandLeft;
+    [SerializeField] public Texture2D TurnCommandRight;
+    [SerializeField] public Texture2D InteractCommand;
+    [SerializeField] public Texture2D WaitCommand;
+
     // Textures
 
     // Sound Effects

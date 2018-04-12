@@ -1,27 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.Data.Command;
 using Assets.Scripts;
 using UnityEngine.Assertions;
+using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class CommandController : TGEMonoBehaviour{
-    
-    private CommandLibrary commandLibrary;
-    public SequenceBar sequenceBar;
-    Player player;
-    GameManager _gameManager;
+namespace Assets.Prefabs.UI {
+    public class CommandController : TGEMonoBehaviour {
+        private CommandLibrary _commandLibrary;
+        public SequenceBar SequenceBar;
+        public SequenceBar OtherSequencebar;
+        Player _player;
+        GameManager _gameManager;
 
-    public override void Start() {
-        _gameManager = GameManager.GetInstance();
-        Assert.IsNotNull(_gameManager);
-        commandLibrary = _gameManager.CommandLibrary;
-        Assert.IsNotNull(commandLibrary);
-        _gameManager.PlayerInitialized += playerInitialized => {
-            this.player = playerInitialized;
-        };
-    }
+        public override void Awake() {
+            EventManager.InitializeUi += Initialize;
+        }
 
     public void OnMoveButtonClicked()
     {
@@ -68,17 +63,40 @@ public class CommandController : TGEMonoBehaviour{
         moveCommand.transform.localScale = new Vector3(1, 1, 1);
     }
 
-    public void ClearButtonClicked()
-    {
-        sequenceBar.ClearImages();
-        GameManager gameManager = GameManager.GetInstance();
+    public void Initialize() {
+        _gameManager = GameManager.GetInstance();
+        _commandLibrary = _gameManager.CommandLibrary;
 
-        player.ClearCommands();
+        Assert.IsNotNull(_commandLibrary);
+        _gameManager.PlayersInitialized += /*(Player playerInitialized)*/ () => {
+            this._player = _gameManager.Players[0].player;
+            print("player shoudl be filled");
+            Assert.IsNotNull(_player);
+        };
+
+        _player = _gameManager.Players[0].player;
     }
 
-    public void ReadyButtonClicked()
-    {
-        Debug.Log(player);
-        player.ReadyButtonClicked();
+
+    public void ClearButtonClicked() {
+        SequenceBar.ClearImages();
+
+        _player.ClearCommands();
+    }
+
+    public void ReadyButtonClicked() {
+        Debug.Log(_player);
+        _player.ReadyButtonClicked();
+    }
+
+        //public void UpdateOtherPlayersSequenceBar(List<BaseCommand> commands)
+        //{
+        //    foreach(BaseCommand c in commands)
+        //    {
+        //        int nextFreeSlot = sequenceBar.GetNextEmptySlotIndex();
+        //        Image image = sequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+        //        image.sprite = c.Icon;
+        //    }
+        //}
     }
 }

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Assets.Data.Command;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Extensions;
 
 [CreateAssetMenu(fileName = "TurnCommand", menuName = "Data/Commands/TurnCommand")]
+[System.Serializable]
 public class TurnCommand : BaseCommand
 {
     [Header("TurnAngle: 90 for RightTurn, -90 for LeftTurn")]
@@ -37,5 +39,10 @@ public class TurnCommand : BaseCommand
         }
 
         player.transform.rotation = targetRotation;
+    }
+
+    public override string ToString()
+    {
+        return this.GetType() + ":" + base.ToString();
     }
 }

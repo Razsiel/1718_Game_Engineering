@@ -14,8 +14,12 @@ public class SequenceBar : MonoBehaviour {
     public GameObject interactCommand;
     public GameObject waitCommand;
 
-    // Use this for initialization
-    void Start () {
+    void Awake()
+    {
+        EventManager.InitializeUi += Initialize;
+    }
+
+    void Initialize() {
 
         commandSlots = new GameObject[amountOfCommandsAllowed];
         for (int i = 0; i < amountOfCommandsAllowed; i++)
