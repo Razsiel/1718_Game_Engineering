@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
-using NUnit.Framework;
+using UnityEngine.Assertions;
 using UnityEngine;
 
 public class LevelPresenter : MonoBehaviour
@@ -16,8 +16,7 @@ public class LevelPresenter : MonoBehaviour
         Assert.IsNotNull(gameManager);
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
-        Assert.IsNotEmpty(players);
-
+         
         // create level objects in scene
         levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
         

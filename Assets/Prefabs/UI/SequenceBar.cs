@@ -8,13 +8,11 @@ public class SequenceBar : MonoBehaviour {
     public GameObject slots;
     public int amountOfCommandsAllowed;
     public GameObject[] commandSlots;
-    public Sprite moveCommand;
-    public Sprite turnLeftCommand;
-    public Sprite turnRightCommand;
-    public Sprite interactCommand;
-    public Sprite waitCommand;
-    float x = 0.04f;
-    float y = 0.5f;
+    public GameObject moveCommand;
+    public GameObject turnLeftCommand;
+    public GameObject turnRightCommand;
+    public GameObject interactCommand;
+    public GameObject waitCommand;
 
     // Use this for initialization
     void Start () {
@@ -25,27 +23,20 @@ public class SequenceBar : MonoBehaviour {
             GameObject slot = (GameObject)Instantiate(slots);
             commandSlots[i] = slot;
             slot.transform.SetParent(this.gameObject.transform, false);
-
-            slot.GetComponent<RectTransform>().anchorMin = new Vector3(x, y,0);
-            slot.GetComponent<RectTransform>().anchorMax = new Vector3(x, y,0);
-
-            //Image slotImage = slot.transform.GetChild(0).GetComponent<Image>();
-
-            //slotImage.sprite = asd;
-
-            x += 0.08f;
         }
+        print(commandSlots.Length);
 	}
 
     public int GetNextEmptySlotIndex()
     {
         for (int i = 0; i < amountOfCommandsAllowed; i++)
         {
-            if(commandSlots[i].transform.GetChild(0).GetComponent<Image>().sprite == null)
+            if(commandSlots[i].transform.childCount < 1)
             {
                 return i;
             }
         }
+        //slaat nergens op
         return 100;
     }
 
