@@ -48,7 +48,10 @@ public class RoomManager : Photon.MonoBehaviour
             GameManager.GetInstance().Players[0].photonPlayer = PhotonNetwork.player;
 
             Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
-            UpdateGUI();
+
+            //Gone for now
+            //UpdateGUI();
+
             Debug.Log("We joined the lobby!");
 
             if(!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal"));
@@ -110,8 +113,7 @@ public class RoomManager : Photon.MonoBehaviour
                     
                 };
 
-                GameManager gm = GameManager.GetInstance();
-
+                
                 Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
             };
         };
