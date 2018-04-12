@@ -93,6 +93,13 @@ public class RoomManager : Photon.MonoBehaviour
                     Assert.IsTrue(PhotonNetwork.CreateRoom(null));
                 };
 
+               
+
+                
+                Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
+            };
+            PhotonManager.Instance.TGEOnJoinedRoom += () => 
+            {
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     print("Players are Created!");
@@ -110,12 +117,10 @@ public class RoomManager : Photon.MonoBehaviour
                         this.photonView.RPC(methodToCall, PhotonTargets.Others, seqJson);
                         print("done sending");
                     };
-                    
-                };
 
-                
-                Debug.Log("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
+                };
             };
+            
         };
     }
 
