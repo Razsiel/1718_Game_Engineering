@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.DataStructures.Command;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Data.Command {
     [Serializable]
@@ -17,7 +18,10 @@ namespace Assets.Data.Command {
 
         [SerializeField] private InteractCommand InteractCommand;
 
-        void OnEnable() {
+        void OnEnable()
+        {
+            AssertCommandsAreSet();
+
             Commands = new List<CommandKVP>();
             Commands.Add(new CommandKVP() {Key = CommandEnum.InteractCommand, Value = InteractCommand});
             Commands.Add(new CommandKVP() {Key = CommandEnum.MoveCommand, Value = MoveCommand});
@@ -27,5 +31,16 @@ namespace Assets.Data.Command {
         }
 
         [SerializeField] public List<CommandKVP> Commands;
+
+        public bool AssertCommandsAreSet()
+        {
+            Assert.IsNotNull(TurnRightCommand);
+            Assert.IsNotNull(TurnLeftCommand);
+            Assert.IsNotNull(WaitCommand);
+            Assert.IsNotNull(InteractCommand);
+            Assert.IsNotNull(MoveCommand);
+
+            return true;
+        }
     }
 }
