@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
-using Assets.ScriptableObjects.Tiles;
+using Assets.Data.Tiles;
+using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Grids {
+namespace Assets.Data.Grids {
     [Serializable]
     [CreateAssetMenu(fileName = "Default Grid", menuName = "Data/Grid")]
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {
         [SerializeField] public TileData DefaultTile;
         [SerializeField] public Vector2Int[] PlayerStartPositions;
-
+        
         [SerializeField] private GridRow[] _map;
         [SerializeField] private int _width;
         [SerializeField] private int _height;
@@ -52,7 +52,7 @@ namespace Assets.ScriptableObjects.Grids {
         /// </summary>
         /// <param name="x">The x position in the mapData</param>
         /// <param name="y">The y position in the mapData</param>
-        public TileData this[int x, int y] {
+        public TileConfiguration this[int x, int y] {
             get { return this._map[x][y]; }
             set { this._map[x][y] = value; }
         }
@@ -61,7 +61,7 @@ namespace Assets.ScriptableObjects.Grids {
         /// Returns the value of a mapData entry at a given entry.
         /// </summary>
         /// <param name="entry">The entry containing the x and y position in the mapData</param>
-        public TileData this[GridCell entry] {
+        public TileConfiguration this[GridCell entry] {
             get { return this[entry.X, entry.Y]; }
             set { this[entry.X, entry.Y] = value; }
         }
@@ -117,7 +117,7 @@ namespace Assets.ScriptableObjects.Grids {
 
         public bool TryGetCell(int x, int y, out GridCell cell) {
             cell = new GridCell(this, x, y);
-            return IsValidTile(x, y) && this[x, y] != null;
+            return IsValidTile(x, y) && this[x, y]?.Tile != null;
         }
     }
 }

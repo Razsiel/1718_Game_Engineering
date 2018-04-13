@@ -1,36 +1,35 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.ScriptableObjects.Levels;
+using Assets.Data.Levels;
+using Assets.Scripts;
+using Assets.Scripts.DataStructures;
+using UnityEngine.Assertions;
 using UnityEngine;
 
 public class LevelPresenter : MonoBehaviour
 {
-
-    private LevelData _levelData;
-
     private static GameObject levelObject;
 
     // Use this for initialization
-    void Start() {
+    public static void Present(LevelData levelData, List<TGEPlayer> players) {
         var gameManager = GameManager.GetInstance();
-        _levelData = gameManager.LevelData;
-        if (_levelData == null)
-            return;
+        Assert.IsNotNull(gameManager);
+        Assert.IsNotNull(levelData);
+        Assert.IsNotNull(players);
+        //Assert.IsEmpty is not an existing one
+        //Assert.IsNo(players);
 
         // create level objects in scene
-        levelObject = CreateGameObjectFromLevelData(_levelData, this.transform);
-            
-        // create player objects in scene
-        for (int i = 0; i < gameManager.Players.Count; i++) {
-            var startGridPosition = _levelData.GetPlayerStartPosition(i);
-            var playerWorldPosition = GridHelper.GridToWorldPosition(_levelData, startGridPosition);
+        levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
+        
+        // Set players to start position in scene;
+        for (int i = 0; i < players.Count; i++) {
+            var startGridPosition = levelData.GetPlayerStartPosition(i);
+            var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, startGridPosition);
             playerWorldPosition.y = 1;
             //var playerDirection = player.viewDirection.ToQuaternion();
-            var playerObject = Instantiate(gameManager.PlayerPrefab, playerWorldPosition, Quaternion.identity, this.transform);
-            var playerComponent = playerObject.GetComponent<Player>();
-            playerComponent.PlayerNumber = i;
-            playerComponent.Data = gameManager.Players[i].player.Data;
+            players[i].PlayerObject.transform.position = playerWorldPosition;
         }
     }
 
@@ -45,11 +44,11 @@ public class LevelPresenter : MonoBehaviour
 
         for (int y = 0; y < grid.Height; y++) {
             for (int x = 0; x < grid.Width; x++) {
-                var tile = grid[x, y];
-                if (tile == null) {
+                var tileConfiguration = grid[x, y];
+                if (tileConfiguration == null) {
                     continue;
                 }
-                var tileObject = tile.GenerateGameObject(root, x, y);
+                var tileObject = tileConfiguration.GenerateGameObject(root, x, y);
                 var transform = tileObject.transform;
                 transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
                 transform.localScale /= data.TileScale;

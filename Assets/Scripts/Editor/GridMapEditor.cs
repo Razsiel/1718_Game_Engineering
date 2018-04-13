@@ -1,6 +1,7 @@
-﻿using Assets.ScriptableObjects.Grids;
+﻿using Assets.Data.Grids;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Editor {
     [CustomEditor(typeof(GridMapData))]
@@ -31,12 +32,35 @@ namespace Assets.Scripts.Editor {
             }
 
             // draw custom grid editor here
-            if (GUILayout.Button("(Re)create preview")) {
+            if (GUILayout.Button("Refresh preview")) {
                 CreatePreview();
             }
+
+            if (_previewObject == null) {
+                CreatePreview();
+            }
+
+            /*
+            for (int row = 0; row < _instance.Height; row++) {
+                GUILayout.BeginHorizontal();
+                for (int column = 0; column < _instance.Width; column++) {
+                    GUILayout.BeginVertical();
+
+                    if (GUILayout.Button($"{row}, {column}", GUILayout.ExpandWidth(true),
+                                         GUILayout.ExpandHeight(true))) {
+                        TileDataEditor.ShowWindow(_instance[row, column]);
+                    }
+
+                    GUILayout.EndVertical();
+                }
+                GUILayout.EndHorizontal();
+            }
+            */
         }
 
         private void CreatePreview() {
+            DestroyImmediate(_previewObject); // clear previous preview
+            DestroyImmediate(_mapEditor);
             _previewObject = CreatePreviewObjectFromGridMap(_instance);
             _mapEditor = UnityEditor.Editor.CreateEditor(_previewObject);
         }
@@ -52,18 +76,16 @@ namespace Assets.Scripts.Editor {
         }
 
         private GameObject CreatePreviewObjectFromGridMap(GridMapData mapData) {
-            Debug.Log("Creating preview object");
-            DestroyImmediate(GameObject.Find("Level Preview Object")); // clear previous preview
             var root = EditorUtility.CreateGameObjectWithHideFlags("Level Preview Object", HideFlags.HideAndDontSave);
 
             for (int y = 0; y < mapData.Height; y++) {
                 for (int x = 0; x < mapData.Width; x++) {
-                    var tile = mapData[x, y];
-                    if (tile == null) {
+                    var tileConfiguration = mapData[x, y];
+                    if (tileConfiguration == null) {
                         continue;
                     }
 
-                    var tileObject = tile.GenerateGameObject(root, x, y, true);
+                    var tileObject = tileConfiguration.GenerateGameObject(root, x, y, true);
 
                     var transform = tileObject.transform;
                     transform.position = GridHelper.GridToWorldPosition(mapData, new Vector2Int(x, y));

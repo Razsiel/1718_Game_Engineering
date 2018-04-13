@@ -28,7 +28,7 @@ using System.IO;
 public static class PhotonNetwork
 {
     /// <summary>Version number of PUN. Also used in GameVersion to separate client version from each other.</summary>
-    public const string versionPUN = "1.88";
+    public const string versionPUN = "1.90";
 
     /// <summary>Version string for your this build. Can be used to separate incompatible clients. Sent during connect.</summary>
     /// <remarks>This is only sent when you connect so that is also the place you set it usually (e.g. in ConnectUsingSettings).</remarks>
@@ -930,7 +930,7 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Count of users currently playing your app in some room (sent every 5sec by Master Server). 
+    /// Count of users currently playing your app in some room (sent every 5sec by Master Server).
     /// Use PhotonNetwork.playerList.Length or PhotonNetwork.room.PlayerCount to get the count of players in the room you're in!
     /// </summary>
     public static int countOfPlayersInRooms
@@ -1056,14 +1056,14 @@ public static class PhotonNetwork
     /// <summary>Switch to alternative ports for a UDP connection to the Public Cloud.</summary>
     /// <remarks>
     /// This should be used when a customer has issues with connection stability. Some players
-    /// reported better connectivity for Steam games. The effect might vary, which is why the 
+    /// reported better connectivity for Steam games. The effect might vary, which is why the
     /// alternative ports are not the new default.
-    /// 
-    /// The alternative (server) ports are 27000 up to 27003. 
-    /// 
+    ///
+    /// The alternative (server) ports are 27000 up to 27003.
+    ///
     /// The values are appplied by replacing any incoming server-address string accordingly.
     /// You only need to set this to true though.
-    /// 
+    ///
     /// This value does not affect TCP or WebSocket connections.
     /// </remarks>
     public static bool UseAlternativeUdpPorts { get; set; }
@@ -1141,7 +1141,7 @@ public static class PhotonNetwork
         networkingPeer.SentCountAllowance = 7;
 
 
-        #if UNITY_XBOXONE
+        #if !UNITY_EDITOR && UNITY_XBOXONE
         networkingPeer.AuthMode = AuthModeOption.Auth;
         #endif
 
@@ -2142,11 +2142,11 @@ public static class PhotonNetwork
     /// Returns to the Master Server.
     ///
     /// In OfflineMode, the local "fake" room gets cleaned up and OnLeftRoom gets called immediately.
-    /// 
+    ///
     /// In a room with playerTTL &lt; 0, LeaveRoom just turns a client inactive. The player stays in the room's player list
     /// and can return later on. Setting becomeInactive to false deliberately, means to "abandon" the room, despite the
     /// playerTTL allowing you to come back.
-    /// 
+    ///
     /// In a room with playerTTL == 0, become inactive has no effect (clients are removed from the room right away).
     /// </remarks>
     /// <param name="becomeInactive">If this client becomes inactive in a room with playerTTL &lt; 0. Defaults to true.</param>
@@ -2190,7 +2190,7 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Gets currently cached rooms of the last rooms list sent by the server as RoomInfo array. 
+    /// Gets currently cached rooms of the last rooms list sent by the server as RoomInfo array.
     /// This list is either available and updated automatically and periodically while in a lobby (check insideLobby) or
     /// received as a response to PhotonNetwork.GetCustomRoomList().
     /// </summary>
@@ -2336,7 +2336,7 @@ public static class PhotonNetwork
 
         return networkingPeer.OpRaiseEvent(eventCode, eventContent, raiseEventOptions, sendOptions);
     }
-    #endif 
+    #endif
 
     /// <summary>
     /// Allocates a viewID that's valid for the current/local player.
@@ -3202,7 +3202,8 @@ public static class PhotonNetwork
         networkingPeer.SetLevelPrefix(prefix);
     }
 
-    /// <summary>Wraps loading a level to pause the network mesage-queue. Optionally syncs the loaded level in a room.</summary>
+
+    /// <summary>Wraps loading a level to pause the network message-queue. Optionally syncs the loaded level in a room.</summary>
     /// <remarks>
     /// To sync the loaded level in a room, set PhotonNetwork.automaticallySyncScene to true.
     /// The Master Client of a room will then sync the loaded level with every other player in the room.
@@ -3214,21 +3215,54 @@ public static class PhotonNetwork
     /// You should make sure you don't fire RPCs before you load another scene (which doesn't contain
     /// the same GameObjects and PhotonViews). You can call this in OnJoinedRoom.
     ///
-    /// This uses Application.LoadLevel.
+    /// This uses Application.LoadLevel in Unity version not yet featuring the SceneManager API.
     /// </remarks>
     /// <param name='levelNumber'>
     /// Number of the level to load. When using level numbers, make sure they are identical on all clients.
     /// </param>
     public static void LoadLevel(int levelNumber)
     {
-        networkingPeer.SetLevelInPropsIfSynced(levelNumber);
+		if (PhotonNetwork.automaticallySyncScene) {
+			networkingPeer.SetLevelInPropsIfSynced (levelNumber);
+		}
 
         PhotonNetwork.isMessageQueueRunning = false;
         networkingPeer.loadingLevelAndPausedNetwork = true;
         SceneManager.LoadScene(levelNumber);
     }
 
-    /// <summary>Wraps loading a level to pause the network mesage-queue. Optionally syncs the loaded level in a room.</summary>
+
+	/// <summary>Wraps single asynchronous loading of a level to pause the network message-queue. Optionally syncs the loaded level in a room.</summary>
+	/// <remarks>
+	/// To sync the loaded level in a room, set PhotonNetwork.automaticallySyncScene to true.
+	/// The Master Client of a room will then sync the loaded level with every other player in the room.
+	///
+	/// While loading levels, it makes sense to not dispatch messages received by other players.
+	/// This method takes care of that by setting PhotonNetwork.isMessageQueueRunning = false and enabling
+	/// the queue when the level was loaded.
+	///
+	/// You should make sure you don't fire RPCs before you load another scene (which doesn't contain
+	/// the same GameObjects and PhotonViews). You can call this in OnJoinedRoom.
+	///
+	/// This uses Application.LoadLevel in Unity version not yet featuring the SceneManager API.
+	/// </remarks>
+	/// <returns>The async operation.</returns>
+	/// <param name='levelNumber'>
+	/// Number of the level to load. When using level numbers, make sure they are identical on all clients.
+	/// </param>
+	public static AsyncOperation LoadLevelAsync(int levelNumber)
+	{
+		if (PhotonNetwork.automaticallySyncScene) {
+			networkingPeer.SetLevelInPropsIfSynced (levelNumber,true);
+		}
+
+		PhotonNetwork.isMessageQueueRunning = false;
+		networkingPeer.loadingLevelAndPausedNetwork = true;
+		return SceneManager.LoadSceneAsync(levelNumber,LoadSceneMode.Single);
+	}
+
+
+    /// <summary>Wraps loading a level to pause the network message-queue. Optionally syncs the loaded level in a room.</summary>
     /// <remarks>
     /// While loading levels, it makes sense to not dispatch messages received by other players.
     /// This method takes care of that by setting PhotonNetwork.isMessageQueueRunning = false and enabling
@@ -3240,19 +3274,52 @@ public static class PhotonNetwork
     /// You should make sure you don't fire RPCs before you load another scene (which doesn't contain
     /// the same GameObjects and PhotonViews). You can call this in OnJoinedRoom.
     ///
-    /// This uses Application.LoadLevel.
+	/// This uses Application.LoadLevel in Unity version not yet featuring the SceneManager API.
     /// </remarks>
     /// <param name='levelName'>
     /// Name of the level to load. Make sure it's available to all clients in the same room.
     /// </param>
     public static void LoadLevel(string levelName)
     {
-        networkingPeer.SetLevelInPropsIfSynced(levelName);
+		if (PhotonNetwork.automaticallySyncScene) {
+			networkingPeer.SetLevelInPropsIfSynced (levelName);
+		}
 
         PhotonNetwork.isMessageQueueRunning = false;
         networkingPeer.loadingLevelAndPausedNetwork = true;
         SceneManager.LoadScene(levelName);
     }
+
+
+	/// <summary>Wraps single asynchronous loading of a level to pause the network message-queue. Optionally syncs the loaded level in a room.</summary>
+	/// <remarks>
+	/// While loading levels, it makes sense to not dispatch messages received by other players.
+	/// This method takes care of that by setting PhotonNetwork.isMessageQueueRunning = false and enabling
+	/// the queue when the level was loaded.
+	///
+	/// To sync the loaded level in a room, set PhotonNetwork.automaticallySyncScene to true.
+	/// The Master Client of a room will then sync the loaded level with every other player in the room.
+	///
+	/// You should make sure you don't fire RPCs before you load another scene (which doesn't contain
+	/// the same GameObjects and PhotonViews). You can call this in OnJoinedRoom.
+	///
+	/// This uses Application.LoadLevel in Unity version not yet featuring the SceneManager API.
+	/// </remarks>
+	/// <returns>The async operation.</returns>
+	/// <param name='levelName'>
+	/// Name of the level to load. Make sure it's available to all clients in the same room.
+	/// </param>
+	/// <param name="mode">LoadSceneMode either single or additive</param>
+	public static AsyncOperation LoadLevelAsync(string levelName)
+	{
+		if (PhotonNetwork.automaticallySyncScene) {
+			networkingPeer.SetLevelInPropsIfSynced (levelName,true);
+		}
+
+		PhotonNetwork.isMessageQueueRunning = false;
+		networkingPeer.loadingLevelAndPausedNetwork = true;
+		return SceneManager.LoadSceneAsync(levelName,LoadSceneMode.Single);
+	}
 
 
     /// <summary>

@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Levels;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
-using Assets.ScriptableObjects.Levels;
 using Assets.Scripts.Photon;
 
 public class LevelManager : MonoBehaviour {
@@ -42,6 +42,9 @@ public class LevelManager : MonoBehaviour {
     //Start the level with given multiplayer players
     public void StartMultiplayerGame(List<TGEPlayer> players /*TODO , LevelData level*/)
     {
+        PhotonManager.Instance.GetOtherPlayers();
+        Players = players;
+        StartCoroutine(WaitForOtherPlayers());
         Players = players;
         StartGame();      
     }
@@ -51,6 +54,11 @@ public class LevelManager : MonoBehaviour {
     {
         //FOR LATER: this.LevelData = level;
         LevelData.Init(Players);
+    }
+
+    public IEnumerator WaitForOtherPlayers()
+    {
+        yield return new WaitUntil(() => Players[1].player != null);
     }
 
 }

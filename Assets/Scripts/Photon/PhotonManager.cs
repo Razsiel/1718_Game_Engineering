@@ -5,10 +5,9 @@ using UnityEngine.Events;
 using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using System.Reflection;
+using Assets.Data.Levels;
 using UnityEngine.Assertions;
 using Photon;
-using Assets.ScriptableObjects.Levels;
-using Assets.ScriptableObjects.Player;
 using Assets.Scripts.DataStructures;
 using System.Linq;
 
@@ -27,6 +26,9 @@ namespace Assets.Scripts.Photon
         public event UnityAction<object[]> TGEOnJoinRoomFailed;
         public event UnityAction TGEOnCreatedRoom;
         public event UnityAction TGEOnJoinedRoom;
+        public event UnityAction TGEOnLeftRoom;
+        public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
+        public event UnityAction TGEOnPlayersCreated;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -41,6 +43,7 @@ namespace Assets.Scripts.Photon
             set { _roomManager = value; }
         }
 
+
         //Private because of SingleTon
         private PhotonManager() { }
 
@@ -50,7 +53,7 @@ namespace Assets.Scripts.Photon
             RoomManager = gameObject.GetComponent<RoomManager>();
             Assert.IsNotNull(_roomManager);
         }
-
+       
         /// <summary>
         /// To be called later when a startbutton is called
         /// </summary>
@@ -63,6 +66,12 @@ namespace Assets.Scripts.Photon
                 
             }
         }
+       
+        public void PlayersReady()
+        {
+            TGEOnPlayersCreated?.Invoke();
+        }
+
 
         public void CreateRoom(string roomName)
         {
@@ -74,6 +83,24 @@ namespace Assets.Scripts.Photon
         {
             print("Joining Room!");
             PhotonNetwork.JoinRoom(roomName);
+        }
+
+        public void GetOtherPlayers()
+        {
+            photonView.RPC(nameof(ReturnOtherPlayers), PhotonTargets.Others);
+        }
+
+        public void ReturnOtherPlayers()
+        {
+            photonView.RPC(nameof(ReceiveOtherPlayers), PhotonTargets.Others, GameManager.GetInstance().Players[0]);
+        }
+
+        public void ReceiveOtherPlayers(GameObject playerObject)
+        {
+            LevelManager.Instance.Players[1].PlayerObject = playerObject;
+            GameManager.GetInstance().Players[1].PlayerObject = playerObject;
+            LevelManager.Instance.Players[1].player = playerObject.GetComponent<Player>();
+            GameManager.GetInstance().Players[1].player = playerObject.GetComponent<Player>();
         }
 
         #region PhotonCallbacks
@@ -102,9 +129,10 @@ namespace Assets.Scripts.Photon
         public override void OnJoinedRoom()
         {
             TGEOnJoinedRoom?.Invoke();
-            TGEOnPhotonPlayerConnected?.Invoke(PhotonNetwork.player);
+            //TGEOnPhotonPlayerConnected?.Invoke(PhotonNetwork.player);
         }
 
+        
         public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
         {
             TGEOnJoinRoomFailed?.Invoke(codeAndMsg); 
@@ -113,6 +141,16 @@ namespace Assets.Scripts.Photon
         public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
         {
             TGEOnJoinRandomRoomFailed?.Invoke(codeAndMsg);
+        }
+
+        public override void OnLeftRoom()
+        {
+            TGEOnLeftRoom?.Invoke();
+        }
+
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+        {
+            TGEOnPhotonPlayerDisconnected?.Invoke(otherPlayer);
         }
         #endregion
     }

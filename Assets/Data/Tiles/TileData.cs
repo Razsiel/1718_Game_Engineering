@@ -3,32 +3,22 @@ using System.Linq;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 
-namespace Assets.ScriptableObjects.Tiles {
+namespace Assets.Data.Tiles {
     [Serializable]
     [CreateAssetMenu(menuName = "Data/Tiles/Tile")]
     public class TileData : ScriptableObject {
-        [SerializeField] public Mesh TileMesh;
-        [SerializeField] public TileDecorationData[] DecorationsData;
-        [SerializeField] public Material TileMaterial;
+        [SerializeField] public Mesh Mesh;
+        [SerializeField] public Material Material;
 
         //private event OnPlayerTileEnter;
         //private event OnPlayerTileLeave;
-
-        public virtual bool IsWalkable(CardinalDirection direction) {
-            return DecorationsData.Length == 0 || DecorationsData.All(d => d.IsWalkable(direction));
+        
+        public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
+            return GenerateGameObject(parent.transform, hidden);
         }
 
-        public virtual bool CanExit(CardinalDirection direction) {
-            var oppositeDirection = direction.ToOppositeDirection();
-            return IsWalkable(oppositeDirection);
-        }
-
-        public GameObject GenerateGameObject(GameObject parent, int x, int y, bool hidden = false) {
-            return GenerateGameObject(parent.transform, x, y, hidden);
-        }
-
-        public GameObject GenerateGameObject(Transform parent, int x, int y, bool hidden = false) {
-            var tile = new GameObject($"Tile ({x}, {y})",
+        public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
+            var tile = new GameObject($"Tile",
                                       typeof(MeshFilter),
                                       typeof(MeshRenderer)) {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
@@ -39,26 +29,13 @@ namespace Assets.ScriptableObjects.Tiles {
             // Fill in components
             var meshFilter = tile.GetComponent<MeshFilter>();
             if (meshFilter != null) {
-                meshFilter.mesh = this.TileMesh;
+                meshFilter.mesh = this.Mesh;
             }
             var meshRenderer = tile.GetComponent<MeshRenderer>();
             if (meshRenderer != null) {
-                meshRenderer.sharedMaterial = this.TileMaterial;
+                meshRenderer.sharedMaterial = this.Material;
             }
-#if UNITY_EDITOR
-            var textObject = new GameObject($"Text", typeof(TextMesh));
-            textObject.transform.parent = tile.transform;
-            textObject.transform.position = new Vector3(0, 20, 0);
-            textObject.transform.Rotate(Vector3.right, 90);
-            var text = textObject.GetComponent<TextMesh>();
-            if (text != null) {
-                text.alignment = TextAlignment.Center;
-                text.anchor = TextAnchor.MiddleCenter;
-                text.characterSize = 4;
-                text.fontStyle = FontStyle.Bold;
-                text.text = tile.name.Substring(5);
-            }
-#endif
+            
             return tile;
         }
     }
