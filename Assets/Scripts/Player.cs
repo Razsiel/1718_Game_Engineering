@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Data.Command;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -18,6 +20,8 @@ namespace Assets.Scripts {
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
+
+        public bool IsReady = false;
 
         public CardinalDirection ViewDirection = CardinalDirection.North;
 
@@ -59,6 +63,21 @@ namespace Assets.Scripts {
 
                 yield return new WaitForSeconds(2);
             }
+        }
+
+        public void UpdateSequence(List<CommandEnum> commands)
+        {
+            this._sequence.Clear();
+
+            var commandOptions = GameManager.GetInstance().CommandLibrary.Commands;
+            var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
+
+            this._sequence.AddRange(commandValues);
+        }
+
+        public void StartExecution()
+        {
+            StartCoroutine(ExecuteCommands());
         }
 
         public void ReadyButtonClicked()
