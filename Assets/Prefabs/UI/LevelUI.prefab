@@ -392,7 +392,7 @@ GameObject:
   - component: {fileID: 224158735215498100}
   - component: {fileID: 114080286528789262}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: CommandController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2014,20 +2014,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1008ce7c77af744c99540e9b5f11045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfCommandsAllowed: 9
-  commandSlots: []
-  interactCommand: {fileID: 1619003753961984, guid: 8b048d173cb3ea4458afc2d37fdbb280,
-    type: 2}
-  moveCommand: {fileID: 1587164230610542, guid: 4d3627f0f6e8a1e4b8a547dff99377b9,
-    type: 2}
-  Player: {fileID: 114646280960837306, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba, type: 2}
-  slots: {fileID: 1488353370856320, guid: 323c90531fc9a714e8f4d70996ff1826, type: 2}
-  turnLeftCommand: {fileID: 1032340985221720, guid: 966ec0645778d1742b9ba0ece01b1be9,
-    type: 2}
-  turnRightCommand: {fileID: 1801185705325364, guid: 6af39274a7339aa48a9b9f3b18722caf,
-    type: 2}
-  waitCommand: {fileID: 1518248838136922, guid: fd72977f97fbaa7449050be9d80cac37,
-    type: 2}
+  AmountOfCommandsAllowed: 10
+  CommandSlots: []
+  InteractCommand: {fileID: 1689872064904640}
+  MoveCommand: {fileID: 1032243057011752}
+  Player: {fileID: 0}
+  Slots: {fileID: 1488353370856320, guid: 323c90531fc9a714e8f4d70996ff1826, type: 2}
+  TurnLeftCommand: {fileID: 1694252180402380}
+  TurnRightCommand: {fileID: 1299851603427966}
+  WaitCommand: {fileID: 1895375711080330}
 --- !u!114 &114597501456850824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2391,20 +2386,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1008ce7c77af744c99540e9b5f11045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfCommandsAllowed: 10
-  commandSlots:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  interactCommand: {fileID: 21300000, guid: 268a173df2f064c47b61e297d19892d0, type: 3}
-  moveCommand: {fileID: 21300000, guid: 2f8208f0db3e7c74d87023d7d0054b2f, type: 3}
+  AmountOfCommandsAllowed: 10
+  CommandSlots: []
+  InteractCommand: {fileID: 1689872064904640}
+  MoveCommand: {fileID: 1032243057011752}
   Player: {fileID: 0}
-  slots: {fileID: 1865642583622242, guid: a36928c061c78c544afec20f9680adf0, type: 2}
-  turnLeftCommand: {fileID: 21300000, guid: 1bd31c45e14f59842a23e0393475100d, type: 3}
-  turnRightCommand: {fileID: 21300000, guid: 6bcefe00689d9d649860919d5c526177, type: 3}
-  waitCommand: {fileID: 21300000, guid: 7cb5389fb00da9d4687414d7976230a0, type: 3}
+  Slots: {fileID: 1865642583622242, guid: a36928c061c78c544afec20f9680adf0, type: 2}
+  TurnLeftCommand: {fileID: 1694252180402380}
+  TurnRightCommand: {fileID: 1299851603427966}
+  WaitCommand: {fileID: 1895375711080330}
 --- !u!114 &114816084599971234
 MonoBehaviour:
   m_ObjectHideFlags: 1
