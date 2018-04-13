@@ -915,7 +915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SequenceBar: {fileID: 114591532479828412}
-  OtherSequenceBar: {fileID: 0}
+  OtherSequenceBar: {fileID: 114801361568383016}
 --- !u!114 &114080785553669708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2014,15 +2014,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1008ce7c77af744c99540e9b5f11045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfCommandsAllowed: 0
+  AmountOfCommandsAllowed: 10
   CommandSlots: []
-  InteractCommand: {fileID: 0}
-  MoveCommand: {fileID: 0}
+  InteractCommand: {fileID: 1689872064904640}
+  MoveCommand: {fileID: 1032243057011752}
   Player: {fileID: 0}
-  Slots: {fileID: 0}
-  TurnLeftCommand: {fileID: 0}
-  TurnRightCommand: {fileID: 0}
-  WaitCommand: {fileID: 0}
+  Slots: {fileID: 1488353370856320, guid: 323c90531fc9a714e8f4d70996ff1826, type: 2}
+  TurnLeftCommand: {fileID: 1694252180402380}
+  TurnRightCommand: {fileID: 1299851603427966}
+  WaitCommand: {fileID: 1895375711080330}
 --- !u!114 &114597501456850824
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2386,15 +2386,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1008ce7c77af744c99540e9b5f11045, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AmountOfCommandsAllowed: 0
+  AmountOfCommandsAllowed: 10
   CommandSlots: []
-  InteractCommand: {fileID: 0}
-  MoveCommand: {fileID: 0}
+  InteractCommand: {fileID: 1689872064904640}
+  MoveCommand: {fileID: 1032243057011752}
   Player: {fileID: 0}
-  Slots: {fileID: 0}
-  TurnLeftCommand: {fileID: 0}
-  TurnRightCommand: {fileID: 0}
-  WaitCommand: {fileID: 0}
+  Slots: {fileID: 1865642583622242, guid: a36928c061c78c544afec20f9680adf0, type: 2}
+  TurnLeftCommand: {fileID: 1694252180402380}
+  TurnRightCommand: {fileID: 1299851603427966}
+  WaitCommand: {fileID: 1895375711080330}
 --- !u!114 &114816084599971234
 MonoBehaviour:
   m_ObjectHideFlags: 1
