@@ -33,10 +33,11 @@ namespace Assets.Scripts {
         }
 
         private void ClearCurrentCommands() {
-            foreach (var slot in SequenceBar.CommandSlots) {
-                var image = slot.transform.GetChild(0).GetComponent<Image>();
-                image.sprite = null;
-            }
+            //foreach (var slot in SequenceBar.CommandSlots) {
+            //    var image = slot.transform.GetChild(0).GetComponent<Image>();
+            //    image.sprite = null;
+            //}
+            SequenceBar.ClearImages();
         }
     }
 }
