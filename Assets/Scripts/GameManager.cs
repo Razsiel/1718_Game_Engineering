@@ -48,7 +48,7 @@ namespace Assets.Scripts {
 
         void Start() {
             // Setup level
-           
+
             // Temp Players setup (done in awake)
             //Players = new List<TGEPlayer>();
             //TGEPlayer player = new TGEPlayer();
@@ -58,6 +58,7 @@ namespace Assets.Scripts {
             // Make sure de scene contains required GameObjects
 
             // PrefabContainer filled and available
+            PrefabContainer.Initialize();
             AssertAllNotNull();
 
             // Initialize LevelData with Players
@@ -66,6 +67,7 @@ namespace Assets.Scripts {
 
             // Initialize UI
             EventManager.OnInitializeUi();
+            EventManager.OnInitializeAudio();
 
             // Link Player2 to Photon instance
             // Start Level
