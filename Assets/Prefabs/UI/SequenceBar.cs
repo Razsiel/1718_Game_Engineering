@@ -55,7 +55,8 @@ public class SequenceBar : MonoBehaviour
     public void ClearImages()
     {
         for (var i = 0; i < AmountOfCommandsAllowed; i++)
-            CommandSlots[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
+            if(CommandSlots[i].transform.childCount > 0)
+            Destroy(CommandSlots[i].transform.GetChild(0).gameObject);
     }
 
     private void HasChanged(int commandSlotIndex, bool destroy)
@@ -66,20 +67,19 @@ public class SequenceBar : MonoBehaviour
             //Destroy the child of the slot
             var command = CommandSlots[commandSlotIndex].transform.GetChild(0).gameObject;
             Destroy(command);
-            moveCommandsToLeftFromIndex(commandSlotIndex);
+            MoveCommandsToLeftFromIndex(commandSlotIndex);
 
             //Remove the command at that index from the player
             Player.RemoveCommand(commandSlotIndex);
         }
 
-        //Set the new sequence of the player
     }
 
-    private void moveCommandsToLeftFromIndex(int commandSlotIndex)
+    private void MoveCommandsToLeftFromIndex(int commandSlotIndex)
     {
         for (var i = commandSlotIndex; i < CommandSlots.Length; i++)
             //Set command parent to the previous slot
-            if (CommandSlots[i].transform.childCount > 0)
+            if (CommandSlots[i].transform.childCount > 0 && i != 0)
             {
                 var command = CommandSlots[i].transform.GetChild(0).gameObject;
 
