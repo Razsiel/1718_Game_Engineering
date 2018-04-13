@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Command;
 using Assets.Data.Player;
@@ -70,8 +71,14 @@ namespace Assets.Scripts {
         {
             foreach(BaseCommand command in _sequence)
             {
+                DateTime beforeExecute = DateTime.Now;
                 yield return StartCoroutine(command.Execute(this));
-                //yield return new WaitForSeconds(1);
+                DateTime afterExecute = DateTime.Now;
+
+                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
+                float delay = (1500f - (float) (afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+
+                yield return new WaitForSeconds(delay);
             }
         }
 
