@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Data.Command;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +20,8 @@ namespace Assets.Scripts {
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
+
+        public bool IsReady = false;
 
         public CardinalDirection ViewDirection = CardinalDirection.North;
 
@@ -60,18 +65,45 @@ namespace Assets.Scripts {
             }
         }
 
+        public void UpdateSequence(List<CommandEnum> commands)
+        {
+            this._sequence.Clear();
+
+            var commandOptions = GameManager.GetInstance().CommandLibrary.Commands;
+            var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
+
+            this._sequence.AddRange(commandValues);
+        }
+
+        public void StartExecution()
+        {
+            StartCoroutine(ExecuteCommands());
+        }
+
         public void ReadyButtonClicked()
         {
             OnPlayerReady?.Invoke();
             StartCoroutine(ExecuteCommands());
         }
 
+        public void RemoveCommand(int commandIndex)
+        {
+            _sequence.RemoveAt(commandIndex);
+            SequenceChanged?.Invoke(_sequence);
+        }
+
         IEnumerator ExecuteCommands()
         {
             foreach(BaseCommand command in _sequence)
             {
+                DateTime beforeExecute = DateTime.Now;
                 yield return StartCoroutine(command.Execute(this));
-                //yield return new WaitForSeconds(1);
+                DateTime afterExecute = DateTime.Now;
+
+                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
+                float delay = (1500f - (float) (afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+
+                yield return new WaitForSeconds(delay);
             }
         }
 
