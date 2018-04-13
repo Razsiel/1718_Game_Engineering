@@ -3,7 +3,6 @@ using Assets.Scripts;
 using UnityEngine.Assertions;
 using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Assets.Prefabs.UI {
@@ -11,8 +10,7 @@ namespace Assets.Prefabs.UI {
     public class CommandController : TGEMonoBehaviour {
 
         private CommandLibrary _commandLibrary;
-        public SequenceBar SequenceBar;
-        public SequenceBar OtherSequenceBar;
+        public SequenceBar SequenceBar;       
         Player _player;
         GameManager _gameManager;
 

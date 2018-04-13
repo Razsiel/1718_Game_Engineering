@@ -17,7 +17,7 @@ namespace Assets.Scripts {
         public List<TGEPlayer> Players;
     
         public CommandLibrary CommandLibrary;
-        public GameObject commandControllerHolder;
+        
 
         public bool IsMultiPlayer = false;
 
@@ -98,11 +98,10 @@ namespace Assets.Scripts {
                 var playerObject = Instantiate(this.PrefabContainer.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
                 var playerComponent = playerObject.GetComponent<Player>();
                 playerComponent.PlayerNumber = i;
+                playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
                 players[i].PlayerObject = playerObject;
-                players[i].player = playerComponent;
-                //players[i].player.controller = commandControllerHolder.GetComponent<CommandController>();
-
-                //PlayerInitialized(playerComponent);
+                players[i].player = playerComponent;               
+                             
                 PlayerInitialized?.Invoke(playerComponent);
                 // layerInitialized(playerComponent);
 

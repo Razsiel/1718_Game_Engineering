@@ -160,6 +160,7 @@ public class RoomManager : Photon.MonoBehaviour
     public void UpdateReadyState(PhotonMessageInfo info)
     {
         print("GOT RPC Ready state");
+        //The other player is now ready
         GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.IsReady = true;
 
         if(GameManager.GetInstance().Players.All(x => x.player.IsReady))

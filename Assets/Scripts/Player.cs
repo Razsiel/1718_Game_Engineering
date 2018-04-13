@@ -21,8 +21,10 @@ namespace Assets.Scripts
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
+        public UnityAction OnPlayerSequenceRan;
 
         public bool IsReady = false;
+        public bool IsLocalPlayer;
 
         public CardinalDirection ViewDirection = CardinalDirection.North;
 
@@ -31,6 +33,12 @@ namespace Assets.Scripts
         {
             _gameManager = GameManager.GetInstance();
             _sequence = new List<BaseCommand>();
+
+            if (GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player == this)
+                OnPlayerSequenceRan += () =>
+                {
+                    this.IsReady = false;
+                };
 
             /*     
             _sequence = new List<BaseCommand>
@@ -107,6 +115,7 @@ namespace Assets.Scripts
 
                 yield return new WaitForSeconds(delay);
             }
+            OnPlayerSequenceRan?.Invoke();
         }
 
         public void AddCommand(BaseCommand command)

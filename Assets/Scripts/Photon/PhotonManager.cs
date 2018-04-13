@@ -66,6 +66,11 @@ namespace Assets.Scripts.Photon
                 
             }
         }
+
+        public PhotonPlayer GetLocalPlayer()
+        {
+            return PhotonNetwork.player;
+        }
        
         public void PlayersReady()
         {
