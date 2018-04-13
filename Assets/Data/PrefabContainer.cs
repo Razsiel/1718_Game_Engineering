@@ -26,7 +26,13 @@ public class PrefabContainer : ScriptableObject {
     // Textures
 
     // Sound Effects
+    [SerializeField] public AudioClip sfx_button_hover;
 
     // Background Music
 
+
+    public void Initialize()
+    {
+        sfx_button_hover = Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover");
+    }
 }

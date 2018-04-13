@@ -11,12 +11,17 @@ public class EventManager
            
     public static UnityAction InitializeUi;
     public static UnityAction InitializePhoton;
-           
+    public static UnityAction InitializeAudio;
+
     public static UnityAction EnableUserInput;
     public static UnityAction DisableUserInput;
     public static UnityAction ReadyButtonClicked;
     public static UnityAction PhotonSynchronized;
     public static UnityAction MonologueEnded;
+
+    public static UnityAction<SFX> PlaySoundEffect;
+    public static UnityAction<BGM> PlayMusicClip;
+
 
     public static void OnInitializeUi()
     {
@@ -43,28 +48,44 @@ public class EventManager
         ReadyButtonClicked?.Invoke();
     }
 
-    private static void OnLevelSelected()
+    public static void OnLevelSelected()
     {
         LevelSelected?.Invoke();
     }
 
-    private static void OnLoadingCompleted()
+    public static void OnLoadingCompleted()
     {
         LoadingCompleted?.Invoke();
     }
 
-    private static void OnAllLevelGoalsReached()
+    public static void OnAllLevelGoalsReached()
     {
         AllLevelGoalsReached?.Invoke();
     }
 
-    private static void OnPhotonSynchronized()
+    public static void OnPhotonSynchronized()
     {
         PhotonSynchronized?.Invoke();
     }
 
-    private static void OnMonologueEnded()
+    public static void OnMonologueEnded()
     {
         MonologueEnded?.Invoke();
+    }
+
+    public static void OnPlaySoundEffect(SFX soundName)
+    {
+        PlaySoundEffect?.Invoke(soundName);
+    }
+
+    public static void OnPlayMusicClip(BGM clipName)
+    {
+        PlayMusicClip?.Invoke(clipName);
+    }
+    
+
+    public static void OnInitializeAudio()
+    {
+        InitializeAudio?.Invoke();
     }
 }

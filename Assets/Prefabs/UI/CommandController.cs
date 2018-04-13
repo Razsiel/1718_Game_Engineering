@@ -96,5 +96,10 @@ namespace Assets.Prefabs.UI {
         //        image.sprite = c.Icon;
         //    }
         //}
+
+        public void OnHover()
+        {
+            EventManager.OnPlaySoundEffect(SFX.ButtonHover);
+        }
     }
 }
