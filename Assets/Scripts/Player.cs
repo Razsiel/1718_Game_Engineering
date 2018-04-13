@@ -88,6 +88,12 @@ namespace Assets.Scripts
                 StartCoroutine(ExecuteCommands());
         }
 
+        public void RemoveCommand(int commandIndex)
+        {
+            _sequence.RemoveAt(commandIndex);
+            SequenceChanged?.Invoke(_sequence);
+        }
+
         IEnumerator ExecuteCommands()
         {
             foreach (BaseCommand command in _sequence)

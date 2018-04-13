@@ -17,8 +17,6 @@ public class LevelPresenter : MonoBehaviour
         Assert.IsNotNull(gameManager);
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
-        //Assert.IsEmpty is not an existing one
-        //Assert.IsNo(players);
 
         // create level objects in scene
         levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
