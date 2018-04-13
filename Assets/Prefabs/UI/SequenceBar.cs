@@ -55,7 +55,8 @@ public class SequenceBar : MonoBehaviour
     public void ClearImages()
     {
         for (var i = 0; i < AmountOfCommandsAllowed; i++)
-            CommandSlots[i].transform.GetChild(0).GetComponent<Image>().sprite = null;
+            if(CommandSlots[i].transform.childCount > 0)
+            Destroy(CommandSlots[i].transform.GetChild(0).gameObject);
     }
 
     private void HasChanged(int commandSlotIndex, bool destroy)
@@ -72,7 +73,6 @@ public class SequenceBar : MonoBehaviour
             Player.RemoveCommand(commandSlotIndex);
         }
 
-        //Set the new sequence of the player
     }
 
     private void MoveCommandsToLeftFromIndex(int commandSlotIndex)
