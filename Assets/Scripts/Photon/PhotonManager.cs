@@ -9,42 +9,16 @@ using Assets.Data.Levels;
 using UnityEngine.Assertions;
 using Photon;
 using Assets.Scripts.DataStructures;
+using System.Linq;
 
 namespace Assets.Scripts.Photon
 {
     public class PhotonManager : PunBehaviour
     {
-        //Our singleton instance of the Photonmanager
-        public static PhotonManager Instance
-        {
-            get { return _instance; }
-            private set { _instance = value; }
-        }
-
         //Backing field of our singleton instance
         private static PhotonManager _instance;
-
-        public RoomManager RoomManager
-        {
-            get { return _roomManager; }
-            set { _roomManager = value; }
-        }
-
-       
-        /// <summary>
-        /// To be called later when a startbutton is called
-        /// </summary>
-        /// <param name="levelData">The level we want to start</param>
-        public void StartMultiplayerGame(LevelData levelData, List<TGEPlayer> players)
-        {
-            foreach (PhotonPlayer p in PhotonNetwork.otherPlayers)
-            {
-                //Send RPC on every player to load the level
-            }
-        }
-
         private RoomManager _roomManager;
-       
+
         //Events to react on
         public event UnityAction TGEOnJoinedLobby;
         public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
@@ -56,20 +30,48 @@ namespace Assets.Scripts.Photon
         public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
         public event UnityAction TGEOnPlayersCreated;
 
+        //Our singleton instance of the Photonmanager
+        public static PhotonManager Instance
+        {
+            get { return _instance; }
+            private set { _instance = value; }
+        }
+
+        public RoomManager RoomManager
+        {
+            get { return _roomManager; }
+            set { _roomManager = value; }
+        }
+
+
+        //Private because of SingleTon
+        private PhotonManager() { }
+
         void Awake()
         {
             Instance = this;
             RoomManager = gameObject.GetComponent<RoomManager>();
             Assert.IsNotNull(_roomManager);
         }
-
-        //Private because of SingleTon
-        private PhotonManager() { }
-
+       
+        /// <summary>
+        /// To be called later when a startbutton is called
+        /// </summary>
+        /// <param name="levelData">The level we want to start</param>
+        public void StartMultiplayerGame(LevelData levelData, List<TGEPlayer> players)
+        {
+            foreach (TGEPlayer p in players.Where(x => !x.photonPlayer.IsLocal))
+            {
+                //Send RPC on every player to load the level
+                
+            }
+        }
+       
         public void PlayersReady()
         {
             TGEOnPlayersCreated?.Invoke();
         }
+
 
         public void CreateRoom(string roomName)
         {

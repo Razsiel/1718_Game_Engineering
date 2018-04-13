@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Tiles;
 using UnityEngine;
@@ -7,11 +8,11 @@ namespace Assets.Scripts.DataStructures {
     [Serializable]
     public class TileConfiguration {
         [SerializeField] public TileData Tile;
-        [SerializeField] public TileDecorationData[] Decorations;
+        [SerializeField] public List<DecorationConfiguration> DecorationConfigs;
         
         public virtual bool IsWalkable(CardinalDirection direction)
         {
-            return Decorations.Length == 0 || Decorations.All(d => d.IsWalkable(direction));
+            return DecorationConfigs.Count == 0 || DecorationConfigs.All(d => d.DecorationData.IsWalkable(direction));
         }
 
         public virtual bool CanExit(CardinalDirection direction)
@@ -35,7 +36,7 @@ namespace Assets.Scripts.DataStructures {
             tileConfigObject.transform.parent = root;
 
             var tile = Tile?.GenerateGameObject(tileConfigObject, hidden);
-            foreach (var decoration in Decorations) {
+            foreach (var decoration in DecorationConfigs) {
                 decoration?.GenerateGameObject(tile, hidden);
             }
 

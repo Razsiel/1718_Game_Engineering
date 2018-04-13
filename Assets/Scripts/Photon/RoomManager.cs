@@ -28,9 +28,9 @@ public class RoomManager : Photon.MonoBehaviour
     {
         photonRooms = new List<RoomInfo>();
 
-        roomView = roomPanel.GetComponents<RoomListView>()[0];
-        print(roomView);
-        Assert.IsNotNull(roomView);
+        //roomView = roomPanel.GetComponents<RoomListView>()[0];
+        //print(roomView);
+        //Assert.IsNotNull(roomView);
     }
 
     //Lets connect two users to Photon and a lobby (+room)
