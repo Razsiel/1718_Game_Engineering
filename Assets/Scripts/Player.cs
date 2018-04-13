@@ -9,14 +9,15 @@ using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Assets.Scripts {
+namespace Assets.Scripts
+{
     public class Player : MonoBehaviour
     {
         private GameManager _gameManager;
         private List<BaseCommand> _sequence;
 
         public int PlayerNumber;
-        public PlayerData Data;     
+        public PlayerData Data;
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
@@ -55,7 +56,7 @@ namespace Assets.Scripts {
         //Press Spacebar to run sequence
         IEnumerator WaitForInput()
         {
-            while(true)
+            while (true)
             {
                 yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
 
@@ -83,19 +84,20 @@ namespace Assets.Scripts {
         public void ReadyButtonClicked()
         {
             OnPlayerReady?.Invoke();
-            StartCoroutine(ExecuteCommands());
+            if (!GameManager.GetInstance().IsMultiPlayer)
+                StartCoroutine(ExecuteCommands());
         }
 
         IEnumerator ExecuteCommands()
         {
-            foreach(BaseCommand command in _sequence)
+            foreach (BaseCommand command in _sequence)
             {
                 DateTime beforeExecute = DateTime.Now;
                 yield return StartCoroutine(command.Execute(this));
                 DateTime afterExecute = DateTime.Now;
 
                 // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-                float delay = (1500f - (float) (afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
 
                 yield return new WaitForSeconds(delay);
             }

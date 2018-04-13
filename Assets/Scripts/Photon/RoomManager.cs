@@ -102,7 +102,7 @@ public class RoomManager : Photon.MonoBehaviour
 
                     GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.OnPlayerReady += () =>
                     {
-                        gameManager.Players.Single(x => x.photonPlayer.IsLocal).player.IsReady = true;
+                        GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.IsReady = true;
 
                         if(!PhotonNetwork.player.IsMasterClient)
                             this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
@@ -152,7 +152,7 @@ public class RoomManager : Photon.MonoBehaviour
         print("Got RPC");
         ListContainer<CommandHolder> commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
         List<CommandEnum> commandEnums = commands.list.Select(x => x.command).ToList();
-        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
+        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
         networkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
     }
 
@@ -160,9 +160,9 @@ public class RoomManager : Photon.MonoBehaviour
     public void UpdateReadyState(PhotonMessageInfo info)
     {
         print("GOT RPC Ready state");
-        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).player.IsReady = true;
+        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.IsReady = true;
 
-        if(gameManager.Players.All(x => x.player.IsReady))
+        if(GameManager.GetInstance().Players.All(x => x.player.IsReady))
             SendStartExecution();
     }
 
@@ -174,7 +174,7 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
-        foreach(TGEPlayer p in gameManager.Players)
+        foreach(TGEPlayer p in GameManager.GetInstance().Players)
             p.player.StartExecution();
     }
 
