@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 224882788396743110}
   - component: {fileID: 114622914893833180}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: CommandController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1747,7 +1747,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98281da0e25659246b1c7b1781a4a2b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sequenceBar: {fileID: 114637499365524498}
+  SequenceBar: {fileID: 114637499365524498}
+  OtherSequencebar: {fileID: 114098237054995016}
 --- !u!114 &114624147210280816
 MonoBehaviour:
   m_ObjectHideFlags: 1
