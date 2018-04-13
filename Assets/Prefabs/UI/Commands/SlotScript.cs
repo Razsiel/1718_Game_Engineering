@@ -4,7 +4,7 @@ using System.Collections;
 
 public class SlotScript : MonoBehaviour, IDropHandler
 {
-
+    //public SequenceBar SequenceBar;
     public GameObject item
     {
         get
@@ -20,7 +20,17 @@ public class SlotScript : MonoBehaviour, IDropHandler
     {
         if (!item)
         {
-            DragHandler.item.transform.SetParent(transform);
+            DragHandler.itemBeingDragged.transform.SetParent(transform);
         }
+    }
+
+    public void OnSlotClicked()
+    {
+        //if (item)
+        //{
+        //    Destroy(transform.GetChild(0).gameObject);
+        //    int a = SequenceBar.GetNextEmptySlotIndex();
+        //    print(a);
+        //}
     }
 }

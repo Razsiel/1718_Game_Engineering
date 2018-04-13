@@ -5,26 +5,21 @@ using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public static GameObject item;
+    public static GameObject ItemBeingDragged;
 
-    Transform startParent;
-    Vector3 startPosition;
-    bool start = true;
+    Transform _startParent;
+    Vector3 _startPosition;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        GameObject item2 = Instantiate(gameObject);
-        item2.transform.SetParent(gameObject.transform.parent);
-        item2.transform.localScale = new Vector3(1,1,1);
+        ItemBeingDragged = gameObject;
 
-        item = gameObject;
-
-        startPosition = transform.position;
-        startParent = transform.parent;
+        _startPosition = transform.position;
+        _startParent = transform.parent;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-        item.GetComponent<LayoutElement>().ignoreLayout = true;
-        item.transform.SetParent(item.transform.parent.parent);
+        //item.GetComponent<LayoutElement>().ignoreLayout = true;
+        //item.transform.SetParent(item.transform.parent.parent);
     }
 
 
@@ -35,14 +30,14 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        item = null;
-        if (transform.parent == startParent)
+        ItemBeingDragged = null;
+        if (transform.parent == _startParent)
         {
-            transform.position = startPosition;
+            transform.position = _startPosition;
         }
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        item.GetComponent<LayoutElement>().ignoreLayout = false;
+        //item.GetComponent<LayoutElement>().ignoreLayout = false;
     }
 
 }

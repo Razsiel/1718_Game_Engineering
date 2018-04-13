@@ -40,44 +40,40 @@ namespace Assets.Prefabs.UI {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.MoveCommand);
             GameObject moveCommand = Instantiate(SequenceBar.moveCommand);
-            moveCommand.transform.parent = SequenceBar.commandSlots[nextFreeSlot].transform;
-            moveCommand.transform.localScale = new Vector3(1, 1, 1);
+            moveCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            moveCommand.GetComponent<Button>().enabled = false;
         }
 
         public void OnTurnLeftButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.TurnLeftCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.turnLeftCommand);
-            moveCommand.transform.parent = SequenceBar.commandSlots[nextFreeSlot].transform;
-            moveCommand.transform.localScale = new Vector3(1, 1, 1);
+            GameObject turnLeftCommand = Instantiate(SequenceBar.turnLeftCommand);
+            turnLeftCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnTurnRightButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.TurnRightCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.turnRightCommand);
-            moveCommand.transform.parent = SequenceBar.commandSlots[nextFreeSlot].transform;
-            moveCommand.transform.localScale = new Vector3(1, 1, 1);
+            GameObject turnRightCommand = Instantiate(SequenceBar.turnRightCommand);
+            turnRightCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnWaitButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.WaitCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.waitCommand);
-            moveCommand.transform.parent = SequenceBar.commandSlots[nextFreeSlot].transform;
-            moveCommand.transform.localScale = new Vector3(1, 1, 1);
+            GameObject waitCommand = Instantiate(SequenceBar.waitCommand);
+            waitCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnInteractButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.InteractCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.interactCommand);
-            moveCommand.transform.parent = SequenceBar.commandSlots[nextFreeSlot].transform;
-            moveCommand.transform.localScale = new Vector3(1, 1, 1);
+            GameObject interactCommand = Instantiate(SequenceBar.interactCommand);
+            interactCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
         }
 
         public void ClearButtonClicked() {
