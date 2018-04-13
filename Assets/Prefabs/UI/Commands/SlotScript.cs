@@ -20,7 +20,7 @@ public class SlotScript : MonoBehaviour, IDropHandler
     {
         if (!item)
         {
-            DragHandler.itemBeingDragged.transform.SetParent(transform);
+            DragHandler.ItemBeingDragged.transform.SetParent(transform);
         }
     }
 
