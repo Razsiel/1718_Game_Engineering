@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Tiles;
+using Assets.Scripts.Behaviours;
 using Assets.Scripts.DataStructures.Channel;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -15,11 +16,17 @@ namespace Assets.Scripts.DataStructures {
         [SerializeField] public Vector3 RelativePosition;
         [SerializeField] public int Scale = 1;
         [SerializeField] public int Rotation;
+        [SerializeField] public CardinalDirection Orientation = CardinalDirection.North;
         [SerializeField] public ChannelType Type;
         [SerializeField] public Channel.Channel Channel;
 
+        public GameObject GameObject { get; private set; }
+
+        public bool IsMechanismWithChannel => this.Type == ChannelType.Mechanism && this.Channel != DataStructures.Channel.Channel.None;
+
         public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
-            return GenerateGameObject(parent.transform, hidden);
+            GameObject = GenerateGameObject(parent.transform, hidden);
+            return GameObject;
         }
 
         private GameObject GenerateGameObject(Transform parent, bool hidden = false) {
@@ -28,9 +35,19 @@ namespace Assets.Scripts.DataStructures {
                 var transform = decoration.transform;
                 transform.position = RelativePosition;
                 transform.localScale = Vector3.one * Scale;
-                transform.eulerAngles = Vector3.up * Rotation;
+                transform.eulerAngles = Orientation.ToEuler() + Vector3.up * Rotation;
+                
+                var behaviour = decoration.GetComponent<DecorationBehaviour>();
+                Assert.IsNotNull(behaviour);
+                Assert.IsNotNull(this);
+                behaviour.Configuration = this;
             }
+            GameObject = decoration;
             return decoration;
+        }
+
+        public bool IsWalkable(CardinalDirection direction) {
+            return (DecorationData?.IsWalkable(direction) ?? false) && direction.ToOppositeDirection() != direction ;
         }
     }
 }

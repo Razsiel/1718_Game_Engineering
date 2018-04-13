@@ -12,7 +12,7 @@ namespace Assets.Scripts.DataStructures {
         
         public virtual bool IsWalkable(CardinalDirection direction)
         {
-            return DecorationConfigs.Count == 0 || DecorationConfigs.All(d => d.DecorationData.IsWalkable(direction));
+            return DecorationConfigs.Count == 0 || DecorationConfigs.All(d => d.IsWalkable(direction));
         }
 
         public virtual bool CanExit(CardinalDirection direction)
