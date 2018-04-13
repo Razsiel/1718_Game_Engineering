@@ -15,6 +15,7 @@ namespace Assets.Scripts.DataStructures {
     }
 
     public enum CardinalDirection : byte {
+        None = 0,
         North = 1,
         East = 3,
         South = 5,
@@ -68,6 +69,27 @@ namespace Assets.Scripts.DataStructures {
                     return new Vector2Int(-1, 1);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            }
+        }
+
+        /// <summary>
+        /// Converts a cardinal direction in a vector3 with a length of 1.
+        /// </summary>
+        /// <param name="cardinal">The cardinal direction to convert</param>
+        /// <returns>Vector3 where the z-axis represents north/south and the x-axis east/west</returns>
+        public static Vector3 ToVector3(this CardinalDirection cardinal) {
+            switch (cardinal)
+            {
+                case CardinalDirection.North:
+                    return new Vector3(0, 0, 1);
+                case CardinalDirection.East:
+                    return new Vector3(1, 0, 0);
+                case CardinalDirection.South:
+                    return new Vector3(0, 0, -1);
+                case CardinalDirection.West:
+                    return new Vector3(-1, 0, 0);
+                default:
+                    return new Vector3(0, 0, 0);
             }
         }
 

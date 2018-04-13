@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.DataStructures.Channel;
 using UnityEngine.Assertions;
 using UnityEngine;
 
@@ -40,8 +41,8 @@ public class LevelPresenter : MonoBehaviour
         };
         root.transform.parent = parent;
 
-        for (int y = 0; y < grid.Height; y++) {
-            for (int x = 0; x < grid.Width; x++) {
+        for (int x = 0; x < grid.Width; x++) {
+            for (int y = 0; y < grid.Height; y++) {
                 var tileConfiguration = grid[x, y];
                 if (tileConfiguration == null) {
                     continue;

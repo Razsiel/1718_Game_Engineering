@@ -53,9 +53,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31ea26321a51773498049afe1ef61991, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerA: {fileID: 0}
-  playerB: {fileID: 0}
-  commandLibrary: {fileID: 0}
+  PrefabContainer: {fileID: 11400000, guid: f5496ff2a16b4af4594d194df7cf63ce, type: 2}
+  CommandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}
+  commandControllerHolder: {fileID: 0}
+  IsMultiPlayer: 0
+  LevelData: {fileID: 11400000, guid: 0eb54dd4cf28d8d4a828c034883155bf, type: 2}
 --- !u!114 &114911608387390270
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -80,5 +82,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
     type: 2}
+  networkPlayerSequenceBarView: {fileID: 0}
   roomPanel: {fileID: 0}
-  commandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}
