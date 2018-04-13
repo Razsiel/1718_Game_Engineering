@@ -39,8 +39,8 @@ namespace Assets.Prefabs.UI {
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.MoveCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.moveCommand);
-            moveCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            GameObject moveCommand = Instantiate(SequenceBar.MoveCommand);
+            moveCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
             moveCommand.GetComponent<Button>().enabled = false;
         }
 
@@ -48,32 +48,32 @@ namespace Assets.Prefabs.UI {
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.TurnLeftCommand);
-            GameObject turnLeftCommand = Instantiate(SequenceBar.turnLeftCommand);
-            turnLeftCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
+            turnLeftCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnTurnRightButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.TurnRightCommand);
-            GameObject turnRightCommand = Instantiate(SequenceBar.turnRightCommand);
-            turnRightCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
+            turnRightCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnWaitButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.WaitCommand);
-            GameObject waitCommand = Instantiate(SequenceBar.waitCommand);
-            waitCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
+            waitCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
         }
 
         public void OnInteractButtonClicked()
         {
             int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
             _player.AddCommand(_commandLibrary.InteractCommand);
-            GameObject interactCommand = Instantiate(SequenceBar.interactCommand);
-            interactCommand.transform.SetParent(SequenceBar.commandSlots[nextFreeSlot].transform, false);
+            GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
+            interactCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
         }
 
         public void ClearButtonClicked() {
@@ -96,10 +96,5 @@ namespace Assets.Prefabs.UI {
         //        image.sprite = c.Icon;
         //    }
         //}
-
-        public void OnHover()
-        {
-            EventManager.OnPlaySoundEffect(SFX.ButtonHover);
-        }
     }
 }

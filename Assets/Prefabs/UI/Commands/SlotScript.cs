@@ -5,7 +5,7 @@ using System.Collections;
 public class SlotScript : MonoBehaviour, IDropHandler
 {
     //public SequenceBar SequenceBar;
-    public GameObject item
+    public GameObject Item
     {
         get
         {
@@ -18,9 +18,9 @@ public class SlotScript : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (!item)
+        if (!Item)
         {
-            DragHandler.itemBeingDragged.transform.SetParent(transform);
+            DragHandler.ItemBeingDragged.transform.SetParent(transform);
         }
     }
 
