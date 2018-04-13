@@ -3,7 +3,9 @@ using System.Linq;
 using Assets.Data.Goal;
 using Assets.Data.Grids;
 using Assets.Data.Player;
+using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.DataStructures.Channel;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
@@ -43,17 +45,19 @@ namespace Assets.Data.Levels {
 
             // Get current player pos
             Vector2Int playerPos;
-            if (!_playerPositions.TryGetValue(player, out playerPos))
-            {
+            if (!_playerPositions.TryGetValue(player, out playerPos)) {
                 Debug.Log(player.GetHashCode());
                 Debug.Log($"Could not move player: Player does not have a position on the grid");
                 return false; // current player does not have a position in this map
             }
-            
-            Debug.Log($"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
-            
-            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination)) {
-                Debug.Log($"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
+
+            Debug.Log(
+                $"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
+
+            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y,
+                                        out destination)) {
+                Debug.Log(
+                    $"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
                 return false;
             }
 
@@ -63,11 +67,12 @@ namespace Assets.Data.Levels {
                 Debug.Log($"Could not move player: A player is standing on the destination");
                 return false; // the destination contains a player
             }
-            
+
             // Get the current player position on the map
             GridCell current;
             if (!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current)) {
-                Debug.Log($"Could not move player: The current player position ({playerPos.x}, {playerPos.y}) does not exist in the map");
+                Debug.Log(
+                    $"Could not move player: The current player position ({playerPos.x}, {playerPos.y}) does not exist in the map");
                 return false; // the current position of the player does not exist on the map
             }
 
@@ -90,6 +95,42 @@ namespace Assets.Data.Levels {
 
         public Vector2Int GetPlayerStartPosition(int playerNumber) {
             return GridMapData.PlayerStartPositions[playerNumber];
+        }
+
+        public bool TryInteract(Scripts.Player player, CardinalDirection direction,
+                                out IEnumerable<DecorationConfiguration> decorationsInFrontOfPlayer) {
+            decorationsInFrontOfPlayer = null;
+            // Get current player pos
+            Vector2Int playerPos;
+            if (!_playerPositions.TryGetValue(player, out playerPos)) {
+                return false; // current player does not have a position in this map
+            }
+
+            // Get the current player position on the map
+            GridCell current;
+            if (!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current)) {
+                return false; // the current position of the player does not exist on the map
+            }
+
+            Debug.Log($"Trying to interact with any decorations");
+            // Get decorations that are oriented opposite to the player (so facing the player)
+            decorationsInFrontOfPlayer =
+                current.Value.DecorationConfigs.Where(d => d.Orientation == CardinalDirection.None || d.Orientation == direction.ToOppositeDirection());
+
+            if (!decorationsInFrontOfPlayer.Any()) {
+                return false; // there are no decorations to interact with
+            }
+
+            // Filter on triggers
+            var triggers = decorationsInFrontOfPlayer.Where(d => d.Type == ChannelType.Trigger);
+            Debug.Log($"Found {triggers.Count()} triggers to interact with...");
+            // Send a channel message for each trigger decoration channel found (skipping the 'NONE'-channel)
+            foreach (var triggerDecoration in triggers.Where(d => d.Channel != Channel.None).GroupBy(d => d.Channel)) {
+                Debug.Log($"Sending a message to channel: {triggerDecoration.Key}");
+                DecorationChannelManager.Instance.TriggerChannel(triggerDecoration.Key, player);
+            }
+
+            return true;
         }
     }
 }

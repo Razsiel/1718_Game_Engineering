@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Scripts.Behaviours;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 
@@ -8,7 +9,6 @@ namespace Assets.Data.Tiles {
     public class DecorationData : ScriptableObject {
         [SerializeField] public Mesh Mesh;
         [SerializeField] public Material Material;
-        [SerializeField] public CardinalDirection Orientation;
 
         public virtual bool IsWalkable(CardinalDirection direction) {
             return true;
@@ -21,7 +21,8 @@ namespace Assets.Data.Tiles {
         public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
             var decoration = new GameObject("Decoration",
                                             typeof(MeshFilter),
-                                            typeof(MeshRenderer)) {
+                                            typeof(MeshRenderer),
+                                            typeof(DecorationBehaviour)) {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
             };
             decoration.transform.parent = parent;
