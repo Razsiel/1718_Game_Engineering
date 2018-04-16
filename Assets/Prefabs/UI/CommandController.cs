@@ -77,7 +77,7 @@ namespace Assets.Prefabs.UI {
         }
 
         public void ClearButtonClicked() {
-            SequenceBar.ClearImages();
+            SequenceBar.ClearAllCommands();
 
             _player.ClearCommands();
         }

@@ -107,6 +107,12 @@ namespace Assets.Scripts {
             }
         }
 
+        public void AddOrInsertCommandAt(BaseCommand command, int index)
+        {
+            _sequence.Insert(index, command);
+            SequenceChanged?.Invoke(_sequence);
+        }
+
         public void AddCommand(BaseCommand command)
         {
             _sequence.Add(command);
