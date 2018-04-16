@@ -16,14 +16,6 @@ namespace Assets.Data.Command {
             {
                 Debug.Log("Interacting...");
                 // animate character
-
-                // animate decorations
-                foreach (var decorationConfiguration in decorationsToAnimate) {
-                    var gameObject = decorationConfiguration.GameObject;
-                    var behaviour = gameObject.GetComponent<DecorationBehaviour>();
-                    behaviour.OnInteract(player);
-                }
-                
             }
 
             yield break;

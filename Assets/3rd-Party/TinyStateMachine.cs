@@ -18,7 +18,7 @@ namespace M16h {
         #region Nested types
 
         private class Transition {
-            public Action<TState, TTrigger, TState> Action { get; set; }
+            public Action<TState, TTrigger, TState, object> Action { get; set; }
             public Func<TState, TTrigger, TState, bool> Guard { get; set; }
             public TState Next { get; private set; }
 
@@ -87,7 +87,7 @@ namespace M16h {
         /// <exception cref="System.ArgumentNullException">
         /// <paramref name="trigger"/> is null.
         /// </exception>
-        public void Fire(TTrigger trigger) {
+        public void Fire<T>(TTrigger trigger, T param) {
             if (trigger == null) {
                 throw new ArgumentNullException("trigger");
             }
@@ -128,12 +128,16 @@ namespace M16h {
             state = transition.Next;
 
             if (transition.Action != null) {
-                transition.Action(currentState, trigger, nextState);
+                transition.Action(currentState, trigger, nextState, param);
             }
 
             if (onAnyTransitionAction != null) {
                 onAnyTransitionAction(currentState, trigger, nextState);
             }
+        }
+
+        public void Fire(TTrigger trigger) {
+            Fire<object>(trigger, null);
         }
 
         /// <summary>
@@ -223,7 +227,7 @@ namespace M16h {
         /// on state change.</param>
         /// <returns><c>this</c></returns>
         public TinyStateMachine<TState, TTrigger> On(Action action) {
-            return On((f, tr, t) => action());
+            return On((f, tr, t, p) => action());
         }
 
         /// <summary>
@@ -245,7 +249,7 @@ namespace M16h {
         /// <paramref name="action"/> is null.
         /// </exception>
         public TinyStateMachine<TState, TTrigger> On(
-            Action<TState, TTrigger, TState> action
+            Action<TState, TTrigger, TState, object> action
         ) {
             if (action == null) {
                 throw new ArgumentNullException("action");

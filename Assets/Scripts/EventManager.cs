@@ -12,11 +12,13 @@ public class EventManager
     public static UnityAction InitializeUi;
     public static UnityAction InitializePhoton;
     public static UnityAction InitializeAudio;
+    public static UnityAction InitializeMonologue;
 
     public static UnityAction EnableUserInput;
     public static UnityAction DisableUserInput;
     public static UnityAction ReadyButtonClicked;
     public static UnityAction PhotonSynchronized;
+    public static UnityAction<Monologue> MonologueStart;
     public static UnityAction MonologueEnded;
 
     public static UnityAction<SFX> PlaySoundEffect;
@@ -70,7 +72,8 @@ public class EventManager
 
     public static void OnMonologueEnded()
     {
-        MonologueEnded?.Invoke();
+//        MonologueEnded?.Invoke();
+        EnableUserInput?.Invoke();
     }
 
     public static void OnPlaySoundEffect(SFX soundName)
@@ -87,5 +90,16 @@ public class EventManager
     public static void OnInitializeAudio()
     {
         InitializeAudio?.Invoke();
+    }
+
+    public static void OnInitializeMonologue()
+    {
+        InitializeMonologue?.Invoke();
+    }
+
+
+    public static void OnMonologueStart(Monologue monologue)
+    {
+        MonologueStart?.Invoke(monologue);
     }
 }

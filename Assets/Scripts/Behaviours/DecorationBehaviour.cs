@@ -8,6 +8,7 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.DataStructures.Channel;
 using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
+using M16h;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -16,26 +17,48 @@ namespace Assets.Scripts.Behaviours {
         public DecorationConfiguration Configuration;
 
         public void Start() {
-            // register self to receive messages from 'interacts' if I'm a mechanism listening to a channel
-            if (Configuration.IsMechanismWithChannel) {
-                DecorationChannelManager.Instance.RegisterToChannel(Configuration.Channel, OnChannelTriggered);
+            Configuration.Init(OnActivate, OnDeactivate);
+        }
+
+        private void OnActivate(Player player) {
+            Debug.Log("OnActive!");
+            switch (Configuration.Type)
+            {
+                case ChannelType.Trigger:
+                    // trigger active animation
+                    this.transform.DOScaleY(-1f, 1f);
+                    break;
+                case ChannelType.Mechanism:
+                    // mechanism active animation
+                    this.transform.DOLocalMoveY(Configuration.RelativePosition.y + 32f, 1.5f);
+                    break;
+                case ChannelType.Decoration:
+                    this.transform.DOShakePosition(
+                        1f, (player.ViewDirection.ToVector3() + new Vector3(0.15f, 0.15f, 0.15f)) * 2f);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
-        public void OnDisable() {
-            if (Configuration.IsMechanismWithChannel) {
-                DecorationChannelManager.Instance.UnRegisterFromChannel(Configuration.Channel, OnChannelTriggered);
+        private void OnDeactivate()
+        {
+            Debug.Log("OnDeactivate!");
+            switch (Configuration.Type)
+            {
+                case ChannelType.Trigger:
+                    // trigger inactive animation
+                    this.transform.DOScaleY(1f, 1f);
+                    break;
+                case ChannelType.Mechanism:
+                    // mechanism inactive animation
+                    this.transform.DOLocalMoveY(Configuration.RelativePosition.y, 1.5f);
+                    break;
+                case ChannelType.Decoration:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-        }
-
-        private void OnChannelTriggered(Channel channel, Player player) {
-            Debug.Log($"Received message from channel: {channel}");
-            this.transform.DOShakeScale(1f, 1.25f);
-        }
-
-        public void OnInteract(Player player) {
-            this.transform.DOShakePosition(
-                1f, (player.ViewDirection.ToVector3() + new Vector3(0.15f, 0.15f, 0.15f)) * 0.4f);
         }
     }
 }
