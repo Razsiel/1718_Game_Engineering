@@ -72,7 +72,8 @@ public class EventManager
 
     public static void OnMonologueEnded()
     {
-        MonologueEnded?.Invoke();
+//        MonologueEnded?.Invoke();
+        EnableUserInput?.Invoke();
     }
 
     public static void OnPlaySoundEffect(SFX soundName)
