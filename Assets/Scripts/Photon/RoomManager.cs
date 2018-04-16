@@ -70,8 +70,6 @@ public class RoomManager : Photon.MonoBehaviour
                 if(PhotonNetwork.playerList.Length < 2 || PhotonNetwork.playerList.Length > 2) return;
                 Debug.Log("Player joined WOHOO");
 
-
-
                 if(PhotonNetwork.player.IsMasterClient)
                     PhotonNetwork.room.IsOpen = false;
 
@@ -84,12 +82,10 @@ public class RoomManager : Photon.MonoBehaviour
 
             PhotonManager.Instance.TGEOnJoinedRoom += () =>
             {
-
-
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     print("Players are Created!");
-                    GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    GameManager.GetInstance().Players.GetLocalPlayer().player.SequenceChanged += (List<BaseCommand> sequence) =>
                     {
                         //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
                         print("about to send rpc");
@@ -102,6 +98,11 @@ public class RoomManager : Photon.MonoBehaviour
                         string methodToCall = nameof(UpdateOtherPlayersCommands);
                         this.photonView.RPC(methodToCall, PhotonTargets.Others, seqJson);
                         print("done sending");
+                    };
+
+                    GameManager.GetInstance().Players.GetLocalPlayer().player.OnPlayerReady += () =>
+                    {
+
                     };
                 };
             };
