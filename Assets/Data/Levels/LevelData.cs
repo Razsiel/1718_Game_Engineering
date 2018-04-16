@@ -88,6 +88,10 @@ namespace Assets.Data.Levels {
             if (canMove) {
                 Debug.Log($"Can move to {destination.XY}");
                 _playerPositions[player] = destination.XY;
+                // TODO: implement events here
+                // player.OnMove(destination.XY);
+                // current.Value.OnLeave(player);
+                // destination.Value.OnEnter(player);
             }
 
             return canMove;
@@ -122,7 +126,7 @@ namespace Assets.Data.Levels {
             }
 
             // Filter on triggers
-            var triggers = decorationsInFrontOfPlayer.Where(d => d.Type == ChannelType.Trigger);
+            var triggers = decorationsInFrontOfPlayer.Where(d => d.Type == ChannelType.Trigger && d.TriggerType == TriggerType.Active);
             Debug.Log($"Found {triggers.Count()} triggers to interact with...");
             // Send a channel message for each trigger decoration channel found (skipping the 'NONE'-channel)
             foreach (var triggerDecoration in triggers.Where(d => d.Channel != Channel.None).GroupBy(d => d.Channel)) {

@@ -85,7 +85,7 @@ public class RoomManager : Photon.MonoBehaviour
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     print("Players are Created!");
-                    GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    GameManager.GetInstance().Players.GetLocalPlayer().player.SequenceChanged += (List<BaseCommand> sequence) =>
                     {
                         //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
                         print("about to send rpc");
@@ -100,8 +100,9 @@ public class RoomManager : Photon.MonoBehaviour
                         print("done sending");
                     };
 
-                    GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player.OnPlayerReady += () =>
-                    {
+
+                    GameManager.GetInstance().Players.GetLocalPlayer().player.OnPlayerReady += () =>
+                    {                 
                         gameManager.Players.Single(x => x.photonPlayer.IsLocal).player.IsReady = true;
 
                         if(!PhotonNetwork.player.IsMasterClient)
@@ -152,7 +153,7 @@ public class RoomManager : Photon.MonoBehaviour
         print("Got RPC");
         ListContainer<CommandHolder> commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
         List<CommandEnum> commandEnums = commands.list.Select(x => x.command).ToList();
-        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
+        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
         networkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
     }
 
