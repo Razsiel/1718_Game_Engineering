@@ -18,6 +18,7 @@ namespace Assets.Scripts.DataStructures {
         [SerializeField] public int Rotation;
         [SerializeField] public CardinalDirection Orientation = CardinalDirection.North;
         [SerializeField] public ChannelType Type;
+        [SerializeField] public TriggerType TriggerType;
         [SerializeField] public Channel.Channel Channel;
 
         public GameObject GameObject { get; private set; }

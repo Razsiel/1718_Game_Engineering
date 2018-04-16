@@ -19,4 +19,9 @@ namespace Assets.Scripts.DataStructures.Channel
         Trigger,
         Mechanism
     }
+
+    public enum TriggerType {
+        Passive,
+        Active
+    }
 }
