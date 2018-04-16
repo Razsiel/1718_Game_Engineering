@@ -68,6 +68,7 @@ namespace Assets.Scripts {
 
             // Initialize UI
             EventManager.OnInitializeUi();
+            EventManager.OnDisableUserInput();
             EventManager.OnInitializeAudio();
             EventManager.OnInitializeMonologue();
 
