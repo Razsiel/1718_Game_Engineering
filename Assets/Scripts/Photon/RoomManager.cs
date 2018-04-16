@@ -26,8 +26,7 @@ public class RoomManager : Photon.MonoBehaviour
 
     public void Awake()
     {
-        photonRooms = new List<RoomInfo>();
-        gameManager = GameManager.GetInstance();
+        photonRooms = new List<RoomInfo>();        
         //roomView = roomPanel.GetComponents<RoomListView>()[0];
         //print(roomView);
         //Assert.IsNotNull(roomView);
@@ -36,6 +35,10 @@ public class RoomManager : Photon.MonoBehaviour
     //Lets connect two users to Photon and a lobby (+room)
     void Start()
     {
+        gameManager = GameManager.GetInstance();
+        if(!gameManager.IsMultiPlayer)
+            return;
+
         PhotonNetwork.autoJoinLobby = true;
         Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
 
@@ -54,7 +57,7 @@ public class RoomManager : Photon.MonoBehaviour
 
             Debug.Log("We joined the lobby!");
 
-            if(!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal"));
+            if(!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom(Guid.NewGuid().ToString()));
 
             PhotonManager.Instance.TGEOnPhotonPlayerConnected += (PhotonPlayer player) =>
             {
