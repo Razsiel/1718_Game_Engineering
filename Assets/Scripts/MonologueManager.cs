@@ -25,13 +25,13 @@ public class MonologueManager : MonoBehaviour {
 		_sentences = new Queue<string>();
 	    _canvasGroup = GetComponent<CanvasGroup>();
 	    _canvasGroup.alpha = 0;
-	}
+	    _canvasGroup.blocksRaycasts = false;
+    }
 
 	public void StartDialogue (Monologue monologue)
 	{
         // Open dialogue panel
 	    ToggleVisibility();
-	    _canvasGroup.blocksRaycasts = true;
 
         NpcNameText.text = monologue.name;
 
@@ -72,7 +72,6 @@ public class MonologueManager : MonoBehaviour {
 	{
         // Close dialogue panel
 	    ToggleVisibility();
-	    _canvasGroup.blocksRaycasts = false;
         EventManager.OnMonologueEnded();
 
 	}
@@ -80,5 +79,6 @@ public class MonologueManager : MonoBehaviour {
     void ToggleVisibility()
     {
         _canvasGroup.alpha = MathHelper.Mod(_canvasGroup.alpha + 1f, 2f);
+        _canvasGroup.blocksRaycasts = !_canvasGroup.blocksRaycasts;
     }
 }
