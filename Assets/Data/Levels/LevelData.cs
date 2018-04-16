@@ -125,13 +125,21 @@ namespace Assets.Data.Levels {
                 return false; // there are no decorations to interact with
             }
 
-            // Filter on triggers
-            var triggers = decorationsInFrontOfPlayer.Where(d => d.Type == ChannelType.Trigger && d.TriggerType == TriggerType.Active);
-            Debug.Log($"Found {triggers.Count()} triggers to interact with...");
-            // Send a channel message for each trigger decoration channel found (skipping the 'NONE'-channel)
-            foreach (var triggerDecoration in triggers.Where(d => d.Channel != Channel.None).GroupBy(d => d.Channel)) {
-                Debug.Log($"Sending a message to channel: {triggerDecoration.Key}");
-                DecorationChannelManager.Instance.TriggerChannel(triggerDecoration.Key, player);
+            foreach (var decorationConfigurations in decorationsInFrontOfPlayer.GroupBy(d => d.Type)) {
+                // Send messages through the channel system for triggers
+                if (decorationConfigurations.Key == ChannelType.Trigger) {
+                    Debug.Log($"Found {decorationConfigurations.Count()} triggers...");
+                    var triggersByChannels = decorationConfigurations.GroupBy(d => d.Channel);
+                    foreach (var triggerByChannel in triggersByChannels) {
+                        Debug.Log($"Sending a message to channel: {triggerByChannel.Key}");
+                        DecorationChannelManager.Instance.TriggerChannel(triggerByChannel.Key, player);
+                    }
+                }
+
+                // Call interact on object
+                foreach (var decorationConfiguration in decorationConfigurations) {
+                    decorationConfiguration.OnInteract(decorationConfiguration.Channel, player);
+                }
             }
 
             return true;

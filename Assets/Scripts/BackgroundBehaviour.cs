@@ -8,8 +8,9 @@ public class BackgroundBehaviour : MonoBehaviour {
     void Start ()
     {
         Rect rect = new Rect(0, 0, 1920, 1080);
-        GetComponent<Image>().sprite = Sprite.Create(GameManager.GetInstance().LevelData.BackgroundImage, rect, Vector2.zero);
-
+        var imageComponent = GetComponent<Image>();
+        imageComponent.sprite = Sprite.Create(GameManager.GetInstance().LevelData.BackgroundImage, rect, Vector2.zero);
+        imageComponent.color = Color.gray;
     }
 
 }
