@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Assets.Prefabs.UI;
+using Assets.Scripts;
 using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
@@ -9,7 +11,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     Transform _startParent;
     Vector3 _startPosition;
-    private GameObject replacement;
+    private GameObject _replacement;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -19,17 +21,24 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         ItemBeingDragged = gameObject;
         ItemBeingDragged.GetComponent<Button>().enabled = false;
 
-        replacement = gameObject;
-
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-        //item.GetComponent<LayoutElement>().ignoreLayout = true;
-        //item.transform.SetParent(item.transform.parent.parent);
     }
 
+    bool IsPointerOverGameObject(int fingerId)
+    {
+        EventSystem eventSystem = EventSystem.current;
+        return (eventSystem.IsPointerOverGameObject(fingerId)
+                && eventSystem.currentSelectedGameObject.GetComponent<SlotScript>() != null);
+
+    }
 
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = Input.mousePosition;
+        if (IsPointerOverGameObject(eventData.pointerId))
+        {
+            print("a");
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -41,14 +50,12 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             transform.position = _startPosition;
         }
         else
-        {
-            replacement.transform.SetParent(_startParent, false);
-            print("replacement parent: " + replacement.transform.parent);
-            Instantiate(replacement);
-        }
+        { 
+            _replacement = Instantiate(gameObject, _startParent);
+            _replacement.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            _replacement.GetComponent<Button>().enabled = true;
+        }   
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-
 
         //item.GetComponent<LayoutElement>().ignoreLayout = false;
     }

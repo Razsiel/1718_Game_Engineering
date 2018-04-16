@@ -3,6 +3,7 @@ using Assets.Scripts;
 using UnityEngine.Assertions;
 using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Assets.Prefabs.UI {
@@ -10,7 +11,8 @@ namespace Assets.Prefabs.UI {
     public class CommandController : TGEMonoBehaviour {
 
         private CommandLibrary _commandLibrary;
-        public SequenceBar SequenceBar;        
+        public SequenceBar SequenceBar;
+        public SequenceBar OtherSequenceBar;
         Player _player;
         GameManager _gameManager;
 
@@ -48,6 +50,7 @@ namespace Assets.Prefabs.UI {
             _player.AddCommand(_commandLibrary.TurnLeftCommand);
             GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
             turnLeftCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
+            turnLeftCommand.GetComponent<Button>().enabled = false;
         }
 
         public void OnTurnRightButtonClicked()
@@ -56,6 +59,7 @@ namespace Assets.Prefabs.UI {
             _player.AddCommand(_commandLibrary.TurnRightCommand);
             GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
             turnRightCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
+            turnRightCommand.GetComponent<Button>().enabled = false;
         }
 
         public void OnWaitButtonClicked()
@@ -64,6 +68,7 @@ namespace Assets.Prefabs.UI {
             _player.AddCommand(_commandLibrary.WaitCommand);
             GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
             waitCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
+            waitCommand.GetComponent<Button>().enabled = false;
         }
 
         public void OnInteractButtonClicked()
@@ -72,12 +77,16 @@ namespace Assets.Prefabs.UI {
             _player.AddCommand(_commandLibrary.InteractCommand);
             GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
             interactCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
+            interactCommand.GetComponent<Button>().enabled = false;
         }
 
-        public void ClearButtonClicked() {
-            SequenceBar.ClearAllCommands();
+        public void ClearButtonClicked()
+        {
+            StartCoroutine(SequenceBar.ClearAllCommands());
 
             _player.ClearCommands();
+
+            SequenceBar.GetCount();
         }
 
         public void ReadyButtonClicked() {
