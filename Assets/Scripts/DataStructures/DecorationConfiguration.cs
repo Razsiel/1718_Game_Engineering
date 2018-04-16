@@ -12,6 +12,16 @@ using UnityEngine.Assertions;
 namespace Assets.Scripts.DataStructures {
     [Serializable]
     public class DecorationConfiguration {
+        public enum DefaultDecorationState {
+            InActive = 0,
+            Active = 1
+        }
+
+        public enum DecorationTrigger {
+            Activate,
+            Deactivate
+        }
+
         [SerializeField] public DecorationData DecorationData;
         [SerializeField] public Vector3 RelativePosition;
         [SerializeField] public int Scale = 1;
@@ -20,6 +30,7 @@ namespace Assets.Scripts.DataStructures {
         [SerializeField] public ChannelType Type;
         [SerializeField] public TriggerType TriggerType;
         [SerializeField] public Channel.Channel Channel;
+        [SerializeField] public DefaultDecorationState DefaultState = DefaultDecorationState.InActive;
 
         public GameObject GameObject { get; private set; }
 
