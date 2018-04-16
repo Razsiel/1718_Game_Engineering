@@ -83,7 +83,8 @@ namespace Assets.Scripts {
         public void ReadyButtonClicked()
         {
             OnPlayerReady?.Invoke();
-            StartCoroutine(ExecuteCommands());
+            if(!_gameManager.IsMultiPlayer)
+                StartCoroutine(ExecuteCommands());
         }
 
         public void RemoveCommand(int commandIndex)
