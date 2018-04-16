@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Lib.Extensions;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,29 +10,27 @@ public class MonologueManager : MonoBehaviour {
 
 	public Text NpcNameText;
 	public Text SentenceText;
+    
+    private RectTransform _rectTransform;
+    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
 
-    private CanvasGroup _canvasGroup;
-
-	private Queue<string> _sentences;
+    private Queue<string> _sentences;
 
     void Awake()
     {
         EventManager.InitializeMonologue += Initialize;
         EventManager.MonologueStart += StartDialogue;
-        EventManager.MonologueEnded += EndDialogue;
     }
 
 	void Initialize () {
 		_sentences = new Queue<string>();
-	    _canvasGroup = GetComponent<CanvasGroup>();
-	    _canvasGroup.alpha = 0;
-	    _canvasGroup.blocksRaycasts = false;
+	    _rectTransform = GetComponent<RectTransform>();
     }
 
 	public void StartDialogue (Monologue monologue)
 	{
         // Open dialogue panel
-	    ToggleVisibility();
+	    ShowMonologue();
 
         NpcNameText.text = monologue.name;
 
@@ -70,15 +69,19 @@ public class MonologueManager : MonoBehaviour {
 
 	void EndDialogue()
 	{
-        // Close dialogue panel
-	    ToggleVisibility();
+	    HideMonologue();
         EventManager.OnMonologueEnded();
-
 	}
 
-    void ToggleVisibility()
+    void HideMonologue()
     {
-        _canvasGroup.alpha = MathHelper.Mod(_canvasGroup.alpha + 1f, 2f);
-        _canvasGroup.blocksRaycasts = !_canvasGroup.blocksRaycasts;
+        _rectTransform.DOLocalMove(HidePosition, 1f);
+    }
+
+    void ShowMonologue()
+    {
+        Vector3 pos = HidePosition;
+        pos.y += 700f;
+        _rectTransform.DOLocalMove(pos, 1f);
     }
 }
