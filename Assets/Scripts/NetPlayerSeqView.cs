@@ -17,7 +17,7 @@ namespace Assets.Scripts {
             foreach (BaseCommand c in commandValues) {
                 int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
                 print(c.ToString());
-                Image image = SequenceBar.commandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
+                Image image = SequenceBar.CommandSlots[nextFreeSlot].transform.GetChild(0).GetComponent<Image>();
 
                 Type cType = c.GetType();
                 string cName = cType.Name;
@@ -33,7 +33,7 @@ namespace Assets.Scripts {
         }
 
         private void ClearCurrentCommands() {
-            foreach (var slot in SequenceBar.commandSlots) {
+            foreach (var slot in SequenceBar.CommandSlots) {
                 var image = slot.transform.GetChild(0).GetComponent<Image>();
                 image.sprite = null;
             }

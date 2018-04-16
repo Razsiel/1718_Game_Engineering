@@ -1,16 +1,14 @@
 ﻿using System;
+using Assets.Scripts.Behaviours;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 
 namespace Assets.Data.Tiles {
     [Serializable]
     [CreateAssetMenu(menuName = "Data/Tiles/Decoration")]
-    public class TileDecorationData : ScriptableObject {
+    public class DecorationData : ScriptableObject {
         [SerializeField] public Mesh Mesh;
         [SerializeField] public Material Material;
-        [SerializeField] public CardinalDirection Orientation;
-        [SerializeField] public Vector3 RelativePosition;
-        [SerializeField] public float Scale = 1f;
 
         public virtual bool IsWalkable(CardinalDirection direction) {
             return true;
@@ -23,14 +21,11 @@ namespace Assets.Data.Tiles {
         public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
             var decoration = new GameObject("Decoration",
                                             typeof(MeshFilter),
-                                            typeof(MeshRenderer)) {
+                                            typeof(MeshRenderer),
+                                            typeof(DecorationBehaviour)) {
                 hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
             };
             decoration.transform.parent = parent;
-
-            var transform = decoration.transform;
-            transform.position = RelativePosition;
-            transform.localScale = Vector3.one * Scale;
 
             var meshFilter = decoration.GetComponent<MeshFilter>();
             if (meshFilter != null)

@@ -22,15 +22,15 @@ public class RoomManager : Photon.MonoBehaviour
     private List<RoomInfo> photonRooms;
     private RoomListView roomView;
     public GameObject roomPanel;
-
+    public GameManager gameManager;
 
     public void Awake()
     {
         photonRooms = new List<RoomInfo>();
-
-        roomView = roomPanel.GetComponents<RoomListView>()[0];
-        print(roomView);
-        Assert.IsNotNull(roomView);
+        gameManager = GameManager.GetInstance();
+        //roomView = roomPanel.GetComponents<RoomListView>()[0];
+        //print(roomView);
+        //Assert.IsNotNull(roomView);
     }
 
     //Lets connect two users to Photon and a lobby (+room)
@@ -63,7 +63,7 @@ public class RoomManager : Photon.MonoBehaviour
 
                 PhotonManager.Instance.TGEOnPhotonPlayerDisconnected += (PhotonPlayer otherPlayer) =>
                 {
-                    GameManager.GetInstance().Players.RemoveAll(x => x != GameManager.GetInstance().Players.Single(y => y.photonPlayer.IsLocal));
+                    gameManager.Players.RemoveAll(x => x != gameManager.Players.Single(y => y.photonPlayer.IsLocal));
                 };
 
                 //We can only continue here if we have two players, multiplayer is no fun alone
@@ -100,11 +100,17 @@ public class RoomManager : Photon.MonoBehaviour
                         print("done sending");
                     };
 
-                    GameManager.GetInstance().Players.GetLocalPlayer().player.OnPlayerReady += () =>
-                    {
 
+                    GameManager.GetInstance().Players.GetLocalPlayer().player.OnPlayerReady += () =>
+                    {                 
+                        gameManager.Players.Single(x => x.photonPlayer.IsLocal).player.IsReady = true;
+
+                        if(!PhotonNetwork.player.IsMasterClient)
+                            this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
                     };
                 };
+
+                
             };
         };
     }
@@ -146,8 +152,31 @@ public class RoomManager : Photon.MonoBehaviour
     {
         print("Got RPC");
         ListContainer<CommandHolder> commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
+        List<CommandEnum> commandEnums = commands.list.Select(x => x.command).ToList();
+        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
+        networkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
+    }
 
-        networkPlayerSequenceBarView.UpdateSequenceBar(commands.list.Select(x => x.command).ToList());
+    [PunRPC]
+    public void UpdateReadyState(PhotonMessageInfo info)
+    {
+        print("GOT RPC Ready state");
+        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).player.IsReady = true;
+
+        if(gameManager.Players.All(x => x.player.IsReady))
+            SendStartExecution();
+    }
+
+    private void SendStartExecution()
+    {
+        this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
+    }
+
+    [PunRPC]
+    public void StartExecution(PhotonMessageInfo info)
+    {
+        foreach(TGEPlayer p in gameManager.Players)
+            p.player.StartExecution();
     }
 
 }

@@ -1,6 +1,7 @@
 ﻿using Assets.Data.Grids;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Editor {
     [CustomEditor(typeof(GridMapData))]
@@ -38,6 +39,23 @@ namespace Assets.Scripts.Editor {
             if (_previewObject == null) {
                 CreatePreview();
             }
+
+            /*
+            for (int row = 0; row < _instance.Height; row++) {
+                GUILayout.BeginHorizontal();
+                for (int column = 0; column < _instance.Width; column++) {
+                    GUILayout.BeginVertical();
+
+                    if (GUILayout.Button($"{row}, {column}", GUILayout.ExpandWidth(true),
+                                         GUILayout.ExpandHeight(true))) {
+                        TileDataEditor.ShowWindow(_instance[row, column]);
+                    }
+
+                    GUILayout.EndVertical();
+                }
+                GUILayout.EndHorizontal();
+            }
+            */
         }
 
         private void CreatePreview() {

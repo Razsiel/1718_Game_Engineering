@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.DataStructures.Channel;
 using UnityEngine.Assertions;
 using UnityEngine;
 
@@ -17,8 +18,6 @@ public class LevelPresenter : MonoBehaviour
         Assert.IsNotNull(gameManager);
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
-        //Assert.IsEmpty is not an existing one
-        //Assert.IsNo(players);
 
         // create level objects in scene
         levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
@@ -42,8 +41,8 @@ public class LevelPresenter : MonoBehaviour
         };
         root.transform.parent = parent;
 
-        for (int y = 0; y < grid.Height; y++) {
-            for (int x = 0; x < grid.Width; x++) {
+        for (int x = 0; x < grid.Width; x++) {
+            for (int y = 0; y < grid.Height; y++) {
                 var tileConfiguration = grid[x, y];
                 if (tileConfiguration == null) {
                     continue;

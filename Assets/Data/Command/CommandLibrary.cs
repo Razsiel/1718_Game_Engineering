@@ -8,15 +8,15 @@ namespace Assets.Data.Command {
     [Serializable]
     [CreateAssetMenu(fileName = "CommandLibrary", menuName = "Data/Commands/CommandLibrary")]
     public class CommandLibrary : ScriptableObject {
-        [SerializeField] private MoveCommand MoveCommand;
+        [SerializeField] public MoveCommand MoveCommand;
 
-        [SerializeField] private TurnCommand TurnRightCommand;
+        [SerializeField] public TurnCommand TurnRightCommand;
 
-        [SerializeField] private TurnCommand TurnLeftCommand;
+        [SerializeField] public TurnCommand TurnLeftCommand;
 
-        [SerializeField] private WaitCommand WaitCommand;
+        [SerializeField] public WaitCommand WaitCommand;
 
-        [SerializeField] private InteractCommand InteractCommand;
+        [SerializeField] public InteractCommand InteractCommand;
 
         void OnEnable()
         {
