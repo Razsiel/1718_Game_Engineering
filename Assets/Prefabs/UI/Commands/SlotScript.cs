@@ -4,8 +4,13 @@ using System.Collections;
 
 public class SlotScript : MonoBehaviour, IDropHandler
 {
-    //public SequenceBar SequenceBar;
-    public GameObject item
+    private SequenceBar _sequenceBar;
+
+    void Start()
+    {
+        _sequenceBar = this.transform.parent.gameObject.GetComponent<SequenceBar>();
+    }
+    public GameObject Item
     {
         get
         {
@@ -18,9 +23,14 @@ public class SlotScript : MonoBehaviour, IDropHandler
     }
     public void OnDrop(PointerEventData eventData)
     {
-        if (!item)
+        if (!Item)
         {
-            DragHandler.ItemBeingDragged.transform.SetParent(transform);
+            //Get what slot should be filled with the command
+            _sequenceBar.HasChanged(int.Parse(name), DragHandler.ItemBeingDragged);
+            //Fill that slot with the right command (ItemBeingDragged)
+
+            //Add the slot to the player sequence
+
         }
     }
 

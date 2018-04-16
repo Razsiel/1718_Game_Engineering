@@ -77,7 +77,7 @@ namespace Assets.Prefabs.UI {
         }
 
         public void ClearButtonClicked() {
-            SequenceBar.ClearImages();
+            SequenceBar.ClearAllCommands();
 
             _player.ClearCommands();
         }
@@ -96,10 +96,5 @@ namespace Assets.Prefabs.UI {
         //        image.sprite = c.Icon;
         //    }
         //}
-
-        public void OnHover()
-        {
-            EventManager.OnPlaySoundEffect(SFX.ButtonHover);
-        }
     }
 }
