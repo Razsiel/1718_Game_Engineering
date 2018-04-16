@@ -80,10 +80,13 @@ namespace Assets.Prefabs.UI {
             interactCommand.GetComponent<Button>().enabled = false;
         }
 
-        public void ClearButtonClicked() {
-            SequenceBar.ClearAllCommands();
+        public void ClearButtonClicked()
+        {
+            StartCoroutine(SequenceBar.ClearAllCommands());
 
             _player.ClearCommands();
+
+            SequenceBar.GetCount();
         }
 
         public void ReadyButtonClicked() {
