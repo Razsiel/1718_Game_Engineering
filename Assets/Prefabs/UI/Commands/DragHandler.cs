@@ -16,10 +16,11 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         _startPosition = transform.position;
         _startParent = transform.parent;
 
+        int instanceId = gameObject.GetInstanceID();
+        print(instanceId);
+
         ItemBeingDragged = gameObject;
         ItemBeingDragged.GetComponent<Button>().enabled = false;
-
-        replacement = gameObject;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         //item.GetComponent<LayoutElement>().ignoreLayout = true;
@@ -42,13 +43,12 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
         else
         {
-            replacement.transform.SetParent(_startParent, false);
-            print("replacement parent: " + replacement.transform.parent);
-            Instantiate(replacement);
-        }
+            replacement = Instantiate(gameObject, _startParent);
+            replacement.GetComponent<Button>().enabled = true;
+            replacement.GetComponent<DragHandler>().enabled = true;
+            print("replacement: " + replacement.GetInstanceID());
+        }   
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-
-
 
         //item.GetComponent<LayoutElement>().ignoreLayout = false;
     }
