@@ -9,13 +9,17 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     Transform _startParent;
     Vector3 _startPosition;
+    private GameObject replacement;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        ItemBeingDragged = gameObject;
-
         _startPosition = transform.position;
         _startParent = transform.parent;
+
+        ItemBeingDragged = gameObject;
+        ItemBeingDragged.GetComponent<Button>().enabled = false;
+
+        replacement = gameObject;
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
         //item.GetComponent<LayoutElement>().ignoreLayout = true;
@@ -31,11 +35,20 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData eventData)
     {
         ItemBeingDragged = null;
+
         if (transform.parent == _startParent)
         {
             transform.position = _startPosition;
         }
+        else
+        {
+            replacement.transform.SetParent(_startParent, false);
+            print("replacement parent: " + replacement.transform.parent);
+            Instantiate(replacement);
+        }
         GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+
 
         //item.GetComponent<LayoutElement>().ignoreLayout = false;
     }

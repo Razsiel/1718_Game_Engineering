@@ -95,7 +95,6 @@ public class SequenceBar : MonoBehaviour
     public void HasChanged(int commandSlotIndex, GameObject command)
     {
         int slotToFill = GetNextEmptySlotIndex();
-        print(command.name);
         foreach (var libraryCommand in commandLibrary.Commands)
         {
             if (libraryCommand.Key.ToString().Equals(command.name))
@@ -103,8 +102,8 @@ public class SequenceBar : MonoBehaviour
                 Player.AddOrInsertCommandAt(libraryCommand.Value, slotToFill);
             }
         }
-        command.transform.SetParent(CommandSlots[slotToFill].transform);
-
+        command.transform.SetParent(CommandSlots[slotToFill].transform, false);
+        print(command.transform.parent);
     }
 
     private void MoveCommandsToLeftFromIndex(int commandSlotIndex)
