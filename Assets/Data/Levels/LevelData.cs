@@ -10,7 +10,7 @@ using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
 namespace Assets.Data.Levels {
-    [CreateAssetMenu(fileName = "Level_0", menuName = "Data/Level")]
+    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level")]
     [System.Serializable]
     public class LevelData : ScriptableObject {
         [SerializeField] public string Name;
@@ -18,6 +18,7 @@ namespace Assets.Data.Levels {
         [SerializeField] public List<LevelGoal> Goals;
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
+        [SerializeField] public Monologue Monologue;
 
         private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
