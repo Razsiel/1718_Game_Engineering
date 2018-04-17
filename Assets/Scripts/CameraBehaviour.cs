@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Grids;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using DG.Tweening;
 using UnityEngine;
@@ -9,27 +10,22 @@ public class CameraBehaviour : MonoBehaviour
 {
     private Camera _camera;
 
-    void Awake()
-    {
-        EventManager.InitializeUi += Initialize;
+    void Awake() {
+        EventManager.LevelLoaded += (levelData) => {
+            _camera = gameObject.GetComponent<Camera>();
+            AutoZoomCamera(levelData);
+        };
         EventManager.MonologueEnded += LevelRect;
         EventManager.MonologueStart += MonologueRect;
-    }
-
-    void Initialize ()
-    {
-        _camera = gameObject.GetComponent<Camera>();
-        AutoZoomCamera();
     }
 
     /// <summary>
     /// Sets the OrthographicSize of the camera depending on the grid-size of the level. 
     /// </summary>
-    void AutoZoomCamera()
+    /// <param name="levelData"></param>
+    void AutoZoomCamera(LevelData levelData)
     {
-        GridMapData gridMap = GameManager.GetInstance().LevelData.GridMapData;
-
-        float levelSize = Mathf.Max(gridMap.Height, gridMap.Width);
+        float levelSize = Mathf.Max(levelData.GridMapData.Height, levelData.GridMapData.Width);
         float aspectRatio = (float)Screen.height / Screen.width;
 
         // Camera should reduce the zoom-out by 0.2 per levelSize

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
@@ -8,35 +10,60 @@ using Assets.Scripts.DataStructures.Channel;
 using UnityEngine.Assertions;
 using UnityEngine;
 
-public class LevelPresenter : MonoBehaviour
-{
-    private static GameObject levelObject;
+public class LevelPresenter : MonoBehaviour {
+    [SerializeField]
+    private GameObject _playerPrefab;
+
+    private static GameObject _levelObject;
+
+    public void Awake() {
+        EventManager.LoadLevel += Present;
+        EventManager.LevelReset += (levelData, players) => {
+            // reset internal data
+            levelData.ResetPlayerPositions(players);
+            // reset world representation
+            int playerIndex = 0;
+            foreach (var player in players) {
+                var playerPos = levelData.GetPlayerStartPosition(playerIndex);
+                PresentPlayerOnPosition(levelData, player, playerPos);
+                playerIndex++;
+            }
+        };
+    }
 
     // Use this for initialization
-    public static void Present(LevelData levelData, List<TGEPlayer> players) {
-        var gameManager = GameManager.GetInstance();
-        Assert.IsNotNull(gameManager);
+    public void Present(LevelData levelData, List<TGEPlayer> players) {
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
+        Assert.IsTrue(players.Any());
 
         // create level objects in scene
-        levelObject = CreateGameObjectFromLevelData(levelData, gameManager.transform);
+        _levelObject = CreateGameObjectFromLevelData(levelData, this.transform);
+        Assert.IsNotNull(_levelObject);
         
         // Set players to start position in scene;
         for (int i = 0; i < players.Count; i++) {
-            var playerStartPosition = levelData.GetPlayerStartPosition(i);
-            var startGridPosition = playerStartPosition.StartPosition;
-            var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, startGridPosition);
-            playerWorldPosition.y = 1;
-            var player = players[i];
-            player.Player.ViewDirection = playerStartPosition.Facing;
-            player.PlayerObject.transform.position = playerWorldPosition;
-            player.PlayerObject.transform.rotation = Quaternion.Euler(player.Player.ViewDirection.ToEuler());
+            var playerObject = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var player = playerObject.GetComponent<Player>();
+            player.PlayerNumber = i;
+            var playerPos = levelData.InitPlayer(player);
+            PresentPlayerOnPosition(levelData, player, playerPos);
         }
+
+        EventManager.OnLevelLoaded(levelData);
     }
 
-    public static GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
-        Destroy(levelObject);
+    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
+    {
+        var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, playerStartPosition.StartPosition);
+        playerWorldPosition.y = 1;
+        player.ViewDirection = playerStartPosition.Facing;
+        player.transform.position = playerWorldPosition;
+        player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
+    }
+
+    public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
+        Destroy(_levelObject);
         var grid = data.GridMapData;
 
         GameObject root = new GameObject("Level Object") {

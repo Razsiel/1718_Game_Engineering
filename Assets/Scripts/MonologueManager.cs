@@ -18,13 +18,9 @@ public class MonologueManager : MonoBehaviour {
 
     void Awake()
     {
-        EventManager.InitializeMonologue += Initialize;
+        _sentences = new Queue<string>();
+        _rectTransform = GetComponent<RectTransform>();
         EventManager.MonologueStart += StartDialogue;
-    }
-
-	void Initialize () {
-		_sentences = new Queue<string>();
-	    _rectTransform = GetComponent<RectTransform>();
     }
 
 	public void StartDialogue (Monologue monologue)
@@ -60,7 +56,7 @@ public class MonologueManager : MonoBehaviour {
 	IEnumerator TypeSentence (string sentence)
 	{
 		SentenceText.text = "";
-		foreach (char letter in sentence.ToCharArray())
+		foreach (char letter in sentence)
 		{
 		    SentenceText.text += letter;
 			yield return null;

@@ -83,7 +83,7 @@ namespace Assets.Scripts {
             CreatePlayers(players);
 
             LevelData.Init(players);
-            LevelPresenter.Present(LevelData, players);
+            //LevelPresenter.Present(LevelData, players);
         }
 
         public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/) {
@@ -91,7 +91,7 @@ namespace Assets.Scripts {
             CreatePlayers(players);
             PhotonManager.Instance.PlayersReady();
             LevelData.Init(players);
-            LevelPresenter.Present(LevelData, players);
+            //LevelPresenter.Present(LevelData, players);
             ////Lets do some GameStarting logic here
             //PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
         }
