@@ -75,7 +75,7 @@ public class EventManager
 
     public static void OnMonologueEnded()
     {
-//        MonologueEnded?.Invoke();
+        MonologueEnded?.Invoke();
         EnableUserInput?.Invoke();
     }
 

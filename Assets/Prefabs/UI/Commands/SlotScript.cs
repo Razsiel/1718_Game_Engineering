@@ -21,16 +21,17 @@ public class SlotScript : MonoBehaviour, IDropHandler
             return null;
         }
     }
+    
+
     public void OnDrop(PointerEventData eventData)
     {
         if (!Item)
         {
-            //Get what slot should be filled with the command
             _sequenceBar.HasChanged(int.Parse(name), DragHandler.ItemBeingDragged);
-            //Fill that slot with the right command (ItemBeingDragged)
-
-            //Add the slot to the player sequence
-
+        }
+        else
+        {
+            _sequenceBar.HasChangedInsert(int.Parse(name), DragHandler.ItemBeingDragged);
         }
     }
 
