@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Assets.Scripts;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,11 +71,28 @@ public class SequenceBar : MonoBehaviour
         return 999;
     }
 
-    public void ClearAllCommands()
+    public IEnumerator ClearAllCommands()
     {
         for (var i = 0; i < AmountOfCommandsAllowed; i++)
-            if(CommandSlots[i].transform.childCount > 0)
-            Destroy(CommandSlots[i].transform.GetChild(0).gameObject);
+            if (CommandSlots[i].transform.childCount > 0)
+                 DestroyImmediate(CommandSlots[i].transform.GetChild(0).gameObject);
+
+        yield return new WaitForEndOfFrame();
+
+    }
+
+    public void GetCount()
+    {
+        int count = 0;
+        for (int i = 0; i < AmountOfCommandsAllowed; i++)
+        {
+            if (CommandSlots[i].transform.childCount > 0)
+            {
+                count++;
+            }
+        }
+
+        print(count);
     }
 
     public void HasChanged(int commandSlotIndex, bool destroy)
@@ -95,6 +113,37 @@ public class SequenceBar : MonoBehaviour
     public void HasChanged(int commandSlotIndex, GameObject command)
     {
         int slotToFill = GetNextEmptySlotIndex();
+        InsertCommandAtIndex(command, slotToFill);
+        command.transform.SetParent(CommandSlots[slotToFill].transform, false);
+        print(command.transform.parent);
+    }
+
+    public void HasChangedInsert(int commandSlotIndex, GameObject command)
+    {
+        //Move slots from index one to the right
+        for (int i = CommandSlots.Length -1; i >= commandSlotIndex; i--)
+        {
+            if (CommandSlots[i].transform.childCount <= 0) continue;
+
+            GameObject currentChild = CommandSlots[i].transform.GetChild(0).gameObject;
+            if (i == CommandSlots.Length - 1 && currentChild)
+            {
+                Destroy(currentChild);
+            }
+            else if (currentChild)
+            {
+                currentChild.transform.SetParent(CommandSlots[i + 1].transform, false);
+            }
+        }
+        //Insert itemBeingDragged into the index slot
+        command.transform.SetParent(CommandSlots[commandSlotIndex].transform, false);
+
+        //Insert the command in the player sequence
+        InsertCommandAtIndex(command, commandSlotIndex);
+    }
+
+    private void InsertCommandAtIndex(GameObject command, int slotToFill)
+    {
         foreach (var libraryCommand in commandLibrary.Commands)
         {
             if (libraryCommand.Key.ToString().Equals(command.name))
@@ -102,8 +151,6 @@ public class SequenceBar : MonoBehaviour
                 Player.AddOrInsertCommandAt(libraryCommand.Value, slotToFill);
             }
         }
-        command.transform.SetParent(CommandSlots[slotToFill].transform, false);
-        print(command.transform.parent);
     }
 
     private void MoveCommandsToLeftFromIndex(int commandSlotIndex)
@@ -126,7 +173,7 @@ public class SequenceBar : MonoBehaviour
         {
             commandNames.Add(Enum.GetName(typeof(CommandEnum), command));
         }
-        ClearAllCommands();
+        StartCoroutine(ClearAllCommands());
         foreach (var commandName in commandNames)
         {
             int slotIndex = GetNextEmptySlotIndex();

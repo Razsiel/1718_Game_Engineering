@@ -19,7 +19,6 @@ namespace Assets.Scripts {
             }
         }
 
-
         public void RegisterToChannel(Channel channel, UnityAction<Channel, Player> action) {
             Assert.IsNotNull(action);
             ChannelDictionary[channel] += action;

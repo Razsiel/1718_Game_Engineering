@@ -3,6 +3,7 @@ using Assets.Data.Command;
 using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
+using SmartLocalization;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -68,9 +69,11 @@ namespace Assets.Scripts {
             // Initialize UI
             EventManager.OnInitializeUi();
             EventManager.OnInitializeAudio();
+            EventManager.OnInitializeMonologue();
 
             // Link Player2 to Photon instance
             // Start Level
+            EventManager.OnMonologueStart(LevelData.Monologue);
         }
 
         public void StartSinglePlayerGame(TGEPlayer player /*, LevelData level*/) {

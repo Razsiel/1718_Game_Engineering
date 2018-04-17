@@ -6,22 +6,14 @@ using System.Threading.Tasks;
 using Assets.Data.Tiles;
 using Assets.Scripts.Behaviours;
 using Assets.Scripts.DataStructures.Channel;
+using M16h;
+//using NPOI.OpenXml4Net.OPC;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace Assets.Scripts.DataStructures {
     [Serializable]
     public class DecorationConfiguration {
-        public enum DefaultDecorationState {
-            InActive = 0,
-            Active = 1
-        }
-
-        public enum DecorationTrigger {
-            Activate,
-            Deactivate
-        }
-
         [SerializeField] public DecorationData DecorationData;
         [SerializeField] public Vector3 RelativePosition;
         [SerializeField] public int Scale = 1;
@@ -30,11 +22,14 @@ namespace Assets.Scripts.DataStructures {
         [SerializeField] public ChannelType Type;
         [SerializeField] public TriggerType TriggerType;
         [SerializeField] public Channel.Channel Channel;
-        [SerializeField] public DefaultDecorationState DefaultState = DefaultDecorationState.InActive;
+        [SerializeField] public DecorationState DefaultState = DecorationState.Inactive;
+
+        private TinyStateMachine<DecorationState, DecorationTrigger> Fsm; // Finite State Machine
 
         public GameObject GameObject { get; private set; }
 
-        public bool IsMechanismWithChannel => this.Type == ChannelType.Mechanism && this.Channel != DataStructures.Channel.Channel.None;
+        public bool IsMechanismWithChannel =>
+            this.Type == ChannelType.Mechanism && this.Channel != DataStructures.Channel.Channel.None;
 
         public GameObject GenerateGameObject(GameObject parent, bool hidden = false) {
             GameObject = GenerateGameObject(parent.transform, hidden);
@@ -48,7 +43,7 @@ namespace Assets.Scripts.DataStructures {
                 transform.position = RelativePosition;
                 transform.localScale = Vector3.one * Scale;
                 transform.eulerAngles = Orientation.ToEuler() + Vector3.up * Rotation;
-                
+
                 var behaviour = decoration.GetComponent<DecorationBehaviour>();
                 Assert.IsNotNull(behaviour);
                 Assert.IsNotNull(this);
@@ -59,7 +54,54 @@ namespace Assets.Scripts.DataStructures {
         }
 
         public bool IsWalkable(CardinalDirection direction) {
-            return (DecorationData?.IsWalkable(direction) ?? false) && direction.ToOppositeDirection() != direction ;
+            return (DecorationData?.IsWalkable(direction) ?? false) && direction.ToOppositeDirection() != direction;
+        }
+
+        public void Init(Action<Player> onActivate, Action onDeactivate) {
+            // Setup state machine for triggers and mechanisms
+            Fsm = new TinyStateMachine<DecorationState, DecorationTrigger>(this.DefaultState);
+            if (this.Type != ChannelType.Decoration) {
+                Fsm
+                    .Tr(DecorationState.Inactive, DecorationTrigger.Activate, DecorationState.Active)
+                    .On(() => onActivate(null))
+                    .Tr(DecorationState.Active, DecorationTrigger.Deactivate, DecorationState.Inactive)
+                    .On(onDeactivate);
+            }
+            else {
+                Fsm.Tr(DecorationState.Active, DecorationTrigger.Activate, DecorationState.Active)
+                   .On((transitionState, trigger, newState, player) => onActivate(player as Player));
+            }
+
+            // register self to receive messages from 'interacts' if I'm a mechanism listening to a channel
+            if (IsMechanismWithChannel)
+            {
+                DecorationChannelManager.Instance.RegisterToChannel(Channel, OnInteract);
+            }
+        }
+
+        public void OnInteract(Channel.Channel channel, Player player) {
+            if (this.Type != ChannelType.Decoration) {
+                // toggle state for triggers and mechanisms
+                if (Fsm.IsInState(DecorationState.Active)) {
+                    Fsm.Fire(DecorationTrigger.Deactivate);
+                }
+                else {
+                    Fsm.Fire(DecorationTrigger.Activate, player);
+                }
+            }
+            else {
+                Fsm.Fire(DecorationTrigger.Activate, player);
+            }
+        }
+
+        public enum DecorationState {
+            Inactive = 0,
+            Active = 1,
+        }
+
+        public enum DecorationTrigger {
+            Activate,
+            Deactivate
         }
     }
 }
