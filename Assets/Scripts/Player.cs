@@ -30,40 +30,10 @@ namespace Assets.Scripts {
         {
             _gameManager = GameManager.GetInstance();
             _sequence = new List<BaseCommand>();
-
-            /*     
-            _sequence = new List<BaseCommand>
-            { 
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-            };*/
-
-            //StartCoroutine(WaitForInput());
         }
 
         // Update is called once per frame
         void Update() { }
-
-        //Press Spacebar to run sequence
-        IEnumerator WaitForInput()
-        {
-            while(true)
-            {
-                yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
-
-                yield return StartCoroutine(ExecuteCommands());
-
-                yield return new WaitForSeconds(2);
-            }
-        }
 
         public void UpdateSequence(List<CommandEnum> commands)
         {

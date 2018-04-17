@@ -11,7 +11,7 @@ namespace Assets.Data.Grids {
     [CreateAssetMenu(fileName = "Default Grid", menuName = "Data/Grid")]
     public class GridMapData : ScriptableObject, IReadOnlyCollection<GridCell> {
         [SerializeField] public TileData DefaultTile;
-        [SerializeField] public Vector2Int[] PlayerStartPositions;
+        [SerializeField] public PlayerStartPosition[] PlayerStartPositions;
         
         [SerializeField] private GridRow[] _map;
         [SerializeField] private int _width;
@@ -119,5 +119,11 @@ namespace Assets.Data.Grids {
             cell = new GridCell(this, x, y);
             return IsValidTile(x, y) && this[x, y]?.Tile != null;
         }
+    }
+
+    [Serializable]
+    public struct PlayerStartPosition {
+        public Vector2Int StartPosition;
+        public CardinalDirection Facing;
     }
 }

@@ -87,7 +87,8 @@ public class RoomManager : Photon.MonoBehaviour
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     PrintIfMultiplayer("Players are Created!");
-                    gameManager.Players.GetLocalPlayer().player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    gameManager.Players.GetLocalPlayer().Player.SequenceChanged += (List<BaseCommand> sequence) =>
+
                     {
                         //var listCommands = new ListContainer<CommandHolder>() { list = new List<CommandHolder>() };
                         var listCommands = new ListContainer<CommandEnum>() { list = new List<CommandEnum>() };
@@ -103,10 +104,11 @@ public class RoomManager : Photon.MonoBehaviour
                         PrintIfMultiplayer("done sending");
                     };
 
-
-                    gameManager.Players.GetLocalPlayer().player.OnPlayerReady += () =>
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerReady += () =>
                     {
-                        gameManager.Players.GetLocalPlayer().player.IsReady = true;
+                        gameManager.Players.GetLocalPlayer().Player.IsReady = true;
+                                    
+                        gameManager.Players.Single(x => x.photonPlayer.IsLocal).Player.IsReady = true;
 
                         this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
                     };
@@ -155,7 +157,8 @@ public class RoomManager : Photon.MonoBehaviour
         var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
         //List<CommandEnum> commandEnums = commands.list.Select(x => x.command).ToList();
         var commandEnums = commands.list;
-        gameManager.Players.GetNetworkPlayer().player.UpdateSequence(commandEnums);
+        gameManager.Players.GetNetworkPlayer().Player.UpdateSequence(commandEnums);
+
         networkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
     }
 
@@ -164,10 +167,10 @@ public class RoomManager : Photon.MonoBehaviour
     {
         PrintIfMultiplayer("GOT RPC Ready state");
         if(info.sender != gameManager.Players.GetLocalPlayer().photonPlayer)
-            gameManager.Players.GetNetworkPlayer().player.IsReady = true;
+            gameManager.Players.GetNetworkPlayer().Player.IsReady = true;
 
         if(gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
-            if(gameManager.Players.All(x => x.player.IsReady))
+            if(gameManager.Players.All(x => x.Player.IsReady))
                 SendStartExecution();
     }
 
@@ -180,7 +183,7 @@ public class RoomManager : Photon.MonoBehaviour
     public void StartExecution(PhotonMessageInfo info)
     {
         foreach(TGEPlayer p in gameManager.Players)
-            p.player.StartExecution();
+            p.Player.StartExecution();
     }
 
     private void PrintIfMultiplayer(object message)

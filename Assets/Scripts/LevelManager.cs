@@ -58,7 +58,7 @@ public class LevelManager : MonoBehaviour {
 
     public IEnumerator WaitForOtherPlayers()
     {
-        yield return new WaitUntil(() => Players[1].player != null);
+        yield return new WaitUntil(() => Players[1].Player != null);
     }
 
 }

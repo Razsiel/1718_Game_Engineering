@@ -100,8 +100,8 @@ namespace Assets.Scripts.Photon
         {
             LevelManager.Instance.Players[1].PlayerObject = playerObject;
             GameManager.GetInstance().Players[1].PlayerObject = playerObject;
-            LevelManager.Instance.Players[1].player = playerObject.GetComponent<Player>();
-            GameManager.GetInstance().Players[1].player = playerObject.GetComponent<Player>();
+            LevelManager.Instance.Players[1].Player = playerObject.GetComponent<Player>();
+            GameManager.GetInstance().Players[1].Player = playerObject.GetComponent<Player>();
         }
 
         #region PhotonCallbacks
