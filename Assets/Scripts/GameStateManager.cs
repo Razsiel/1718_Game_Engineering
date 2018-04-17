@@ -66,8 +66,6 @@ namespace Assets.Scripts {
             EventManager.MonologueEnded += () => {
                 fsm.Fire(GameStateTrigger.Next); // goto StartGame
             };
-
-            fsm.Fire(GameStateTrigger.Next);
         }
 
         /// <summary>

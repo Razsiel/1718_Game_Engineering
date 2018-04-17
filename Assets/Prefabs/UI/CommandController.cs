@@ -25,12 +25,12 @@ namespace Assets.Prefabs.UI {
 
             Assert.IsNotNull(_commandLibrary);
             _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () => {
-                this._player = _gameManager.Players[0].player;
+                this._player = _gameManager.Players[0].Player;
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
             };
 
-            _player = _gameManager.Players[0].player;
+            _player = _gameManager.Players[0].Player;
         }
 
         public void OnMoveButtonClicked()

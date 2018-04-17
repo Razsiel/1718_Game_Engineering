@@ -102,7 +102,7 @@ namespace Assets.Scripts {
                 var playerComponent = playerObject.GetComponent<Player>();
                 playerComponent.PlayerNumber = i;
                 players[i].PlayerObject = playerObject;
-                players[i].player = playerComponent;
+                players[i].Player = playerComponent;
                 //players[i].player.controller = commandControllerHolder.GetComponent<CommandController>();
 
                 //PlayerInitialized(playerComponent);

@@ -29,7 +29,7 @@ namespace Assets.Data.Levels {
         public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
             for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].player, GetPlayerStartPosition(i));
+                _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
             }
         }
 
@@ -98,7 +98,7 @@ namespace Assets.Data.Levels {
             return canMove;
         }
 
-        public Vector2Int GetPlayerStartPosition(int playerNumber) {
+        public PlayerStartPosition GetPlayerStartPosition(int playerNumber) {
             return GridMapData.PlayerStartPositions[playerNumber];
         }
 
