@@ -6,49 +6,65 @@ using System.Threading.Tasks;
 using Assets.Data.Command;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
     public class DynamicUI : MonoBehaviour {
-        private Player _player;
-        private GameManager _gameManager;
-        private CommandLibrary _commandLibrary;
 
         public GameObject CommandPanel;
+        public GameObject SequenceBar;
+        public Player Player;
+        public CommandLibrary CommandLibrary;
 
         public void Start() {
-            _gameManager = GameManager.GetInstance();
-            _commandLibrary = _gameManager.CommandLibrary;
-
-            Assert.IsNotNull(_commandLibrary);
-            _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () => {
-                this._player = _gameManager.Players[0].player;
-                print("_player shoudl be filled");
-                Assert.IsNotNull(_player);
-            };
             CreateCommands();
         }
 
         public void CreateCommands() {
-            foreach (var command in _commandLibrary.Commands) { 
-                var uiCommand = new GameObject(command.Key.ToString(), typeof(Image), typeof(Button));
-                uiCommand.transform.parent = CommandPanel.transform;
-                var rectTransform = uiCommand.transform as RectTransform;
-                rectTransform.localScale = Vector3.one;
-
-                var image = uiCommand.GetComponent<Image>();
-                Assert.IsNotNull(image);
-                image.sprite = command.Value.Icon;
-
-                var button = uiCommand.GetComponent<Button>();
-                Assert.IsNotNull(button);
-                button.image = image;
-                button.onClick.AddListener(() => {
+            foreach (var command in CommandLibrary.Commands) { 
+                var uiCommand = CreateCommandButton(command.Value, CommandPanel, () => {
                     Debug.Log($"pressed a button");
-                    _player?.AddCommand(command.Value);
+                    Player.SequenceChanged += OnSequenceChanged;
+                    Player.AddCommand(command.Value);
                 });
             }
+        }
+
+        private void OnSequenceChanged(List<BaseCommand> commands) {
+            Debug.Log($"UI Update");
+            foreach (Transform child in transform) {
+                DestroyImmediate(child);
+            }
+
+            foreach (var command in commands) {
+                var commandObject = CreateCommandButton(command, SequenceBar, () => {
+                    Debug.Log("Removing command from sequence bar...");
+                });
+            }
+        }
+
+        private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
+            return CreateCommandButton(command, parent.transform, onClick);
+        }
+
+        private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
+            var commandObject = new GameObject(command.ToString(), typeof(Image), typeof(Button));
+            commandObject.transform.parent = parent;
+            var rectTransform = commandObject.transform as RectTransform;
+            rectTransform.localScale = Vector3.one;
+
+            var image = commandObject.GetComponent<Image>();
+            Assert.IsNotNull(image);
+            image.sprite = command.Icon;
+
+            var button = commandObject.GetComponent<Button>();
+            Assert.IsNotNull(button);
+            button.image = image;
+            button.onClick.AddListener(onClick);
+
+            return commandObject;
         }
     }
 }
