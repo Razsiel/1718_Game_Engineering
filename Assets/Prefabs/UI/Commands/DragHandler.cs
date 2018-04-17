@@ -36,12 +36,11 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (transform.parent == _startParent)
         {
             transform.position = _startPosition;
+            GetComponent<Button>().enabled = true;
         }
 
-        GetComponent<Button>().enabled = true;
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        //item.GetComponent<LayoutElement>().ignoreLayout = false;
     }
 
 }

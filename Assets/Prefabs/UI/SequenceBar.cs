@@ -143,6 +143,8 @@ public class SequenceBar : MonoBehaviour
         int slotToFill = GetNextEmptySlotIndex();
         InsertCommandAtIndex(command, slotToFill);
         GameObject commandCopy = Instantiate(command);
+        //For now its not possible to drag from sequence bar
+        //commandCopy.GetComponent<CanvasGroup>().blocksRaycasts = true;
         commandCopy.transform.SetParent(CommandSlots[slotToFill].transform, false);
     }
 
