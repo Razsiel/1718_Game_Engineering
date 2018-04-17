@@ -205,7 +205,7 @@ public class SequenceBar : MonoBehaviour
         {
             commandNames.Add(Enum.GetName(typeof(CommandEnum), command));
         }
-        ClearAllCommands();
+        StartCoroutine(ClearAllCommands());
         foreach (var commandName in commandNames)
         {
             int slotIndex = GetNextEmptySlotIndex();
