@@ -13,8 +13,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
   PlayerStartPositions:
-  - {x: 0, y: 1}
-  - {x: 0, y: 2}
+  - StartPosition: {x: 0, y: 1}
+    Facing: 3
+  - StartPosition: {x: 2, y: 1}
+    Facing: 7
   _map:
   - _tiles:
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
@@ -30,6 +32,7 @@ MonoBehaviour:
         Type: 1
         TriggerType: 1
         Channel: 1
+        DefaultState: 0
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
       DecorationConfigs: []
   - _tiles:
@@ -55,5 +58,6 @@ MonoBehaviour:
         Type: 2
         TriggerType: 0
         Channel: 1
+        DefaultState: 0
   _width: 3
   _height: 3

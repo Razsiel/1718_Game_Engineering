@@ -59,7 +59,7 @@ public class SequenceBar : MonoBehaviour
         }
 
         var manager = GameManager.GetInstance();
-        Player = manager.Players[0].player;
+        Player = manager.Players[0].Player;
     }
 
     public void UnShowDropInPoint(int slotIndex)
