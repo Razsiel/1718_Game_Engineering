@@ -14,7 +14,7 @@ public class EventManager
     public static UnityAction AllLevelGoalsReached;
            
     public static UnityAction InitializeUi;
-    public static UnityAction InitializePhoton;
+    public static UnityAction<TGEPlayer> InitializePhoton;
     public static UnityAction InitializeAudio;
     public static UnityAction InitializeMonologue;
 
@@ -33,15 +33,16 @@ public class EventManager
     public static UnityAction<LevelData, List<Player>> LevelReset;
     public static UnityAction<LevelData, List<TGEPlayer>> LoadLevel;
     public static UnityAction<LevelData> LevelLoaded;
+    public static UnityAction AllPlayersReady;
 
     public static void OnInitializeUi()
     {
         InitializeUi?.Invoke();
     }
 
-    public static void OnInitializePhoton()
+    public static void OnInitializePhoton(TGEPlayer localPlayer)
     {
-        InitializePhoton?.Invoke();
+        InitializePhoton?.Invoke(localPlayer);
     }
 
     public static void OnEnableUserInput()
@@ -126,5 +127,9 @@ public class EventManager
 
     public static void OnLevelLoaded(LevelData levelData) {
         LevelLoaded?.Invoke(levelData);
+    }
+
+    public static void OnAllPlayersReady() {
+        AllPlayersReady?.Invoke();
     }
 }

@@ -13,9 +13,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
-    // TODO: Make singleton-monobehaviour
-    public class GameStateManager : MonoBehaviour {
+    public class GameStateManager : SingleMonobehaviour<GameStateManager> {
         public LevelData level;
+        public bool IsMultiPlayer;
+
+        private TGEPlayer localPlayer;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
 
@@ -32,7 +34,7 @@ namespace Assets.Scripts {
 
             // GAMESTART -> EDITSEQUENCE
             fsm.Tr(GameState.GameStart, GameStateTrigger.Next, GameState.EditSequence)
-                .On(OnEditSequenceStateEnter);
+               .On(OnEditSequenceStateEnter);
 
             // EDITSEQUENCE <-> READYANDWAITINGFORPLAYERS
             fsm.Tr(GameState.EditSequence, GameStateTrigger.Next, GameState.ReadyAndWaitingForPlayers)
@@ -55,13 +57,30 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: loading level");
             EventManager.LevelLoaded += (levelData) => {
                 print("level loaded and presented");
-                if (true /*PhotonManager.Instance.AllPlayersConnected*/) {
-                    fsm.Fire(GameStateTrigger.Next); // goto Cutscene
-                }
+                fsm.Fire(GameStateTrigger.Next); // goto Cutscene
             };
-            EventManager.OnLoadLevel(level, new List<TGEPlayer>() {
-                new TGEPlayer()
-            });
+
+            localPlayer = new TGEPlayer();
+            if (IsMultiPlayer) {
+                PhotonManager.Instance.TGEOnRoomClosed += OnRoomClosed;
+                EventManager.OnInitializePhoton(new TGEPlayer());
+            }
+            else {
+                var players = new List<TGEPlayer>() {
+                    localPlayer
+                };
+                EventManager.OnLoadLevel(level, players);
+            }
+        }
+
+        private void OnRoomClosed(Room room) {
+            PhotonManager.Instance.TGEOnRoomClosed -= OnRoomClosed;
+            var players = new List<TGEPlayer>();
+            players.Add(localPlayer);
+            for (int i = 0; i < room.PlayerCount - 1; i++) {
+                players.Add(new TGEPlayer());
+            }
+            EventManager.OnLoadLevel(level, players);
         }
 
         public void OnDisable() {
@@ -109,10 +128,10 @@ namespace Assets.Scripts {
             // register if sequence is changed
             EventManager.SequenceChanged += OnSequenceChanged;
 
-            if (true /*PhotonManager.Instance.AllPlayersReady*/) {
+            EventManager.AllPlayersReady += () => {
                 print("all players are ready!");
                 fsm.Fire(GameStateTrigger.Next); // goto Simulate
-            }
+            };
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {

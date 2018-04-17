@@ -20,15 +20,16 @@ namespace Assets.Scripts.Photon
         private RoomManager _roomManager;
 
         //Events to react on
-        public event UnityAction TGEOnJoinedLobby;
-        public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
-        public event UnityAction<object[]> TGEOnJoinRandomRoomFailed;
-        public event UnityAction<object[]> TGEOnJoinRoomFailed;
-        public event UnityAction TGEOnCreatedRoom;
-        public event UnityAction TGEOnJoinedRoom;
-        public event UnityAction TGEOnLeftRoom;
-        public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
-        public event UnityAction TGEOnPlayersCreated;
+        public UnityAction TGEOnJoinedLobby;
+        public UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
+        public UnityAction<object[]> TGEOnJoinRandomRoomFailed;
+        public UnityAction<object[]> TGEOnJoinRoomFailed;
+        public UnityAction TGEOnCreatedRoom;
+        public UnityAction TGEOnJoinedRoom;
+        public UnityAction TGEOnLeftRoom;
+        public UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
+        public UnityAction TGEOnPlayersCreated;
+        public UnityAction<Room> TGEOnRoomClosed;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -151,6 +152,10 @@ namespace Assets.Scripts.Photon
         public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
         {
             TGEOnPhotonPlayerDisconnected?.Invoke(otherPlayer);
+        }
+
+        public void OnRoomClosed(Room room) {
+            TGEOnRoomClosed?.Invoke(room);
         }
         #endregion
     }
