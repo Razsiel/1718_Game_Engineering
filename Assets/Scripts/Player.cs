@@ -34,7 +34,7 @@ namespace Assets.Scripts
             _gameManager = GameManager.GetInstance();
             _sequence = new List<BaseCommand>();
 
-            if (GameManager.GetInstance().Players.Single(x => x.photonPlayer.IsLocal).player == this)
+            if (GameManager.GetInstance().Players.GetLocalPlayer().Player == this)
                 OnPlayerSequenceRan += () =>
                 {
                     this.IsReady = false;
@@ -92,7 +92,7 @@ namespace Assets.Scripts
         public void ReadyButtonClicked()
         {
             OnPlayerReady?.Invoke();
-            if (!GameManager.GetInstance().IsMultiPlayer)
+            if(!_gameManager.IsMultiPlayer)
                 StartCoroutine(ExecuteCommands());
         }
 
@@ -116,6 +116,12 @@ namespace Assets.Scripts
                 yield return new WaitForSeconds(delay);
             }
             OnPlayerSequenceRan?.Invoke();
+        }
+
+        public void AddOrInsertCommandAt(BaseCommand command, int index)
+        {
+            _sequence.Insert(index, command);
+            SequenceChanged?.Invoke(_sequence);
         }
 
         public void AddCommand(BaseCommand command)

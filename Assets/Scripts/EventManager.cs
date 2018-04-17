@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Command;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,16 +13,20 @@ public class EventManager
     public static UnityAction InitializeUi;
     public static UnityAction InitializePhoton;
     public static UnityAction InitializeAudio;
+    public static UnityAction InitializeMonologue;
 
     public static UnityAction EnableUserInput;
     public static UnityAction DisableUserInput;
+    public static UnityAction<List<BaseCommand>> SequenceChanged;
     public static UnityAction ReadyButtonClicked;
+    public static UnityAction StopButtonClicked;
     public static UnityAction PhotonSynchronized;
+    public static UnityAction<Monologue> MonologueStart;
     public static UnityAction MonologueEnded;
 
     public static UnityAction<SFX> PlaySoundEffect;
     public static UnityAction<BGM> PlayMusicClip;
-
+    public static UnityAction Simulate;
 
     public static void OnInitializeUi()
     {
@@ -71,6 +76,7 @@ public class EventManager
     public static void OnMonologueEnded()
     {
         MonologueEnded?.Invoke();
+        EnableUserInput?.Invoke();
     }
 
     public static void OnPlaySoundEffect(SFX soundName)
@@ -87,5 +93,20 @@ public class EventManager
     public static void OnInitializeAudio()
     {
         InitializeAudio?.Invoke();
+    }
+
+    public static void OnInitializeMonologue()
+    {
+        InitializeMonologue?.Invoke();
+    }
+
+
+    public static void OnMonologueStart(Monologue monologue)
+    {
+        MonologueStart?.Invoke(monologue);
+    }
+
+    public static void OnSimulate() {
+        Simulate?.Invoke();
     }
 }

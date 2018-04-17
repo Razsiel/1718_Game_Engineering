@@ -29,6 +29,7 @@ namespace Assets.Scripts.Photon
         public event UnityAction TGEOnLeftRoom;
         public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
         public event UnityAction TGEOnPlayersCreated;
+        public event UnityAction TGEOnDisconnectedFromPhoton;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -104,8 +105,8 @@ namespace Assets.Scripts.Photon
         {
             LevelManager.Instance.Players[1].PlayerObject = playerObject;
             GameManager.GetInstance().Players[1].PlayerObject = playerObject;
-            LevelManager.Instance.Players[1].player = playerObject.GetComponent<Player>();
-            GameManager.GetInstance().Players[1].player = playerObject.GetComponent<Player>();
+            LevelManager.Instance.Players[1].Player = playerObject.GetComponent<Player>();
+            GameManager.GetInstance().Players[1].Player = playerObject.GetComponent<Player>();
         }
 
         #region PhotonCallbacks
@@ -113,6 +114,11 @@ namespace Assets.Scripts.Photon
         {
             Debug.Log("InPUNCAll");
             TGEOnJoinedLobby?.Invoke();
+        }
+
+        public override void OnDisconnectedFromPhoton()
+        {
+            TGEOnDisconnectedFromPhoton?.Invoke();
         }
 
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)

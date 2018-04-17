@@ -10,7 +10,7 @@ using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
 namespace Assets.Data.Levels {
-    [CreateAssetMenu(fileName = "Level_0", menuName = "Data/Level")]
+    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level")]
     [System.Serializable]
     public class LevelData : ScriptableObject {
         [SerializeField] public string Name;
@@ -18,6 +18,7 @@ namespace Assets.Data.Levels {
         [SerializeField] public List<LevelGoal> Goals;
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
+        [SerializeField] public Monologue Monologue;
 
         private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
@@ -28,7 +29,7 @@ namespace Assets.Data.Levels {
         public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
             for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].player, GetPlayerStartPosition(i));
+                _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
             }
         }
 
@@ -88,12 +89,16 @@ namespace Assets.Data.Levels {
             if (canMove) {
                 Debug.Log($"Can move to {destination.XY}");
                 _playerPositions[player] = destination.XY;
+                // TODO: implement events here
+                // player.OnMove(destination.XY);
+                // current.Value.OnLeave(player);
+                // destination.Value.OnEnter(player);
             }
 
             return canMove;
         }
 
-        public Vector2Int GetPlayerStartPosition(int playerNumber) {
+        public PlayerStartPosition GetPlayerStartPosition(int playerNumber) {
             return GridMapData.PlayerStartPositions[playerNumber];
         }
 
@@ -121,13 +126,21 @@ namespace Assets.Data.Levels {
                 return false; // there are no decorations to interact with
             }
 
-            // Filter on triggers
-            var triggers = decorationsInFrontOfPlayer.Where(d => d.Type == ChannelType.Trigger);
-            Debug.Log($"Found {triggers.Count()} triggers to interact with...");
-            // Send a channel message for each trigger decoration channel found (skipping the 'NONE'-channel)
-            foreach (var triggerDecoration in triggers.Where(d => d.Channel != Channel.None).GroupBy(d => d.Channel)) {
-                Debug.Log($"Sending a message to channel: {triggerDecoration.Key}");
-                DecorationChannelManager.Instance.TriggerChannel(triggerDecoration.Key, player);
+            foreach (var decorationConfigurations in decorationsInFrontOfPlayer.GroupBy(d => d.Type)) {
+                // Send messages through the channel system for triggers
+                if (decorationConfigurations.Key == ChannelType.Trigger) {
+                    Debug.Log($"Found {decorationConfigurations.Count()} triggers...");
+                    var triggersByChannels = decorationConfigurations.GroupBy(d => d.Channel);
+                    foreach (var triggerByChannel in triggersByChannels) {
+                        Debug.Log($"Sending a message to channel: {triggerByChannel.Key}");
+                        DecorationChannelManager.Instance.TriggerChannel(triggerByChannel.Key, player);
+                    }
+                }
+
+                // Call interact on object
+                foreach (var decorationConfiguration in decorationConfigurations) {
+                    decorationConfiguration.OnInteract(decorationConfiguration.Channel, player);
+                }
             }
 
             return true;
