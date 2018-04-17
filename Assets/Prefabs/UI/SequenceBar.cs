@@ -62,6 +62,36 @@ public class SequenceBar : MonoBehaviour
         Player = manager.Players[0].player;
     }
 
+    public void UnShowDropInPoint(int slotIndex)
+    {
+        for (int i = slotIndex; i < CommandSlots.Length - 1; i++)
+        {
+            //CommandSlots[i+1].transform.GetChild(0).SetParent(CommandSlots[i].transform);
+            //if (CommandSlots[i].transform.childCount > 0)
+            //{
+            //    CommandSlots[i].transform.SetParent(CommandSlots[i - 1].transform.GetChild(0));
+            //}
+        }
+    }
+
+    public void ShowDropInPoint(int slotIndex)
+    {
+        for (int i = CommandSlots.Length - 1; i >= slotIndex; i--)
+        {
+            if(CommandSlots[i].transform.childCount > 0)
+                CommandSlots[i].transform.GetChild(0).SetParent(CommandSlots[i+1].transform);
+            //GameObject currentChild = null;
+            //if(CommandSlots[i].transform.childCount > 0)
+            //    currentChild = CommandSlots[i].transform.GetChild(0).gameObject;
+
+            //if (currentChild && CommandSlots[i-1].transform.childCount > 0)
+            //{
+            //    print("move");
+            //    currentChild.transform.SetParent(CommandSlots[i+1].transform);
+            //}
+        }
+    }
+
     public int GetNextEmptySlotIndex()
     {
         for (var i = 0; i < AmountOfCommandsAllowed; i++)
@@ -78,7 +108,6 @@ public class SequenceBar : MonoBehaviour
                  DestroyImmediate(CommandSlots[i].transform.GetChild(0).gameObject);
 
         yield return new WaitForEndOfFrame();
-
     }
 
     public void GetCount()
@@ -97,7 +126,6 @@ public class SequenceBar : MonoBehaviour
 
     public void HasChanged(int commandSlotIndex, bool destroy)
     {
-        print(commandSlotIndex + " " + destroy);
         if (destroy)
         {
             //Destroy the child of the slot
@@ -149,6 +177,7 @@ public class SequenceBar : MonoBehaviour
             if (libraryCommand.Key.ToString().Equals(command.name))
             {
                 Player.AddOrInsertCommandAt(libraryCommand.Value, slotToFill);
+                return;
             }
         }
     }

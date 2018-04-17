@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    public static GameObject ItemBeingDragged;
+    public static GameObject ItemBeingDragged = null;
 
     Transform _startParent;
     Vector3 _startPosition;
@@ -24,21 +24,9 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    bool IsPointerOverGameObject(int fingerId)
-    {
-        EventSystem eventSystem = EventSystem.current;
-        return (eventSystem.IsPointerOverGameObject(fingerId)
-                && eventSystem.currentSelectedGameObject.GetComponent<SlotScript>() != null);
-
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         transform.position = Input.mousePosition;
-        if (IsPointerOverGameObject(eventData.pointerId))
-        {
-            print("a");
-        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -52,6 +40,7 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         else
         { 
             _replacement = Instantiate(gameObject, _startParent);
+            _replacement.name = gameObject.name;
             _replacement.GetComponent<CanvasGroup>().blocksRaycasts = true;
             _replacement.GetComponent<Button>().enabled = true;
         }   
