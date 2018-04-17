@@ -24,7 +24,7 @@ public class RoomManager : Photon.MonoBehaviour
     public GameObject roomPanel;
 
     public void Awake() {
-        EventManager.InitializePhoton += (localPlayer) => Init(localPlayer);
+        EventManager.InitializePhoton += Init;
     }
 
     //Lets connect two users to Photon and a lobby (+room)
@@ -51,8 +51,9 @@ public class RoomManager : Photon.MonoBehaviour
 
             PhotonManager.Instance.TGEOnPhotonPlayerConnected += OnPhotonPlayerConnected;
 
-            PhotonManager.Instance.TGEOnJoinedRoom += () =>
-            {
+            PhotonManager.Instance.TGEOnJoinedRoom += () => {
+                Debug.Log("Joined a room");
+
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     print("Players are Created!");
@@ -98,7 +99,7 @@ public class RoomManager : Photon.MonoBehaviour
 
         if (PhotonNetwork.player.IsMasterClient) {
             PhotonNetwork.room.IsOpen = false;
-            PhotonManager.Instance.OnRoomClosed(PhotonNetwork.room);
+            this.photonView.RPC(nameof(OnAllPlayersJoined), PhotonTargets.All);
         }
 
         PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { Assert.IsTrue(PhotonNetwork.CreateRoom(null)); };
@@ -118,6 +119,11 @@ public class RoomManager : Photon.MonoBehaviour
     private void OnJoinRandomRoomFailed(object[] codeAndMsg) {
         print($"Join random room Failed, Code: {codeAndMsg[0]} Message: {codeAndMsg[1]}");
         Assert.IsTrue(CreateRoom());
+    }
+
+    [PunRPC]
+    private void OnAllPlayersJoined() {
+        PhotonManager.Instance.OnAllPlayersJoined(PhotonNetwork.room);
     }
 
     /*

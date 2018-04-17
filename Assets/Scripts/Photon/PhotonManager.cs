@@ -29,7 +29,7 @@ namespace Assets.Scripts.Photon
         public UnityAction TGEOnLeftRoom;
         public UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
         public UnityAction TGEOnPlayersCreated;
-        public UnityAction<Room> TGEOnRoomClosed;
+        public UnityAction<Room> TGEOnAllPlayersJoined;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -154,8 +154,8 @@ namespace Assets.Scripts.Photon
             TGEOnPhotonPlayerDisconnected?.Invoke(otherPlayer);
         }
 
-        public void OnRoomClosed(Room room) {
-            TGEOnRoomClosed?.Invoke(room);
+        public void OnAllPlayersJoined(Room room) {
+            TGEOnAllPlayersJoined?.Invoke(room);
         }
         #endregion
     }

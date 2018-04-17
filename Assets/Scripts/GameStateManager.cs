@@ -62,7 +62,7 @@ namespace Assets.Scripts {
 
             localPlayer = new TGEPlayer();
             if (IsMultiPlayer) {
-                PhotonManager.Instance.TGEOnRoomClosed += OnRoomClosed;
+                PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
                 EventManager.OnInitializePhoton(new TGEPlayer());
             }
             else {
@@ -73,8 +73,8 @@ namespace Assets.Scripts {
             }
         }
 
-        private void OnRoomClosed(Room room) {
-            PhotonManager.Instance.TGEOnRoomClosed -= OnRoomClosed;
+        private void OnAllPlayersJoined(Room room) {
+            PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
             var players = new List<TGEPlayer>();
             players.Add(localPlayer);
             for (int i = 0; i < room.PlayerCount - 1; i++) {
