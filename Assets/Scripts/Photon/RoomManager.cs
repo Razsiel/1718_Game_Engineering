@@ -88,7 +88,7 @@ public class RoomManager : Photon.MonoBehaviour
                 PhotonManager.Instance.TGEOnPlayersCreated += () =>
                 {
                     print("Players are Created!");
-                    GameManager.GetInstance().Players.GetLocalPlayer().player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    GameManager.GetInstance().Players.GetLocalPlayer().Player.SequenceChanged += (List<BaseCommand> sequence) =>
                     {
                         //PhotonPlayer otherPlayer = GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).photonPlayer;
                         print("about to send rpc");
@@ -104,9 +104,9 @@ public class RoomManager : Photon.MonoBehaviour
                     };
 
 
-                    GameManager.GetInstance().Players.GetLocalPlayer().player.OnPlayerReady += () =>
+                    GameManager.GetInstance().Players.GetLocalPlayer().Player.OnPlayerReady += () =>
                     {                 
-                        gameManager.Players.Single(x => x.photonPlayer.IsLocal).player.IsReady = true;
+                        gameManager.Players.Single(x => x.photonPlayer.IsLocal).Player.IsReady = true;
 
                         if(!PhotonNetwork.player.IsMasterClient)
                             this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
@@ -156,7 +156,7 @@ public class RoomManager : Photon.MonoBehaviour
         print("Got RPC");
         ListContainer<CommandHolder> commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
         List<CommandEnum> commandEnums = commands.list.Select(x => x.command).ToList();
-        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).player.UpdateSequence(commandEnums);
+        GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).Player.UpdateSequence(commandEnums);
         networkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
     }
 
@@ -164,9 +164,9 @@ public class RoomManager : Photon.MonoBehaviour
     public void UpdateReadyState(PhotonMessageInfo info)
     {
         print("GOT RPC Ready state");
-        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).player.IsReady = true;
+        gameManager.Players.Single(x => !x.photonPlayer.IsLocal).Player.IsReady = true;
 
-        if(gameManager.Players.All(x => x.player.IsReady))
+        if(gameManager.Players.All(x => x.Player.IsReady))
             SendStartExecution();
     }
 
@@ -179,7 +179,7 @@ public class RoomManager : Photon.MonoBehaviour
     public void StartExecution(PhotonMessageInfo info)
     {
         foreach(TGEPlayer p in gameManager.Players)
-            p.player.StartExecution();
+            p.Player.StartExecution();
     }
 
 }

@@ -24,11 +24,14 @@ public class LevelPresenter : MonoBehaviour
         
         // Set players to start position in scene;
         for (int i = 0; i < players.Count; i++) {
-            var startGridPosition = levelData.GetPlayerStartPosition(i);
+            var playerStartPosition = levelData.GetPlayerStartPosition(i);
+            var startGridPosition = playerStartPosition.StartPosition;
             var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, startGridPosition);
             playerWorldPosition.y = 1;
-            //var playerDirection = player.viewDirection.ToQuaternion();
-            players[i].PlayerObject.transform.position = playerWorldPosition;
+            var player = players[i];
+            player.Player.ViewDirection = playerStartPosition.Facing;
+            player.PlayerObject.transform.position = playerWorldPosition;
+            player.PlayerObject.transform.rotation = Quaternion.Euler(player.Player.ViewDirection.ToEuler());
         }
     }
 
