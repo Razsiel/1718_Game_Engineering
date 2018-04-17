@@ -37,13 +37,8 @@ public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             transform.position = _startPosition;
         }
-        else
-        { 
-            _replacement = Instantiate(gameObject, _startParent);
-            _replacement.name = gameObject.name;
-            _replacement.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            _replacement.GetComponent<Button>().enabled = true;
-        }   
+
+        GetComponent<Button>().enabled = true;
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
         //item.GetComponent<LayoutElement>().ignoreLayout = false;

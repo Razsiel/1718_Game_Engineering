@@ -142,8 +142,8 @@ public class SequenceBar : MonoBehaviour
     {
         int slotToFill = GetNextEmptySlotIndex();
         InsertCommandAtIndex(command, slotToFill);
-        command.transform.SetParent(CommandSlots[slotToFill].transform, false);
-        print(command.transform.parent);
+        GameObject commandCopy = Instantiate(command);
+        commandCopy.transform.SetParent(CommandSlots[slotToFill].transform, false);
     }
 
     public void HasChangedInsert(int commandSlotIndex, GameObject command)
@@ -164,7 +164,8 @@ public class SequenceBar : MonoBehaviour
             }
         }
         //Insert itemBeingDragged into the index slot
-        command.transform.SetParent(CommandSlots[commandSlotIndex].transform, false);
+        GameObject commandCopy = Instantiate(command);
+        commandCopy.transform.SetParent(CommandSlots[commandSlotIndex].transform, false);
 
         //Insert the command in the player sequence
         InsertCommandAtIndex(command, commandSlotIndex);
