@@ -15,13 +15,17 @@ public class PrefabContainer : ScriptableObject {
     [SerializeField] public GameObject PlayerPrefab;
 
     // Images
-    [SerializeField] public Texture2D ImageNotFound;
+    [SerializeField] public Sprite ImageNotFound;
 
-    [SerializeField] public Texture2D MoveCommand;
-    [SerializeField] public Texture2D TurnCommandLeft;
-    [SerializeField] public Texture2D TurnCommandRight;
-    [SerializeField] public Texture2D InteractCommand;
-    [SerializeField] public Texture2D WaitCommand;
+    [SerializeField] public Sprite MoveCommand;
+    [SerializeField] public Sprite TurnCommandLeft;
+    [SerializeField] public Sprite TurnCommandRight;
+    [SerializeField] public Sprite InteractCommand;
+    [SerializeField] public Sprite WaitCommand;
+
+    [SerializeField] public Sprite PlayButton;
+    [SerializeField] public Sprite StopButton;
+
 
     // Textures
 
@@ -34,5 +38,7 @@ public class PrefabContainer : ScriptableObject {
     public void Initialize()
     {
         sfx_button_hover = Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover");
+        PlayButton = Resources.Load<Sprite>("Images/Img_Play_Temp");
+        StopButton = Resources.Load<Sprite>("Images/Img_Stop_Temp");
     }
 }
