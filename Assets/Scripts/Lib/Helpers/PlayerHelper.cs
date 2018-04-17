@@ -13,7 +13,7 @@ public static class PlayerHelper
         return players.Single(x => x.photonPlayer.IsLocal);
     }
 
-    public static T GetNetworkPlayers<T>(this List<T> players) where T : TGEPlayer
+    public static T GetNetworkPlayer<T>(this List<T> players) where T : TGEPlayer
     {
         Assert.IsNotNull(players);
         return players.Single(x => !x.photonPlayer.IsLocal);
