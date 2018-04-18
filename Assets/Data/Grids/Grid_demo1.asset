@@ -61,7 +61,10 @@ MonoBehaviour:
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
       DecorationConfigs:
-      - DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
           type: 2}
         RelativePosition: {x: -12, y: 16, z: 0}
         Scale: 1
@@ -105,7 +108,10 @@ MonoBehaviour:
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
       DecorationConfigs:
-      - DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
           type: 2}
         RelativePosition: {x: 12, y: 16, z: 0}
         Scale: 1

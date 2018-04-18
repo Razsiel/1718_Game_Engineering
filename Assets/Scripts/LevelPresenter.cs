@@ -17,6 +17,7 @@ public class LevelPresenter : MonoBehaviour {
     private static GameObject _levelObject;
 
     public void Awake() {
+        /*
         EventManager.LoadLevel += Present;
         EventManager.LevelReset += (levelData, players) => {
             // reset internal data
@@ -28,22 +29,23 @@ public class LevelPresenter : MonoBehaviour {
                 PresentPlayerOnPosition(levelData, player, playerPos);
                 playerIndex++;
             }
-        };
+        };*/
+
     }
 
     // Use this for initialization
-    public void Present(LevelData levelData, List<TGEPlayer> players) {
+    public static void Present(LevelData levelData, List<TGEPlayer> players) {
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
 
         // create level objects in scene
-        _levelObject = CreateGameObjectFromLevelData(levelData, this.transform);
+        _levelObject = CreateGameObjectFromLevelData(levelData);
         Assert.IsNotNull(_levelObject);
         
         // Set players to start position in scene;
         for (int i = 0; i < players.Count; i++) {
-            var playerObject = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var playerObject =  players[i].PlayerObject; //Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity, this.transform);
             var player = playerObject.GetComponent<Player>();
             player.PlayerNumber = i;
             var playerPos = levelData.InitPlayer(player);
@@ -53,7 +55,7 @@ public class LevelPresenter : MonoBehaviour {
         EventManager.OnLevelLoaded(levelData);
     }
 
-    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
+    private static void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
     {
         var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, playerStartPosition.StartPosition);
         playerWorldPosition.y = 1;
@@ -68,7 +70,7 @@ public class LevelPresenter : MonoBehaviour {
         }
     }
 
-    public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
+    public static GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
         Destroy(_levelObject);
         var grid = data.GridMapData;
 

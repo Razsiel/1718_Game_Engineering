@@ -59,9 +59,7 @@ namespace Assets.Scripts {
                     fsm.Fire(GameStateTrigger.Next); // goto Cutscene
                 }
             };
-            EventManager.OnLoadLevel(level, new List<TGEPlayer>() {
-                new TGEPlayer()
-            });
+            EventManager.OnLoadLevel(level, GameManager.GetInstance().Players);
         }
 
         public void OnDisable() {
