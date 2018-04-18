@@ -131,18 +131,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
     type: 2}
---- !u!114 &91331033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 91331027}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 346bc62f493823c498d031deb2865ef2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}
 --- !u!1001 &409784202
 Prefab:
   m_ObjectHideFlags: 0
@@ -623,7 +611,7 @@ Prefab:
     - target: {fileID: 224641866360241636, guid: e33ad771a40c8b447b3db3dd82fbbd28,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -52.75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224108872001855638, guid: e33ad771a40c8b447b3db3dd82fbbd28,
         type: 2}
