@@ -12,7 +12,6 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts;
 using Assets.Scripts.Lib.Helpers;
 
-
 public class RoomManager : Photon.MonoBehaviour
 {
     public GameObject playerPrefab;
@@ -105,6 +104,11 @@ public class RoomManager : Photon.MonoBehaviour
 
                         this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
                     };
+
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerStop += () =>
+                    {
+                        SendStopExecution();
+                    };
                 };
 
             };
@@ -116,11 +120,11 @@ public class RoomManager : Photon.MonoBehaviour
     {
         if (!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && gameManager.IsMultiPlayer)
         {
+            alreadyStarted = true;
             gameManager.Players.Add(new TGEPlayer());
             gameManager.Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
 
-            gameManager.StartMultiplayerGame(gameManager.Players);
-            alreadyStarted = true;
+            gameManager.StartMultiplayerGame(gameManager.Players);           
         }
 
     }
@@ -170,11 +174,23 @@ public class RoomManager : Photon.MonoBehaviour
         this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
     }
 
+    private void SendStopExecution()
+    {
+        this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
+    }
+
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
         foreach (TGEPlayer p in gameManager.Players)
             p.Player.StartExecution();
+    }
+
+    [PunRPC]
+    public void StopExecution(PhotonMessageInfo info)
+    {
+        foreach(TGEPlayer p in gameManager.Players)
+            p.Player.StopExecution();
     }
 
     private void PrintIfMultiplayer(object message)
