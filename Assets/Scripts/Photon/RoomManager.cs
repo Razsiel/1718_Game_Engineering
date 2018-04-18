@@ -214,6 +214,10 @@ public class RoomManager : Photon.MonoBehaviour
                                 player.Player.IsReady = false;
                             }                       
                     }
+                    else
+                    {
+                        EventManager.OnAllLevelGoalsReached();
+                    }
 
             };
         }
