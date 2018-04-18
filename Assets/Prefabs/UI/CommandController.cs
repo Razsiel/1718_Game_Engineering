@@ -13,7 +13,17 @@ namespace Assets.Prefabs.UI {
         public SequenceBar SequenceBar;
         public SequenceBar OtherSequenceBar;
         public GameObject ReadyButton;
-        private bool _isReadyButton;
+
+        public enum ReadyButtonState
+        {
+            ReadyButton,
+            UnReadyButton,
+            StopButton
+        };
+
+        private ReadyButtonState readyButtonState = ReadyButtonState.ReadyButton;
+
+        public bool _isReadyButton;
 
         Player _player;
         GameManager _gameManager;
@@ -94,12 +104,14 @@ namespace Assets.Prefabs.UI {
             SequenceBar.GetCount();
         }
 
-        public void ToggleReadyButton()
+        public void SetReadyButtonState()
         {
             _isReadyButton = !_isReadyButton;
 
             ReadyButton.GetComponent<Image>().sprite =
                 _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.StopButton;
+
+            //readyButtonState = newReadyButtonState;
         }
 
         public void OnReadyButtonClicked() {
@@ -113,7 +125,26 @@ namespace Assets.Prefabs.UI {
                 //_player.StopButtonClicked();
             }
 
-            ToggleReadyButton();
+            SetReadyButtonState();
+
+            //if (readyButtonState == ReadyButtonState.ReadyButton)
+            //{
+            //    //SetReadyButtonState(ReadyButtonState.UnReadyButton);
+            //    //_player.ReadyButtonClicked();
+            //    ReadyButton.GetComponent<Image>().sprite =
+            //        _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.UnReadyButton;
+
+            //}
+            //else if (readyButtonState == ReadyButtonState.UnReadyButton)
+            //{
+            //    //SetReadyButtonState(ReadyButtonState.ReadyButton);
+            //    //_player.UnreadyButtonClicked();
+            //}
+            //else
+            //{
+            //    //SetReadyButtonState(ReadyButtonState.ReadyButton);
+            //    //_player.StopButtonClicked();
+            //}
         }
 
         //public void UpdateOther_playersSequenceBar(List<BaseCommand> commands)

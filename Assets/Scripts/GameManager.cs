@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Assets.Data.Command;
 using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
@@ -88,28 +89,36 @@ namespace Assets.Scripts {
 
         public void StartMultiplayerGame(List<TGEPlayer> players /*, LevelData level*/) {
             //PhotonManager.Instance.GetOtherPlayers();
-            CreatePlayers(players);
+            var orderedList = players.OrderByDescending(x => x.photonPlayer.IsMasterClient).ToList();
+            //this.Players = orderedList;
+
+            CreatePlayers(orderedList);
+            this.Players = orderedList;
             PhotonManager.Instance.PlayersReady();
-            LevelData.Init(players);
-            LevelPresenter.Present(LevelData, players);
+            LevelData.Init(orderedList);
+            LevelPresenter.Present(LevelData, orderedList);
             ////Lets do some GameStarting logic here
             //PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
         }
 
     
         private void CreatePlayers(List<TGEPlayer> players) {
+           
             for (int i = 0; i < players.Count; i++) {
                 var playerObject = Instantiate(this.PrefabContainer.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
                 var playerComponent = playerObject.GetComponent<Player>();
                 playerComponent.PlayerNumber = i;
-                playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
-//                playerComponent.GetComponent<MeshRenderer>().material.color = players[i].photonPlayer.IsMasterClient ? Color.blue : Color.green;
+
+                ////playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
+                            
                 players[i].PlayerObject = playerObject;
                 players[i].Player = playerComponent;                                                                 
                 //PlayerInitialized(playerComponent);
                 PlayerInitialized?.Invoke(playerComponent);
-                // layerInitialized(playerComponent);
 
+                if(IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
+                    playerComponent.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+                // layerInitialized(playerComponent);
             }
             PlayersInitialized?.Invoke();
         }
