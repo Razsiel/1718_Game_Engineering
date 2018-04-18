@@ -23,6 +23,7 @@ namespace Assets.Scripts
         public UnityAction OnPlayerReady;
         public UnityAction OnPlayerSequenceRan;
         public UnityAction OnPlayerStop;
+        public UnityAction OnPlayerUnready;
 
         public bool IsReady = false;
         public bool IsLocalPlayer;
