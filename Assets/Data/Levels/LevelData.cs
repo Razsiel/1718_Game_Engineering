@@ -26,10 +26,43 @@ namespace Assets.Data.Levels {
             return Goals.All(goal => goal.HasBeenReached(null));
         }
 
+        public List<PhotonPlayerPosition> GetStartPositions()
+        {
+            var mpPlayerPos = new List<PhotonPlayerPosition>();
+            mpPlayerPos = _playerPositions.Select(x => new PhotonPlayerPosition()
+            {
+                Player = GameManager.GetInstance().Players.Single(y => y.Player == x.Key).photonPlayer,
+                PlayerPosition = x.Value
+            }).ToList();
+            return mpPlayerPos;
+        }
+
+        public void SetStartPosition(List<PhotonPlayerPosition> positions)
+        {
+            //for(int i = 0; i < positions.Count(); i++)
+            //{
+            //    var player = GameManager.GetInstance().Players.Single(x => x.photonPlayer == positions.);
+            //}
+            //    _playerPositions.Add(GameManager.GetInstance().Players.g)
+        }
+
         public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
-            for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
+
+            if(!GameManager.GetInstance().IsMultiPlayer)
+            {
+                for(int i = 0; i < players.Count; i++)
+                {
+                    _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
+                }
+            }
+            else
+            {
+                foreach(var player in players)
+                {
+                    int playerNumber = player.photonPlayer.IsMasterClient ? 1 : 0;
+                    _playerPositions.Add(player.Player, GetPlayerStartPosition(playerNumber).StartPosition);
+                }
             }
         }
 
@@ -98,7 +131,7 @@ namespace Assets.Data.Levels {
             return canMove;
         }
 
-        public PlayerStartPosition GetPlayerStartPosition(int playerNumber) {
+        public PlayerStartPosition GetPlayerStartPosition(int playerNumber) {            
             return GridMapData.PlayerStartPositions[playerNumber];
         }
 
