@@ -169,11 +169,23 @@ public class RoomManager : Photon.MonoBehaviour
         this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
     }
 
+    private void SendStopExecution()
+    {
+        this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
+    }
+
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
         foreach (TGEPlayer p in gameManager.Players)
             p.Player.StartExecution();
+    }
+
+    [PunRPC]
+    public void StopExecution(PhotonMessageInfo info)
+    {
+        foreach(TGEPlayer p in gameManager.Players)
+            p.Player.StopExecution();
     }
 
     private void PrintIfMultiplayer(object message)

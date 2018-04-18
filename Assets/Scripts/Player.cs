@@ -135,12 +135,16 @@ namespace Assets.Scripts
             _sequence.Clear();
             SequenceChanged?.Invoke(_sequence);
         }
-
-        [PunRPC]
+        
         public void UpdateCommands(List<BaseCommand> commands)
         {
             _sequence.Clear();
             _sequence.AddRange(commands);
+        }
+
+        public void StopExecution()
+        {
+            StopCoroutine(ExecuteCommands());
         }
     }
 }
