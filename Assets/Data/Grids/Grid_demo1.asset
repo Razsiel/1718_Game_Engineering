@@ -15,7 +15,7 @@ MonoBehaviour:
   PlayerStartPositions:
   - StartPosition: {x: 0, y: 1}
     Facing: 1
-  - StartPosition: {x: 6, y: 5}
+  - StartPosition: {x: 4, y: 5}
     Facing: 5
   _map:
   - _tiles:
@@ -72,8 +72,19 @@ MonoBehaviour:
         DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
-    - Tile: {fileID: 0}
-      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials: []
+        DecorationData: {fileID: 11400000, guid: 1a0772902b1321b4e80f28f95240ce2c,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 0
+        Type: 0
+        TriggerType: 0
+        Channel: 0
+        DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
@@ -181,8 +192,19 @@ MonoBehaviour:
       DecorationConfigs: []
     - Tile: {fileID: 0}
       DecorationConfigs: []
-    - Tile: {fileID: 0}
-      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials: []
+        DecorationData: {fileID: 11400000, guid: 1a0772902b1321b4e80f28f95240ce2c,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 0
+        Type: 0
+        TriggerType: 0
+        Channel: 0
+        DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
