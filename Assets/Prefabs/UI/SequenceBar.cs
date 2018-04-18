@@ -59,7 +59,9 @@ public class SequenceBar : MonoBehaviour
         }
 
         var manager = GameManager.GetInstance();
-        Player = manager.Players[0].Player;
+        manager.PlayersInitialized += () => {
+             Player = manager.Players.GetLocalPlayer().Player;
+        };
     }
 
     public void UnShowDropInPoint(int slotIndex)
