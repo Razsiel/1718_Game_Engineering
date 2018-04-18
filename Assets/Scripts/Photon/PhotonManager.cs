@@ -29,6 +29,7 @@ namespace Assets.Scripts.Photon
         public event UnityAction TGEOnLeftRoom;
         public event UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
         public event UnityAction TGEOnPlayersCreated;
+        public event UnityAction TGEOnDisconnectedFromPhoton;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -65,6 +66,11 @@ namespace Assets.Scripts.Photon
                 //Send RPC on every player to load the level
                 
             }
+        }
+
+        public PhotonPlayer GetLocalPlayer()
+        {
+            return PhotonNetwork.player;
         }
        
         public void PlayersReady()
@@ -108,6 +114,11 @@ namespace Assets.Scripts.Photon
         {
             Debug.Log("InPUNCAll");
             TGEOnJoinedLobby?.Invoke();
+        }
+
+        public override void OnDisconnectedFromPhoton()
+        {
+            TGEOnDisconnectedFromPhoton?.Invoke();
         }
 
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)

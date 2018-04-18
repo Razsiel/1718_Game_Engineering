@@ -33,6 +33,8 @@ public class EventManager
     public static UnityAction<LevelData, List<Player>> LevelReset;
     public static UnityAction<LevelData, List<TGEPlayer>> LoadLevel;
     public static UnityAction<LevelData> LevelLoaded;
+    public static UnityAction OnClickedMenu;
+
 
     public static void OnInitializeUi()
     {
@@ -126,5 +128,10 @@ public class EventManager
 
     public static void OnLevelLoaded(LevelData levelData) {
         LevelLoaded?.Invoke(levelData);
+    }
+
+    public static void ClickMenu()
+    {
+        OnClickedMenu?.Invoke();
     }
 }

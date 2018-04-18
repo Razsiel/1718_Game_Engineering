@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using UnityEngine.Experimental.UIElements;
 
-public class SlotScript : MonoBehaviour, IDropHandler
+public class SlotScript : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private SequenceBar _sequenceBar;
 
@@ -10,6 +11,7 @@ public class SlotScript : MonoBehaviour, IDropHandler
     {
         _sequenceBar = this.transform.parent.gameObject.GetComponent<SequenceBar>();
     }
+
     public GameObject Item
     {
         get
@@ -35,13 +37,21 @@ public class SlotScript : MonoBehaviour, IDropHandler
         }
     }
 
-    public void OnSlotClicked()
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        //if (item)
+        //if (DragHandler.ItemBeingDragged != null)
         //{
-        //    Destroy(transform.GetChild(0).gameObject);
-        //    int a = SequenceBar.GetNextEmptySlotIndex();
-        //    print(a);
+        //    print("erin");
+        //    _sequenceBar.ShowDropInPoint(int.Parse(name));
+        //}
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        //if (DragHandler.ItemBeingDragged != null)
+        //{
+        //    print("eruit");
+        //    _sequenceBar.UnShowDropInPoint(int.Parse(name));
         //}
     }
 }
