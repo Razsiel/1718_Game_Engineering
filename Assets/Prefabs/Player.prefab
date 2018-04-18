@@ -114,7 +114,7 @@ MeshRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1159273086059518}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -169,7 +169,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerNumber: 0
   Data: {fileID: 11400000, guid: f2353ee074abc0a42ab6e5498dc9d9ae, type: 2}
+  IsReady: 0
+  IsLocalPlayer: 0
   ViewDirection: 1
+  GridPosition: {x: 0, y: 0}
 --- !u!136 &136138882786210578
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -179,7 +182,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}

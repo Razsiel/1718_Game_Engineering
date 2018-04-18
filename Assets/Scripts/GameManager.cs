@@ -15,11 +15,11 @@ namespace Assets.Scripts {
 
         // Use PrefabContainer to access project-files
         public PrefabContainer PrefabContainer;
-    
+
         public List<TGEPlayer> Players;
-    
+
         public CommandLibrary CommandLibrary;
-        
+
 
         public bool IsMultiPlayer = false;
 
@@ -32,6 +32,7 @@ namespace Assets.Scripts {
         #region GLOBAL_EVENTS
 
         public UnityAction<Player> PlayerInitialized;
+
         public UnityAction PlayersInitialized;
         //public UnityAction 
 
@@ -64,7 +65,7 @@ namespace Assets.Scripts {
             AssertAllNotNull();
 
             // Initialize LevelData with Players
-            if(!IsMultiPlayer)
+            if (!IsMultiPlayer)
                 StartSinglePlayerGame(Players[0]);
 
             // Initialize UI
@@ -101,22 +102,23 @@ namespace Assets.Scripts {
             //PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
         }
 
-    
+
         private void CreatePlayers(List<TGEPlayer> players) {
-           
             for (int i = 0; i < players.Count; i++) {
-                var playerObject = Instantiate(this.PrefabContainer.PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+                var playerObject = Instantiate(this.PrefabContainer.PlayerPrefab, Vector3.zero, Quaternion.identity,
+                                               this.transform);
                 var playerComponent = playerObject.GetComponent<Player>();
                 playerComponent.PlayerNumber = i;
+                playerComponent.Data.GenerateGameObject(playerObject);
 
                 ////playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
-                            
+
                 players[i].PlayerObject = playerObject;
-                players[i].Player = playerComponent;                                                                 
+                players[i].Player = playerComponent;
                 //PlayerInitialized(playerComponent);
                 PlayerInitialized?.Invoke(playerComponent);
 
-                if(IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
+                if (IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
                     playerComponent.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
                 // layerInitialized(playerComponent);
             }
@@ -127,8 +129,7 @@ namespace Assets.Scripts {
             return _instance;
         }
 
-        private bool AssertAllNotNull()
-        {
+        private bool AssertAllNotNull() {
             Assert.IsNotNull(PrefabContainer);
             Assert.IsNotNull(PrefabContainer.PlayerPrefab);
             //Assert.IsNotNull(PrefabContainer.ImageNotFound);
@@ -138,4 +139,3 @@ namespace Assets.Scripts {
         }
     }
 }
-
