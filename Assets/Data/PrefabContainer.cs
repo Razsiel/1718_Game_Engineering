@@ -30,6 +30,10 @@ public class PrefabContainer : ScriptableObject {
 
     // Textures
 
+    // Materials
+    [SerializeField] public Material Mat_Orange;
+    [SerializeField] public Material Mat_Blue;
+
     // Sound Effects
     [SerializeField] public AudioClip sfx_button_hover;
 
@@ -43,5 +47,7 @@ public class PrefabContainer : ScriptableObject {
         UnReadyButton = Resources.Load<Sprite>("Images/Img_Ready_Temp");
         StopButton = Resources.Load<Sprite>("Images/Img_Stop_Temp");
 
+        Mat_Orange = Resources.Load<Material>("Materials/Channel1");
+        Mat_Blue = Resources.Load<Material>("Materials/Channel2");
     }
 }

@@ -113,6 +113,16 @@ namespace Assets.Scripts {
 
                 ////playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
 
+                // Assigning colour to player TODO: dat kan beter!
+                if (i == 1)
+                {
+                    playerObject.GetComponent<Renderer>().material = PrefabContainer.Mat_Blue;
+                }
+                else
+                {
+                    playerObject.GetComponent<Renderer>().material = PrefabContainer.Mat_Orange;
+                }
+
                 players[i].PlayerObject = playerObject;
                 players[i].Player = playerComponent;
                 //PlayerInitialized(playerComponent);
