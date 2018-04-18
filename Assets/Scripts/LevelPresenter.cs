@@ -17,8 +17,7 @@ public class LevelPresenter : MonoBehaviour {
     private static GameObject _levelObject;
 
     public void Awake() {
-        /*
-        EventManager.LoadLevel += Present;
+        //EventManager.LoadLevel += Present;
         EventManager.LevelReset += (levelData, players) => {
             // reset internal data
             levelData.ResetPlayerPositions(players, ResetPlayers);
@@ -29,7 +28,7 @@ public class LevelPresenter : MonoBehaviour {
                 PresentPlayerOnPosition(levelData, player, playerPos);
                 playerIndex++;
             }
-        };*/
+        };
 
     }
 
