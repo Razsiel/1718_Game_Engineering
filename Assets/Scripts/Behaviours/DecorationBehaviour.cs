@@ -33,7 +33,7 @@ namespace Assets.Scripts.Behaviours {
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
                     if (animateDeco != null) {
                         this.transform.GetChild(0)
-                            .DOMove(animateDeco.AnimatePosition, 1f);
+                            .DOLocalMove(animateDeco.AnimatePosition, 1f);
                     }
                     else {
                         this.transform.DOLocalMoveY(Configuration.RelativePosition.y + 32f, 1.5f);
@@ -63,7 +63,7 @@ namespace Assets.Scripts.Behaviours {
                     if (animateDeco != null)
                     {
                         this.transform.GetChild(0)
-                            .DOMove(Vector3.up * 32f, 1f);
+                            .DOLocalMove(Vector3.zero, 1f);
                     }
                     else
                     {
