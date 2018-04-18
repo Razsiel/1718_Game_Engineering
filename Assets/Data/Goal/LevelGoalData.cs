@@ -2,7 +2,7 @@
 using UnityEngine;
 
 namespace Assets.Data.Goal {
-    public abstract class LevelGoal : ScriptableObject {
+    public abstract class LevelGoalData : ScriptableObject {
         public abstract bool HasBeenReached(IEnumerable<Scripts.Player> players);
     }
 }

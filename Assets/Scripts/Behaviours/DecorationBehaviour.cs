@@ -32,6 +32,7 @@ namespace Assets.Scripts.Behaviours {
                     // mechanism active animation
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
                     if (animateDeco != null) {
+                        animateDeco.IsActivated = true;
                         this.transform.GetChild(0)
                             .DOLocalMove(animateDeco.AnimatePosition, 1f);
                     }
@@ -62,6 +63,7 @@ namespace Assets.Scripts.Behaviours {
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
                     if (animateDeco != null)
                     {
+                        animateDeco.IsActivated = false;
                         this.transform.GetChild(0)
                             .DOLocalMove(Vector3.zero, 1f);
                     }
