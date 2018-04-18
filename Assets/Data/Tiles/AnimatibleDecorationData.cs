@@ -8,14 +8,13 @@ using UnityEngine;
 [Serializable]
 [CreateAssetMenu(menuName = "Data/Tiles/AnimatedDecoration")]
 public class AnimatibleDecorationData : DecorationData {
-
-    [SerializeField] public bool IsActivated;
+    
     [SerializeField] public Mesh MeshToAnimate;
     [SerializeField] public Material MaterialOfMeshToAnimate;
     [SerializeField] public Vector3 AnimatePosition;
 
     public override bool IsWalkable(CardinalDirection direction) {
-        return this.IsActivated;
+        return false;
     }
 
     public override GameObject GenerateGameObject(Transform parent, bool hidden = false) {
