@@ -17,9 +17,11 @@ namespace Assets.Prefabs.UI {
         public enum ReadyButtonState
         {
             ReadyButton,
-            WaitingForOthersToBeReadyButton,
+            UnReadyButton,
             StopButton
         };
+
+        private ReadyButtonState readyButtonState = ReadyButtonState.ReadyButton;
 
         public bool _isReadyButton;
 
@@ -108,20 +110,41 @@ namespace Assets.Prefabs.UI {
 
             ReadyButton.GetComponent<Image>().sprite =
                 _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.StopButton;
+
+            //readyButtonState = newReadyButtonState;
         }
 
         public void OnReadyButtonClicked() {
             Debug.Log(_player);
             if (_isReadyButton)
             {
-                _player.ReadyButtonClicked();
+                //_player.ReadyButtonClicked();
             }
             else
             {
                 //_player.StopButtonClicked();
             }
 
-            ToggleReadyButton();
+            //ToggleReadyButton();
+
+            if (readyButtonState == ReadyButtonState.ReadyButton)
+            {
+                //ToggleReadyButton(ReadyButtonState.UnReadyButton);
+                //_player.ReadyButtonClicked();
+                ReadyButton.GetComponent<Image>().sprite =
+                    _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.UnReadyButton;
+
+            }
+            else if (readyButtonState == ReadyButtonState.UnReadyButton)
+            {
+                //ToggleReadyButton(ReadyButtonState.ReadyButton);
+                //_player.UnreadyButtonClicked();
+            }
+            else
+            {
+                //ToggleReadyButton(ReadyButtonState.ReadyButton);
+                //_player.StopButtonClicked();
+            }
         }
 
         //public void UpdateOther_playersSequenceBar(List<BaseCommand> commands)
