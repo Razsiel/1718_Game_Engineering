@@ -9,10 +9,12 @@ using Assets.Scripts.DataStructures.Channel;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-namespace Assets.Data.Levels {
+namespace Assets.Data.Levels
+{
     [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level")]
     [System.Serializable]
-    public class LevelData : ScriptableObject {
+    public class LevelData : ScriptableObject
+    {
         [SerializeField] public string Name;
         [SerializeField] public Texture2D BackgroundImage;
         [SerializeField] public List<LevelGoal> Goals;
@@ -22,47 +24,18 @@ namespace Assets.Data.Levels {
 
         private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
-        public bool HasReachedAllGoals() {
+        public bool HasReachedAllGoals()
+        {
             return Goals.All(goal => goal.HasBeenReached(null));
         }
-
-        public List<PhotonPlayerPosition> GetStartPositions()
+      
+        public void Init(List<TGEPlayer> players)
         {
-            var mpPlayerPos = new List<PhotonPlayerPosition>();
-            mpPlayerPos = _playerPositions.Select(x => new PhotonPlayerPosition()
-            {
-                Player = GameManager.GetInstance().Players.Single(y => y.Player == x.Key).photonPlayer,
-                PlayerPosition = x.Value
-            }).ToList();
-            return mpPlayerPos;
-        }
-
-        public void SetStartPosition(List<PhotonPlayerPosition> positions)
-        {
-            //for(int i = 0; i < positions.Count(); i++)
-            //{
-            //    var player = GameManager.GetInstance().Players.Single(x => x.photonPlayer == positions.);
-            //}
-            //    _playerPositions.Add(GameManager.GetInstance().Players.g)
-        }
-
-        public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
 
-            if(!GameManager.GetInstance().IsMultiPlayer)
+            for(int i = 0; i < players.Count; i++)
             {
-                for(int i = 0; i < players.Count; i++)
-                {
-                    _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
-                }
-            }
-            else
-            {
-                foreach(var player in players)
-                {
-                    int playerNumber = player.photonPlayer.IsMasterClient ? 1 : 0;
-                    _playerPositions.Add(player.Player, GetPlayerStartPosition(playerNumber).StartPosition);
-                }
+                _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
             }
         }
 
@@ -73,13 +46,15 @@ namespace Assets.Data.Levels {
         /// <param name="direction">The direction the player wants to go from it's current position</param>
         /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination) {
+        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination)
+        {
             var directionVector = direction.ToVector2();
             destination = new GridCell(GridMapData, -1, -1);
 
             // Get current player pos
             Vector2Int playerPos;
-            if (!_playerPositions.TryGetValue(player, out playerPos)) {
+            if(!_playerPositions.TryGetValue(player, out playerPos))
+            {
                 Debug.Log(player.GetHashCode());
                 Debug.Log($"Could not move player: Player does not have a position on the grid");
                 return false; // current player does not have a position in this map
@@ -88,8 +63,9 @@ namespace Assets.Data.Levels {
             Debug.Log(
                 $"... Trying to move \"{direction.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
 
-            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y,
-                                        out destination)) {
+            if(!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y,
+                                        out destination))
+            {
                 Debug.Log(
                     $"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
                 return false;
@@ -97,14 +73,16 @@ namespace Assets.Data.Levels {
 
             // Check if there are any other players on the destination
             GridCell cell = destination;
-            if (_playerPositions.Any(p => p.Key != player && p.Value == cell.XY)) {
+            if(_playerPositions.Any(p => p.Key != player && p.Value == cell.XY))
+            {
                 Debug.Log($"Could not move player: A player is standing on the destination");
                 return false; // the destination contains a player
             }
 
             // Get the current player position on the map
             GridCell current;
-            if (!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current)) {
+            if(!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current))
+            {
                 Debug.Log(
                     $"Could not move player: The current player position ({playerPos.x}, {playerPos.y}) does not exist in the map");
                 return false; // the current position of the player does not exist on the map
@@ -119,7 +97,8 @@ namespace Assets.Data.Levels {
             var canMove = canLeaveCurrent && canEnterDestination;
 
             // Move player in grid
-            if (canMove) {
+            if(canMove)
+            {
                 Debug.Log($"Can move to {destination.XY}");
                 _playerPositions[player] = destination.XY;
                 // TODO: implement events here
@@ -131,22 +110,26 @@ namespace Assets.Data.Levels {
             return canMove;
         }
 
-        public PlayerStartPosition GetPlayerStartPosition(int playerNumber) {            
+        public PlayerStartPosition GetPlayerStartPosition(int playerNumber)
+        {
             return GridMapData.PlayerStartPositions[playerNumber];
         }
 
         public bool TryInteract(Scripts.Player player, CardinalDirection direction,
-                                out IEnumerable<DecorationConfiguration> decorationsInFrontOfPlayer) {
+                                out IEnumerable<DecorationConfiguration> decorationsInFrontOfPlayer)
+        {
             decorationsInFrontOfPlayer = null;
             // Get current player pos
             Vector2Int playerPos;
-            if (!_playerPositions.TryGetValue(player, out playerPos)) {
+            if(!_playerPositions.TryGetValue(player, out playerPos))
+            {
                 return false; // current player does not have a position in this map
             }
 
             // Get the current player position on the map
             GridCell current;
-            if (!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current)) {
+            if(!GridMapData.TryGetCell(playerPos.x, playerPos.y, out current))
+            {
                 return false; // the current position of the player does not exist on the map
             }
 
@@ -155,23 +138,28 @@ namespace Assets.Data.Levels {
             decorationsInFrontOfPlayer =
                 current.Value.DecorationConfigs.Where(d => d.Orientation == CardinalDirection.None || d.Orientation == direction.ToOppositeDirection());
 
-            if (!decorationsInFrontOfPlayer.Any()) {
+            if(!decorationsInFrontOfPlayer.Any())
+            {
                 return false; // there are no decorations to interact with
             }
 
-            foreach (var decorationConfigurations in decorationsInFrontOfPlayer.GroupBy(d => d.Type)) {
+            foreach(var decorationConfigurations in decorationsInFrontOfPlayer.GroupBy(d => d.Type))
+            {
                 // Send messages through the channel system for triggers
-                if (decorationConfigurations.Key == ChannelType.Trigger) {
+                if(decorationConfigurations.Key == ChannelType.Trigger)
+                {
                     Debug.Log($"Found {decorationConfigurations.Count()} triggers...");
                     var triggersByChannels = decorationConfigurations.GroupBy(d => d.Channel);
-                    foreach (var triggerByChannel in triggersByChannels) {
+                    foreach(var triggerByChannel in triggersByChannels)
+                    {
                         Debug.Log($"Sending a message to channel: {triggerByChannel.Key}");
                         DecorationChannelManager.Instance.TriggerChannel(triggerByChannel.Key, player);
                     }
                 }
 
                 // Call interact on object
-                foreach (var decorationConfiguration in decorationConfigurations) {
+                foreach(var decorationConfiguration in decorationConfigurations)
+                {
                     decorationConfiguration.OnInteract(decorationConfiguration.Channel, player);
                 }
             }
