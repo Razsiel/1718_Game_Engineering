@@ -46,6 +46,7 @@ namespace Assets.Data.Levels {
         //    //    _playerPositions.Add(GameManager.GetInstance().Players.g)
         //}
 
+
         public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
 

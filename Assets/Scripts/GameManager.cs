@@ -103,7 +103,7 @@ namespace Assets.Scripts {
                 var playerComponent = playerObject.GetComponent<Player>();
                 playerComponent.PlayerNumber = i;
                 playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
-                playerComponent.GetComponent<MeshRenderer>().material.color = players[i].photonPlayer.IsMasterClient ? Color.blue : Color.green;
+//                playerComponent.GetComponent<MeshRenderer>().material.color = players[i].photonPlayer.IsMasterClient ? Color.blue : Color.green;
                 players[i].PlayerObject = playerObject;
                 players[i].Player = playerComponent;                                                                 
                 //PlayerInitialized(playerComponent);
