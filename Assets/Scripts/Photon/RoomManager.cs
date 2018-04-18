@@ -126,22 +126,6 @@ public class RoomManager : Photon.MonoBehaviour
         PhotonManager.Instance.OnAllPlayersJoined(PhotonNetwork.room);
     }
 
-    /*
-    private bool alreadyStarted = false;
-    void FixedUpdate()
-    {
-        if(!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && GameManager.GetInstance().IsMultiPlayer)
-        {
-
-            GameManager.GetInstance().Players.Add(new TGEPlayer());
-            GameManager.GetInstance().Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
-
-            GameManager.GetInstance().StartMultiplayerGame(GameManager.GetInstance().Players);
-            alreadyStarted = true;
-        }
-
-    }*/
-
     public void UpdateGUI()
     {
         Assert.IsNotNull(roomView);
