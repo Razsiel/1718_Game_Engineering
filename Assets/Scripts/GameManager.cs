@@ -17,8 +17,7 @@ namespace Assets.Scripts {
     
         public List<TGEPlayer> Players;
     
-        public CommandLibrary CommandLibrary;
-        public GameObject commandControllerHolder;
+        public CommandLibrary CommandLibrary;       
 
         public bool IsMultiPlayer = false;
 
