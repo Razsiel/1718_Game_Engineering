@@ -21,6 +21,8 @@ namespace Assets.Scripts
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
+        public UnityAction OnPlayerUnReady;
+        public UnityAction StopSequence;
         public UnityAction OnPlayerSequenceRan;
 
         public bool IsReady = false;
@@ -94,6 +96,19 @@ namespace Assets.Scripts
             OnPlayerReady?.Invoke();
             if(!_gameManager.IsMultiPlayer)
                 StartCoroutine(ExecuteCommands());
+        }
+
+        public void StopButtonClicked()
+        {
+            StopSequence?.Invoke();
+            if(!_gameManager.IsMultiPlayer)
+                StopAllCoroutines();
+        }
+
+        public void UnreadyButtonClicked()
+        {
+            OnPlayerUnReady?.Invoke();
+            IsReady = false;
         }
 
         public void RemoveCommand(int commandIndex)
