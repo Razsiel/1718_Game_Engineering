@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Helpers;
@@ -101,9 +102,8 @@ namespace Assets.Scripts
 
         public void StopButtonClicked()
         {
-            StopSequence?.Invoke();
-            if(!_gameManager.IsMultiPlayer)
-                StopAllCoroutines();
+            EventManager.OnLevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+            StopAllCoroutines();
         }
 
         public void UnreadyButtonClicked()
