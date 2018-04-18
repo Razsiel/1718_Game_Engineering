@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
+using SmartLocalization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,8 @@ public class MonologueManager : MonoBehaviour {
 
 	public Text NpcNameText;
 	public Text SentenceText;
-    
+	public Text ContinueText;
+
     private RectTransform _rectTransform;
     //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
 
@@ -28,6 +30,7 @@ public class MonologueManager : MonoBehaviour {
 	void Initialize () {
 		_sentences = new Queue<string>();
 	    _rectTransform = GetComponent<RectTransform>();
+	    ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
     }
 
 	public void StartDialogue (Monologue monologue)

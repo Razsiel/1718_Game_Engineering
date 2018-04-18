@@ -26,25 +26,25 @@ namespace Assets.Data.Levels {
             return Goals.All(goal => goal.HasBeenReached(null));
         }
 
-        public List<PhotonPlayerPosition> GetStartPositions()
-        {
-            var mpPlayerPos = new List<PhotonPlayerPosition>();
-            mpPlayerPos = _playerPositions.Select(x => new PhotonPlayerPosition()
-            {
-                Player = GameManager.GetInstance().Players.Single(y => y.Player == x.Key).photonPlayer,
-                PlayerPosition = x.Value
-            }).ToList();
-            return mpPlayerPos;
-        }
-
-        public void SetStartPosition(List<PhotonPlayerPosition> positions)
-        {
-            //for(int i = 0; i < positions.Count(); i++)
-            //{
-            //    var player = GameManager.GetInstance().Players.Single(x => x.photonPlayer == positions.);
-            //}
-            //    _playerPositions.Add(GameManager.GetInstance().Players.g)
-        }
+//        public List<PhotonPlayerPosition> GetStartPositions()
+//        {
+//            var mpPlayerPos = new List<PhotonPlayerPosition>();
+//            mpPlayerPos = _playerPositions.Select(x => new PhotonPlayerPosition()
+//            {
+//                Player = GameManager.GetInstance().Players.Single(y => y.Player == x.Key).photonPlayer,
+//                PlayerPosition = x.Value
+//            }).ToList();
+//            return mpPlayerPos;
+//        }
+//
+//        public void SetStartPosition(List<PhotonPlayerPosition> positions)
+//        {
+//            //for(int i = 0; i < positions.Count(); i++)
+//            //{
+//            //    var player = GameManager.GetInstance().Players.Single(x => x.photonPlayer == positions.);
+//            //}
+//            //    _playerPositions.Add(GameManager.GetInstance().Players.g)
+//        }
 
         public void Init(List<TGEPlayer> players) {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();

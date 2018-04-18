@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 222214229776215194}
   - component: {fileID: 114631226971429474}
   m_Layer: 5
-  m_Name: ContinueButton
+  m_Name: CLICK_TO_CONTINUE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1095,6 +1095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NpcNameText: {fileID: 114071980101276744}
   SentenceText: {fileID: 114952511267346300}
+  ContinueText: {fileID: 114631226971429474}
 --- !u!114 &114049391226644702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4619,8 +4620,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0.78000003}
-  m_AnchoredPosition: {x: 0, y: 2}
-  m_SizeDelta: {x: 0, y: -4}
+  m_AnchoredPosition: {x: 0, y: -10}
+  m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224591234930836948
 RectTransform:
