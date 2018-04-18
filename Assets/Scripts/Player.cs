@@ -22,6 +22,7 @@ namespace Assets.Scripts
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
         public UnityAction OnPlayerSequenceRan;
+        public UnityAction OnPlayerStop;
 
         public bool IsReady = false;
         public bool IsLocalPlayer;

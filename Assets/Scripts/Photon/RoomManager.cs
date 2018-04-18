@@ -104,6 +104,11 @@ public class RoomManager : Photon.MonoBehaviour
 
                         this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
                     };
+
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerStop += () =>
+                    {
+                        SendStopExecution();
+                    };
                 };
 
             };
