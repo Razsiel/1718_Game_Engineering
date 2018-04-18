@@ -118,8 +118,8 @@ public class EventManager
         Simulate?.Invoke();
     }
 
-    public static void OnLevelReset() {
-        //LevelReset?.Invoke();
+    public static void OnLevelReset(LevelData levelData, List<Player> players) {
+        LevelReset?.Invoke(levelData, players);
     }
 
     public static void OnLoadLevel(LevelData levelData, List<TGEPlayer> players) {

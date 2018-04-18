@@ -96,7 +96,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: edit");
             // allow players to interact with game world
             EventManager.OnEnableUserInput();
-            EventManager.OnLevelReset();
+            EventManager.OnLevelReset(GameManager.GetInstance().LevelData, GameManager.GetInstance().Players.Select(x => x.Player).ToList());
             EventManager.ReadyButtonClicked += OnReadyButtonClicked;
         }
 
