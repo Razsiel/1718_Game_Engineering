@@ -60,7 +60,20 @@ MonoBehaviour:
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
-      DecorationConfigs: []
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: -12, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 7
+        Type: 2
+        TriggerType: 0
+        Channel: 1
+        DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
@@ -94,7 +107,20 @@ MonoBehaviour:
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
-      DecorationConfigs: []
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: 12, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 2
+        TriggerType: 0
+        Channel: 2
+        DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}

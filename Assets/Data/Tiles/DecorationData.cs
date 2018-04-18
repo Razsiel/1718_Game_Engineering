@@ -18,7 +18,7 @@ namespace Assets.Data.Tiles {
             return GenerateGameObject(parent.transform, hidden);
         }
 
-        public GameObject GenerateGameObject(Transform parent, bool hidden = false) {
+        public virtual GameObject GenerateGameObject(Transform parent, bool hidden = false) {
             var decoration = new GameObject("Decoration",
                                             typeof(MeshFilter),
                                             typeof(MeshRenderer),

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Assets.Data.Tiles;
 using Assets.Scripts.Behaviours;
 using Assets.Scripts.DataStructures.Channel;
+using Assets.Scripts.Lib.Helpers;
 using M16h;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -13,6 +14,10 @@ using UnityEngine.Assertions;
 namespace Assets.Scripts.DataStructures {
     [Serializable]
     public class DecorationConfiguration {
+        [SerializeField]
+        public Material[] ChannelMaterials;
+
+
         [SerializeField] public DecorationData DecorationData;
         [SerializeField] public Vector3 RelativePosition;
         [SerializeField] public int Scale = 1;
@@ -42,6 +47,13 @@ namespace Assets.Scripts.DataStructures {
                 transform.position = RelativePosition;
                 transform.localScale = Vector3.one * Scale;
                 transform.eulerAngles = Orientation.ToEuler() + Vector3.up * Rotation;
+
+                if (Type != ChannelType.Decoration && Channel != DataStructures.Channel.Channel.None) {
+                    var renderer = decoration.GetComponent<MeshRenderer>();
+                    if (renderer != null) {
+                        renderer.material = ChannelMaterials[(int)Channel - 1];
+                    }
+                }
 
                 var behaviour = decoration.GetComponent<DecorationBehaviour>();
                 Assert.IsNotNull(behaviour);

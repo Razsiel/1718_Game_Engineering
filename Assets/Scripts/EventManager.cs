@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Command;
+using Assets.Data.Levels;
+using Assets.Scripts;
+using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -27,6 +30,11 @@ public class EventManager
     public static UnityAction<SFX> PlaySoundEffect;
     public static UnityAction<BGM> PlayMusicClip;
     public static UnityAction Simulate;
+    public static UnityAction<LevelData, List<Player>> LevelReset;
+    public static UnityAction<LevelData, List<TGEPlayer>> LoadLevel;
+    public static UnityAction<LevelData> LevelLoaded;
+    public static UnityAction OnClickedMenu;
+
 
     public static void OnInitializeUi()
     {
@@ -108,5 +116,22 @@ public class EventManager
 
     public static void OnSimulate() {
         Simulate?.Invoke();
+    }
+
+    public static void OnLevelReset() {
+        //LevelReset?.Invoke();
+    }
+
+    public static void OnLoadLevel(LevelData levelData, List<TGEPlayer> players) {
+        LoadLevel?.Invoke(levelData, players);
+    }
+
+    public static void OnLevelLoaded(LevelData levelData) {
+        LevelLoaded?.Invoke(levelData);
+    }
+
+    public static void ClickMenu()
+    {
+        OnClickedMenu?.Invoke();
     }
 }
