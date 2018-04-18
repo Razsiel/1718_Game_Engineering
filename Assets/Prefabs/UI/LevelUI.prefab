@@ -505,6 +505,7 @@ GameObject:
   - component: {fileID: 114318766970837812}
   - component: {fileID: 114797314864053850}
   - component: {fileID: 114247833982388244}
+  - component: {fileID: 114154925885146328}
   m_Layer: 5
   m_Name: SequenceBar2
   m_TagString: Untagged
@@ -1103,6 +1104,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114154925885146328
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1761873128224844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f921dc9beeecca14095d57867c16a30d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SequenceBar: {fileID: 114797314864053850}
 --- !u!114 &114187240037204440
 MonoBehaviour:
   m_ObjectHideFlags: 1
