@@ -13,7 +13,15 @@ namespace Assets.Prefabs.UI {
         public SequenceBar SequenceBar;
         public SequenceBar OtherSequenceBar;
         public GameObject ReadyButton;
-        private bool _isReadyButton;
+
+        public enum ReadyButtonState
+        {
+            ReadyButton,
+            WaitingForOthersToBeReadyButton,
+            StopButton
+        };
+
+        public bool _isReadyButton;
 
         Player _player;
         GameManager _gameManager;
