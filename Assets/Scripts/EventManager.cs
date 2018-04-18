@@ -35,6 +35,9 @@ public class EventManager
     public static UnityAction<LevelData> LevelLoaded;
     public static UnityAction OnClickedMenu;
 
+    // Temp calls
+    public static UnityAction OnSetPlayerColour;
+
 
     public static void OnInitializeUi()
     {
@@ -133,5 +136,10 @@ public class EventManager
     public static void ClickMenu()
     {
         OnClickedMenu?.Invoke();
+    }
+
+    public static void SetPlayerColour()
+    {
+        OnSetPlayerColour?.Invoke();
     }
 }

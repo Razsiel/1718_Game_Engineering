@@ -192,6 +192,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1164071634403814
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224049814793614578}
+  - component: {fileID: 222464985308168788}
+  - component: {fileID: 114237292979338506}
+  m_Layer: 5
+  m_Name: PlayerColourText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1169486112219300
 GameObject:
   m_ObjectHideFlags: 1
@@ -2008,6 +2025,39 @@ MonoBehaviour:
   TurnLeftCommand: {fileID: 1365311986368928}
   TurnRightCommand: {fileID: 1123198406622214}
   WaitCommand: {fileID: 1643187239232054}
+--- !u!114 &114237292979338506
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164071634403814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 120
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 150
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Player Colour
 --- !u!114 &114239765425694242
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3068,6 +3118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LEVEL_GOALS_TITLE: {fileID: 114049391226644702}
   LEVEL_GOALS_DESCRIPTION: {fileID: 114128308565554066}
+  PlayerColour: {fileID: 114237292979338506}
 --- !u!114 &114603659244746944
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4657,6 +4708,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1730602548605082}
+--- !u!222 &222464985308168788
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164071634403814}
 --- !u!222 &222469655022230250
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -4962,6 +5019,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!224 &224049814793614578
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1164071634403814}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224591234930836948}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 16.000092, y: 655.83624}
+  m_SizeDelta: {x: 800, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224051607245759792
 RectTransform:
   m_ObjectHideFlags: 1
@@ -5673,6 +5748,7 @@ RectTransform:
   - {fileID: 224280412935527696}
   - {fileID: 224112368665719550}
   - {fileID: 224396509899391052}
+  - {fileID: 224049814793614578}
   m_Father: {fileID: 224041077159166154}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
