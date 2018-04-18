@@ -27,6 +27,8 @@ public class EventManager
     public static UnityAction<SFX> PlaySoundEffect;
     public static UnityAction<BGM> PlayMusicClip;
     public static UnityAction Simulate;
+    public static UnityAction OnClickedMenu;
+
 
     public static void OnInitializeUi()
     {
@@ -108,5 +110,10 @@ public class EventManager
 
     public static void OnSimulate() {
         Simulate?.Invoke();
+    }
+
+    public static void ClickMenu()
+    {
+        OnClickedMenu?.Invoke();
     }
 }
