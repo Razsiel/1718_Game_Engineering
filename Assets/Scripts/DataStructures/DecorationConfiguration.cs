@@ -16,8 +16,7 @@ namespace Assets.Scripts.DataStructures {
     public class DecorationConfiguration {
         [SerializeField]
         public Material[] ChannelMaterials;
-
-
+        
         [SerializeField] public DecorationData DecorationData;
         [SerializeField] public Vector3 RelativePosition;
         [SerializeField] public int Scale = 1;
@@ -65,7 +64,11 @@ namespace Assets.Scripts.DataStructures {
         }
 
         public bool IsWalkable(CardinalDirection direction) {
-            return (DecorationData?.IsWalkable(direction) ?? false) && direction.ToOppositeDirection() != direction;
+            return IsActivated() || (DecorationData?.IsWalkable(direction) ?? false);
+        }
+
+        public bool IsActivated() {
+            return Fsm.State == DecorationState.Active;
         }
 
         public void Init(Action<Player> onActivate, Action onDeactivate) {

@@ -109,6 +109,14 @@ public class RoomManager : Photon.MonoBehaviour
                     {
                         SendStopExecution();
                     };
+
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerUnready += () =>
+                    {
+                        gameManager.Players.GetLocalPlayer().Player.IsReady = false;
+
+                        if(!gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+                            this.photonView.RPC(nameof(UpdateUnreadyState), PhotonTargets.MasterClient);
+                    };
                 };
 
             };
@@ -120,11 +128,11 @@ public class RoomManager : Photon.MonoBehaviour
     {
         if (!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && gameManager.IsMultiPlayer)
         {
+            alreadyStarted = true;
             gameManager.Players.Add(new TGEPlayer());
             gameManager.Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
 
-            gameManager.StartMultiplayerGame(gameManager.Players);
-            alreadyStarted = true;
+            gameManager.StartMultiplayerGame(gameManager.Players);           
         }
 
     }
@@ -167,6 +175,12 @@ public class RoomManager : Photon.MonoBehaviour
         if (gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
             if (gameManager.Players.All(x => x.Player.IsReady))
                 SendStartExecution();
+    }
+
+    [PunRPC]
+    public void UpdateUnreadyState(PhotonMessageInfo info)
+    {
+        gameManager.Players.GetNetworkPlayer().Player.IsReady = false;
     }
 
     private void SendStartExecution()
