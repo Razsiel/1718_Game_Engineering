@@ -28,6 +28,7 @@ namespace Assets.Scripts
         public bool IsLocalPlayer;
 
         public CardinalDirection ViewDirection = CardinalDirection.North;
+        public Vector2Int GridPosition;
 
         // Use this for initialization
         void Start()

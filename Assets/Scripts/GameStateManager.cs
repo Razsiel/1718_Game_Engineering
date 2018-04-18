@@ -1,21 +1,25 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Command;
+using Assets.Data.Levels;
+using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
 using M16h;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
     // TODO: Make singleton-monobehaviour
     public class GameStateManager : MonoBehaviour {
-        public Monologue monologue;
+        public LevelData level;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
 
-        public GameStateManager() {
+        public void Awake() {
             fsm = new TinyStateMachine<GameState, GameStateTrigger>(GameState.Init);
 
             // START GAME -> CUTSCENE
@@ -27,7 +31,8 @@ namespace Assets.Scripts {
                .On(OnStartGameStateEnter);
 
             // GAMESTART -> EDITSEQUENCE
-            fsm.Tr(GameState.GameStart, GameStateTrigger.Next, GameState.EditSequence);
+            fsm.Tr(GameState.GameStart, GameStateTrigger.Next, GameState.EditSequence)
+                .On(OnEditSequenceStateEnter);
 
             // EDITSEQUENCE <-> READYANDWAITINGFORPLAYERS
             fsm.Tr(GameState.EditSequence, GameStateTrigger.Next, GameState.ReadyAndWaitingForPlayers)
@@ -41,15 +46,20 @@ namespace Assets.Scripts {
 
             // SIMULATE -> LEVELCOMPLETE
             fsm.Tr(GameState.Simulate, GameStateTrigger.Next, GameState.LevelComplete)
-                .On(OnLevelCompleteStateEnter)
+               .On(OnLevelCompleteStateEnter)
                .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
         }
 
         public void Start() {
-            if (true /*PhotonManager.Instance.AllPlayersConnected*/) {
-                fsm.Fire(GameStateTrigger.Next); // goto Cutscene
-            }
+            print($"{nameof(GameStateManager)}: loading level");
+            EventManager.LevelLoaded += (levelData) => {
+                print("level loaded and presented");
+                if (true /*PhotonManager.Instance.AllPlayersConnected*/) {
+                    fsm.Fire(GameStateTrigger.Next); // goto Cutscene
+                }
+            };
+            EventManager.OnLoadLevel(level, GameManager.GetInstance().Players);
         }
 
         public void OnDisable() {
@@ -60,19 +70,22 @@ namespace Assets.Scripts {
         /// State transition Cutscene
         /// </summary>
         private void OnCutsceneStateEnter() {
-            print("cutscene");
+            print($"{nameof(GameStateManager)}: cutscene");
             // start the cutscene / monologue
-            EventManager.OnMonologueStart(monologue); // TODO: Get the level monologue
-            EventManager.MonologueEnded += () => {
-                fsm.Fire(GameStateTrigger.Next); // goto StartGame
-            };
+            EventManager.MonologueEnded += OnMonologueEnded;
+            EventManager.OnMonologueStart(level.Monologue);
+        }
+
+        private void OnMonologueEnded() {
+            fsm.Fire(GameStateTrigger.Next); // goto StartGame
+            EventManager.MonologueEnded -= OnMonologueEnded;
         }
 
         /// <summary>
         /// State transition GameStart
         /// </summary>
         private void OnStartGameStateEnter() {
-            print("game start");
+            print($"{nameof(GameStateManager)}: game start");
             fsm.Fire(GameStateTrigger.Next); // goto EditSequence
         }
 
@@ -80,15 +93,16 @@ namespace Assets.Scripts {
         /// State transition EditSequence
         /// </summary>
         private void OnEditSequenceStateEnter() {
-            print("edit");
+            print($"{nameof(GameStateManager)}: edit");
             // allow players to interact with game world
             EventManager.OnEnableUserInput();
+            EventManager.OnLevelReset();
             EventManager.ReadyButtonClicked += OnReadyButtonClicked;
         }
 
         private void OnReadyButtonClicked() {
-            fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
             EventManager.ReadyButtonClicked -= OnReadyButtonClicked;
+            fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
 
             // register if sequence is changed
             EventManager.SequenceChanged += OnSequenceChanged;
@@ -100,15 +114,15 @@ namespace Assets.Scripts {
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
-            fsm.Fire(GameStateTrigger.Back);
             EventManager.SequenceChanged -= OnSequenceChanged;
+            fsm.Fire(GameStateTrigger.Back);
         }
 
         /// <summary>
         /// State transition ReadyAndWaitingForPlayers
         /// </summary>
         private void OnPlayerReadyStateEnter() {
-            print("ready and waiting");
+            print($"{nameof(GameStateManager)}: ready and waiting for other players");
             // if all players are ready; goto Simulate
         }
 
@@ -116,20 +130,34 @@ namespace Assets.Scripts {
         /// State transition Simulate
         /// </summary>
         private void OnSimulateStateEnter() {
-            print("simulating");
+            print($"{nameof(GameStateManager)}: simulating");
             EventManager.OnDisableUserInput();
-            EventManager.StopButtonClicked += () => { fsm.Fire(GameStateTrigger.Back); };
+            EventManager.StopButtonClicked += OnStopButtonClicked;
             EventManager.OnSimulate();
-            EventManager.AllLevelGoalsReached += () => {
-                fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
-            };
+            EventManager.AllLevelGoalsReached += OnAllLevelGoalsReached;
+        }
+
+        private void OnStopButtonClicked() {
+            EventManager.StopButtonClicked -= OnStopButtonClicked;
+            fsm.Fire(GameStateTrigger.Back);
+        }
+
+        private void OnAllLevelGoalsReached() {
+            EventManager.AllLevelGoalsReached -= OnAllLevelGoalsReached;
+            fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }
 
         /// <summary>
         /// State transition LevelComplete
         /// </summary>
         private void OnLevelCompleteStateEnter() {
-            print("level complete!");
+            print($"{nameof(GameStateManager)}: level complete!");
+            StartCoroutine(ReloadLevel());
+        }
+
+        private IEnumerator ReloadLevel() {
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 

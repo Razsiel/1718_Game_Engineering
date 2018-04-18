@@ -23,14 +23,10 @@ public class MonologueManager : MonoBehaviour {
 
     void Awake()
     {
-        EventManager.InitializeMonologue += Initialize;
+        _sentences = new Queue<string>();
+        _rectTransform = GetComponent<RectTransform>();
         EventManager.MonologueStart += StartDialogue;
-    }
-
-	void Initialize () {
-		_sentences = new Queue<string>();
-	    _rectTransform = GetComponent<RectTransform>();
-	    ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
+        ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
     }
 
 	public void StartDialogue (Monologue monologue)
@@ -66,7 +62,7 @@ public class MonologueManager : MonoBehaviour {
 	IEnumerator TypeSentence (string sentence)
 	{
 		SentenceText.text = "";
-		foreach (char letter in sentence.ToCharArray())
+		foreach (char letter in sentence)
 		{
 		    SentenceText.text += letter;
 			yield return null;
