@@ -204,9 +204,17 @@ public class RoomManager : Photon.MonoBehaviour
             {
                 playersSequenceRan++;
                 if (playersSequenceRan > 1)
-                    if(!gameManager.LevelData.HasReachedAllGoals())
-                        EventManager.OnLevelReset(gameManager.LevelData, gameManager.Players.Select(x => x.Player).ToList());
-                   
+                    if ( /*!gameManager.LevelData.HasReachedAllGoals()*/true)
+                    {
+                        EventManager.OnLevelReset(gameManager.LevelData,
+                            gameManager.Players.Select(x => x.Player).ToList());
+                       
+                            foreach (var player in gameManager.Players)
+                            {
+                                player.Player.IsReady = false;
+                            }                       
+                    }
+
             };
         }
     }
