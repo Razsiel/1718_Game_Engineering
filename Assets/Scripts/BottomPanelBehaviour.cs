@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class BottomPanelBehaviour : MonoBehaviour
 {
     private RectTransform _rectTransform;
-    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+//    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+    Vector3 HidePosition = new Vector3(0.0f, -1404.3f, 0.0f);
+    Vector3 ShowPosition = new Vector3(0.0f, -756.3f, 0.0f);
 
     void Awake ()
 	{
@@ -24,12 +26,15 @@ public class BottomPanelBehaviour : MonoBehaviour
     void HideBottomPanel()
     {
         _rectTransform.DOLocalMove(HidePosition, 1f);
+        print("bot " + _rectTransform.localPosition);
+
     }
 
     void ShowBottomPanel()
     {
-        Vector3 pos = HidePosition;
-        pos.y += 648f;
-        _rectTransform.DOLocalMove(pos, 0.5f);
+        _rectTransform.DOLocalMove(ShowPosition, 0.5f);
+
+        print("bot " + _rectTransform.localPosition);
+
     }
 }

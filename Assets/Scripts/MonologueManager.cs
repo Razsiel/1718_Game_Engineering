@@ -12,7 +12,10 @@ public class MonologueManager : MonoBehaviour {
 	public Text SentenceText;
     
     private RectTransform _rectTransform;
-    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+    //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+
+    Vector3 HidePosition = new Vector3(0.0f, -1404.3f, 0.0f);
+    Vector3 ShowPosition = new Vector3(0.0f, -756.3f, 0.0f);
 
     private Queue<string> _sentences;
 
@@ -80,8 +83,6 @@ public class MonologueManager : MonoBehaviour {
 
     void ShowMonologue()
     {
-        Vector3 pos = HidePosition;
-        pos.y += 700f;
-        _rectTransform.DOLocalMove(pos, 1f);
+        _rectTransform.DOLocalMove(ShowPosition, 1f);
     }
 }
