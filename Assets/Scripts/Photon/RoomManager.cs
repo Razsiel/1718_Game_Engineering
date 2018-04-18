@@ -120,11 +120,11 @@ public class RoomManager : Photon.MonoBehaviour
     {
         if (!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && gameManager.IsMultiPlayer)
         {
+            alreadyStarted = true;
             gameManager.Players.Add(new TGEPlayer());
             gameManager.Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
 
-            gameManager.StartMultiplayerGame(gameManager.Players);
-            alreadyStarted = true;
+            gameManager.StartMultiplayerGame(gameManager.Players);           
         }
 
     }

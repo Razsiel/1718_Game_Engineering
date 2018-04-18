@@ -95,8 +95,8 @@ namespace Assets.Scripts {
             CreatePlayers(orderedList);
             this.Players = orderedList;
             PhotonManager.Instance.PlayersReady();
-            LevelData.Init(players);
-            LevelPresenter.Present(LevelData, players);
+            //LevelData.Init(players);
+            LevelPresenter.Present(LevelData, orderedList);
             ////Lets do some GameStarting logic here
             //PhotonManager.Instance.StartMultiplayerGame(LevelData, Players);
         }
