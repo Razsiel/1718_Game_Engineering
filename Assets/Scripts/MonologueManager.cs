@@ -35,7 +35,7 @@ public class MonologueManager : MonoBehaviour {
         // Open dialogue panel
 	    ShowMonologue();
 
-        NpcNameText.text = monologue.name;
+        NpcNameText.text = monologue.NpcName;
 
 		_sentences.Clear();
 
