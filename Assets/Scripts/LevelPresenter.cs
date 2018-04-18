@@ -38,6 +38,8 @@ public class LevelPresenter : MonoBehaviour {
         Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
 
+        EventManager.OnLoadLevel(levelData, players);
+
         // create level objects in scene
         _levelObject = CreateGameObjectFromLevelData(levelData);
         Assert.IsNotNull(_levelObject);

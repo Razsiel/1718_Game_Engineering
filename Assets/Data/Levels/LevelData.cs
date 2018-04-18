@@ -18,7 +18,7 @@ namespace Assets.Data.Levels
     {
         [SerializeField] public string Name;
         [SerializeField] public Texture2D BackgroundImage;
-        [SerializeField] public List<LevelGoal> Goals;
+        [SerializeField] public List<LevelGoalData> Goals;
         [SerializeField] public GridMapData GridMapData;
         [SerializeField] public int TileScale = 32;
         [SerializeField] public Monologue Monologue;
