@@ -29,12 +29,12 @@ namespace Assets.Prefabs.UI {
 
             Assert.IsNotNull(_commandLibrary);
             _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () => {
-                this._player = _gameManager.Players[0].Player;
+                this._player = _gameManager.Players.GetLocalPlayer().Player;
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
             };
 
-            _player = _gameManager.Players[0].Player;
+            //_player = _gameManager.Players[0].Player;
 
             //Initialize the ready button and add listener
             _isReadyButton = true;
