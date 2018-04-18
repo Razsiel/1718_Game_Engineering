@@ -28,7 +28,7 @@ namespace Assets.Data.Levels
         {
             return Goals.All(goal => goal.HasBeenReached(null));
         }
-      
+           
         public void Init(List<TGEPlayer> players)
         {
             _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();

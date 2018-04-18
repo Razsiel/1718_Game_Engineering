@@ -24,6 +24,7 @@ public class PrefabContainer : ScriptableObject {
     [SerializeField] public Sprite WaitCommand;
 
     [SerializeField] public Sprite PlayButton;
+    [SerializeField] public Sprite UnReadyButton;
     [SerializeField] public Sprite StopButton;
 
 
@@ -39,6 +40,8 @@ public class PrefabContainer : ScriptableObject {
     {
         sfx_button_hover = Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover");
         PlayButton = Resources.Load<Sprite>("Images/Img_Play_Temp");
+        UnReadyButton = Resources.Load<Sprite>("Images/Img_Ready_Temp");
         StopButton = Resources.Load<Sprite>("Images/Img_Stop_Temp");
+
     }
 }
