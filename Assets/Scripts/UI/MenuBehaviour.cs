@@ -14,7 +14,6 @@ public class MenuBehaviour : MonoBehaviour
     void Start()
     {
         _rectTransform = gameObject.transform.parent.GetComponent<RectTransform>();
-        print(_rectTransform.localPosition);
         EventManager.OnClickedMenu += ShowMenu;
     }
 
