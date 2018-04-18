@@ -12,7 +12,6 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts;
 using Assets.Scripts.Lib.Helpers;
 
-
 public class RoomManager : Photon.MonoBehaviour
 {
     public GameObject playerPrefab;
