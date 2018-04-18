@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Goal;
 using Assets.Data.Grids;
@@ -94,6 +95,7 @@ namespace Assets.Data.Levels {
             if (canMove) {
                 Debug.Log($"Can move to {destination.XY}");
                 _playerPositions[player] = destination.XY;
+                player.GridPosition = destination.XY;
                 // TODO: implement events here
                 // player.OnMove(destination.XY);
                 // current.Value.OnLeave(player);
@@ -151,10 +153,11 @@ namespace Assets.Data.Levels {
             return true;
         }
 
-        public void ResetPlayerPositions(List<Scripts.Player> players) {
+        public void ResetPlayerPositions(List<Scripts.Player> players, Action<List<Scripts.Player>, LevelData> animateCallback) {
             foreach (var player in players) {
                 _playerPositions[player] = GetPlayerStartPosition(player.PlayerNumber).StartPosition;
             }
+            animateCallback(players, this);
         }
     }
 }

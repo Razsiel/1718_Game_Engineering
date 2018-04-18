@@ -20,7 +20,7 @@ public class LevelPresenter : MonoBehaviour {
         EventManager.LoadLevel += Present;
         EventManager.LevelReset += (levelData, players) => {
             // reset internal data
-            levelData.ResetPlayerPositions(players);
+            levelData.ResetPlayerPositions(players, ResetPlayers);
             // reset world representation
             int playerIndex = 0;
             foreach (var player in players) {
@@ -60,6 +60,12 @@ public class LevelPresenter : MonoBehaviour {
         player.ViewDirection = playerStartPosition.Facing;
         player.transform.position = playerWorldPosition;
         player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
+    }
+
+    private void ResetPlayers(List<Player> players, LevelData levelData) {
+        foreach (var player in players) {
+            PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
+        }
     }
 
     public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {

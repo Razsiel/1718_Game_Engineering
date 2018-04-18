@@ -8,10 +8,10 @@ using UnityEngine;
 namespace Assets.Data.Goal
 {
     public class LocationGoal : LevelGoal {
-        public KeyValuePair<Scripts.Player, Vector2Int> TargetGridPosition;
+        public List<KeyValuePair<Scripts.Player, Vector2Int>> TargetGridPosition;
 
         public override bool HasBeenReached(IEnumerable<Scripts.Player> players) {
-            return false;
+            return TargetGridPosition.All(kvp => players.Single(p => p == kvp.Key).GridPosition == kvp.Value);
         }
     }
 }
