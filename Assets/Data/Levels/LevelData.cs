@@ -170,9 +170,14 @@ namespace Assets.Data.Levels
             return true;
         }
 
-        public void ResetPlayerPositions(List<Scripts.Player> players, Action<List<Scripts.Player>, LevelData> animateCallback) {
+        public void Reset(List<Scripts.Player> players, Action<List<Scripts.Player>, LevelData> animateCallback) {
             foreach (var player in players) {
                 _playerPositions[player] = GetPlayerStartPosition(player.PlayerNumber).StartPosition;
+            }
+            foreach (var gridCell in GridMapData) {
+                foreach (var decorationConfig in gridCell.Value.DecorationConfigs) {
+                    decorationConfig.Reset();
+                }
             }
             animateCallback(players, this);
         }

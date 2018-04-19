@@ -117,5 +117,12 @@ namespace Assets.Scripts.DataStructures {
             Activate,
             Deactivate
         }
+
+        public void Reset() {
+            if (Fsm.State == DefaultState) {
+                return;
+            }
+            Fsm.Fire(Fsm.State == DecorationState.Active ? DecorationTrigger.Deactivate : DecorationTrigger.Activate);
+        }
     }
 }

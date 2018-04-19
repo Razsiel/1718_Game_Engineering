@@ -14,9 +14,10 @@ public class AnimatibleDecorationData : DecorationData {
     [SerializeField] public Vector3 AnimatePosition;
     [SerializeField] public Vector3 StartRotation;
     [SerializeField] public Vector3 EndRotation;
+    [SerializeField] public bool Walkable;
 
     public override bool IsWalkable(CardinalDirection direction) {
-        return false;
+        return Walkable;
     }
 
     public override GameObject GenerateGameObject(Transform parent, bool hidden = false) {
