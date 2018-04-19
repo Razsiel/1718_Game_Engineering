@@ -128,7 +128,7 @@ public class SequenceBar : MonoBehaviour
 
     public void HasChanged(int commandSlotIndex, bool destroy)
     {
-        if (destroy)
+        if (destroy && CommandSlots[commandSlotIndex].transform.childCount > 0)
         {
             //Destroy the child of the slot
             var command = CommandSlots[commandSlotIndex].transform.GetChild(0).gameObject;
@@ -137,6 +137,7 @@ public class SequenceBar : MonoBehaviour
 
             //Remove the command at that index from the player
             Player.RemoveCommand(commandSlotIndex);
+            
         }
     }
 
