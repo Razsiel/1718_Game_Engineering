@@ -196,7 +196,9 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
+        EventManager.ExecutionStarted?.Invoke();
         int playersSequenceRan = 0;
+
         foreach (TGEPlayer p in gameManager.Players)
         {
             p.Player.StartExecution();
@@ -226,9 +228,10 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StopExecution(PhotonMessageInfo info)
     {
+        print("asddddd");
         foreach(TGEPlayer p in gameManager.Players)
         {
-            p.Player.StopExecution();
+            p.Player.StopAllCoroutines();
             p.Player.IsReady = false;
             EventManager.OnLevelReset(gameManager.LevelData,
                             gameManager.Players.Select(x => x.Player).ToList());

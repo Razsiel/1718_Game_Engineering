@@ -26,6 +26,7 @@ public class EventManager
     public static UnityAction PhotonSynchronized;
     public static UnityAction<Monologue> MonologueStart;
     public static UnityAction MonologueEnded;
+    public static UnityAction ExecutionStarted;
 
     public static UnityAction<SFX> PlaySoundEffect;
     public static UnityAction<BGM> PlayMusicClip;

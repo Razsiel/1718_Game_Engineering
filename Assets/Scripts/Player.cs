@@ -104,7 +104,7 @@ namespace Assets.Scripts
 
         public void StopButtonClicked()
         {
-            EventManager.OnLevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+            EventManager.LevelReset?.Invoke(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
             OnPlayerStop?.Invoke();
             StopAllCoroutines();
         }
@@ -135,6 +135,7 @@ namespace Assets.Scripts
                 yield return new WaitForSeconds(delay);
             }
             OnPlayerSequenceRan?.Invoke();
+            OnPlayerSequenceRan = null;
         }
 
         public void AddOrInsertCommandAt(BaseCommand command, int index)
