@@ -27,6 +27,7 @@ namespace Assets.Scripts
         public UnityAction OnPlayerSequenceRan;
         public UnityAction OnPlayerStop;
         public UnityAction OnPlayerUnready;
+        private Coroutine coroutine;
 
         public bool IsReady = false;
         public bool IsLocalPlayer;
@@ -98,15 +99,15 @@ namespace Assets.Scripts
         public void ReadyButtonClicked()
         {
             OnPlayerReady?.Invoke();
-            if(!_gameManager.IsMultiPlayer)
-                StartCoroutine(ExecuteCommands());
+            if (!_gameManager.IsMultiPlayer)
+            {
+                coroutine = StartCoroutine(ExecuteCommands());
+            }
         }
 
         public void StopButtonClicked()
         {
-            EventManager.LevelReset?.Invoke(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
             OnPlayerStop?.Invoke();
-            StopAllCoroutines();
         }
 
         public void UnreadyButtonClicked()
@@ -163,7 +164,8 @@ namespace Assets.Scripts
 
         public void StopExecution()
         {
-            StopCoroutine(ExecuteCommands());
+            if(coroutine != null)
+                StopCoroutine(coroutine);
         }
     }
 }

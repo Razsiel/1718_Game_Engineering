@@ -228,9 +228,10 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StopExecution(PhotonMessageInfo info)
     {
-        print("asddddd");
-        foreach(TGEPlayer p in gameManager.Players)
+        foreach (TGEPlayer p in gameManager.Players)
+        {
             p.Player.StopExecution();
+        }
     }
 
     private void PrintIfMultiplayer(object message)
