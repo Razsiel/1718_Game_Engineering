@@ -20,7 +20,7 @@ public class LevelPresenter : MonoBehaviour {
         //EventManager.LoadLevel += Present;
         EventManager.LevelReset += (levelData, players) => {
             // reset internal data
-            levelData.ResetPlayerPositions(players, ResetPlayers);
+            levelData.Reset(players, ResetPlayers);
             // reset world representation
             int playerIndex = 0;
             foreach (var player in players) {

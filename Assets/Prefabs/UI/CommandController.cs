@@ -30,10 +30,6 @@ namespace Assets.Prefabs.UI {
 
         public override void Awake() {
             EventManager.InitializeUi += Initialize;
-        }
-
-        public void Initialize()
-        {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
@@ -45,18 +41,23 @@ namespace Assets.Prefabs.UI {
                 this._player = _gameManager.Players.GetLocalPlayer().Player;
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
+
             };
 
             EventManager.ExecutionStarted += () =>
             {
                 SetReadyButtonState(ReadyButtonState.StopButton);
             };
+        }
+        
+            
 
-
-    //Initialize the ready button and add listener
-    _isReadyButton = true;
-            ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);
+        public void Initialize()
+        {
+            //Initialize the ready button and add listener
+            ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);    
             ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
+
         }
 
         public void OnMoveButtonClicked()
