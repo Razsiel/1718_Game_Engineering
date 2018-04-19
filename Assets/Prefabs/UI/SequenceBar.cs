@@ -26,6 +26,9 @@ public class SequenceBar : MonoBehaviour
     private void Awake()
     {
         EventManager.InitializeUi += Initialize;
+        EventManager.PlayersInitialized += () => {
+            Player = GameManager.GetInstance().Players.GetLocalPlayer().Player;
+        };
     }
 
     private void Initialize()
@@ -57,11 +60,6 @@ public class SequenceBar : MonoBehaviour
 
             slot.transform.SetParent(gameObject.transform, false);
         }
-
-        var manager = GameManager.GetInstance();
-        manager.PlayersInitialized += () => {
-             Player = manager.Players.GetLocalPlayer().Player;
-        };
     }
 
     public void UnShowDropInPoint(int slotIndex)
@@ -128,7 +126,7 @@ public class SequenceBar : MonoBehaviour
 
     public void HasChanged(int commandSlotIndex, bool destroy)
     {
-        if (destroy)
+        if (destroy && CommandSlots[commandSlotIndex].transform.childCount > 0)
         {
             //Destroy the child of the slot
             var command = CommandSlots[commandSlotIndex].transform.GetChild(0).gameObject;
@@ -137,6 +135,7 @@ public class SequenceBar : MonoBehaviour
 
             //Remove the command at that index from the player
             Player.RemoveCommand(commandSlotIndex);
+            
         }
     }
 

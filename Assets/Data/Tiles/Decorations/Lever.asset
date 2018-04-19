@@ -11,8 +11,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afcb17830163fc45884b3f3ded6154b, type: 3}
   m_Name: Lever
   m_EditorClassIdentifier: 
-  Mesh: {fileID: 0}
-  Material: {fileID: 0}
-  MeshToAnimate: {fileID: 0}
-  MaterialOfMeshToAnimate: {fileID: 0}
+  Mesh: {fileID: 4300000, guid: e473f35f8f5c669469885fee4e242487, type: 3}
+  Material: {fileID: 2100000, guid: 2a9da3a078bb5b849a7aa78117841feb, type: 2}
+  MeshToAnimate: {fileID: 4300000, guid: 1a70ad61a87e5a340b53dbb6bc38a2b1, type: 3}
+  MaterialOfMeshToAnimate: {fileID: 2100000, guid: 2a9da3a078bb5b849a7aa78117841feb,
+    type: 2}
   AnimatePosition: {x: 0, y: 0, z: 0}
+  StartRotation: {x: -45, y: 0, z: 0}
+  EndRotation: {x: 45, y: 0, z: 0}
+  Walkable: 1

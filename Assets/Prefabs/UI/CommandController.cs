@@ -1,4 +1,6 @@
-﻿using Assets.Data.Command;
+﻿using System.Linq;
+using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using UnityEngine.Assertions;
 using Assets.Scripts.Lib.Helpers;
@@ -30,13 +32,10 @@ namespace Assets.Prefabs.UI {
 
         public override void Awake() {
             EventManager.InitializeUi += Initialize;
-            _gameManager = GameManager.GetInstance();
-            _commandLibrary = _gameManager.CommandLibrary;
-
-            Assert.IsNotNull(_commandLibrary);
-            _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () =>
+  
+            EventManager.PlayersInitialized += /*(_player _playerInitialized)*/ () =>
             {
-                this._player = _gameManager.Players.GetLocalPlayer().Player;
+                this._player = GameManager.GetInstance().Players.GetLocalPlayer().Player;
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
 
@@ -46,12 +45,20 @@ namespace Assets.Prefabs.UI {
             {
                 SetReadyButtonState(ReadyButtonState.StopButton);
             };
+
+            EventManager.LevelReset += (levelData, players) =>
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+            };
         }
         
             
 
         public void Initialize()
         {
+            _gameManager = GameManager.GetInstance();
+            _commandLibrary = _gameManager.CommandLibrary;
+
             //Initialize the ready button and add listener
             ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);    
             ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
