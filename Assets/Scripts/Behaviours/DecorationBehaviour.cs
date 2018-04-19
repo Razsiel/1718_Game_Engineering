@@ -25,15 +25,13 @@ namespace Assets.Scripts.Behaviours {
             switch (Configuration.Type)
             {
                 case ChannelType.Trigger:
-                    // trigger active animation
-                    this.transform.DOScaleY(-1f, 1f);
-                    break;
                 case ChannelType.Mechanism:
                     // mechanism active animation
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
                     if (animateDeco != null) {
                         this.transform.GetChild(0)
                             .DOLocalMove(animateDeco.AnimatePosition, 1f);
+                        this.transform.GetChild(0).DOLocalRotate(animateDeco.EndRotation, 1f);
                     }
                     else {
                         this.transform.DOLocalMoveY(Configuration.RelativePosition.y + 32f, 1.5f);
@@ -54,9 +52,6 @@ namespace Assets.Scripts.Behaviours {
             switch (Configuration.Type)
             {
                 case ChannelType.Trigger:
-                    // trigger inactive animation
-                    this.transform.DOScaleY(1f, 1f);
-                    break;
                 case ChannelType.Mechanism:
                     // mechanism inactive animation
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
@@ -64,6 +59,7 @@ namespace Assets.Scripts.Behaviours {
                     {
                         this.transform.GetChild(0)
                             .DOLocalMove(Vector3.zero, 1f);
+                        this.transform.GetChild(0).DOLocalRotate(animateDeco.StartRotation, 1f);
                     }
                     else
                     {
