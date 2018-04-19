@@ -227,7 +227,12 @@ public class RoomManager : Photon.MonoBehaviour
     public void StopExecution(PhotonMessageInfo info)
     {
         foreach(TGEPlayer p in gameManager.Players)
+        {
             p.Player.StopExecution();
+            p.Player.IsReady = false;
+            EventManager.OnLevelReset(gameManager.LevelData,
+                            gameManager.Players.Select(x => x.Player).ToList());
+        }
     }
 
     private void PrintIfMultiplayer(object message)
