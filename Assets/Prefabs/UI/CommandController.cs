@@ -30,10 +30,6 @@ namespace Assets.Prefabs.UI {
 
         public override void Awake() {
             EventManager.InitializeUi += Initialize;
-        }
-
-        void Start()
-        {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
@@ -44,6 +40,10 @@ namespace Assets.Prefabs.UI {
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
             };
+        }
+
+        void Start()
+        {
         }
 
         public void Initialize()
