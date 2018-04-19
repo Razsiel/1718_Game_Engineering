@@ -107,7 +107,16 @@ namespace Assets.Scripts
 
         public void StopButtonClicked()
         {
-            OnPlayerStop?.Invoke();
+            if (_gameManager.IsMultiPlayer)
+            {
+                OnPlayerStop?.Invoke();
+            }
+            else
+            {
+                //Werkt nog niet naar behoren (single player stop)
+                StopCoroutine(coroutine);
+                EventManager.OnLevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+            }
         }
 
         public void UnreadyButtonClicked()

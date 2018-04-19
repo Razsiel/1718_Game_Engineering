@@ -67,43 +67,57 @@ namespace Assets.Prefabs.UI {
 
         public void OnMoveButtonClicked()
         {
-            _player.AddCommand(_commandLibrary.MoveCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.MoveCommand);
-            AddCommandToRightSlotAndFixSettings(moveCommand);
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.MoveCommand);
+                GameObject moveCommand = Instantiate(SequenceBar.MoveCommand);
+                AddCommandToRightSlotAndFixSettings(moveCommand);
+            }
         }
 
         public void OnTurnLeftButtonClicked()
         {
-            _player.AddCommand(_commandLibrary.TurnLeftCommand);
-            GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
-            AddCommandToRightSlotAndFixSettings(turnLeftCommand);
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.TurnLeftCommand);
+                GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
+                AddCommandToRightSlotAndFixSettings(turnLeftCommand);
+            }
         }
 
         public void OnTurnRightButtonClicked()
         {
-            _player.AddCommand(_commandLibrary.TurnRightCommand);
-            GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
-            AddCommandToRightSlotAndFixSettings(turnRightCommand);
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.TurnRightCommand);
+                GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
+                AddCommandToRightSlotAndFixSettings(turnRightCommand);
+            }
         }
 
         public void OnWaitButtonClicked()
         {
-            _player.AddCommand(_commandLibrary.WaitCommand);
-            GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
-            AddCommandToRightSlotAndFixSettings(waitCommand);
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.WaitCommand);
+                GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
+                AddCommandToRightSlotAndFixSettings(waitCommand);
+            }
         }
 
         public void OnInteractButtonClicked()
         {
-            _player.AddCommand(_commandLibrary.InteractCommand);
-            GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
-            AddCommandToRightSlotAndFixSettings(interactCommand);
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.InteractCommand);
+                GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
+                AddCommandToRightSlotAndFixSettings(interactCommand);
+            }
         }
 
         private void AddCommandToRightSlotAndFixSettings(GameObject command)
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            command.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
+            command.transform.SetParent(SequenceBar.CommandSlots[SequenceBar.GetNextEmptySlotIndex()].transform, false);
             command.GetComponent<Button>().enabled = false;
             command.GetComponent<CanvasGroup>().blocksRaycasts = false;
         }
