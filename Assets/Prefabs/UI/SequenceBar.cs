@@ -59,7 +59,7 @@ public class SequenceBar : MonoBehaviour
         }
 
         var manager = GameManager.GetInstance();
-        manager.PlayersInitialized += () => {
+        EventManager.PlayersInitialized += () => {
              Player = manager.Players.GetLocalPlayer().Player;
         };
     }

@@ -33,7 +33,7 @@ namespace Assets.Scripts {
 
         public UnityAction<Player> PlayerInitialized;
 
-        public UnityAction PlayersInitialized;
+//        public UnityAction PlayersInitialized;
         //public UnityAction 
 
         #endregion
@@ -128,13 +128,13 @@ namespace Assets.Scripts {
                 players[i].PlayerObject = playerObject;
                 players[i].Player = playerComponent;
                 //PlayerInitialized(playerComponent);
-                PlayerInitialized?.Invoke(playerComponent);
+                EventManager.OnPlayerInitialized(playerComponent);
 
 //                if (IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
 //                    playerComponent.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
                 // layerInitialized(playerComponent);
             }
-            PlayersInitialized?.Invoke();
+            EventManager.OnPlayersInitialized();
             EventManager.OnSetPlayerColour();
         }
 
