@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts;
 using Assets.Scripts.Lib.Extensions;
+using Assets.Scripts.Lib.Helpers;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +32,7 @@ public class UiManager : MonoBehaviour
 
     void SetPlayerColourText()
     {
-        if (GameManager.GetInstance().Players[0].Player.PlayerNumber == 0)
+        if (GameManager.GetInstance().Players.GetLocalPlayer().Player.PlayerNumber == 0)
         {
             PlayerColour.text = "ORANJE";
             PlayerColour.color = new Color32(255, 184, 65, 255);
