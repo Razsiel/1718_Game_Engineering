@@ -12,6 +12,8 @@ public class AnimatibleDecorationData : DecorationData {
     [SerializeField] public Mesh MeshToAnimate;
     [SerializeField] public Material MaterialOfMeshToAnimate;
     [SerializeField] public Vector3 AnimatePosition;
+    [SerializeField] public Vector3 StartRotation;
+    [SerializeField] public Vector3 EndRotation;
 
     public override bool IsWalkable(CardinalDirection direction) {
         return false;
@@ -25,6 +27,7 @@ public class AnimatibleDecorationData : DecorationData {
             hideFlags = hidden ? HideFlags.HideAndDontSave : HideFlags.NotEditable
         };
         animationDeco.transform.parent = baseDeco.transform;
+        animationDeco.transform.rotation = Quaternion.Euler(StartRotation);
 
         var meshFilter = animationDeco.GetComponent<MeshFilter>();
         if (meshFilter != null)

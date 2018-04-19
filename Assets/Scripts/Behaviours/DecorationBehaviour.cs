@@ -34,6 +34,7 @@ namespace Assets.Scripts.Behaviours {
                     if (animateDeco != null) {
                         this.transform.GetChild(0)
                             .DOLocalMove(animateDeco.AnimatePosition, 1f);
+                        this.transform.GetChild(0).DOLocalRotate(animateDeco.EndRotation, 1f);
                     }
                     else {
                         this.transform.DOLocalMoveY(Configuration.RelativePosition.y + 32f, 1.5f);
@@ -64,6 +65,7 @@ namespace Assets.Scripts.Behaviours {
                     {
                         this.transform.GetChild(0)
                             .DOLocalMove(Vector3.zero, 1f);
+                        this.transform.GetChild(0).DOLocalRotate(animateDeco.StartRotation, 1f);
                     }
                     else
                     {
