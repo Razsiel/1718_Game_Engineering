@@ -136,6 +136,7 @@ namespace Assets.Scripts
                 yield return new WaitForSeconds(delay);
             }
             OnPlayerSequenceRan?.Invoke();
+            OnPlayerSequenceRan = null;
         }
 
         public void AddOrInsertCommandAt(BaseCommand command, int index)

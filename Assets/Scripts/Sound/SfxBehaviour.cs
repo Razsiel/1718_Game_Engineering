@@ -17,6 +17,7 @@ public class SfxBehaviour : MonoBehaviour
 
 	void Initialize ()
 	{
+        print("audio init");
 	    sfxPlayer = GetComponent<AudioSource>();
 	    prefabContainer = GameManager.GetInstance().PrefabContainer;
 
