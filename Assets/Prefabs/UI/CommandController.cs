@@ -32,7 +32,7 @@ namespace Assets.Prefabs.UI {
             EventManager.InitializeUi += Initialize;
         }
 
-        public void Initialize()
+        void Start()
         {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
@@ -44,9 +44,10 @@ namespace Assets.Prefabs.UI {
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
             };
+        }
 
-            
-
+        public void Initialize()
+        {
             //Initialize the ready button and add listener
             _isReadyButton = true;
             ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);
