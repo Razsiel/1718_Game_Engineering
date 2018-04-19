@@ -33,8 +33,6 @@ namespace Assets.Prefabs.UI {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
-            
-
             Assert.IsNotNull(_commandLibrary);
             _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () =>
             {

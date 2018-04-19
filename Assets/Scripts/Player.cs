@@ -104,9 +104,8 @@ namespace Assets.Scripts
 
         public void StopButtonClicked()
         {
-            EventManager.OnLevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+            EventManager.LevelReset?.Invoke(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
             OnPlayerStop?.Invoke();
-            OnPlayerSequenceRan?.Invoke();
             StopAllCoroutines();
         }
 
