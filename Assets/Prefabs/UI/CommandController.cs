@@ -50,8 +50,10 @@ namespace Assets.Prefabs.UI {
         {
             //Initialize the ready button and add listener
             _isReadyButton = true;
-            ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);
+            ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);           
             ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
+            
+
         }
 
         public void OnMoveButtonClicked()
