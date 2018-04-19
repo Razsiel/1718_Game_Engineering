@@ -11,4 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
   m_Name: LocationGoalPlayer
   m_EditorClassIdentifier: 
-  TargetGridPosition: []
+  TargetGridPosition:
+  - PlayerNumber: 0
+    Location: {x: 2, y: 4}
+  - PlayerNumber: 1
+    Location: {x: 2, y: 2}
