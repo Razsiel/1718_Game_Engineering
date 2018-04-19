@@ -1,4 +1,6 @@
-﻿using Assets.Data.Command;
+﻿using System.Linq;
+using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using UnityEngine.Assertions;
 using Assets.Scripts.Lib.Helpers;
@@ -45,6 +47,11 @@ namespace Assets.Prefabs.UI {
             EventManager.ExecutionStarted += () =>
             {
                 SetReadyButtonState(ReadyButtonState.StopButton);
+            };
+
+            EventManager.LevelReset += (levelData, players) =>
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
             };
         }
         
