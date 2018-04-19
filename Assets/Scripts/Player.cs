@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Helpers;
@@ -21,6 +22,8 @@ namespace Assets.Scripts
 
         public UnityAction<List<BaseCommand>> SequenceChanged;
         public UnityAction OnPlayerReady;
+        public UnityAction OnPlayerUnReady;
+        public UnityAction StopSequence;
         public UnityAction OnPlayerSequenceRan;
         public UnityAction OnPlayerStop;
         public UnityAction OnPlayerUnready;
@@ -97,6 +100,19 @@ namespace Assets.Scripts
             OnPlayerReady?.Invoke();
             if(!_gameManager.IsMultiPlayer)
                 StartCoroutine(ExecuteCommands());
+        }
+
+        public void StopButtonClicked()
+        {
+            EventManager.OnLevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+            OnPlayerStop?.Invoke();
+            StopAllCoroutines();
+        }
+
+        public void UnreadyButtonClicked()
+        {
+            OnPlayerUnReady?.Invoke();
+            IsReady = false;
         }
 
         public void RemoveCommand(int commandIndex)

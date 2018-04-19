@@ -35,6 +35,9 @@ public class EventManager
     public static UnityAction<LevelData> LevelLoaded;
     public static UnityAction OnClickedMenu;
 
+    // Temp calls
+    public static UnityAction OnSetPlayerColour;
+
 
     public static void OnInitializeUi()
     {
@@ -118,8 +121,8 @@ public class EventManager
         Simulate?.Invoke();
     }
 
-    public static void OnLevelReset() {
-        //LevelReset?.Invoke();
+    public static void OnLevelReset(LevelData levelData, List<Player> players) {
+        LevelReset?.Invoke(levelData, players);
     }
 
     public static void OnLoadLevel(LevelData levelData, List<TGEPlayer> players) {
@@ -133,5 +136,10 @@ public class EventManager
     public static void ClickMenu()
     {
         OnClickedMenu?.Invoke();
+    }
+
+    public static void SetPlayerColour()
+    {
+        OnSetPlayerColour?.Invoke();
     }
 }

@@ -32,20 +32,22 @@ namespace Assets.Prefabs.UI {
             EventManager.InitializeUi += Initialize;
         }
 
-        public void Initialize()
+        void Start()
         {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
             Assert.IsNotNull(_commandLibrary);
-            _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () => {
-                this._player = _gameManager.Players[0].Player;
+            _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () =>
+            {
+                this._player = _gameManager.Players.GetLocalPlayer().Player;
                 print("_player shoudl be filled");
                 Assert.IsNotNull(_player);
             };
+        }
 
-            _player = _gameManager.Players[0].Player;
-
+        public void Initialize()
+        {
             //Initialize the ready button and add listener
             _isReadyButton = true;
             ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);
@@ -104,47 +106,42 @@ namespace Assets.Prefabs.UI {
             SequenceBar.GetCount();
         }
 
-        public void SetReadyButtonState()
+        public void SetReadyButtonState(ReadyButtonState newReadyButtonState)
         {
-            _isReadyButton = !_isReadyButton;
-
-            ReadyButton.GetComponent<Image>().sprite =
-                _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.StopButton;
-
-            //readyButtonState = newReadyButtonState;
+            readyButtonState = newReadyButtonState;
         }
 
         public void OnReadyButtonClicked() {
             Debug.Log(_player);
-            if (_isReadyButton)
+
+            if (readyButtonState == ReadyButtonState.ReadyButton)
             {
+                if (_gameManager.IsMultiPlayer)
+                {
+                    SetReadyButtonState(ReadyButtonState.UnReadyButton);
+                    ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.UnReadyButton;
+                }
+                else
+                {
+                    SetReadyButtonState(ReadyButtonState.StopButton);
+                    ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.StopButton;
+                }
+                    
                 _player.ReadyButtonClicked();
+
+            }
+            else if (readyButtonState == ReadyButtonState.UnReadyButton)
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+                _player.UnreadyButtonClicked();
+                ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
             }
             else
             {
-                //_player.StopButtonClicked();
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+                _player.StopButtonClicked();
+                ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
             }
-
-            SetReadyButtonState();
-
-            //if (readyButtonState == ReadyButtonState.ReadyButton)
-            //{
-            //    //SetReadyButtonState(ReadyButtonState.UnReadyButton);
-            //    //_player.ReadyButtonClicked();
-            //    ReadyButton.GetComponent<Image>().sprite =
-            //        _isReadyButton ? _gameManager.PrefabContainer.PlayButton : _gameManager.PrefabContainer.UnReadyButton;
-
-            //}
-            //else if (readyButtonState == ReadyButtonState.UnReadyButton)
-            //{
-            //    //SetReadyButtonState(ReadyButtonState.ReadyButton);
-            //    //_player.UnreadyButtonClicked();
-            //}
-            //else
-            //{
-            //    //SetReadyButtonState(ReadyButtonState.ReadyButton);
-            //    //_player.StopButtonClicked();
-            //}
         }
 
         //public void UpdateOther_playersSequenceBar(List<BaseCommand> commands)

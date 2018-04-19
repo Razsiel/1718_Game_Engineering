@@ -84,6 +84,8 @@ namespace Assets.Scripts {
             var players = new List<TGEPlayer>() {player};
             CreatePlayers(players);
 
+            this.Players = players;
+
             //LevelData.Init(players);
             LevelPresenter.Present(LevelData, players);
         }
@@ -113,16 +115,27 @@ namespace Assets.Scripts {
 
                 ////playerComponent.IsLocalPlayer = (IsMultiPlayer ? players[i].photonPlayer == PhotonManager.Instance.GetLocalPlayer() : false);
 
+                // Assigning colour to player TODO: dat kan beter!
+                if (i == 0)
+                {
+                    playerObject.GetComponent<Renderer>().material = PrefabContainer.Mat_Orange;
+                }
+                else
+                {
+                    playerObject.GetComponent<Renderer>().material = PrefabContainer.Mat_Blue;
+                }
+
                 players[i].PlayerObject = playerObject;
                 players[i].Player = playerComponent;
                 //PlayerInitialized(playerComponent);
                 PlayerInitialized?.Invoke(playerComponent);
 
-                if (IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
-                    playerComponent.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+//                if (IsMultiPlayer && players[i].photonPlayer.IsMasterClient)
+//                    playerComponent.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
                 // layerInitialized(playerComponent);
             }
             PlayersInitialized?.Invoke();
+            EventManager.OnSetPlayerColour();
         }
 
         public static GameManager GetInstance() {

@@ -41,7 +41,7 @@ public class RoomManager : Photon.MonoBehaviour
         Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
 
         PrintIfMultiplayer(PhotonNetwork.connectionState);
-        PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { PrintCodeAndMessage(codeAndMsg); Assert.IsTrue(PhotonNetwork.CreateRoom("RoomLocal")); };
+        PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { PrintCodeAndMessage(codeAndMsg); Assert.IsTrue(PhotonNetwork.CreateRoom(Guid.NewGuid().ToString())); };
         PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { PrintCodeAndMessage(codeAndMsg); };
 
         PhotonManager.Instance.TGEOnJoinedLobby += () =>
@@ -196,8 +196,31 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
+        int playersSequenceRan = 0;
         foreach (TGEPlayer p in gameManager.Players)
+        {
             p.Player.StartExecution();
+            p.Player.OnPlayerSequenceRan += () => 
+            {
+                playersSequenceRan++;
+                if (playersSequenceRan > 1)
+                    if ( /*!gameManager.LevelData.HasReachedAllGoals()*/true)
+                    {
+                        EventManager.OnLevelReset(gameManager.LevelData,
+                            gameManager.Players.Select(x => x.Player).ToList());
+                       
+                            foreach (var player in gameManager.Players)
+                            {
+                                player.Player.IsReady = false;
+                            }                       
+                    }
+                    else
+                    {
+                        EventManager.OnAllLevelGoalsReached();
+                    }
+
+            };
+        }
     }
 
     [PunRPC]

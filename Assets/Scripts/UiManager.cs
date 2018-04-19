@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts;
 using Assets.Scripts.Lib.Extensions;
+using Assets.Scripts.Lib.Helpers;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +11,12 @@ public class UiManager : MonoBehaviour
 {
     public Text LEVEL_GOALS_TITLE;
     public Text LEVEL_GOALS_DESCRIPTION;
+    public Text PlayerColour;
 
     void Awake()
     {
         EventManager.InitializeUi += Initialize;
+        EventManager.OnSetPlayerColour += SetPlayerColourText;
     }
 
     void Initialize()
@@ -25,5 +28,19 @@ public class UiManager : MonoBehaviour
     public void OnHoverOverElement()
     {
         EventManager.PlaySoundEffect(SFX.ButtonHover);
+    }
+
+    void SetPlayerColourText()
+    {
+        if (GameManager.GetInstance().Players.GetLocalPlayer().Player.PlayerNumber == 0)
+        {
+            PlayerColour.text = "ORANJE";
+            PlayerColour.color = new Color32(255, 184, 65, 255);
+        }
+        else
+        {
+            PlayerColour.text = "BLAUW";
+            PlayerColour.color = new Color32(68, 222, 255, 255);
+        }
     }
 }
