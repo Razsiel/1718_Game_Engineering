@@ -18,9 +18,10 @@ public class WinScreenBehaviour : MonoBehaviour {
         gameObject.SetActive(true);
     }
 
-    void OnClickContinue()
+    public void OnClickContinue()
     {
         // Restart level? To level Select?
         print("Level Completed!");
+        gameObject.SetActive(false);
     }
 }
