@@ -26,6 +26,9 @@ public class SequenceBar : MonoBehaviour
     private void Awake()
     {
         EventManager.InitializeUi += Initialize;
+        EventManager.PlayersInitialized += () => {
+            Player = GameManager.GetInstance().Players.GetLocalPlayer().Player;
+        };
     }
 
     private void Initialize()
@@ -57,11 +60,6 @@ public class SequenceBar : MonoBehaviour
 
             slot.transform.SetParent(gameObject.transform, false);
         }
-
-        var manager = GameManager.GetInstance();
-        manager.PlayersInitialized += () => {
-             Player = manager.Players.GetLocalPlayer().Player;
-        };
     }
 
     public void UnShowDropInPoint(int slotIndex)

@@ -18,6 +18,9 @@ public class EventManager
     public static UnityAction InitializeAudio;
     public static UnityAction InitializeMonologue;
 
+    public static UnityAction PlayersInitialized;
+    public static UnityAction<Player> PlayerInitialized;
+
     public static UnityAction EnableUserInput;
     public static UnityAction DisableUserInput;
     public static UnityAction<List<BaseCommand>> SequenceChanged;
@@ -143,4 +146,15 @@ public class EventManager
     {
         OnSetPlayerColour?.Invoke();
     }
+
+    public static void OnPlayersInitialized()
+    {
+        PlayersInitialized?.Invoke();
+    }
+
+    public static void OnPlayerInitialized(Player player)
+    {
+        PlayerInitialized?.Invoke(player);
+    }
+
 }

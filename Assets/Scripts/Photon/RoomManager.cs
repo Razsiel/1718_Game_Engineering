@@ -193,36 +193,38 @@ public class RoomManager : Photon.MonoBehaviour
         this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
     }
 
+    private int amountOfSequenceRan = 0;
+
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
-        EventManager.ExecutionStarted?.Invoke();
-        int playersSequenceRan = 0;
+        EventManager.ExecutionStarted?.Invoke();        
 
         foreach (TGEPlayer p in gameManager.Players)
         {
             p.Player.StartExecution();
-            p.Player.OnPlayerSequenceRan += () => 
-            {
-                playersSequenceRan++;
-                if (playersSequenceRan > 1)
-                    if (!gameManager.LevelData.HasReachedAllGoals())
-                    {
-                        EventManager.OnLevelReset(gameManager.LevelData,
-                            gameManager.Players.Select(x => x.Player).ToList());
-                       
-                            foreach (var player in gameManager.Players)
-                            {
-                                player.Player.IsReady = false;
-                            }                       
-                    }
-                    else
-                    {
-                        EventManager.OnAllLevelGoalsReached();
-                    }
-
-            };
+            p.Player.OnPlayerSequenceRan += (Player player) => PlayerSequenceRan(player);
         }
+    }
+
+    private void PlayerSequenceRan(Player p)
+    {
+        amountOfSequenceRan++;
+        if(amountOfSequenceRan > 1)
+        {
+            if(!gameManager.LevelData.HasReachedAllGoals())
+            {
+                //EventManager.OnLevelReset(gameManager.LevelData,
+                  //  gameManager.Players.Select(x => x.Player).ToList());
+            }
+            else
+            {
+                EventManager.OnAllLevelGoalsReached();
+            }
+            amountOfSequenceRan = 0;
+        }
+        
+        p.OnPlayerSequenceRan -= PlayerSequenceRan;
     }
 
     [PunRPC]
@@ -230,8 +232,7 @@ public class RoomManager : Photon.MonoBehaviour
     {
         foreach(TGEPlayer p in gameManager.Players)
         {
-            p.Player.StopAllCoroutines();
-            p.Player.IsReady = false;
+            p.Player.StopAllCoroutines();            
             EventManager.OnLevelReset(gameManager.LevelData,
                             gameManager.Players.Select(x => x.Player).ToList());
         }

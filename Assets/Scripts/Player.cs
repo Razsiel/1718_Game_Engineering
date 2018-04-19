@@ -24,7 +24,7 @@ namespace Assets.Scripts
         public UnityAction OnPlayerReady;
         public UnityAction OnPlayerUnReady;
         public UnityAction StopSequence;
-        public UnityAction OnPlayerSequenceRan;
+        public UnityAction<Player> OnPlayerSequenceRan;
         public UnityAction OnPlayerStop;
         public UnityAction OnPlayerUnready;
         private Coroutine coroutine;
@@ -41,12 +41,16 @@ namespace Assets.Scripts
             _gameManager = GameManager.GetInstance();
             _sequence = new List<BaseCommand>();
 
-            if (GameManager.GetInstance().Players.GetLocalPlayer().Player == this)
-                OnPlayerSequenceRan += () =>
-                {
-                    this.IsReady = false;
-                };
+            //if (GameManager.GetInstance().Players.GetLocalPlayer().Player == this)
+            //    OnPlayerSequenceRan += () =>
+            //    {
+            //        this.IsReady = false;
+            //    };
 
+            EventManager.LevelReset += (leveldata, players) =>
+            {
+                this.IsReady = false;
+            };
             /*     
             _sequence = new List<BaseCommand>
             { 
@@ -64,10 +68,7 @@ namespace Assets.Scripts
 
             //StartCoroutine(WaitForInput());
         }
-
-        // Update is called once per frame
-        void Update() { }
-
+     
         //Press Spacebar to run sequence
         IEnumerator WaitForInput()
         {
@@ -93,7 +94,7 @@ namespace Assets.Scripts
 
         public void StartExecution()
         {
-            StartCoroutine(ExecuteCommands());
+            this.coroutine = StartCoroutine(ExecuteCommands());
         }
 
         public void ReadyButtonClicked()
@@ -144,8 +145,7 @@ namespace Assets.Scripts
 
                 yield return new WaitForSeconds(delay);
             }
-            OnPlayerSequenceRan?.Invoke();
-            OnPlayerSequenceRan = null;
+            OnPlayerSequenceRan?.Invoke(this);
         }
 
         public void AddOrInsertCommandAt(BaseCommand command, int index)
