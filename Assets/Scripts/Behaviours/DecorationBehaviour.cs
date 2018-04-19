@@ -25,9 +25,6 @@ namespace Assets.Scripts.Behaviours {
             switch (Configuration.Type)
             {
                 case ChannelType.Trigger:
-                    // trigger active animation
-                    this.transform.DOScaleY(-1f, 1f);
-                    break;
                 case ChannelType.Mechanism:
                     // mechanism active animation
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
@@ -55,9 +52,6 @@ namespace Assets.Scripts.Behaviours {
             switch (Configuration.Type)
             {
                 case ChannelType.Trigger:
-                    // trigger inactive animation
-                    this.transform.DOScaleY(1f, 1f);
-                    break;
                 case ChannelType.Mechanism:
                     // mechanism inactive animation
                     var animateDeco = Configuration.DecorationData as AnimatibleDecorationData;
