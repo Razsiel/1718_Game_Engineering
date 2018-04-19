@@ -37,6 +37,8 @@ namespace Assets.Prefabs.UI {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
+            
+
             Assert.IsNotNull(_commandLibrary);
             _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () =>
             {
@@ -45,10 +47,14 @@ namespace Assets.Prefabs.UI {
                 Assert.IsNotNull(_player);
             };
 
-            
+            EventManager.ExecutionStarted += () =>
+            {
+                SetReadyButtonState(ReadyButtonState.StopButton);
+            };
 
-            //Initialize the ready button and add listener
-            _isReadyButton = true;
+
+    //Initialize the ready button and add listener
+    _isReadyButton = true;
             ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);
             ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
         }
@@ -107,6 +113,15 @@ namespace Assets.Prefabs.UI {
 
         public void SetReadyButtonState(ReadyButtonState newReadyButtonState)
         {
+            Sprite stopButton = _gameManager.PrefabContainer.StopButton;
+            Sprite readyButton = _gameManager.PrefabContainer.PlayButton;
+            Sprite unreadyButton = _gameManager.PrefabContainer.UnReadyButton;
+            
+            ReadyButton.GetComponent<Image>().sprite = 
+                newReadyButtonState == ReadyButtonState.ReadyButton ? readyButton : 
+                newReadyButtonState == ReadyButtonState.UnReadyButton ? unreadyButton : 
+                stopButton;
+            
             readyButtonState = newReadyButtonState;
         }
 

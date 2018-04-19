@@ -196,6 +196,7 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StartExecution(PhotonMessageInfo info)
     {
+        EventManager.ExecutionStarted.Invoke();
         foreach (TGEPlayer p in gameManager.Players)
             p.Player.StartExecution();
     }
@@ -203,6 +204,7 @@ public class RoomManager : Photon.MonoBehaviour
     [PunRPC]
     public void StopExecution(PhotonMessageInfo info)
     {
+        print("asddddd");
         foreach(TGEPlayer p in gameManager.Players)
             p.Player.StopExecution();
     }
