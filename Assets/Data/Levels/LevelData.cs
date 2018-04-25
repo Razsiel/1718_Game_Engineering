@@ -9,6 +9,7 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.DataStructures.Channel;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Assets.Data.Levels
 {
@@ -171,7 +172,11 @@ namespace Assets.Data.Levels
         }
 
         public void Reset(List<Scripts.Player> players, Action<List<Scripts.Player>, LevelData> animateCallback) {
+            Assert.IsNotNull(players);
+            Assert.IsTrue(players.Any());
+            Assert.IsNotNull(_playerPositions);
             foreach (var player in players) {
+                Assert.IsNotNull(player);
                 _playerPositions[player] = GetPlayerStartPosition(player.PlayerNumber).StartPosition;
             }
             foreach (var gridCell in GridMapData) {

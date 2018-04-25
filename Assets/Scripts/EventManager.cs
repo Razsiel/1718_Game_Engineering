@@ -23,16 +23,16 @@ public class EventManager
 
     public static UnityAction OnUserInputEnable;
     public static UnityAction OnUserInputDisable;
-    public static UnityAction<List<BaseCommand>> _SequenceChanged;
+    public static UnityAction<List<BaseCommand>> OnSequenceChanged;
     public static UnityAction OnReadyButtonClicked;
-    public static UnityAction _StopButtonClicked;
+    public static UnityAction OnStopButtonClicked;
     public static UnityAction OnPhotonSynchronized;
     public static UnityAction<Monologue> OnMonologueStart;
     public static UnityAction OnMonologueEnded;
-    public static UnityAction _ExecutionStarted;
+    public static UnityAction OnExecutionStarted;
 
-    public static UnityAction<SFX> _PlaySoundEffect;
-    public static UnityAction<BGM> _PlayMusicClip;
+    public static UnityAction<SFX> OnPlaySoundEffect;
+    public static UnityAction<BGM> OnPlayMusicClip;
     public static UnityAction OnSimulate;
     public static UnityAction<LevelData, List<Player>> OnLevelReset;
     public static UnityAction<LevelData, List<TGEPlayer>> OnLoadLevel;
@@ -43,6 +43,7 @@ public class EventManager
     public static UnityAction OnPlayerColourSet;
 
     public static UnityAction OnAllPlayersReady;
+    public static UnityAction<Player> OnPlayerSpawned;
 
     public static void InitializeUi()
     {
@@ -150,4 +151,7 @@ public class EventManager
         OnPlayerInitialized?.Invoke(player);
     }
 
+    public static void PlayerSpawned(Player player) {
+        OnPlayerSpawned?.Invoke(player);
+    }
 }

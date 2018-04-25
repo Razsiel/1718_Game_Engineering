@@ -27,7 +27,7 @@ public class UiManager : MonoBehaviour
 
     public void OnHoverOverElement()
     {
-        EventManager._PlaySoundEffect(SFX.ButtonHover);
+        EventManager.OnPlaySoundEffect(SFX.ButtonHover);
     }
 
     void SetPlayerColourText()

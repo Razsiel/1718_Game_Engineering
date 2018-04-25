@@ -21,7 +21,7 @@ public class BgmBehaviour : MonoBehaviour {
         prefabContainer = GameManager.GetInstance().PrefabContainer;
 
         MusicClips = new Dictionary<BGM, AudioClip>();
-        EventManager._PlayMusicClip += PlayMusicClip;
+        EventManager.OnPlayMusicClip += PlayMusicClip;
         bgmPlayer.volume = 0.5f;
 
         // Add all music clips to Dictionary

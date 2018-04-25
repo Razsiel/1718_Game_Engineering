@@ -41,7 +41,7 @@ namespace Assets.Prefabs.UI {
 
             };
 
-            EventManager._ExecutionStarted += () =>
+            EventManager.OnExecutionStarted += () =>
             {
                 SetReadyButtonState(ReadyButtonState.StopButton);
             };

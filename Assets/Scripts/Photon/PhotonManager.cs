@@ -83,9 +83,9 @@ namespace Assets.Scripts.Photon
 
         public void ReceiveOtherPlayers(GameObject playerObject)
         {
-            LevelManager.Instance.Players[1].PlayerObject = playerObject;
+            //LevelManager.Instance.Players[1].PlayerObject = playerObject;
             GameManager.GetInstance().Players[1].PlayerObject = playerObject;
-            LevelManager.Instance.Players[1].Player = playerObject.GetComponent<Player>();
+            //LevelManager.Instance.Players[1].Player = playerObject.GetComponent<Player>();
             GameManager.GetInstance().Players[1].Player = playerObject.GetComponent<Player>();
         }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -21,23 +22,16 @@ public class TGEMonoBehaviour : MonoBehaviour {
     public virtual void Start() {
         OnStart?.Invoke();
     }
-
-    protected T Spawn<T>(T componentClass, TGEMonoBehaviour parentComponent, UnityAction<T> initializer = null) where T : TGEMonoBehaviour
+    
+    protected T Spawn<T>(string objectName, GameObject parent, UnityAction<T> initializer = null) where T : MonoBehaviour
     {
-        Assert.IsNotNull(parentComponent);
-
-        return Spawn(componentClass, parentComponent.gameObject, initializer);
-    }
-
-    // Spawn class-restricted GameObject
-    protected T Spawn<T>(T componentClass, GameObject parent, UnityAction<T> initializer = null) where T : TGEMonoBehaviour
-    {
-        Assert.IsNotNull(componentClass);
+        Assert.IsNotNull(objectName);
         Assert.IsNotNull(parent);
 
-        T instance = null;
-
-        return instance;
+        var spawnedObject = new GameObject(objectName, typeof(T));
+        spawnedObject.transform.parent = parent.transform;
+        var component = spawnedObject.GetComponent<T>();
+        initializer?.Invoke(component);
+        return component;
     }
-
 }
