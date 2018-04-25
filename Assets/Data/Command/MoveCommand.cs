@@ -27,18 +27,8 @@ namespace Assets.Data.Command {
             Vector3 destinationPosition = GridHelper.GridToWorldPosition(gridMap, destination.XY);
             destinationPosition.y = player.transform.position.y;
 
-            // Visual movement
-            while (!player.transform.position.AlmostEquals(destinationPosition, player.Data.MovementData.OffsetAlmostPosition))
-            {
-                player.transform.position = Vector3.Lerp(
-                    player.transform.position, 
-                    destinationPosition,
-                    player.Data.MovementData.MovementSpeed * Time.deltaTime);
 
-                yield return new WaitForEndOfFrame();
-            }
-
-            player.transform.position = destinationPosition;
+            player.OnMoveTo?.Invoke(destinationPosition);
         }
 
         public override string ToString()

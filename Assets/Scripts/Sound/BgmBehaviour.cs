@@ -12,7 +12,7 @@ public class BgmBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        EventManager.InitializeAudio += Initialize;
+        EventManager.OnAudioInitialize += Initialize;
     }
 
     void Initialize()
@@ -21,7 +21,7 @@ public class BgmBehaviour : MonoBehaviour {
         prefabContainer = GameManager.GetInstance().PrefabContainer;
 
         MusicClips = new Dictionary<BGM, AudioClip>();
-        EventManager.PlayMusicClip += PlayMusicClip;
+        EventManager.OnPlayMusicClip += PlayMusicClip;
         bgmPlayer.volume = 0.5f;
 
         // Add all music clips to Dictionary

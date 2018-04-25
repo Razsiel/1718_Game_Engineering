@@ -14,8 +14,7 @@ namespace Assets.Data.Command {
         /// <returns></returns>
         public override IEnumerator Execute(Scripts.Player player)
         {
-            //WaitAnimation?
-
+            player.OnWait?.Invoke();
             yield break;
         }
 

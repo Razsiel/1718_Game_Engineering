@@ -12,213 +12,241 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts;
 using Assets.Scripts.Lib.Helpers;
 
-namespace Assets.Scripts.Photon
+public class RoomManager : Photon.MonoBehaviour
 {
-    public class RoomManager : global::Photon.MonoBehaviour
+    public GameObject playerPrefab;
+
+    public NetPlayerSeqView networkPlayerSequenceBarView;
+    
+    private RoomListView RoomView;
+    public GameObject RoomPanel;
+    private GameManager gameManager;
+
+    void Awake()
     {
-        public NetPlayerSeqView NetworkPlayerSequenceBarView;
-        
-        private RoomListView roomView;
-        
-       // public GameObject RoomPanel;
+        //photonRooms = new List<RoomInfo>();
+        //roomView = roomPanel.GetComponents<RoomListView>()[0];
+        //print(roomView);
+        //Assert.IsNotNull(roomView);
+    }
 
-        public void Awake()
+    //Lets connect two users to Photon and a lobby (+room)
+    void Start()
+    {
+        gameManager = GameManager.GetInstance();
+        if (!gameManager.IsMultiPlayer)
+            return;
+
+        PhotonNetwork.autoJoinLobby = true;
+        Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
+
+        PrintIfMultiplayer(PhotonNetwork.connectionState);
+        PhotonManager.Instance.TGEOnJoinRandomRoomFailed += (object[] codeAndMsg) => { PrintCodeAndMessage(codeAndMsg); Assert.IsTrue(PhotonNetwork.CreateRoom(Guid.NewGuid().ToString())); };
+        PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { PrintCodeAndMessage(codeAndMsg); };
+
+        PhotonManager.Instance.TGEOnJoinedLobby += () =>
         {
-            EventManager.InitializePhoton += Init;
-        }
+            GameManager.GetInstance().Players[0].photonPlayer = PhotonNetwork.player;
 
-        //Lets connect two users to Photon and a lobby (+room)
-        void Init(TGEPlayer localPlayer)
-        {
-            Assert.IsNotNull(localPlayer);
-            PhotonNetwork.autoJoinLobby = true;
-            Assert.IsTrue(PhotonNetwork.ConnectUsingSettings("1.0"));
+            //Array.ForEach(PhotonNetwork.GetRoomList(), x => photonRooms.Add(x));
 
-            Debug.Log(PhotonNetwork.connectionState);
-            PhotonManager.Instance.TGEOnJoinRandomRoomFailed += OnJoinRandomRoomFailed;
-            PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { print("Join room failed, Code: " + codeAndMsg[0] + " Message: " + codeAndMsg[1]); };
+            //Gone for now
+            //UpdateGUI();
+           
+            if (!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(PhotonNetwork.CreateRoom(Guid.NewGuid().ToString()));
 
-            PhotonManager.Instance.TGEOnJoinedLobby += () =>
+            PhotonManager.Instance.TGEOnPhotonPlayerConnected += (PhotonPlayer player) =>
             {
-                localPlayer.photonPlayer = PhotonNetwork.player;
+                PhotonManager.Instance.TGEOnLeftRoom += () =>
+                { };
 
-                //Gone for now
-                //UpdateGUI();
-
-                Debug.Log("We joined the lobby!");
-
-                if (!PhotonNetwork.JoinRandomRoom()) Assert.IsTrue(CreateRoom());
-
-                PhotonManager.Instance.TGEOnPhotonPlayerConnected += OnPhotonPlayerConnected;
-
-                PhotonManager.Instance.TGEOnJoinedRoom += () =>
+                PhotonManager.Instance.TGEOnPhotonPlayerDisconnected += (PhotonPlayer otherPlayer) =>
                 {
-                    Debug.Log("Joined a room");
+                    gameManager.Players.RemoveAll(x => x.photonPlayer == otherPlayer);
+                };
 
-                    PhotonManager.Instance.TGEOnPlayersCreated += () =>
+                //We can only continue here if we have two players, multiplayer is no fun alone
+                if (PhotonNetwork.playerList.Length < 2 || PhotonNetwork.playerList.Length > 2) return;
+                    PrintIfMultiplayer("Player joined WOHOO");
+
+                if (PhotonNetwork.player.IsMasterClient)
+                    PhotonNetwork.room.IsOpen = false;
+
+                PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) =>
+                {
+                    Assert.IsTrue(PhotonNetwork.CreateRoom(null));
+                };
+                PrintIfMultiplayer("Connected to photon: " + PhotonNetwork.room + PhotonNetwork.room.PlayerCount);
+            };
+
+            PhotonManager.Instance.TGEOnJoinedRoom += () =>
+            {
+                PhotonManager.Instance.TGEOnPlayersCreated += () =>
+                {
+                    PrintIfMultiplayer("Players are Created!");
+                    gameManager.Players.GetLocalPlayer().Player.SequenceChanged += (List<BaseCommand> sequence) =>
+                    {                        
+                        var listCommands = new ListContainer<CommandEnum>() { list = new List<CommandEnum>() };
+                        var commandOptions = gameManager.CommandLibrary.Commands;
+
+                        foreach (BaseCommand c in sequence)                            
+                            listCommands.list.Add(commandOptions.GetKey(c));
+
+                        string seqJson = JsonUtility.ToJson(listCommands);
+
+                        this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
+                        PrintIfMultiplayer("done sending");
+                    };
+
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerReady += () =>
                     {
-                        print("Players are Created!");
-                        localPlayer.Player.SequenceChanged += (List<BaseCommand> sequence) =>
-                        {                            
-                            print("about to send rpc");
-                            var listCommands = new ListContainer<CommandHolder>() { list = new List<CommandHolder>() };
-                            var commandOptions = GameManager.GetInstance().CommandLibrary.Commands;
-                            
-                            foreach (BaseCommand c in sequence)
-                                listCommands.list.Add(new CommandHolder(commandOptions.GetKey(c)));
-                                                  
-                            this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, JsonUtility.ToJson(listCommands));
-                            print("done sending");
-                        };
+                        gameManager.Players.GetLocalPlayer().Player.IsReady = true;
 
+                        this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
+                    };
 
-                        localPlayer.Player.OnPlayerReady += () =>
-                        {
-                            localPlayer.Player.IsReady = true;
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerStop += () =>
+                    {
+                        SendStopExecution();
+                    };
 
-                            if (!PhotonNetwork.player.IsMasterClient)
-                                this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
-                        };
+                    gameManager.Players.GetLocalPlayer().Player.OnPlayerUnready += () =>
+                    {
+                        gameManager.Players.GetLocalPlayer().Player.IsReady = false;
+
+                        if(!gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+                            this.photonView.RPC(nameof(UpdateUnreadyState), PhotonTargets.MasterClient);
                     };
                 };
+
             };
+        };
+    }
+
+    private bool alreadyStarted = false;
+    void FixedUpdate()
+    {
+        if (!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && gameManager.IsMultiPlayer)
+        {
+            alreadyStarted = true;
+            gameManager.Players.Add(new TGEPlayer());
+            gameManager.Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
+
+            gameManager.StartMultiplayerGame(gameManager.Players);           
         }
 
-        /// <summary>
-        /// Called when a networkplayer joins the room (not the local player)
-        /// </summary>
-        /// <param name="player">The player that joined the room</param>
-        private void OnPhotonPlayerConnected(PhotonPlayer player)
+    }
+
+    public void UpdateGUI()
+    {
+        Assert.IsNotNull(RoomView);
+        RoomView.ToString();
+        RoomView.UpdateListView(PhotonNetwork.GetRoomList().ToList());
+    }
+
+    public void AddRoom(RoomInfo room)
+    {
+        //this.photonRooms.Add(room);
+    }
+
+    public void CloseRoom(RoomInfo room)
+    {
+        //this.photonRooms.Remove(room);
+    }
+
+    [PunRPC]
+    public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
+    {
+        PrintIfMultiplayer("Got RPC");
+        var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
+        gameManager.Players.GetNetworkPlayer().Player.UpdateSequence(commands.list);
+        networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
+    }
+
+    [PunRPC]
+    public void UpdateReadyState(PhotonMessageInfo info)
+    {
+        PrintIfMultiplayer("GOT RPC Ready state");
+        //The other player is now ready
+
+        if (info.sender != gameManager.Players.GetLocalPlayer().photonPlayer)
+            gameManager.Players.GetNetworkPlayer().Player.IsReady = true;
+
+        if (gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+            if (gameManager.Players.All(x => x.Player.IsReady))
+                SendStartExecution();
+    }
+
+    [PunRPC]
+    public void UpdateUnreadyState(PhotonMessageInfo info)
+    {
+        gameManager.Players.GetNetworkPlayer().Player.IsReady = false;
+    }
+
+    private void SendStartExecution()
+    {
+        this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
+    }
+
+    private void SendStopExecution()
+    {
+        this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
+    }
+
+    private int amountOfSequenceRan = 0;
+
+    [PunRPC]
+    public void StartExecution(PhotonMessageInfo info)
+    {
+        EventManager.OnExecutionStarted?.Invoke();        
+
+        foreach (TGEPlayer p in gameManager.Players)
         {
-            Debug.Log("Player joined WOHOO");
-            PhotonManager.Instance.TGEOnLeftRoom += () => { };
-            PhotonManager.Instance.TGEOnPhotonPlayerDisconnected += (PhotonPlayer otherPlayer) =>
-            {
-                //gameManager.Players.RemoveAll(x => x != gameManager.Players.Single(y => y.photonPlayer.IsLocal));
-            };
+            p.Player.StartExecution();
+            p.Player.OnPlayerSequenceRan += (Player player) => PlayerSequenceRan(player);
+        }
+    }
 
-            //We can only continue here if we have two players, multiplayer is no fun alone
-            if (PhotonNetwork.room.PlayerCount != PhotonNetwork.room.MaxPlayers)
-                return;
-
-            if (PhotonNetwork.player.IsMasterClient)
+    private void PlayerSequenceRan(Player p)
+    {
+        amountOfSequenceRan++;
+        if(amountOfSequenceRan > 1)
+        {
+            if(!gameManager.LevelData.HasReachedAllGoals())
             {
-                PhotonNetwork.room.IsOpen = false;
-                this.photonView.RPC(nameof(OnAllPlayersJoined), PhotonTargets.All);
+                //EventManager.OnLevelReset(gameManager.LevelData,
+                  //  gameManager.Players.Select(x => x.Player).ToList());
             }
-
-            PhotonManager.Instance.TGEOnJoinRoomFailed += (object[] codeAndMsg) => { Assert.IsTrue(PhotonNetwork.CreateRoom(null)); };
-            Debug.Log($"Connected to photon: {PhotonNetwork.room}");
-        }
-
-        private bool CreateRoom()
-        {
-            print("Creating a new room all for myself!");
-            var roomOptions = new RoomOptions
+            else
             {
-                IsOpen = true,
-                IsVisible = true,
-                MaxPlayers = 2
-            };
-            return PhotonNetwork.CreateRoom(Guid.NewGuid().ToString(), roomOptions, TypedLobby.Default);
-        }
-
-        private void OnJoinRandomRoomFailed(object[] codeAndMsg)
-        {
-            print($"Join random room Failed, Code: {codeAndMsg[0]} Message: {codeAndMsg[1]}");
-            Assert.IsTrue(CreateRoom());
-        }
-
-        /// <summary>
-        /// All players joined our room (we are now full and closed)
-        /// </summary>
-        [PunRPC]
-        private void OnAllPlayersJoined()
-        {
-            PhotonManager.Instance.OnAllPlayersJoined(PhotonNetwork.room);
-        }
-
-        /*
-        //OBSOLETE: Was used to start the game
-        private bool alreadyStarted = false;
-        void FixedUpdate()
-        {
-            if(!alreadyStarted && PhotonNetwork.playerList.Count() > 1 && GameManager.GetInstance().IsMultiPlayer)
-            {
-
-                GameManager.GetInstance().Players.Add(new TGEPlayer());
-                GameManager.GetInstance().Players[1].photonPlayer = PhotonNetwork.playerList.Single(x => !x.IsLocal);
-
-                GameManager.GetInstance().StartMultiplayerGame(GameManager.GetInstance().Players);
-                alreadyStarted = true;
+                EventManager.AllLevelGoalsReached();
             }
-
-        }*/
-
-        public void UpdateGUI()
-        {
-            Assert.IsNotNull(roomView);            
-            roomView.UpdateListView(PhotonNetwork.GetRoomList().ToList());
+            amountOfSequenceRan = 0;
         }
+        
+        p.OnPlayerSequenceRan -= PlayerSequenceRan;
+    }
 
-        public void AddRoom(RoomInfo room)
+    [PunRPC]
+    public void StopExecution(PhotonMessageInfo info)
+    {
+        foreach(TGEPlayer p in gameManager.Players)
         {
-            //this.photonRooms.Add(room);
+            p.Player.StopAllCoroutines();            
+            /*EventManager.LevelReset(gameManager.LevelData,
+                            gameManager.Players.Select(x => x.Player).ToList());*/
         }
+    }
 
-        public void CloseRoom(RoomInfo room)
-        {
-            //this.photonRooms.Remove(room);
-        }
+    private void PrintIfMultiplayer(object message)
+    {
+        if (gameManager.IsMultiPlayer)
+            print(message);
+    }
 
-        /// <summary>
-        /// Update the network player's command sequence
-        /// </summary>
-        [PunRPC]
-        public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
-        {
-            print("Got RPC");
-            var commands = JsonUtility.FromJson<ListContainer<CommandHolder>>(commandsJson);
-            var commandEnums = commands.list.Select(x => x.command).ToList();
-            GameManager.GetInstance().Players.Single(x => !x.photonPlayer.IsLocal).Player.UpdateSequence(commandEnums);
-            NetworkPlayerSequenceBarView.UpdateSequenceBar(commandEnums);
-        }
-
-        /// <summary>
-        /// Update the ready state of me to the master (could be me)
-        /// </summary>
-        /// <param name="info"></param>
-        [PunRPC]
-        public void UpdateReadyState(PhotonMessageInfo info)
-        {
-            print("GOT RPC Ready state");
-
-            //FOR NOW EXECTION STARTS WHEN ONE PLAYER READY's UP
-            SendStartExecution();
-
-            /*gameManager.Players.Single(x => !x.photonPlayer.IsLocal).Player.IsReady = true;
-
-            if(gameManager.Players.All(x => x.Player.IsReady))
-                SendStartExecution();*/
-        }
-
-        /// <summary>
-        /// Send a RPC to start the execution on all players in the room
-        /// </summary>
-        private void SendStartExecution()
-        {
-            this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
-        }
-
-        /// <summary>
-        /// A RPC that will make the local players execute their sequence
-        /// </summary>
-        [PunRPC]
-        public void StartExecution(PhotonMessageInfo info)
-        {
-            EventManager.OnAllPlayersReady();
-        }
-
+    private void PrintCodeAndMessage(object[] codeAndMsg)
+    {
+        print("Code: " + codeAndMsg[0] + "message: " + codeAndMsg[1]);
     }
 }
 

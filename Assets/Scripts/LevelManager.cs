@@ -1,64 +1,96 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Data.Grids;
 using Assets.Data.Levels;
-using UnityEngine;
+using Assets.Scripts;
 using Assets.Scripts.DataStructures;
-using Assets.Scripts.Photon;
+using UnityEngine.Assertions;
+using UnityEngine;
 
-public class LevelManager : MonoBehaviour {
+public class LevelManager : TGEMonoBehaviour {
+    [SerializeField]
+    public GameObject PlayerPrefab;
 
-    private static LevelManager _instance;
+    private static GameObject _levelObject;
+    public GameObject GameRoot { get; set; }
 
-    //List of players in the level
-    public List<TGEPlayer> Players;
-
-    //Level that is being played or about to
-    public LevelData LevelData;
-
-    public static LevelManager Instance
-    {
-        get { return _instance; }
+    public override void Awake() {
+        EventManager.OnLoadLevel += Present;
+        EventManager.OnLevelReset += (gameInfo, players) => {
+            // reset internal data
+            gameInfo.Level.Reset(players, ResetPlayers);
+        };
     }
 
-    void Awake()
-    {
-        if(_instance == null)
-        {
-            _instance = this;
-            Players = new List<TGEPlayer>();
+    // Use this for initialization
+    public void Present(GameInfo gameInfo) {
+        Assert.IsNotNull(gameInfo);
+        var levelData = gameInfo.Level;
+        var players = gameInfo.Players;
+        Assert.IsNotNull(PlayerPrefab);
+        Assert.IsNotNull(levelData);
+        Assert.IsNotNull(players);
+        Assert.IsTrue(players.Any());
+
+        // Create level objects in scene
+        _levelObject = CreateGameObjectFromLevelData(levelData, GameRoot.transform);
+        Assert.IsNotNull(_levelObject);
+        
+        // Set players to start position in scene;
+        for (int i = 0; i < players.Count; i++) {
+            var playerObject = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var playerComponent = playerObject.GetComponent<Player>();
+            players[i].Player = playerComponent;
+            playerComponent.PlayerNumber = i;
+
+            EventManager.PlayerSpawned(playerComponent);
+
+            var playerPos = levelData.InitPlayer(playerComponent);
+            PresentPlayerOnPosition(levelData, playerComponent, playerPos);
         }
-        else
-            Destroy(this.gameObject);
+
+        EventManager.LevelLoaded(gameInfo);
     }
 
-    //Start the level with given single player
-    public void StartSinglePlayerGame(TGEPlayer player /*TODO , LevelData level*/)
+    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
     {
-        //TO:DO Start the level given with the local player
-        Players.Add(player);
-        StartGame();
+        var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, playerStartPosition.StartPosition);
+        playerWorldPosition.y = 1;
+        player.ViewDirection = playerStartPosition.Facing;
+        player.transform.position = playerWorldPosition;
+        player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
     }
 
-    //Start the level with given multiplayer players
-    public void StartMultiplayerGame(List<TGEPlayer> players /*TODO , LevelData level*/)
-    {
-        PhotonManager.Instance.GetOtherPlayers();
-        Players = players;
-        StartCoroutine(WaitForOtherPlayers());
-        Players = players;
-        StartGame();      
+    private void ResetPlayers(List<Player> players, LevelData levelData) {
+        foreach (var player in players) {
+            PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
+        }
     }
 
-    //Place for some generic logic to start the level
-    private void StartGame(/*LevelData level*/)
-    {
-        //FOR LATER: this.LevelData = level;
-        LevelData.Init(Players);
-    }
+    public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
+        Destroy(_levelObject);
+        var grid = data.GridMapData;
 
-    public IEnumerator WaitForOtherPlayers()
-    {
-        yield return new WaitUntil(() => Players[1].Player != null);
-    }
+        GameObject root = new GameObject("Level Object") {
+            hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
+        };
+        root.transform.parent = parent;
 
+        for (int x = 0; x < grid.Width; x++) {
+            for (int y = 0; y < grid.Height; y++) {
+                var tileConfiguration = grid[x, y];
+                if (tileConfiguration == null) {
+                    continue;
+                }
+                var tileObject = tileConfiguration.GenerateGameObject(root, x, y);
+                var transform = tileObject.transform;
+                transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
+                transform.localScale /= data.TileScale;
+            }
+        }
+        
+        return root;
+    }
 }

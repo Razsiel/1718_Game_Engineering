@@ -4,18 +4,31 @@ using System.Collections.Generic;
 using Assets.Scripts.DataStructures;
 using System.Linq;
 using UnityEngine.Assertions;
+using Assets.Scripts;
 
-public static class PlayerHelper
+namespace Assets.Scripts.Lib.Helpers
 {
-    public static T GetLocalPlayer<T>(this List<T> players) where T : TGEPlayer
+    public static class PlayerHelper
     {
-        Assert.IsNotNull(players);
-        return players.Single(x => x.photonPlayer.IsLocal);
-    }
+        public static T GetLocalPlayer<T>(this List<T> players) where T : TGEPlayer
+        {
+            Assert.IsNotNull(players);
+            if(GameManager.GetInstance().IsMultiPlayer)
+                return players.Single(x => x.photonPlayer.IsLocal);
+            else
+                return players.First();
+        }
 
-    public static T GetNetworkPlayers<T>(this List<T> players) where T : TGEPlayer
-    {
-        Assert.IsNotNull(players);
-        return players.Single(x => !x.photonPlayer.IsLocal);
+        public static T GetNetworkPlayer<T>(this List<T> players) where T : TGEPlayer
+        {
+            Assert.IsNotNull(players);
+            return players.Single(x => !x.photonPlayer.IsLocal);
+        }
+
+        public static T GetMasterClientPlayer<T>(this List<T> players) where T : TGEPlayer
+        {
+            Assert.IsNotNull(players);
+            return players.Single(x => x.photonPlayer.IsMasterClient);
+        }
     }
 }

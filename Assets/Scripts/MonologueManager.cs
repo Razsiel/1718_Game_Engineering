@@ -3,16 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
+using SmartLocalization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MonologueManager : MonoBehaviour {
 
 	public Text NpcNameText;
-	public Text SentenceText;
-    
+	public TextMeshProUGUI SentenceText;
+	public Text ContinueText;
+    public Image NpcImage;
+
     private RectTransform _rectTransform;
-    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+    //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
+
+    Vector3 HidePosition = new Vector3(0.0f, -1404.3f, 0.0f);
+    Vector3 ShowPosition = new Vector3(0.0f, -756.3f, 0.0f);
 
     private Queue<string> _sentences;
 
@@ -20,7 +27,8 @@ public class MonologueManager : MonoBehaviour {
     {
         _sentences = new Queue<string>();
         _rectTransform = GetComponent<RectTransform>();
-        EventManager.MonologueStart += StartDialogue;
+        EventManager.OnMonologueStart += StartDialogue;
+        ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
     }
 
 	public void StartDialogue (Monologue monologue)
@@ -28,9 +36,10 @@ public class MonologueManager : MonoBehaviour {
         // Open dialogue panel
 	    ShowMonologue();
 
-        NpcNameText.text = monologue.name;
+        NpcNameText.text = monologue.NpcName;
+	    NpcImage.sprite = monologue.NpcImage;
 
-		_sentences.Clear();
+        _sentences.Clear();
 
 		foreach (string sentence in monologue.Sentences)
 		{
@@ -62,11 +71,11 @@ public class MonologueManager : MonoBehaviour {
 			yield return null;
 		}
 	}
-
+    
 	void EndDialogue()
 	{
 	    HideMonologue();
-        EventManager.OnMonologueEnded();
+        EventManager.MonologueEnded();
 	}
 
     void HideMonologue()
@@ -76,8 +85,6 @@ public class MonologueManager : MonoBehaviour {
 
     void ShowMonologue()
     {
-        Vector3 pos = HidePosition;
-        pos.y += 700f;
-        _rectTransform.DOLocalMove(pos, 1f);
+        _rectTransform.DOLocalMove(ShowPosition, 1f);
     }
 }

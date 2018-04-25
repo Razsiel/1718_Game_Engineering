@@ -84,7 +84,7 @@ namespace Assets.Scripts.UI
         private void OnSequenceChanged(List<BaseCommand> commands) {
             Debug.Log($"UI Update");
             foreach (Transform child in transform) {
-                DestroyImmediate(child);
+                Destroy(child);
             }
 
             foreach (var command in commands) {
@@ -99,6 +99,7 @@ namespace Assets.Scripts.UI
         }
 
         private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
+
             var commandObject = new GameObject(command.ToString());
             commandObject.transform.SetParent(parent, false);
             commandObject.AddComponent<LayoutElement>();

@@ -15,15 +15,24 @@ public class PrefabContainer : ScriptableObject {
     [SerializeField] public GameObject PlayerPrefab;
 
     // Images
-    [SerializeField] public Texture2D ImageNotFound;
+    [SerializeField] public Sprite ImageNotFound;
 
-    [SerializeField] public Texture2D MoveCommand;
-    [SerializeField] public Texture2D TurnCommandLeft;
-    [SerializeField] public Texture2D TurnCommandRight;
-    [SerializeField] public Texture2D InteractCommand;
-    [SerializeField] public Texture2D WaitCommand;
+    [SerializeField] public Sprite MoveCommand;
+    [SerializeField] public Sprite TurnCommandLeft;
+    [SerializeField] public Sprite TurnCommandRight;
+    [SerializeField] public Sprite InteractCommand;
+    [SerializeField] public Sprite WaitCommand;
+
+    [SerializeField] public Sprite PlayButton;
+    [SerializeField] public Sprite UnReadyButton;
+    [SerializeField] public Sprite StopButton;
+
 
     // Textures
+
+    // Materials
+    [SerializeField] public Material Mat_Orange;
+    [SerializeField] public Material Mat_Blue;
 
     // Sound Effects
     [SerializeField] public AudioClip sfx_button_hover;
@@ -34,5 +43,11 @@ public class PrefabContainer : ScriptableObject {
     public void Initialize()
     {
         sfx_button_hover = Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover");
+        PlayButton = Resources.Load<Sprite>("Images/Img_Play_Temp");
+        UnReadyButton = Resources.Load<Sprite>("Images/Img_Ready_Temp");
+        StopButton = Resources.Load<Sprite>("Images/Img_Stop_Temp");
+
+        Mat_Orange = Resources.Load<Material>("Materials/Channel1");
+        Mat_Blue = Resources.Load<Material>("Materials/Channel2");
     }
 }

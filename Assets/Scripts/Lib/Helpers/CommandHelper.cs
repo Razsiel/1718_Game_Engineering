@@ -4,7 +4,8 @@ using Assets.Data.Command;
 using Assets.Scripts.DataStructures.Command;
 using UnityEngine.Assertions;
 
-namespace Assets.Scripts.Lib.Helpers {
+namespace Assets.Scripts.Lib.Helpers
+{
     public static class CommandHelper
     {
         public static BaseCommand GetValue<T>(this List<T> list, CommandEnum key) where T : CommandKVP
