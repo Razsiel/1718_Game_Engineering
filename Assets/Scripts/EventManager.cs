@@ -9,127 +9,145 @@ using UnityEngine.Events;
 
 public class EventManager
 {
-    public static UnityAction LevelSelected;
-    public static UnityAction LoadingCompleted;
-    public static UnityAction AllLevelGoalsReached;
+    public static UnityAction OnLevelSelected;
+    public static UnityAction OnLoadingCompleted;
+    public static UnityAction OnAllLevelGoalsReached;
            
-    public static UnityAction InitializeUi;
-    public static UnityAction<TGEPlayer> InitializePhoton;
-    public static UnityAction InitializeAudio;
-    public static UnityAction InitializeMonologue;
+    public static UnityAction OnInitializeUi;
+    public static UnityAction<TGEPlayer> OnInitializePhoton;
+    public static UnityAction OnAudioInitialize;
+    public static UnityAction OnMonologueInitialized;
 
-    public static UnityAction EnableUserInput;
-    public static UnityAction DisableUserInput;
-    public static UnityAction<List<BaseCommand>> SequenceChanged;
-    public static UnityAction ReadyButtonClicked;
-    public static UnityAction StopButtonClicked;
-    public static UnityAction PhotonSynchronized;
-    public static UnityAction<Monologue> MonologueStart;
-    public static UnityAction MonologueEnded;
+    public static UnityAction OnPlayersInitialized;
+    public static UnityAction<Player> OnPlayerInitialized;
 
-    public static UnityAction<SFX> PlaySoundEffect;
-    public static UnityAction<BGM> PlayMusicClip;
-    public static UnityAction Simulate;
-    public static UnityAction<LevelData, List<Player>> LevelReset;
-    public static UnityAction<LevelData, List<TGEPlayer>> LoadLevel;
-    public static UnityAction<LevelData> LevelLoaded;
-    public static UnityAction AllPlayersReady;
+    public static UnityAction OnUserInputEnable;
+    public static UnityAction OnUserInputDisable;
+    public static UnityAction<List<BaseCommand>> _SequenceChanged;
+    public static UnityAction OnReadyButtonClicked;
+    public static UnityAction _StopButtonClicked;
+    public static UnityAction OnPhotonSynchronized;
+    public static UnityAction<Monologue> OnMonologueStart;
+    public static UnityAction OnMonologueEnded;
+    public static UnityAction _ExecutionStarted;
 
-    public static void OnInitializeUi()
+    public static UnityAction<SFX> _PlaySoundEffect;
+    public static UnityAction<BGM> _PlayMusicClip;
+    public static UnityAction OnSimulate;
+    public static UnityAction<LevelData, List<Player>> OnLevelReset;
+    public static UnityAction<LevelData, List<TGEPlayer>> OnLoadLevel;
+    public static UnityAction<LevelData> OnLevelLoaded;
+    public static UnityAction OnMenuClicked;
+
+    // Temp calls
+    public static UnityAction OnPlayerColourSet;
+
+    public static UnityAction OnAllPlayersReady;
+
+    public static void InitializeUi()
     {
-        InitializeUi?.Invoke();
+        OnInitializeUi?.Invoke();
     }
 
-    public static void OnInitializePhoton(TGEPlayer localPlayer)
+    public static void InitializePhoton(TGEPlayer localPlayer)
     {
-        InitializePhoton?.Invoke(localPlayer);
+        OnInitializePhoton?.Invoke(localPlayer);
     }
 
-    public static void OnEnableUserInput()
+    public static void UserInputEnable()
     {
-        EnableUserInput?.Invoke();
+        OnUserInputEnable?.Invoke();
     }
 
-    public static void OnDisableUserInput()
+    public static void UserInputDisable()
     {
-        DisableUserInput?.Invoke();
+        OnUserInputDisable?.Invoke();
     }
 
-    public static void OnClickReadyButton()
+    public static void ReadyButtonClicked()
     {
-        ReadyButtonClicked?.Invoke();
+        OnReadyButtonClicked?.Invoke();
     }
 
-    public static void OnLevelSelected()
+    public static void LevelSelected()
     {
-        LevelSelected?.Invoke();
+        OnLevelSelected?.Invoke();
     }
 
-    public static void OnLoadingCompleted()
+    public static void LoadingCompleted()
     {
-        LoadingCompleted?.Invoke();
+        OnLoadingCompleted?.Invoke();
     }
 
-    public static void OnAllLevelGoalsReached()
+    public static void AllLevelGoalsReached()
     {
-        AllLevelGoalsReached?.Invoke();
+        OnAllLevelGoalsReached?.Invoke();
     }
 
-    public static void OnPhotonSynchronized()
+    public static void PhotonSynchronized()
     {
-        PhotonSynchronized?.Invoke();
+        OnPhotonSynchronized?.Invoke();
     }
 
-    public static void OnMonologueEnded()
+    public static void MonologueEnded()
     {
-        MonologueEnded?.Invoke();
-        EnableUserInput?.Invoke();
+        OnMonologueEnded?.Invoke();
     }
 
-    public static void OnPlaySoundEffect(SFX soundName)
+    public static void AudioInitialized()
     {
-        PlaySoundEffect?.Invoke(soundName);
+        OnAudioInitialize?.Invoke();
     }
 
-    public static void OnPlayMusicClip(BGM clipName)
+    public static void MonologueInitialized()
     {
-        PlayMusicClip?.Invoke(clipName);
+        OnMonologueInitialized?.Invoke();
     }
-    
 
-    public static void OnInitializeAudio()
+
+    public static void MonologueStart(Monologue monologue)
     {
-        InitializeAudio?.Invoke();
+        OnMonologueStart?.Invoke(monologue);
     }
 
-    public static void OnInitializeMonologue()
+    public static void Simulate() {
+        OnSimulate?.Invoke();
+    }
+
+    public static void LevelReset(LevelData levelData, List<Player> players) {
+        OnLevelReset?.Invoke(levelData, players);
+    }
+
+    public static void LoadLevel(LevelData levelData, List<TGEPlayer> players) {
+        OnLoadLevel?.Invoke(levelData, players);
+    }
+
+    public static void LevelLoaded(LevelData levelData) {
+        OnLevelLoaded?.Invoke(levelData);
+    }
+
+    public static void AllPlayersReady() {
+        OnAllPlayersReady?.Invoke();
+    }
+
+    public static void MenuClicked()
     {
-        InitializeMonologue?.Invoke();
+        OnMenuClicked?.Invoke();
     }
 
-
-    public static void OnMonologueStart(Monologue monologue)
+    public static void PlayerColourSet()
     {
-        MonologueStart?.Invoke(monologue);
+        OnPlayerColourSet?.Invoke();
     }
 
-    public static void OnSimulate() {
-        Simulate?.Invoke();
+    public static void PlayersInitialized()
+    {
+        OnPlayersInitialized?.Invoke();
     }
 
-    public static void OnLevelReset() {
-        //LevelReset?.Invoke();
+    public static void PlayerInitialized(Player player)
+    {
+        OnPlayerInitialized?.Invoke(player);
     }
 
-    public static void OnLoadLevel(LevelData levelData, List<TGEPlayer> players) {
-        LoadLevel?.Invoke(levelData, players);
-    }
-
-    public static void OnLevelLoaded(LevelData levelData) {
-        LevelLoaded?.Invoke(levelData);
-    }
-
-    public static void OnAllPlayersReady() {
-        AllPlayersReady?.Invoke();
-    }
 }

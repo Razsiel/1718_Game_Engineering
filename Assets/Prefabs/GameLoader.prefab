@@ -20,8 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4484071266757366}
   - component: {fileID: 114819057405445294}
-  - component: {fileID: 114915159324505188}
-  - component: {fileID: 114911608387390270}
+  - component: {fileID: 114373949805610370}
   m_Layer: 0
   m_Name: GameLoader
   m_TagString: Untagged
@@ -42,6 +41,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114373949805610370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1331701357149662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fbdef716a810154f9108ff7e4353d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
+    type: 2}
 --- !u!114 &114819057405445294
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,32 +67,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PrefabContainer: {fileID: 11400000, guid: f5496ff2a16b4af4594d194df7cf63ce, type: 2}
   CommandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}
-  commandControllerHolder: {fileID: 0}
   IsMultiPlayer: 0
-  LevelData: {fileID: 11400000, guid: 0eb54dd4cf28d8d4a828c034883155bf, type: 2}
---- !u!114 &114911608387390270
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331701357149662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de83a8fa9e5165e4693679c078b1dd02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114915159324505188
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1331701357149662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26e516676f395843b9c00c141997515, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
-    type: 2}
-  networkPlayerSequenceBarView: {fileID: 0}
-  roomPanel: {fileID: 0}
+  LevelData: {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}

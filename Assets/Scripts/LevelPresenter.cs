@@ -17,10 +17,10 @@ public class LevelPresenter : MonoBehaviour {
     private static GameObject _levelObject;
 
     public void Awake() {
-        EventManager.LoadLevel += Present;
-        EventManager.LevelReset += (levelData, players) => {
+        //EventManager.LoadLevel += Present;
+        EventManager.OnLevelReset += (levelData, players) => {
             // reset internal data
-            levelData.ResetPlayerPositions(players);
+            levelData.Reset(players, ResetPlayers);
             // reset world representation
             int playerIndex = 0;
             foreach (var player in players) {
@@ -29,31 +29,34 @@ public class LevelPresenter : MonoBehaviour {
                 playerIndex++;
             }
         };
+
     }
 
     // Use this for initialization
-    public void Present(LevelData levelData, List<TGEPlayer> players) {
+    public static void Present(LevelData levelData, List<TGEPlayer> players) {
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
 
+        EventManager.LoadLevel(levelData, players);
+
         // create level objects in scene
-        _levelObject = CreateGameObjectFromLevelData(levelData, this.transform);
+        _levelObject = CreateGameObjectFromLevelData(levelData);
         Assert.IsNotNull(_levelObject);
         
         // Set players to start position in scene;
         for (int i = 0; i < players.Count; i++) {
-            var playerObject = Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+            var playerObject =  players[i].PlayerObject; //Instantiate(_playerPrefab, Vector3.zero, Quaternion.identity, this.transform);
             var player = playerObject.GetComponent<Player>();
             player.PlayerNumber = i;
             var playerPos = levelData.InitPlayer(player);
             PresentPlayerOnPosition(levelData, player, playerPos);
         }
 
-        EventManager.OnLevelLoaded(levelData);
+        EventManager.LevelLoaded(levelData);
     }
 
-    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
+    private static void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
     {
         var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, playerStartPosition.StartPosition);
         playerWorldPosition.y = 1;
@@ -62,7 +65,13 @@ public class LevelPresenter : MonoBehaviour {
         player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
     }
 
-    public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
+    private void ResetPlayers(List<Player> players, LevelData levelData) {
+        foreach (var player in players) {
+            PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
+        }
+    }
+
+    public static GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
         Destroy(_levelObject);
         var grid = data.GridMapData;
 

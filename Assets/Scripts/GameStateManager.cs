@@ -55,7 +55,7 @@ namespace Assets.Scripts {
 
         public void Start() {
             print($"{nameof(GameStateManager)}: loading level");
-            EventManager.LevelLoaded += (levelData) => {
+            EventManager.OnLevelLoaded += (levelData) => {
                 print("level loaded and presented");
                 fsm.Fire(GameStateTrigger.Next); // goto Cutscene
             };
@@ -63,13 +63,13 @@ namespace Assets.Scripts {
             localPlayer = new TGEPlayer();
             if (IsMultiPlayer) {
                 PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
-                EventManager.OnInitializePhoton(new TGEPlayer());
+                EventManager.InitializePhoton(new TGEPlayer());
             }
             else {
                 var players = new List<TGEPlayer>() {
                     localPlayer
                 };
-                EventManager.OnLoadLevel(level, players);
+                EventManager.LoadLevel(level, players);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Assets.Scripts {
             for (int i = 0; i < room.PlayerCount - 1; i++) {
                 players.Add(new TGEPlayer());
             }
-            EventManager.OnLoadLevel(level, players);
+            EventManager.LoadLevel(level, players);
         }
 
         public void OnDisable() {
@@ -93,13 +93,13 @@ namespace Assets.Scripts {
         private void OnCutsceneStateEnter() {
             print($"{nameof(GameStateManager)}: cutscene");
             // start the cutscene / monologue
-            EventManager.MonologueEnded += OnMonologueEnded;
-            EventManager.OnMonologueStart(level.Monologue);
+            EventManager.OnMonologueEnded += OnMonologueEnded;
+            EventManager.MonologueStart(level.Monologue);
         }
 
         private void OnMonologueEnded() {
+            EventManager.OnMonologueEnded -= OnMonologueEnded;
             fsm.Fire(GameStateTrigger.Next); // goto StartGame
-            EventManager.MonologueEnded -= OnMonologueEnded;
         }
 
         /// <summary>
@@ -116,26 +116,26 @@ namespace Assets.Scripts {
         private void OnEditSequenceStateEnter() {
             print($"{nameof(GameStateManager)}: edit");
             // allow players to interact with game world
-            EventManager.OnEnableUserInput();
-            EventManager.OnLevelReset();
-            EventManager.ReadyButtonClicked += OnReadyButtonClicked;
+            EventManager.UserInputEnable();
+            EventManager.LevelReset(GameManager.GetInstance().LevelData, GameManager.GetInstance().Players.Select(x => x.Player).ToList());
+            EventManager.OnReadyButtonClicked += OnReadyButtonClicked;
         }
 
         private void OnReadyButtonClicked() {
-            EventManager.ReadyButtonClicked -= OnReadyButtonClicked;
+            EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
             fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
 
             // register if sequence is changed
-            EventManager.SequenceChanged += OnSequenceChanged;
+            EventManager._SequenceChanged += OnSequenceChanged;
 
-            EventManager.AllPlayersReady += () => {
+            EventManager.OnAllPlayersReady += () => {
                 print("all players are ready!");
                 fsm.Fire(GameStateTrigger.Next); // goto Simulate
             };
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
-            EventManager.SequenceChanged -= OnSequenceChanged;
+            EventManager._SequenceChanged -= OnSequenceChanged;
             fsm.Fire(GameStateTrigger.Back);
         }
 
@@ -152,19 +152,19 @@ namespace Assets.Scripts {
         /// </summary>
         private void OnSimulateStateEnter() {
             print($"{nameof(GameStateManager)}: simulating");
-            EventManager.OnDisableUserInput();
-            EventManager.StopButtonClicked += OnStopButtonClicked;
-            EventManager.OnSimulate();
-            EventManager.AllLevelGoalsReached += OnAllLevelGoalsReached;
+            EventManager.UserInputDisable();
+            EventManager._StopButtonClicked += OnStopButtonClicked;
+            EventManager.Simulate();
+            EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
         }
 
         private void OnStopButtonClicked() {
-            EventManager.StopButtonClicked -= OnStopButtonClicked;
+            EventManager._StopButtonClicked -= OnStopButtonClicked;
             fsm.Fire(GameStateTrigger.Back);
         }
 
         private void OnAllLevelGoalsReached() {
-            EventManager.AllLevelGoalsReached -= OnAllLevelGoalsReached;
+            EventManager.OnAllLevelGoalsReached -= OnAllLevelGoalsReached;
             fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }
 

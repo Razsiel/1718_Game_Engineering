@@ -35,7 +35,7 @@ namespace Assets.Scripts.UI
         private void OnSequenceChanged(List<BaseCommand> commands) {
             Debug.Log($"UI Update");
             foreach (Transform child in transform) {
-                DestroyImmediate(child);
+                Destroy(child);
             }
 
             foreach (var command in commands) {
@@ -50,7 +50,7 @@ namespace Assets.Scripts.UI
         }
 
         private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
-            var commandObject = new GameObject(command.ToString(), typeof(Image), typeof(Button));
+            var commandObject = new GameObject(command.GetType().Name, typeof(Image), typeof(Button));
             commandObject.transform.parent = parent;
             var rectTransform = commandObject.transform as RectTransform;
             rectTransform.localScale = Vector3.one;

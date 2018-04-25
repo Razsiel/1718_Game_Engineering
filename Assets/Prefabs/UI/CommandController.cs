@@ -1,9 +1,10 @@
-﻿using Assets.Data.Command;
+﻿using System.Linq;
+using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using UnityEngine.Assertions;
 using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Assets.Prefabs.UI {
@@ -13,74 +14,115 @@ namespace Assets.Prefabs.UI {
         private CommandLibrary _commandLibrary;
         public SequenceBar SequenceBar;
         public SequenceBar OtherSequenceBar;
+        public GameObject ReadyButton;
+
+        public enum ReadyButtonState
+        {
+            ReadyButton,
+            UnReadyButton,
+            StopButton
+        };
+
+        private ReadyButtonState readyButtonState = ReadyButtonState.ReadyButton;
+
+        public bool _isReadyButton;
+
         Player _player;
         GameManager _gameManager;
 
         public override void Awake() {
-            EventManager.InitializeUi += Initialize;
+            EventManager.OnInitializeUi += Initialize;
+  
+            EventManager.OnPlayersInitialized += /*(_player _playerInitialized)*/ () =>
+            {
+                this._player = GameManager.GetInstance().Players.GetLocalPlayer().Player;
+                print("_player shoudl be filled");
+                Assert.IsNotNull(_player);
+
+            };
+
+            EventManager._ExecutionStarted += () =>
+            {
+                SetReadyButtonState(ReadyButtonState.StopButton);
+            };
+
+            EventManager.OnLevelReset += (levelData, players) =>
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+            };
         }
+        
+            
 
         public void Initialize()
         {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;
 
-            Assert.IsNotNull(_commandLibrary);
-            _gameManager.PlayersInitialized += /*(_player _playerInitialized)*/ () => {
-                this._player = _gameManager.Players[0].Player;
-                print("_player shoudl be filled");
-                Assert.IsNotNull(_player);
-            };
+            //Initialize the ready button and add listener
+            ReadyButton.GetComponent<Button>().onClick.AddListener(OnReadyButtonClicked);    
+            ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
 
-            _player = _gameManager.Players[0].Player;
         }
 
         public void OnMoveButtonClicked()
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            _player.AddCommand(_commandLibrary.MoveCommand);
-            GameObject moveCommand = Instantiate(SequenceBar.MoveCommand);
-            moveCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
-            moveCommand.GetComponent<Button>().enabled = false;
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.MoveCommand);
+                GameObject moveCommand = Instantiate(SequenceBar.MoveCommand);
+                AddCommandToRightSlotAndFixSettings(moveCommand);
+            }
         }
 
         public void OnTurnLeftButtonClicked()
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            _player.AddCommand(_commandLibrary.TurnLeftCommand);
-            GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
-            turnLeftCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
-            turnLeftCommand.GetComponent<Button>().enabled = false;
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.TurnLeftCommand);
+                GameObject turnLeftCommand = Instantiate(SequenceBar.TurnLeftCommand);
+                AddCommandToRightSlotAndFixSettings(turnLeftCommand);
+            }
         }
 
         public void OnTurnRightButtonClicked()
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            _player.AddCommand(_commandLibrary.TurnRightCommand);
-            GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
-            turnRightCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
-            turnRightCommand.GetComponent<Button>().enabled = false;
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.TurnRightCommand);
+                GameObject turnRightCommand = Instantiate(SequenceBar.TurnRightCommand);
+                AddCommandToRightSlotAndFixSettings(turnRightCommand);
+            }
         }
 
         public void OnWaitButtonClicked()
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            _player.AddCommand(_commandLibrary.WaitCommand);
-            GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
-            waitCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
-            waitCommand.GetComponent<Button>().enabled = false;
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.WaitCommand);
+                GameObject waitCommand = Instantiate(SequenceBar.WaitCommand);
+                AddCommandToRightSlotAndFixSettings(waitCommand);
+            }
         }
 
         public void OnInteractButtonClicked()
         {
-            int nextFreeSlot = SequenceBar.GetNextEmptySlotIndex();
-            _player.AddCommand(_commandLibrary.InteractCommand);
-            GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
-            interactCommand.transform.SetParent(SequenceBar.CommandSlots[nextFreeSlot].transform, false);
-            interactCommand.GetComponent<Button>().enabled = false;
+            if (SequenceBar.GetNextEmptySlotIndex() != 999)
+            {
+                _player.AddCommand(_commandLibrary.InteractCommand);
+                GameObject interactCommand = Instantiate(SequenceBar.InteractCommand);
+                AddCommandToRightSlotAndFixSettings(interactCommand);
+            }
         }
 
-        public void ClearButtonClicked()
+        private void AddCommandToRightSlotAndFixSettings(GameObject command)
+        {
+            command.transform.SetParent(SequenceBar.CommandSlots[SequenceBar.GetNextEmptySlotIndex()].transform, false);
+            command.GetComponent<Button>().enabled = false;
+            command.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        }
+
+        public void OnClearButtonClicked()
         {
             StartCoroutine(SequenceBar.ClearAllCommands());
 
@@ -89,9 +131,51 @@ namespace Assets.Prefabs.UI {
             SequenceBar.GetCount();
         }
 
-        public void ReadyButtonClicked() {
+        public void SetReadyButtonState(ReadyButtonState newReadyButtonState)
+        {
+            Sprite stopButton = _gameManager.PrefabContainer.StopButton;
+            Sprite readyButton = _gameManager.PrefabContainer.PlayButton;
+            Sprite unreadyButton = _gameManager.PrefabContainer.UnReadyButton;
+            
+            ReadyButton.GetComponent<Image>().sprite = 
+                newReadyButtonState == ReadyButtonState.ReadyButton ? readyButton : 
+                newReadyButtonState == ReadyButtonState.UnReadyButton ? unreadyButton : 
+                stopButton;
+            
+            readyButtonState = newReadyButtonState;
+        }
+
+        public void OnReadyButtonClicked() {
             Debug.Log(_player);
-            _player.ReadyButtonClicked();
+
+            if (readyButtonState == ReadyButtonState.ReadyButton)
+            {
+                if (_gameManager.IsMultiPlayer)
+                {
+                    SetReadyButtonState(ReadyButtonState.UnReadyButton);
+                    ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.UnReadyButton;
+                }
+                else
+                {
+                    SetReadyButtonState(ReadyButtonState.StopButton);
+                    ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.StopButton;
+                }
+                    
+                _player.ReadyButtonClicked();
+
+            }
+            else if (readyButtonState == ReadyButtonState.UnReadyButton)
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+                _player.UnreadyButtonClicked();
+                ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
+            }
+            else
+            {
+                SetReadyButtonState(ReadyButtonState.ReadyButton);
+                _player.StopButtonClicked();
+                ReadyButton.GetComponent<Image>().sprite = _gameManager.PrefabContainer.PlayButton;
+            }
         }
 
         //public void UpdateOther_playersSequenceBar(List<BaseCommand> commands)

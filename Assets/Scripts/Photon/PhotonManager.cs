@@ -96,6 +96,11 @@ namespace Assets.Scripts.Photon
             TGEOnJoinedLobby?.Invoke();
         }
 
+        public override void OnDisconnectedFromPhoton()
+        {
+            //TGEOnDisconnectedFromPhoton?.Invoke();
+        }
+
         public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
         {
             print("InPhotonPlayerConnected");
