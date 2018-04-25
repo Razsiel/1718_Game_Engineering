@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 	    EventManager.OnUserInputDisable += HideBottomPanel;
     }
 
-    void Initialize()
+    void Initialize(GameInfo gameInfo)
     {
         _rectTransform = GetComponent<RectTransform>();
     }

@@ -11,9 +11,9 @@ public class CameraBehaviour : MonoBehaviour
     private Camera _camera;
 
     void Awake() {
-        EventManager.OnLevelLoaded += (levelData) => {
+        EventManager.OnLevelLoaded += (gameInfo) => {
             _camera = gameObject.GetComponent<Camera>();
-            AutoZoomCamera(levelData);
+            AutoZoomCamera(gameInfo.Level);
         };
         EventManager.OnMonologueEnded += LevelRect;
         EventManager.OnMonologueStart += MonologueRect;

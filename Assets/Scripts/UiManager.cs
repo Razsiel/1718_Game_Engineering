@@ -19,7 +19,7 @@ public class UiManager : MonoBehaviour
         EventManager.OnPlayerColourSet += SetPlayerColourText;
     }
 
-    void Initialize()
+    void Initialize(GameInfo gameInfo)
     {
         LEVEL_GOALS_TITLE.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_TITLE");
         LEVEL_GOALS_DESCRIPTION.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_DEMO1");

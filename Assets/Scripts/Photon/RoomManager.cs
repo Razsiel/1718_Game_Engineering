@@ -233,8 +233,8 @@ public class RoomManager : Photon.MonoBehaviour
         foreach(TGEPlayer p in gameManager.Players)
         {
             p.Player.StopAllCoroutines();            
-            EventManager.LevelReset(gameManager.LevelData,
-                            gameManager.Players.Select(x => x.Player).ToList());
+            /*EventManager.LevelReset(gameManager.LevelData,
+                            gameManager.Players.Select(x => x.Player).ToList());*/
         }
     }
 

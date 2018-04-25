@@ -69,7 +69,7 @@ namespace Assets.Scripts {
                 StartSinglePlayerGame(Players[0]);
 
             // Initialize UI
-            EventManager.InitializeUi();
+            //EventManager.InitializeUi();
             EventManager.UserInputDisable();
             EventManager.AudioInitialized();
             EventManager.MonologueInitialized();
