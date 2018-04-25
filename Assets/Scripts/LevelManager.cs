@@ -18,14 +18,17 @@ public class LevelManager : TGEMonoBehaviour {
 
     public override void Awake() {
         EventManager.OnLoadLevel += Present;
-        EventManager.OnLevelReset += (levelData, players) => {
+        EventManager.OnLevelReset += (gameInfo, players) => {
             // reset internal data
-            levelData.Reset(players, ResetPlayers);
+            gameInfo.Level.Reset(players, ResetPlayers);
         };
     }
 
     // Use this for initialization
-    public void Present(LevelData levelData, List<TGEPlayer> players) {
+    public void Present(GameInfo gameInfo) {
+        Assert.IsNotNull(gameInfo);
+        var levelData = gameInfo.Level;
+        var players = gameInfo.Players;
         Assert.IsNotNull(PlayerPrefab);
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
@@ -48,7 +51,7 @@ public class LevelManager : TGEMonoBehaviour {
             PresentPlayerOnPosition(levelData, playerComponent, playerPos);
         }
 
-        EventManager.LevelLoaded(levelData);
+        EventManager.LevelLoaded(gameInfo);
     }
 
     private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)

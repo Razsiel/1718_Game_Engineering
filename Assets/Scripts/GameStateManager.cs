@@ -14,11 +14,10 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
     public class GameStateManager : SingleMonobehaviour<GameStateManager> {
+        private GameInfo _gameInfo;
+
         public LevelData Level;
         public bool IsMultiPlayer;
-        public List<TGEPlayer> players;
-
-        private TGEPlayer localPlayer;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
 
@@ -55,39 +54,54 @@ namespace Assets.Scripts {
                .On(OnEditSequenceStateEnter);
         }
 
-        public void Start()
-        {
+        public void Start() {
             Debug.Log($"Start: {nameof(GameStateManager)}");
+
+            _gameInfo = new GameInfo {
+                Level = Level,
+                IsMultiplayer = IsMultiPlayer,
+                Players = new List<TGEPlayer>()
+            };
+
             EventManager.OnLevelLoaded += (levelData) => {
                 print("level loaded and presented");
                 fsm.Fire(GameStateTrigger.Next); // goto Cutscene
             };
 
-            localPlayer = new TGEPlayer();
-            if (IsMultiPlayer) {
-                PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
-                EventManager.InitializePhoton(new TGEPlayer());
+            if (_gameInfo.IsMultiplayer) {
+                StartMultiplayer();
             }
             else {
-                players = new List<TGEPlayer>() {
-                    localPlayer
-                };
-                EventManager.LoadLevel(Level, players);
+                StartSingleplayer();
             }
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+
+        public void OnDisable()
+        {
+            fsm.Reset();
+        }
+
+        private void StartSingleplayer() {
+
+            _gameInfo.Players.Add(new TGEPlayer());
+            EventManager.LoadLevel(_gameInfo);
+        }
+
+        private void StartMultiplayer()
+        {
+            PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
+            _gameInfo.Players.Add(new TGEPlayer());
+            EventManager.InitializePhoton(_gameInfo.Players[0]);
         }
 
         private void OnAllPlayersJoined(Room room) {
             PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
-            players = new List<TGEPlayer>();
-            players.Add(localPlayer);
-            for (int i = 0; i < room.PlayerCount - 1; i++) {
-                players.Add(new TGEPlayer());
+            for (int i = 0; i < room.PlayerCount; i++) {
+                _gameInfo.Players.Add(new TGEPlayer());
             }
-            EventManager.LoadLevel(Level, players);
-        }
-
-        public void OnDisable() {
-            fsm.Reset();
+            EventManager.LoadLevel(_gameInfo);
         }
 
         /// <summary>
@@ -110,6 +124,7 @@ namespace Assets.Scripts {
         /// </summary>
         private void OnStartGameStateEnter() {
             print($"{nameof(GameStateManager)}: game start");
+            EventManager.InitializeUi(_gameInfo);
             fsm.Fire(GameStateTrigger.Next); // goto EditSequence
         }
 
@@ -120,7 +135,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: edit");
             // allow players to interact with game world
             EventManager.UserInputEnable();
-            EventManager.LevelReset(Level, players.Select(x => x.Player).ToList());
+            EventManager.LevelReset(_gameInfo, _gameInfo.Players.Select(x => x.Player).ToList());
             EventManager.OnReadyButtonClicked += OnReadyButtonClicked;
         }
 

@@ -54,7 +54,7 @@ namespace Assets.Prefabs.UI {
         
             
 
-        public void Initialize()
+        public void Initialize(GameInfo gameInfo)
         {
             _gameManager = GameManager.GetInstance();
             _commandLibrary = _gameManager.CommandLibrary;

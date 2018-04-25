@@ -31,7 +31,7 @@ public class SequenceBar : MonoBehaviour
         };
     }
 
-    private void Initialize()
+    private void Initialize(GameInfo gameInfo)
     {
         //Initialize the list of all command GameObjects
         _commandGameObjects = new List<GameObject>

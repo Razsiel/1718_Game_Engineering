@@ -116,7 +116,7 @@ namespace Assets.Scripts
             {
                 //Werkt nog niet naar behoren (single player stop)
                 StopCoroutine(coroutine);
-                EventManager.LevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
+                //EventManager.LevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
             }
         }
 
