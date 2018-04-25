@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
 using SmartLocalization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MonologueManager : MonoBehaviour {
 
 	public Text NpcNameText;
-	public Text SentenceText;
+	public TextMeshProUGUI SentenceText;
 	public Text ContinueText;
+    public Image NpcImage;
 
     private RectTransform _rectTransform;
     //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
@@ -35,8 +37,9 @@ public class MonologueManager : MonoBehaviour {
 	    ShowMonologue();
 
         NpcNameText.text = monologue.NpcName;
+	    NpcImage.sprite = monologue.NpcImage;
 
-		_sentences.Clear();
+        _sentences.Clear();
 
 		foreach (string sentence in monologue.Sentences)
 		{
@@ -68,7 +71,7 @@ public class MonologueManager : MonoBehaviour {
 			yield return null;
 		}
 	}
-
+    
 	void EndDialogue()
 	{
 	    HideMonologue();
