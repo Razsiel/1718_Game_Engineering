@@ -14,8 +14,7 @@ namespace Assets.Data.Command {
             IEnumerable<DecorationConfiguration> decorationsToAnimate;
             if (GameManager.GetInstance().LevelData.TryInteract(player, player.ViewDirection, out decorationsToAnimate))
             {
-                Debug.Log("Interacting...");
-                // animate character
+                player.OnInteract?.Invoke();
             }
 
             yield break;

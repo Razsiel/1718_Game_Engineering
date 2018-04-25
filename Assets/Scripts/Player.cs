@@ -27,7 +27,13 @@ namespace Assets.Scripts
         public UnityAction<Player> OnPlayerSequenceRan;
         public UnityAction OnPlayerStop;
         public UnityAction OnPlayerUnready;
+        public UnityAction<Vector3> OnMoveTo;
+        public UnityAction<Vector3> OnTurn;
+        public UnityAction OnWait;
+        public UnityAction OnInteract;
         private Coroutine coroutine;
+
+        public CommandLibrary CommandLibrary;
 
         public bool IsReady = false;
         public bool IsLocalPlayer;
@@ -38,35 +44,18 @@ namespace Assets.Scripts
         // Use this for initialization
         void Start()
         {
-            _gameManager = GameManager.GetInstance();
+//            _gameManager = GameManager.GetInstance();
             _sequence = new List<BaseCommand>();
+           
+            _sequence.Add(CommandLibrary.MoveCommand);
+            _sequence.Add(CommandLibrary.TurnRightCommand);
 
-            //if (GameManager.GetInstance().Players.GetLocalPlayer().Player == this)
-            //    OnPlayerSequenceRan += () =>
-            //    {
-            //        this.IsReady = false;
-            //    };
+            ExecuteCommands();
 
             EventManager.OnLevelReset += (leveldata, players) =>
             {
                 this.IsReady = false;
             };
-            /*     
-            _sequence = new List<BaseCommand>
-            { 
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-                ScriptableObject.CreateInstance<MoveCommand>(),
-                ScriptableObject.CreateInstance<TurnCommand>(),
-            };*/
-
-            //StartCoroutine(WaitForInput());
         }
      
         //Press Spacebar to run sequence

@@ -25,20 +25,25 @@ public class TurnCommand : BaseCommand
         player.ViewDirection = (CardinalDirection)MathHelper.Mod((int)player.ViewDirection + directionShiftOffset, 8);
 
         Vector3 targetEuler = player.ViewDirection.ToEuler();
-        Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
+        player.OnTurn?.Invoke(targetEuler);
+
+
+        // TODO: THIS STUFF CAN BE REMOVED IF EVERYTHING WORKS
+//        Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
         
 
-        while (!player.transform.rotation.AlmostEquals(targetRotation, player.Data.MovementData.OffsetAlmostRotation))
-        {
-            player.transform.rotation = Quaternion.Lerp(
-                player.transform.rotation,
-                targetRotation,
-                player.Data.MovementData.RotationSpeed * Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        player.transform.rotation = targetRotation;
+//        while (!player.transform.rotation.AlmostEquals(targetRotation, player.Data.MovementData.OffsetAlmostRotation))
+//        {
+//            player.transform.rotation = Quaternion.Lerp(
+//                player.transform.rotation,
+//                targetRotation,
+//                player.Data.MovementData.RotationSpeed * Time.deltaTime);
+//
+//            yield return new WaitForEndOfFrame();
+//        }
+//
+//        player.transform.rotation = targetRotation;
+        yield break;
     }
 
     public override string ToString()
