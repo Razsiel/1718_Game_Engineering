@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Extensions;
@@ -18,7 +19,7 @@ public class TurnCommand : BaseCommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public override IEnumerator Execute(Player player)
+    public override IEnumerator Execute(LevelData level, Player player)
     {
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;

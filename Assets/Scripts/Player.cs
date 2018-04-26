@@ -14,24 +14,16 @@ namespace Assets.Scripts
 {
     public class Player : MonoBehaviour
     {
-        private GameManager _gameManager;
-        private List<BaseCommand> _sequence;
-
         public int PlayerNumber;
         public PlayerData Data;
-
-        public UnityAction<List<BaseCommand>> SequenceChanged;
-        public UnityAction OnPlayerReady;
-        public UnityAction OnPlayerUnReady;
-        public UnityAction StopSequence;
-        public UnityAction<Player> OnPlayerSequenceRan;
-        public UnityAction OnPlayerStop;
-        public UnityAction OnPlayerUnready;
+        public Sequence Sequence { get; private set; }
+        
         public UnityAction<Vector3> OnMoveTo;
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;
-        private Coroutine coroutine;
+
+        private Coroutine executeCoroutine;
 
         public CommandLibrary CommandLibrary;
 
@@ -41,23 +33,37 @@ namespace Assets.Scripts
         public CardinalDirection ViewDirection = CardinalDirection.North;
         public Vector2Int GridPosition;
 
+        private GameInfo _gameInfo;
+
+        void Awake()
+        {
+            Sequence = new Sequence();
+            EventManager.OnGameStart += gameInfo => {
+                _gameInfo = gameInfo;
+            };
+            EventManager.OnSimulate += OnSimulate;
+        }
+
         // Use this for initialization
         void Start()
         {
-//            _gameManager = GameManager.GetInstance();
-            _sequence = new List<BaseCommand>();
-           
-            _sequence.Add(CommandLibrary.MoveCommand);
-            _sequence.Add(CommandLibrary.TurnRightCommand);
-
-            ExecuteCommands();
+            Sequence.Add(CommandLibrary.MoveCommand);
+            Sequence.Add(CommandLibrary.TurnRightCommand);
 
             EventManager.OnLevelReset += (leveldata, players) =>
             {
                 this.IsReady = false;
             };
+
+            OnSimulate();
+            //EventManager.Simulate();
         }
-     
+
+        private void OnSimulate() {
+            StopCoroutine(executeCoroutine);
+            executeCoroutine = StartCoroutine(ExecuteCommands());
+        }
+
         //Press Spacebar to run sequence
         IEnumerator WaitForInput()
         {
@@ -73,60 +79,25 @@ namespace Assets.Scripts
 
         public void UpdateSequence(List<CommandEnum> commands)
         {
-            this._sequence.Clear();
+            this.Sequence.Clear();
 
-            var commandOptions = GameManager.GetInstance().CommandLibrary.Commands;
+            var commandOptions = CommandLibrary.Commands;
             var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
 
-            this._sequence.AddRange(commandValues);
+            this.Sequence.AddRange(commandValues);
         }
 
         public void StartExecution()
         {
-            this.coroutine = StartCoroutine(ExecuteCommands());
-        }
-
-        public void ReadyButtonClicked()
-        {
-            OnPlayerReady?.Invoke();
-            if (!_gameManager.IsMultiPlayer)
-            {
-                coroutine = StartCoroutine(ExecuteCommands());
-            }
-        }
-
-        public void StopButtonClicked()
-        {
-            if (_gameManager.IsMultiPlayer)
-            {
-                OnPlayerStop?.Invoke();
-            }
-            else
-            {
-                //Werkt nog niet naar behoren (single player stop)
-                StopCoroutine(coroutine);
-                //EventManager.LevelReset(_gameManager.LevelData, _gameManager.Players.Select(x => x.Player).ToList());
-            }
-        }
-
-        public void UnreadyButtonClicked()
-        {
-            OnPlayerUnReady?.Invoke();
-            IsReady = false;
-        }
-
-        public void RemoveCommand(int commandIndex)
-        {
-            _sequence.RemoveAt(commandIndex);
-            SequenceChanged?.Invoke(_sequence);
+            this.executeCoroutine = StartCoroutine(ExecuteCommands());
         }
 
         IEnumerator ExecuteCommands()
         {
-            foreach (BaseCommand command in _sequence)
+            foreach (BaseCommand command in Sequence)
             {
                 DateTime beforeExecute = DateTime.Now;
-                yield return StartCoroutine(command.Execute(this));
+                yield return StartCoroutine(command.Execute(_gameInfo.Level, this));
                 DateTime afterExecute = DateTime.Now;
 
                 // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
@@ -134,37 +105,12 @@ namespace Assets.Scripts
 
                 yield return new WaitForSeconds(delay);
             }
-            OnPlayerSequenceRan?.Invoke(this);
-        }
-
-        public void AddOrInsertCommandAt(BaseCommand command, int index)
-        {
-            _sequence.Insert(index, command);
-            SequenceChanged?.Invoke(_sequence);
-        }
-
-        public void AddCommand(BaseCommand command)
-        {
-            _sequence.Add(command);
-            SequenceChanged?.Invoke(_sequence);
-        }
-
-        public void ClearCommands()
-        {
-            _sequence.Clear();
-            SequenceChanged?.Invoke(_sequence);
-        }
-        
-        public void UpdateCommands(List<BaseCommand> commands)
-        {
-            _sequence.Clear();
-            _sequence.AddRange(commands);
         }
 
         public void StopExecution()
         {
-            if(coroutine != null)
-                StopCoroutine(coroutine);
+            if(executeCoroutine != null)
+                StopCoroutine(executeCoroutine);
         }
     }
 }

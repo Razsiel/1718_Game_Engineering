@@ -10,6 +10,7 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
 using M16h;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
@@ -63,6 +64,11 @@ namespace Assets.Scripts {
                 Players = new List<TGEPlayer>()
             };
 
+            EventManager.OnGameStart += gameInfo => {
+                print("loading level");
+                EventManager.LoadLevel(_gameInfo);
+            };
+
             EventManager.OnLevelLoaded += (levelData) => {
                 print("level loaded and presented");
                 fsm.Fire(GameStateTrigger.Next); // goto Cutscene
@@ -84,9 +90,8 @@ namespace Assets.Scripts {
         }
 
         private void StartSingleplayer() {
-
             _gameInfo.Players.Add(new TGEPlayer());
-            EventManager.LoadLevel(_gameInfo);
+            EventManager.GameStart(_gameInfo);
         }
 
         private void StartMultiplayer()
@@ -101,7 +106,7 @@ namespace Assets.Scripts {
             for (int i = 0; i < room.PlayerCount; i++) {
                 _gameInfo.Players.Add(new TGEPlayer());
             }
-            EventManager.LoadLevel(_gameInfo);
+            EventManager.GameStart(_gameInfo);
         }
 
         /// <summary>
