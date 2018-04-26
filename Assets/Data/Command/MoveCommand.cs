@@ -8,7 +8,7 @@ namespace Assets.Data.Command {
     [CreateAssetMenu(fileName = "MoveCommand", menuName = "Data/Commands/MoveCommand")]
     [System.Serializable]
     public class MoveCommand : BaseCommand
-    {
+    { 
         /// <summary>
         ///     Move the player 1 step forward.
         /// </summary>
