@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using Assets.Scripts;
 using UnityEngine;
 
-public class BgmBehaviour : MonoBehaviour {
+public class BgmBehaviour : TGEMonoBehaviour {
 
     private AudioSource bgmPlayer;
-    private PrefabContainer prefabContainer;
-
     private Dictionary<BGM, AudioClip> MusicClips;
 
-    void Awake()
+    public override void Awake()
     {
         EventManager.OnAudioInitialize += Initialize;
     }
@@ -18,7 +16,6 @@ public class BgmBehaviour : MonoBehaviour {
     void Initialize()
     {
         bgmPlayer = GetComponent<AudioSource>();
-        prefabContainer = GameManager.GetInstance().PrefabContainer;
 
         MusicClips = new Dictionary<BGM, AudioClip>();
         EventManager.OnPlayMusicClip += PlayMusicClip;

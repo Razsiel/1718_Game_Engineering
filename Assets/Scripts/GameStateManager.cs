@@ -10,6 +10,7 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
 using M16h;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts {
@@ -17,6 +18,7 @@ namespace Assets.Scripts {
         private GameInfo _gameInfo;
 
         public LevelData Level;
+        public CommandLibrary CommandLibrary;
         public bool IsMultiPlayer;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
@@ -60,7 +62,13 @@ namespace Assets.Scripts {
             _gameInfo = new GameInfo {
                 Level = Level,
                 IsMultiplayer = IsMultiPlayer,
-                Players = new List<TGEPlayer>()
+                Players = new List<TGEPlayer>(),
+                AllCommands = CommandLibrary
+            };
+
+            EventManager.OnGameStart += gameInfo => {
+                print("loading level");
+                EventManager.LoadLevel(_gameInfo);
             };
 
             EventManager.OnLevelLoaded += (levelData) => {
@@ -84,9 +92,8 @@ namespace Assets.Scripts {
         }
 
         private void StartSingleplayer() {
-
             _gameInfo.Players.Add(new TGEPlayer());
-            EventManager.LoadLevel(_gameInfo);
+            EventManager.GameStart(_gameInfo);
         }
 
         private void StartMultiplayer()
@@ -101,7 +108,7 @@ namespace Assets.Scripts {
             for (int i = 0; i < room.PlayerCount; i++) {
                 _gameInfo.Players.Add(new TGEPlayer());
             }
-            EventManager.LoadLevel(_gameInfo);
+            EventManager.GameStart(_gameInfo);
         }
 
         /// <summary>

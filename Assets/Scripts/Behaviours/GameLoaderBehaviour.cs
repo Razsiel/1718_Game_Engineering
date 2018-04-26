@@ -1,9 +1,10 @@
-﻿using Assets.Data.Levels;
+﻿using Assets.Data.Command;
+using Assets.Data.Levels;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviours {
     public class GameLoaderBehaviour : TGEMonoBehaviour {
-
+        [SerializeField] private CommandLibrary _commandLibrary;
         [SerializeField] private LevelData _level;
 
         [SerializeField] private GameObject _cameraContainerPrefab;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Behaviours {
             // Managers
             var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot, manager => {
                 manager.Level = _level;
+                manager.CommandLibrary = _commandLibrary;
             });
             var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot, manager => {
                 manager.GameRoot = gameRoot;
@@ -31,7 +33,7 @@ namespace Assets.Scripts.Behaviours {
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
             var ui = GameObject.Instantiate(_uiPrefab, gameRoot.transform);
-            var monologue = GameObject.Instantiate(_monologuePrefab, ui.transform);
+            var monologue = GameObject.Instantiate(_monologuePrefab, gameRoot.transform);
 
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Finished setting up the scene. Cleaning myself up");
             Destroy(this.gameObject);

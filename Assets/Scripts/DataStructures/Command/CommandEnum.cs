@@ -10,5 +10,6 @@ public enum CommandEnum
     WaitCommand,
     TurnRightCommand,
 	TurnLeftCommand,
-    InteractCommand
+    InteractCommand,
+    LoopCommand
 }

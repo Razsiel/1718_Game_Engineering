@@ -43,6 +43,7 @@ public class EventManager {
 
     public static UnityAction OnAllPlayersReady;
     public static UnityAction<Player> OnPlayerSpawned;
+    public static UnityAction<GameInfo> OnGameStart;
 
     public static void InitializeUi(GameInfo gameInfo) {
         OnInitializeUi?.Invoke(gameInfo);
@@ -135,5 +136,9 @@ public class EventManager {
 
     public static void PlayerSpawned(Player player) {
         OnPlayerSpawned?.Invoke(player);
+    }
+
+    public static void GameStart(GameInfo gameInfo) {
+        OnGameStart?.Invoke(gameInfo);
     }
 }
