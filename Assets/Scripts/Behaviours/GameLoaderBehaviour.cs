@@ -31,7 +31,7 @@ namespace Assets.Scripts.Behaviours {
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
             var ui = GameObject.Instantiate(_uiPrefab, gameRoot.transform);
-            var monologue = GameObject.Instantiate(_monologuePrefab, ui.transform);
+            var monologue = GameObject.Instantiate(_monologuePrefab, gameRoot.transform);
 
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Finished setting up the scene. Cleaning myself up");
             Destroy(this.gameObject);
