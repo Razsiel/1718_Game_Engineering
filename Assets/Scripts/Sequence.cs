@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Command;
+using Assets.Data.Levels;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts
@@ -75,6 +77,20 @@ namespace Assets.Scripts
         public BaseCommand this[int index] {
             get { return Commands[index]; }
             set { Commands[index] = value; }
+        }
+
+        public IEnumerator Run(MonoBehaviour coroutineRunner, LevelData level, Player player) {
+            foreach (BaseCommand command in this)
+            {
+                DateTime beforeExecute = DateTime.Now;
+                yield return coroutineRunner.StartCoroutine(command.Execute(coroutineRunner, level, player));
+                DateTime afterExecute = DateTime.Now;
+
+                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
+                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+
+                yield return new WaitForSeconds(delay);
+            }
         }
     }
 }

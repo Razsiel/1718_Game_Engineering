@@ -19,7 +19,7 @@ public class TurnCommand : BaseCommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public override IEnumerator Execute(LevelData level, Player player)
+    public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Player player)
     {
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;

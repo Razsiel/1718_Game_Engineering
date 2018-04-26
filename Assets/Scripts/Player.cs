@@ -92,19 +92,9 @@ namespace Assets.Scripts
             this.executeCoroutine = StartCoroutine(ExecuteCommands());
         }
 
-        IEnumerator ExecuteCommands()
-        {
-            foreach (BaseCommand command in Sequence)
-            {
-                DateTime beforeExecute = DateTime.Now;
-                yield return StartCoroutine(command.Execute(_gameInfo.Level, this));
-                DateTime afterExecute = DateTime.Now;
-
-                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
-
-                yield return new WaitForSeconds(delay);
-            }
+        IEnumerator ExecuteCommands() {
+            yield return Sequence.Run(this, _gameInfo.Level, this);
+            
         }
 
         public void StopExecution()

@@ -15,7 +15,7 @@ namespace Assets.Data.Command {
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public override IEnumerator Execute(LevelData level, Scripts.Player player)
+        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player)
         {
             // Can i move forward? if not: return
             GridCell destination;

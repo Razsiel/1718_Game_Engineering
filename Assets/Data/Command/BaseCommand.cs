@@ -8,7 +8,7 @@ namespace Assets.Data.Command {
     public abstract class BaseCommand : ScriptableObject {
         public Sprite Icon;
         public string Name;
-        public abstract IEnumerator Execute(LevelData level, Scripts.Player player);
+        public abstract IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player);
 
         public override string ToString() {
             return this.GetType().Name;
