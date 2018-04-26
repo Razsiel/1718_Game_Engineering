@@ -15,12 +15,21 @@ namespace Assets.Data.Command
     public class LoopCommand : BaseCommand {
         public Sequence Sequence;
         [HideInInspector]
-        public int LoopCount;
+        public int LoopCount = 1;
 
         public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player) {
-            for (int i = 0; i < LoopCount; i++) {
+            Debug.Log($"Starting loop with {LoopCount} iterations");
+            for (int i = 1; i <= LoopCount; i++) {
+                Debug.Log($"Running iteration sequence: {i}/{LoopCount}");
                 yield return Sequence?.Run(player, level, player);
             }
+            Debug.Log($"Finished Loop");
+        }
+
+        public override BaseCommand Init() {
+            Sequence = new Sequence();
+            LoopCount = 1;
+            return this;
         }
     }
 }
