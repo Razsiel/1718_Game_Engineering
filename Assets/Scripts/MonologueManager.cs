@@ -14,6 +14,7 @@ public class MonologueManager : MonoBehaviour {
 	public TextMeshProUGUI SentenceText;
 	public Text ContinueText;
     public Image NpcImage;
+    public Image TutorialPopup;
 
     public RectTransform RectTransform;
 
@@ -27,6 +28,7 @@ public class MonologueManager : MonoBehaviour {
         _sentences = new Queue<string>();
         EventManager.OnMonologueStart += StartDialogue;
         ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
+        TutorialPopup.gameObject.SetActive(false);
     }
 
 	public void StartDialogue (Monologue monologue)
