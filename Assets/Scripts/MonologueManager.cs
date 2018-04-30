@@ -16,7 +16,6 @@ public class MonologueManager : MonoBehaviour {
     public Image NpcImage;
 
     public RectTransform RectTransform;
-    //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
 
     Vector3 HidePosition = new Vector3(0.0f, -726.0f, 0.0f);
     Vector3 ShowPosition = new Vector3(0.0f, -378.0f, 0.0f);
@@ -42,7 +41,8 @@ public class MonologueManager : MonoBehaviour {
 
 		foreach (string sentence in monologue.Sentences)
 		{
-			_sentences.Enqueue(sentence);
+		    string sentenceTranslation = LanguageManager.Instance.GetTextValue(sentence);
+			_sentences.Enqueue(sentenceTranslation);
 		}
 
 		DisplayNextSentence();
