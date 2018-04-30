@@ -29,9 +29,7 @@ public class EventManager {
     public static UnityAction<Monologue> OnMonologueStart;
     public static UnityAction OnMonologueEnded;
     public static UnityAction OnExecutionStarted;
-
-    public static UnityAction<SFX> OnPlaySoundEffect;
-    public static UnityAction<BGM> OnPlayMusicClip;
+    
     public static UnityAction OnSimulate;
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;

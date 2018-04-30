@@ -10,8 +10,19 @@ public class SfxBehaviour : MonoBehaviour
 
     private Dictionary<SFX, AudioClip> SoundEffects;
 
+    public static SfxBehaviour Instance { get; private set; }
+
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         EventManager.OnAudioInitialize += Initialize;
     }
 
@@ -22,17 +33,16 @@ public class SfxBehaviour : MonoBehaviour
 	    prefabContainer = null; //GameManager.GetInstance().PrefabContainer;
 
 	    SoundEffects = new Dictionary<SFX, AudioClip>();
-        EventManager.OnPlaySoundEffect += PlaySfx;
 	    sfxPlayer.volume = 0.5f;
 
         // Add all sound effects to Dictionary
         SoundEffects.Add(SFX.ButtonHover, prefabContainer.sfx_button_hover);
 	}
     
-    public void PlaySfx(SFX soundName)
+    public static void PlaySfx(SFX soundName)
     {
-        AudioClip soundClip = SoundEffects[soundName];
-        sfxPlayer.PlayOneShot(soundClip);
+        AudioClip soundClip = Instance.SoundEffects[soundName];
+        Instance.sfxPlayer.PlayOneShot(soundClip);
     }
 }
 

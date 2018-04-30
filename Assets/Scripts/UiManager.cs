@@ -28,7 +28,7 @@ public class UiManager : TGEMonoBehaviour
 
     public void OnHoverOverElement()
     {
-        EventManager.OnPlaySoundEffect(SFX.ButtonHover);
+        SfxBehaviour.PlaySfx(SFX.ButtonHover);
     }
 
     void SetPlayerColourText()
