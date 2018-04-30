@@ -64,11 +64,15 @@ public class MonologueManager : MonoBehaviour {
 	IEnumerator TypeSentence (string sentence)
 	{
 		SentenceText.text = "";
-		foreach (char letter in sentence)
-		{
-		    SentenceText.text += letter;
-			yield return null;
-		}
+
+	    SentenceText.text = sentence; // No letter for letter print
+        yield break;
+
+//        foreach (char letter in sentence)
+//		{
+//		    SentenceText.text += letter;
+//			yield return null;
+//		}
 	}
     
 	void EndDialogue()
