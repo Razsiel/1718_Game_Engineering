@@ -9,7 +9,7 @@ public class TGEMonoBehaviour : MonoBehaviour {
     public UnityAction OnAwake;
     public UnityAction OnStart;
 
-    public GameInfo GameInfo { get; private set; }
+    public GameInfo GameInfo { get; protected set; }
 
     /// <summary>
     /// Awake function that implements event callbacks when called.

@@ -10,6 +10,10 @@ namespace Assets.Data.Command {
         public string Name;
         public abstract IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player);
 
+        public virtual BaseCommand Init() {
+            return this;
+        }
+
         public override string ToString() {
             return this.GetType().Name;
         }

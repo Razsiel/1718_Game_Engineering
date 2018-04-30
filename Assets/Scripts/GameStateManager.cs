@@ -12,12 +12,14 @@ using M16h;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Photon.Level;
 
 namespace Assets.Scripts {
     public class GameStateManager : SingleMonobehaviour<GameStateManager> {
         private GameInfo _gameInfo;
 
         public LevelData Level;
+        public CommandLibrary CommandLibrary;
         public bool IsMultiPlayer;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
@@ -61,7 +63,8 @@ namespace Assets.Scripts {
             _gameInfo = new GameInfo {
                 Level = Level,
                 IsMultiplayer = IsMultiPlayer,
-                Players = new List<TGEPlayer>()
+                Players = new List<TGEPlayer>(),
+                AllCommands = CommandLibrary
             };
 
             EventManager.OnGameStart += gameInfo => {

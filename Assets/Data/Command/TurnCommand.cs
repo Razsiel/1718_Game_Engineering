@@ -21,6 +21,7 @@ public class TurnCommand : BaseCommand
     /// <returns></returns>
     public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Player player)
     {
+        Debug.Log($"Turning: {angle}");
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;
         player.ViewDirection = (CardinalDirection)MathHelper.Mod((int)player.ViewDirection + directionShiftOffset, 8);

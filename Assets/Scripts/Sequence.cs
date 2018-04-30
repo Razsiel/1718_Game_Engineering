@@ -14,6 +14,10 @@ namespace Assets.Scripts
     public class Sequence : IList<BaseCommand> {
         public List<BaseCommand> Commands { get; set; }
 
+        public Sequence() {
+            Commands = new List<BaseCommand>();
+        }
+
         public UnityAction<List<BaseCommand>> OnSequenceChanged;
         public void SequenceChanged(List<BaseCommand> commands) {
             OnSequenceChanged?.Invoke(commands);

@@ -8,24 +8,22 @@ using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
-namespace Assets.Scripts
-{
-    public class Player : MonoBehaviour
-    {
+namespace Assets.Scripts {
+    public class Player : TGEMonoBehaviour {
         public int PlayerNumber;
         public PlayerData Data;
         public Sequence Sequence { get; private set; }
-        
+
         public UnityAction<Vector3> OnMoveTo;
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;
 
-        private Coroutine executeCoroutine;
-
-        public CommandLibrary CommandLibrary;
+        private Coroutine _executeCoroutine;
 
         public bool IsReady = false;
         public bool IsLocalPlayer;
@@ -33,74 +31,69 @@ namespace Assets.Scripts
         public CardinalDirection ViewDirection = CardinalDirection.North;
         public Vector2Int GridPosition;
 
-        private GameInfo _gameInfo;
-
-        void Awake()
-        {
+        public override void Awake() {
             Sequence = new Sequence();
-            EventManager.OnGameStart += gameInfo => {
-                _gameInfo = gameInfo;
-            };
             EventManager.OnSimulate += OnSimulate;
+
+            EventManager.OnLevelReset += (gameInfo, players) => {
+                Assert.IsNotNull(gameInfo);
+                this.GameInfo = gameInfo;
+                Sequence.Add(Object.Instantiate(gameInfo.AllCommands.MoveCommand));
+                var loop = Object.Instantiate(gameInfo.AllCommands.LoopCommand).Init() as LoopCommand;
+                for (int i = 0; i < 4; i++)
+                {
+                    loop?.Sequence.Add(Object.Instantiate(gameInfo.AllCommands.TurnLeftCommand));
+                }
+                Sequence.Add(loop);
+                Sequence.Add(Object.Instantiate(gameInfo.AllCommands.MoveCommand));
+
+                this.IsReady = false;
+
+                StartCoroutine(WaitForInput());
+            };
         }
 
         // Use this for initialization
-        void Start()
-        {
-            Sequence.Add(CommandLibrary.MoveCommand);
-            Sequence.Add(CommandLibrary.TurnRightCommand);
-
-            EventManager.OnLevelReset += (leveldata, players) =>
-            {
-                this.IsReady = false;
-            };
-
-            OnSimulate();
-            //EventManager.Simulate();
+        public override void Start() {
+            
         }
 
         private void OnSimulate() {
-            StopCoroutine(executeCoroutine);
-            executeCoroutine = StartCoroutine(ExecuteCommands());
+            StopCoroutine(_executeCoroutine);
+            _executeCoroutine = StartCoroutine(ExecuteCommands());
         }
 
         //Press Spacebar to run sequence
-        IEnumerator WaitForInput()
-        {
-            while (true)
-            {
+        IEnumerator WaitForInput() {
+            while (true) {
                 yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
 
-                yield return StartCoroutine(ExecuteCommands());
+                EventManager.Simulate();
 
                 yield return new WaitForSeconds(2);
             }
         }
 
-        public void UpdateSequence(List<CommandEnum> commands)
-        {
+        public void UpdateSequence(List<CommandEnum> commands) {
             this.Sequence.Clear();
 
-            var commandOptions = CommandLibrary.Commands;
+            var commandOptions = GameInfo.AllCommands.Commands;
             var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
 
             this.Sequence.AddRange(commandValues);
         }
 
-        public void StartExecution()
-        {
-            this.executeCoroutine = StartCoroutine(ExecuteCommands());
+        public void StartExecution() {
+            this._executeCoroutine = StartCoroutine(ExecuteCommands());
         }
 
         IEnumerator ExecuteCommands() {
-            yield return Sequence.Run(this, _gameInfo.Level, this);
-            
+            yield return Sequence.Run(this, this.GameInfo.Level, this);
         }
 
-        public void StopExecution()
-        {
-            if(executeCoroutine != null)
-                StopCoroutine(executeCoroutine);
+        public void StopExecution() {
+            if (_executeCoroutine != null)
+                StopCoroutine(_executeCoroutine);
         }
     }
 }

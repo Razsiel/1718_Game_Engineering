@@ -14,61 +14,10 @@ namespace Assets.Scripts.UI
     public class DynamicUI : MonoBehaviour {
 
         public GameObject CommandPanel;
-        public GameObject SequenceBar;
-        public GameObject MainSequenceBarPanel;
-        public GameObject Bottompanel;
         public CommandLibrary CommandLibrary;
 
         public void Start() {
             CreateCommands();
-            CreateSequenceBarSlots(13);
-        }
-
-        private void CreateSequenceBarSlots(int amountOfSlots)
-        {
-            List<Transform> sequenceBarPanels = new List<Transform>();
-
-            for (int i = 0; i < Bottompanel.transform.childCount; i++)
-            {
-                if (Bottompanel.transform.GetChild(i).transform.childCount > 0)
-                {
-                    sequenceBarPanels.Add(Bottompanel.transform.GetChild(i).gameObject.transform);
-                }
-            }
-
-            for (int i = 0; i < sequenceBarPanels.Count; i++)
-            {
-                var sequencebar = new GameObject();
-                sequencebar.name = "SequenceBar";
-                var sLayoutElement = sequencebar.AddComponent<LayoutElement>();
-                var sGridLayoutGroup = sequencebar.AddComponent<GridLayoutGroup>();
-
-                sLayoutElement.flexibleWidth = 7;
-                sGridLayoutGroup.padding.left = 20;
-                sGridLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
-                sGridLayoutGroup.spacing = new Vector2(5f, 0f);
-
-                sequencebar.transform.SetParent(sequenceBarPanels[i], false);
-                sequencebar.transform.SetSiblingIndex(1);
-
-                if (sequencebar.transform.parent == sequenceBarPanels[0])
-                {
-                    sGridLayoutGroup.cellSize = new Vector2(50f, 50f);
-                }
-                else
-                {
-                    sGridLayoutGroup.cellSize = new Vector2(100f, 100f);
-                }
-
-
-                for (int j = 0; j < amountOfSlots; j++)
-                {
-                    var image = new GameObject(j.ToString());
-                    image.AddComponent<Image>();
-                    image.transform.SetParent(sequencebar.transform, false);
-                }
-            }
-
         }
 
         public void CreateCommands() {
@@ -87,11 +36,11 @@ namespace Assets.Scripts.UI
                 Destroy(child);
             }
 
-            foreach (var command in commands) {
-                var commandObject = CreateCommandButton(command, SequenceBar, () => {
-                    Debug.Log("Removing command from sequence bar...");
-                });
-            }
+            //foreach (var command in commands) {
+            //    var commandObject = CreateCommandButton(command, SequenceBar, () => {
+            //        Debug.Log("Removing command from sequence bar...");
+            //    });
+            //}
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {

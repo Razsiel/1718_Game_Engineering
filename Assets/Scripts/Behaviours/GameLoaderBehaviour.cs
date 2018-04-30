@@ -1,9 +1,10 @@
-﻿using Assets.Data.Levels;
+﻿using Assets.Data.Command;
+using Assets.Data.Levels;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviours {
     public class GameLoaderBehaviour : TGEMonoBehaviour {
-
+        [SerializeField] private CommandLibrary _commandLibrary;
         [SerializeField] private LevelData _level;
 
         [SerializeField] private GameObject _cameraContainerPrefab;
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Behaviours {
             // Managers
             var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot, manager => {
                 manager.Level = _level;
+                manager.CommandLibrary = _commandLibrary;
             });
             var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot, manager => {
                 manager.GameRoot = gameRoot;
