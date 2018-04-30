@@ -13,7 +13,7 @@ using UnityEngine.Assertions;
 
 namespace Assets.Data.Levels
 {
-    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level")]
+    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level/NewLevel")]
     [System.Serializable]
     public class LevelData : ScriptableObject
     {
