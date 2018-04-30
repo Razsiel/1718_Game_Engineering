@@ -35,10 +35,7 @@ public class EventManager {
     public static UnityAction<GameInfo> OnLoadLevel;
     public static UnityAction<GameInfo> OnLevelLoaded;
     public static UnityAction OnMenuClicked;
-
-    // Temp calls
-    public static UnityAction OnPlayerColourSet;
-
+    
     public static UnityAction OnAllPlayersReady;
     public static UnityAction<Player> OnPlayerSpawned;
     public static UnityAction<GameInfo> OnGameStart;
@@ -118,10 +115,6 @@ public class EventManager {
 
     public static void MenuClicked() {
         OnMenuClicked?.Invoke();
-    }
-
-    public static void PlayerColourSet() {
-        OnPlayerColourSet?.Invoke();
     }
 
     public static void PlayersInitialized() {
