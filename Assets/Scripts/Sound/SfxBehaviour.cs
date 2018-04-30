@@ -19,10 +19,10 @@ public class SfxBehaviour : MonoBehaviour
 	{
         print("audio init");
 	    sfxPlayer = GetComponent<AudioSource>();
-	    prefabContainer = GameManager.GetInstance().PrefabContainer;
+	    prefabContainer = null; //GameManager.GetInstance().PrefabContainer;
 
 	    SoundEffects = new Dictionary<SFX, AudioClip>();
-        EventManager._PlaySoundEffect += PlaySfx;
+        EventManager.OnPlaySoundEffect += PlaySfx;
 	    sfxPlayer.volume = 0.5f;
 
         // Add all sound effects to Dictionary

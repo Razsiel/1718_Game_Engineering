@@ -4,27 +4,28 @@ using System.Collections.Generic;
 using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
 using SmartLocalization;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MonologueManager : MonoBehaviour {
 
 	public Text NpcNameText;
-	public Text SentenceText;
+	public TextMeshProUGUI SentenceText;
 	public Text ContinueText;
+    public Image NpcImage;
 
-    private RectTransform _rectTransform;
+    public RectTransform RectTransform;
     //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
 
-    Vector3 HidePosition = new Vector3(0.0f, -1404.3f, 0.0f);
-    Vector3 ShowPosition = new Vector3(0.0f, -756.3f, 0.0f);
+    Vector3 HidePosition = new Vector3(0.0f, -726.0f, 0.0f);
+    Vector3 ShowPosition = new Vector3(0.0f, -378.0f, 0.0f);
 
     private Queue<string> _sentences;
 
     void Awake()
     {
         _sentences = new Queue<string>();
-        _rectTransform = GetComponent<RectTransform>();
         EventManager.OnMonologueStart += StartDialogue;
         ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
     }
@@ -35,8 +36,9 @@ public class MonologueManager : MonoBehaviour {
 	    ShowMonologue();
 
         NpcNameText.text = monologue.NpcName;
+//	    NpcImage.sprite = monologue.NpcImage;
 
-		_sentences.Clear();
+        _sentences.Clear();
 
 		foreach (string sentence in monologue.Sentences)
 		{
@@ -68,20 +70,22 @@ public class MonologueManager : MonoBehaviour {
 			yield return null;
 		}
 	}
-
+    
 	void EndDialogue()
 	{
-	    HideMonologue();
+	    StartCoroutine(HideMonologue());
         EventManager.MonologueEnded();
 	}
 
-    void HideMonologue()
+    IEnumerator HideMonologue()
     {
-        _rectTransform.DOLocalMove(HidePosition, 1f);
+        RectTransform.DOLocalMove(HidePosition, 1f);
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
     }
 
     void ShowMonologue()
     {
-        _rectTransform.DOLocalMove(ShowPosition, 1f);
+        RectTransform.DOLocalMove(ShowPosition, 1f);
     }
 }

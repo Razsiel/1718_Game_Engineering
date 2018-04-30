@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Data.Command;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Extensions;
@@ -18,27 +19,33 @@ public class TurnCommand : BaseCommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public override IEnumerator Execute(Player player)
+    public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Player player)
     {
+        Debug.Log($"Turning: {angle}");
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
         int directionShiftOffset = angle / 45;
         player.ViewDirection = (CardinalDirection)MathHelper.Mod((int)player.ViewDirection + directionShiftOffset, 8);
 
         Vector3 targetEuler = player.ViewDirection.ToEuler();
-        Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
+        player.OnTurn?.Invoke(targetEuler);
+
+
+        // TODO: THIS STUFF CAN BE REMOVED IF EVERYTHING WORKS
+//        Quaternion targetRotation = Quaternion.Euler(targetEuler.x, targetEuler.y, targetEuler.z);
         
 
-        while (!player.transform.rotation.AlmostEquals(targetRotation, player.Data.MovementData.OffsetAlmostRotation))
-        {
-            player.transform.rotation = Quaternion.Lerp(
-                player.transform.rotation,
-                targetRotation,
-                player.Data.MovementData.RotationSpeed * Time.deltaTime);
-
-            yield return new WaitForEndOfFrame();
-        }
-
-        player.transform.rotation = targetRotation;
+//        while (!player.transform.rotation.AlmostEquals(targetRotation, player.Data.MovementData.OffsetAlmostRotation))
+//        {
+//            player.transform.rotation = Quaternion.Lerp(
+//                player.transform.rotation,
+//                targetRotation,
+//                player.Data.MovementData.RotationSpeed * Time.deltaTime);
+//
+//            yield return new WaitForEndOfFrame();
+//        }
+//
+//        player.transform.rotation = targetRotation;
+        yield break;
     }
 
     public override string ToString()

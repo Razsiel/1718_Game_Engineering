@@ -7,19 +7,20 @@ using SmartLocalization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiManager : MonoBehaviour
+public class UiManager : TGEMonoBehaviour
 {
     public Text LEVEL_GOALS_TITLE;
     public Text LEVEL_GOALS_DESCRIPTION;
     public Text PlayerColour;
 
-    void Awake()
+    public override void Awake()
     {
+        base.Awake();
         EventManager.OnInitializeUi += Initialize;
         EventManager.OnPlayerColourSet += SetPlayerColourText;
     }
 
-    void Initialize()
+    void Initialize(GameInfo gameInfo)
     {
         LEVEL_GOALS_TITLE.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_TITLE");
         LEVEL_GOALS_DESCRIPTION.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_DEMO1");
@@ -27,12 +28,12 @@ public class UiManager : MonoBehaviour
 
     public void OnHoverOverElement()
     {
-        EventManager._PlaySoundEffect(SFX.ButtonHover);
+        EventManager.OnPlaySoundEffect(SFX.ButtonHover);
     }
 
     void SetPlayerColourText()
     {
-        if (GameManager.GetInstance().Players.GetLocalPlayer().Player.PlayerNumber == 0)
+        if (this.GameInfo.LocalPlayer.Player.PlayerNumber == 0)
         {
             PlayerColour.text = "ORANJE";
             PlayerColour.color = new Color32(255, 184, 65, 255);

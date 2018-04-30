@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using DG.Tweening;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class RightPanelBehaviour : MonoBehaviour {
         EventManager.OnUserInputDisable += HideRightPanel;
     }
 
-    void Initialize()
+    void Initialize(GameInfo gameInfo)
     {
         _rectTransform = GetComponent<RectTransform>();
     }

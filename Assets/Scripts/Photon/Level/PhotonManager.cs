@@ -19,6 +19,8 @@ namespace Assets.Scripts.Photon.Level
         private static PhotonManager _instance;
         private RoomManager _roomManager;
 
+        private GameInfo _gameInfo;
+
         //Events to react on
         public UnityAction TGEOnJoinedLobby;
         public UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
@@ -52,6 +54,9 @@ namespace Assets.Scripts.Photon.Level
             Instance = this;
             RoomManager = gameObject.GetComponent<RoomManager>();
             Assert.IsNotNull(_roomManager);
+            EventManager.OnGameStart += gameInfo => {
+                _gameInfo = gameInfo;
+            };
         }
              
         public void PlayersReady()
@@ -69,24 +74,6 @@ namespace Assets.Scripts.Photon.Level
         {
             print("Joining Room!");
             PhotonNetwork.JoinRoom(roomName);
-        }
-
-        public void GetOtherPlayers()
-        {
-            photonView.RPC(nameof(ReturnOtherPlayers), PhotonTargets.Others);
-        }
-
-        public void ReturnOtherPlayers()
-        {
-            photonView.RPC(nameof(ReceiveOtherPlayers), PhotonTargets.Others, GameManager.GetInstance().Players[0]);
-        }
-
-        public void ReceiveOtherPlayers(GameObject playerObject)
-        {
-            LevelManager.Instance.Players[1].PlayerObject = playerObject;
-            GameManager.GetInstance().Players[1].PlayerObject = playerObject;
-            LevelManager.Instance.Players[1].Player = playerObject.GetComponent<Player>();
-            GameManager.GetInstance().Players[1].Player = playerObject.GetComponent<Player>();
         }
 
         #region PhotonCallbacks

@@ -26,12 +26,12 @@ public class SequenceBar : MonoBehaviour
     private void Awake()
     {
         EventManager.OnInitializeUi += Initialize;
-        EventManager.OnPlayersInitialized += () => {
-            Player = GameManager.GetInstance().Players.GetLocalPlayer().Player;
+        EventManager.OnGameStart += (gameInfo) => {
+            Player = gameInfo.LocalPlayer.Player;
         };
     }
 
-    private void Initialize()
+    private void Initialize(GameInfo gameInfo)
     {
         //Initialize the list of all command GameObjects
         _commandGameObjects = new List<GameObject>
@@ -134,7 +134,7 @@ public class SequenceBar : MonoBehaviour
             MoveCommandsToLeftFromIndex(commandSlotIndex);
 
             //Remove the command at that index from the player
-            Player.RemoveCommand(commandSlotIndex);
+            Player.Sequence.RemoveAt(commandSlotIndex);
             
         }
     }
@@ -180,7 +180,7 @@ public class SequenceBar : MonoBehaviour
         {
             if (libraryCommand.Key.ToString().Equals(command.name))
             {
-                Player.AddOrInsertCommandAt(libraryCommand.Value, slotToFill);
+                Player.Sequence.Insert(slotToFill, libraryCommand.Value);
                 return;
             }
         }
