@@ -4,6 +4,7 @@ using Assets.Data.Command;
 using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
+using Assets.Scripts.Photon.Level;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.Assertions;

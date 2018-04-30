@@ -11,7 +11,7 @@ using Photon;
 using Assets.Scripts.DataStructures;
 using System.Linq;
 
-namespace Assets.Scripts.Photon
+namespace Assets.Scripts.Photon.Level
 {
     public class PhotonManager : PunBehaviour
     {

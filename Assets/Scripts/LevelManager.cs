@@ -4,6 +4,7 @@ using Assets.Data.Levels;
 using UnityEngine;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon;
+using Assets.Scripts.Photon.Level;
 
 public class LevelManager : MonoBehaviour {
 

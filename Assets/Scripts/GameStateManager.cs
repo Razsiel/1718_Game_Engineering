@@ -11,6 +11,7 @@ using Assets.Scripts.Photon;
 using M16h;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Photon.Level;
 
 namespace Assets.Scripts {
     public class GameStateManager : SingleMonobehaviour<GameStateManager> {
