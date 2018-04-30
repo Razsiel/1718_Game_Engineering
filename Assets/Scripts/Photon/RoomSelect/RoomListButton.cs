@@ -7,9 +7,9 @@ using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Assets.Scripts.Photon
+namespace Assets.Scripts.Photon.RoomSelect
 {
-    class RoomListButton : MonoBehaviour
+    public class RoomListButton : MonoBehaviour
     {
         public Button buttonComponent;
         private RoomListView listView;

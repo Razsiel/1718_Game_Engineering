@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.Scripts.Photon
+namespace Assets.Scripts.DataStructures
 {
     /// <summary>
     /// A simple objectpool for recycling objects like buttons in a listview for example.

@@ -6,6 +6,8 @@ using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Photon;
+using Assets.Scripts.Photon.Level;
 using UnityEngine.Assertions;
 using UnityEngine;
 
