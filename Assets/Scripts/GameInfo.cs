@@ -15,15 +15,18 @@ namespace Assets.Scripts {
         public bool IsMultiplayer { get; set; }
         public CommandLibrary AllCommands { get; set; }
 
+        private TGEPlayer _localPlayer;
         public TGEPlayer LocalPlayer {
             get {
-                Assert.IsNotNull(Players);
-                Assert.IsTrue(Players.Any());
-                var localPlayer = IsMultiplayer
-                    ? Players.SingleOrDefault(p => p.photonPlayer.IsLocal) ?? Players.First()
-                    : Players.First();
-                Assert.IsNotNull(localPlayer);
-                return localPlayer;
+                if (_localPlayer == null) {
+                    Assert.IsNotNull(Players);
+                    Assert.IsTrue(Players.Any());
+                    _localPlayer = IsMultiplayer
+                        ? Players.SingleOrDefault(p => p.photonPlayer.IsLocal) ?? Players.First()
+                        : Players.First();
+                    Assert.IsNotNull(_localPlayer);
+                }
+                return _localPlayer;
             }
         }
 

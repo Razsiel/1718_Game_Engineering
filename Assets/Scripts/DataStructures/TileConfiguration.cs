@@ -21,11 +21,11 @@ namespace Assets.Scripts.DataStructures {
             return IsWalkable(oppositeDirection);
         }
 
-        public GameObject GenerateGameObject(GameObject root, int x, int y, bool hidden = false) {
-            return GenerateGameObject(root.transform, x, y, hidden);
+        public GameObject Present(GameObject root, int x, int y, bool hidden = false) {
+            return Present(root.transform, x, y, hidden);
         }
 
-        public GameObject GenerateGameObject(Transform root, int x, int y, bool hidden = false) {
+        public GameObject Present(Transform root, int x, int y, bool hidden = false) {
             var tileConfigObject = new GameObject($"Tile Config ({x}, {y})",
                                       typeof(MeshFilter),
                                       typeof(MeshRenderer))

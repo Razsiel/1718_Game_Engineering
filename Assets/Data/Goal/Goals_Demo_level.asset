@@ -11,6 +11,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
   m_Name: Goals_Demo_level
   m_EditorClassIdentifier: 
+  _presentableConfigurations:
+  - Mesh: {fileID: 4300000, guid: bd3cc222f32f3d543b91c48814978394, type: 3}
+    Material: {fileID: 2100000, guid: 2a9da3a078bb5b849a7aa78117841feb, type: 2}
+    IsPlayerColored: 0
+    LocalPosition: {x: 0, y: 0, z: 0}
+    LocalRotation: {x: 0, y: 0, z: 0}
+    LocalScale: {x: 1, y: 1, z: 1}
+  - Mesh: {fileID: 4300000, guid: da597952cd9427a4bb372c62e3a65c1a, type: 3}
+    Material: {fileID: 2100000, guid: 2a9da3a078bb5b849a7aa78117841feb, type: 2}
+    IsPlayerColored: 1
+    LocalPosition: {x: 0, y: 0, z: 0}
+    LocalRotation: {x: 0, y: 0, z: 0}
+    LocalScale: {x: 1, y: 1, z: 1}
   TargetGridPosition:
   - PlayerNumber: 0
     Location: {x: 2, y: 4}

@@ -85,7 +85,7 @@ namespace Assets.Scripts.Editor {
                         continue;
                     }
 
-                    var tileObject = tileConfiguration.GenerateGameObject(root, x, y, true);
+                    var tileObject = tileConfiguration.Present(root, x, y, true);
 
                     var transform = tileObject.transform;
                     transform.position = GridHelper.GridToWorldPosition(mapData, new Vector2Int(x, y));
