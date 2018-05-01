@@ -133,6 +133,12 @@ namespace Assets.Scripts {
         private void OnStartGameStateEnter() {
             print($"{nameof(GameStateManager)}: game start");
             EventManager.InitializeUi(_gameInfo);
+
+            print("Commands allowed:");
+            foreach (var allowedCommand in _gameInfo.AllowedCommands) {
+                print($"    - {allowedCommand.Name}");
+            }
+
             fsm.Fire(GameStateTrigger.Next); // goto EditSequence
         }
 

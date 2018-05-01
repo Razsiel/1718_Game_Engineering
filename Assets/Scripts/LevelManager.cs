@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Data.Goal;
 using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
@@ -37,23 +38,68 @@ public class LevelManager : TGEMonoBehaviour {
         Assert.IsTrue(players.Any());
 
         // Create level objects in scene
-        _levelObject = CreateGameObjectFromLevelData(levelData, GameRoot.transform);
+        _levelObject = PresentLevel(levelData, players, GameRoot.transform);
         Assert.IsNotNull(_levelObject);
         
-        // Set players to start position in scene;
-        for (int i = 0; i < players.Count; i++) {
-            var playerObject = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity, this.transform);
+        EventManager.LevelLoaded(gameInfo);
+    }
+
+    public GameObject PresentLevel(LevelData data, List<TGEPlayer> players, Transform parent = null, bool hideInHierarchy = false) {
+        Destroy(_levelObject);
+        var grid = data.GridMapData;
+
+        GameObject root = new GameObject("Level Object") {
+            hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
+        };
+        root.transform.parent = parent;
+
+        // select all locationgoals from the level
+        var locationGoals = data.Goals.OfType<LocationGoalData>().ToList();
+
+        // Create tile objects
+        for (int x = 0; x < grid.Width; x++) {
+            for (int y = 0; y < grid.Height; y++) {
+                var tileConfiguration = grid[x, y];
+                if (tileConfiguration == null) {
+                    continue;
+                }
+
+                var tilePos = new Vector2Int(x, y);
+                var tileObject = tileConfiguration.Present(root, x, y);
+                var tileTransform = tileObject.transform;
+                tileTransform.position = GridHelper.GridToWorldPosition(data, tilePos);
+
+                // Create any locationgoals on the current tile
+                var goalsOnTile = locationGoals.Where(g => g.TargetGridPosition.Any(p => p.Location == tilePos));
+                foreach (var goalData in goalsOnTile) {
+                    var goalObject = goalData.Present(tileObject.transform, hideInHierarchy, name: "GoalDecoration");
+                    goalObject.transform.position = Vector3.up * (data.TileScale / 2f);
+                    var playerGoal = goalData.TargetGridPosition.First(p => p.Location == tilePos);
+                    var colorBehaviour = goalObject.GetComponent<PlayerGoalMaterialBehaviour>();
+                    if (colorBehaviour != null) {
+                        colorBehaviour.PlayerNumber = playerGoal.PlayerNumber;
+                    }
+                }
+                
+                tileTransform.localScale /= data.TileScale;
+            }
+        }
+
+        // Create player objects and set players to start position in scene;
+        for (int i = 0; i < players.Count; i++)
+        {
+            var playerObject = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity, parent);
             var playerComponent = playerObject.GetComponent<Player>();
             players[i].Player = playerComponent;
             playerComponent.PlayerNumber = i;
 
             EventManager.PlayerSpawned(playerComponent);
 
-            var playerPos = levelData.InitPlayer(playerComponent);
-            PresentPlayerOnPosition(levelData, playerComponent, playerPos);
+            var playerPos = data.InitPlayer(playerComponent);
+            PresentPlayerOnPosition(data, playerComponent, playerPos);
         }
 
-        EventManager.LevelLoaded(gameInfo);
+        return root;
     }
 
     private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
@@ -65,34 +111,11 @@ public class LevelManager : TGEMonoBehaviour {
         player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
     }
 
-    private void ResetPlayers(List<Player> players, LevelData levelData) {
-        foreach (var player in players) {
+    private void ResetPlayers(List<Player> players, LevelData levelData)
+    {
+        foreach (var player in players)
+        {
             PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
         }
-    }
-
-    public GameObject CreateGameObjectFromLevelData(LevelData data, Transform parent = null, bool hideInHierarchy = false) {
-        Destroy(_levelObject);
-        var grid = data.GridMapData;
-
-        GameObject root = new GameObject("Level Object") {
-            hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
-        };
-        root.transform.parent = parent;
-
-        for (int x = 0; x < grid.Width; x++) {
-            for (int y = 0; y < grid.Height; y++) {
-                var tileConfiguration = grid[x, y];
-                if (tileConfiguration == null) {
-                    continue;
-                }
-                var tileObject = tileConfiguration.GenerateGameObject(root, x, y);
-                var transform = tileObject.transform;
-                transform.position = GridHelper.GridToWorldPosition(data, new Vector2Int(x, y));
-                transform.localScale /= data.TileScale;
-            }
-        }
-        
-        return root;
     }
 }
