@@ -13,9 +13,9 @@ using Assets.Scripts.Lib.Extensions;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Assets.Data.Levels {
-    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level")]
-    [System.Serializable]
+namespace Assets.Data.Levels
+{
+    [CreateAssetMenu(fileName = "NewLevel", menuName = "Data/Level/NewLevel")]
     public class LevelData : ScriptableObject {
         [SerializeField] public string Name;
         [SerializeField] public Texture2D BackgroundImage;
