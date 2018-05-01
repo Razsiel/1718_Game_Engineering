@@ -11,4 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
   m_Name: SP_Tutorial_Move_1_Goals
   m_EditorClassIdentifier: 
-  TargetGridPosition: []
+  _presentableConfigurations: []
+  TargetGridPosition:
+  - PlayerNumber: 1
+    Location: {x: 4, y: 1}

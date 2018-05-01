@@ -9,8 +9,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a58433807a8991448805b42d8130971, type: 3}
-  m_Name: Monologue
+  m_Name: SP_Tutorial_Interact_3_Monologue
   m_EditorClassIdentifier: 
-  NpcName: 
+  NpcName: Coach Sable
   NpcImage: {fileID: 0}
-  Sentences: []
+  Sentences:
+  - SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_1
+  - SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_2
+  - SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_3

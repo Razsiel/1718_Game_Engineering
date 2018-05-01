@@ -9,20 +9,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
-  m_Name: NewLevel
+  m_Name: SP_Tutorial_Interact_3_Level
   m_EditorClassIdentifier: 
   Name: 
   BackgroundImage: {fileID: 0}
-  MaxCommands: 0
-  Goals: []
-  GridMapData: {fileID: 0}
+  MaxCommands: 8
+  Goals:
+  - {fileID: 11400000, guid: 37945bc50c0bb25429ce03ef00b4707b, type: 2}
+  GridMapData: {fileID: 11400000, guid: 37d9d98116ab1e24184895cc086af6c1, type: 2}
   TileScale: 32
-  Monologue: {fileID: 0}
+  Monologue: {fileID: 11400000, guid: 95b0bec190a49f6479b242539f1f61e6, type: 2}
   AllowedCommands:
   - CommandType: 0
     IsAllowed: 1
   - CommandType: 1
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 2
     IsAllowed: 1
   - CommandType: 3
@@ -30,4 +31,4 @@ MonoBehaviour:
   - CommandType: 4
     IsAllowed: 1
   - CommandType: 5
-    IsAllowed: 1
+    IsAllowed: 0

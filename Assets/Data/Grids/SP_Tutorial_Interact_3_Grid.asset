@@ -9,10 +9,50 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eaa2169745e098d46814bed62c591821, type: 3}
-  m_Name: Default Grid 1
+  m_Name: SP_Tutorial_Interact_3_Grid
   m_EditorClassIdentifier: 
   DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
-  PlayerStartPositions: []
-  _map: []
-  _width: 0
-  _height: 0
+  PlayerStartPositions:
+  - StartPosition: {x: 0, y: 1}
+    Facing: 5
+  _map:
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        DecorationData: {fileID: 11400000, guid: 99126c26551877946babed7444451c8e,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 1
+        Type: 1
+        TriggerType: 1
+        Channel: 1
+        DefaultState: 0
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 4b1d4ebe3b204b64cb2af13c76ff39d7, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: -16}
+        Scale: 1
+        Rotation: 0
+        Orientation: 5
+        Type: 2
+        TriggerType: 0
+        Channel: 1
+        DefaultState: 0
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  _width: 2
+  _height: 3
