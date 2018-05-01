@@ -31,7 +31,9 @@ namespace Assets.Scripts
             return GetEnumerator();
         }
 
-        public void Add(BaseCommand item) {
+        public void Add(BaseCommand item)
+        {
+            Debug.Log("toevoegen!!!");
             Commands.Add(item);
             SequenceChanged(Commands);
         }

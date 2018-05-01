@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Command;
+using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -11,36 +12,59 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class DynamicUI : MonoBehaviour {
+    public class DynamicUI : MonoBehaviour
+    {
 
-        public GameObject CommandPanel;
-        public CommandLibrary CommandLibrary;
+        public GameObject BottomPanel;
+        public GameObject _commandPanel;
+        private CommandLibrary _commandLibrary;
+        private GameInfo _gameInfo;
+        private Player _player;
+        private BottomPanelBehaviour _bottomPanelBehaviour;
 
-        public void Start() {
+        public void Awake()
+        {
+            EventManager.OnInitializeUi += Initialize;
+            EventManager.OnUserInputDisable += OnUserInputDisable;
+            EventManager.OnUserInputEnable += OnUserInputEnable;
+        }
+
+        private void Initialize(GameInfo gameInfo)
+        {
+            _gameInfo = gameInfo;
+            _player = _gameInfo.LocalPlayer.Player;
+            _commandLibrary = _gameInfo.AllCommands;
+            _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
+
+            _commandPanel = new GameObject("Command Panel");
+            _commandPanel.transform.SetParent(transform.GetChild(0), false);
+            var cmdRectTransform = _commandPanel.AddComponent<RectTransform>();
+            var cmdVerticalLayoutGroup = _commandPanel.AddComponent<VerticalLayoutGroup>();
+
+            cmdRectTransform.anchorMin = new Vector2(0.8470001f, 0.3742607f);
+            cmdRectTransform.anchorMax = new Vector2(1f, 0.8261487f);
+            cmdRectTransform.offsetMin = new Vector2(0,0);
+            cmdRectTransform.offsetMax = new Vector2(0,0);
+
+            cmdVerticalLayoutGroup.childAlignment = TextAnchor.UpperCenter;
+            cmdVerticalLayoutGroup.childControlHeight = true;
+            cmdVerticalLayoutGroup.childControlWidth = true;
+            cmdVerticalLayoutGroup.childForceExpandHeight = true;
+            cmdVerticalLayoutGroup.childForceExpandWidth = true;
+           
             CreateCommands();
+
         }
 
         public void CreateCommands() {
-            foreach (var command in CommandLibrary.Commands) { 
-                var uiCommand = CreateCommandButton(command.Value, CommandPanel, () => {
-                    Debug.Log($"pressed a button");
-                    //Player.SequenceChanged += OnSequenceChanged;
-                    //Player.AddCommand(command.Value);
+            foreach (var command in _commandLibrary.Commands)
+            {
+                var uiCommand = CreateCommandButton(command.Value, _commandPanel, () => {
+                    print("Pressed " + command.Value.Name);
+                    _player.Sequence.Add(command.Value);
+                    _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
                 });
             }
-        }
-
-        private void OnSequenceChanged(List<BaseCommand> commands) {
-            Debug.Log($"UI Update");
-            foreach (Transform child in transform) {
-                Destroy(child);
-            }
-
-            //foreach (var command in commands) {
-            //    var commandObject = CreateCommandButton(command, SequenceBar, () => {
-            //        Debug.Log("Removing command from sequence bar...");
-            //    });
-            //}
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
@@ -49,7 +73,8 @@ namespace Assets.Scripts.UI
 
         private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
 
-            var commandObject = new GameObject(command.ToString());
+            var commandObject = new GameObject(command.Name);
+
             commandObject.transform.SetParent(parent, false);
             commandObject.AddComponent<LayoutElement>();
             var commandHorizontalLayoutGroup = commandObject.AddComponent<HorizontalLayoutGroup>();
@@ -86,6 +111,16 @@ namespace Assets.Scripts.UI
             image.transform.SetParent(commandObject.transform, false);
 
             return commandObject;
+        }
+
+        private void OnUserInputEnable()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnUserInputDisable()
+        {
+            _commandPanel.SetActive(false);
         }
     }
 }
