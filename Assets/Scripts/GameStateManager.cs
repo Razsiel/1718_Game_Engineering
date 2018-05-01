@@ -12,6 +12,7 @@ using M16h;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
+using Assets.Scripts.Photon.Level;
 
 namespace Assets.Scripts {
     public class GameStateManager : SingleMonobehaviour<GameStateManager> {
@@ -132,6 +133,12 @@ namespace Assets.Scripts {
         private void OnStartGameStateEnter() {
             print($"{nameof(GameStateManager)}: game start");
             EventManager.InitializeUi(_gameInfo);
+
+            print("Commands allowed:");
+            foreach (var allowedCommand in _gameInfo.AllowedCommands) {
+                print($"    - {allowedCommand.Name}");
+            }
+
             fsm.Fire(GameStateTrigger.Next); // goto EditSequence
         }
 

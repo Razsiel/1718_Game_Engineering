@@ -26,7 +26,7 @@ namespace Assets.Scripts.Editor {
             Assert.IsNotNull(_instance);
             if (_preview == null) {
                 _previewObject = EditorUtility.CreateGameObjectWithHideFlags("tile preview", HideFlags.HideAndDontSave);
-                _instance.GenerateGameObject(_previewObject, 0, 0, true);
+                _instance.Present(_previewObject, 0, 0, true);
                 _preview = UnityEditor.Editor.CreateEditor(_previewObject);
             }
 

@@ -14,9 +14,9 @@ public class MonologueManager : MonoBehaviour {
 	public TextMeshProUGUI SentenceText;
 	public Text ContinueText;
     public Image NpcImage;
+    public Image TutorialPopup;
 
     public RectTransform RectTransform;
-    //    Vector3 HidePosition = new Vector3(-1920.0f, -1079.7f, 0.0f);
 
     Vector3 HidePosition = new Vector3(0.0f, -726.0f, 0.0f);
     Vector3 ShowPosition = new Vector3(0.0f, -378.0f, 0.0f);
@@ -28,6 +28,7 @@ public class MonologueManager : MonoBehaviour {
         _sentences = new Queue<string>();
         EventManager.OnMonologueStart += StartDialogue;
         ContinueText.text = LanguageManager.Instance.GetTextValue("MONOLOGUE_CLICK_TO_CONTINUE");
+        TutorialPopup.gameObject.SetActive(false);
     }
 
 	public void StartDialogue (Monologue monologue)
@@ -42,7 +43,8 @@ public class MonologueManager : MonoBehaviour {
 
 		foreach (string sentence in monologue.Sentences)
 		{
-			_sentences.Enqueue(sentence);
+		    string sentenceTranslation = LanguageManager.Instance.GetTextValue(sentence);
+			_sentences.Enqueue(sentenceTranslation);
 		}
 
 		DisplayNextSentence();
@@ -64,11 +66,15 @@ public class MonologueManager : MonoBehaviour {
 	IEnumerator TypeSentence (string sentence)
 	{
 		SentenceText.text = "";
-		foreach (char letter in sentence)
-		{
-		    SentenceText.text += letter;
-			yield return null;
-		}
+
+	    SentenceText.text = sentence; // No letter for letter print
+        yield break;
+
+//        foreach (char letter in sentence)
+//		{
+//		    SentenceText.text += letter;
+//			yield return null;
+//		}
 	}
     
 	void EndDialogue()

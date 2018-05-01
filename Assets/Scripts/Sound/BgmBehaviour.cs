@@ -8,8 +8,19 @@ public class BgmBehaviour : TGEMonoBehaviour {
     private AudioSource bgmPlayer;
     private Dictionary<BGM, AudioClip> MusicClips;
 
+    public static BgmBehaviour Instance { get; private set; }
+
     public override void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         EventManager.OnAudioInitialize += Initialize;
     }
 
@@ -18,16 +29,15 @@ public class BgmBehaviour : TGEMonoBehaviour {
         bgmPlayer = GetComponent<AudioSource>();
 
         MusicClips = new Dictionary<BGM, AudioClip>();
-        EventManager.OnPlayMusicClip += PlayMusicClip;
         bgmPlayer.volume = 0.5f;
 
         // Add all music clips to Dictionary
     }
 
-    public void PlayMusicClip(BGM clipName)
+    public static void PlayMusicClip(BGM clipName)
     {
-        bgmPlayer.clip = MusicClips[clipName];
-        bgmPlayer.Play();
+        Instance.bgmPlayer.clip = Instance.MusicClips[clipName];
+        Instance.bgmPlayer.Play();
     }
 }
 

@@ -17,7 +17,6 @@ public class UiManager : TGEMonoBehaviour
     {
         base.Awake();
         EventManager.OnInitializeUi += Initialize;
-        EventManager.OnPlayerColourSet += SetPlayerColourText;
     }
 
     void Initialize(GameInfo gameInfo)
@@ -28,20 +27,6 @@ public class UiManager : TGEMonoBehaviour
 
     public void OnHoverOverElement()
     {
-        EventManager.OnPlaySoundEffect(SFX.ButtonHover);
-    }
-
-    void SetPlayerColourText()
-    {
-        if (this.GameInfo.LocalPlayer.Player.PlayerNumber == 0)
-        {
-            PlayerColour.text = "ORANJE";
-            PlayerColour.color = new Color32(255, 184, 65, 255);
-        }
-        else
-        {
-            PlayerColour.text = "BLAUW";
-            PlayerColour.color = new Color32(68, 222, 255, 255);
-        }
+        SfxBehaviour.PlaySfx(SFX.ButtonHover);
     }
 }
