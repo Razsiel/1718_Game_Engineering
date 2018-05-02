@@ -30,7 +30,7 @@ namespace Assets.Scripts {
 
             // START GAME -> CUTSCENE
             fsm.Tr(GameState.Init, GameStateTrigger.Next, GameState.Cutscene)
-               .On(OnCutsceneStateEnter);
+               .On(OnStartGameStateEnter);
 
             // CUTSCENE -> GAMESTART
             fsm.Tr(GameState.Cutscene, GameStateTrigger.Next, GameState.GameStart)

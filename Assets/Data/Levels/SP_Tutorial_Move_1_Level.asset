@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: LEVEL_NAME_SP_TUTORIAL_1
   BackgroundImage: {fileID: 0}
-  MaxCommands: 0
+  MaxCommands: 4
   Goals:
   - {fileID: 11400000, guid: f2f140b4a60c98f48a1fd4155685b66f, type: 2}
   GridMapData: {fileID: 11400000, guid: 21a687e7b93abd74d851a995c5696d06, type: 2}
@@ -23,12 +23,12 @@ MonoBehaviour:
   - CommandType: 0
     IsAllowed: 1
   - CommandType: 1
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 2
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 3
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 4
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 5
-    IsAllowed: 1
+    IsAllowed: 0
