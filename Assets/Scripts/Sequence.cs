@@ -31,7 +31,8 @@ namespace Assets.Scripts
             return GetEnumerator();
         }
 
-        public void Add(BaseCommand item) {
+        public void Add(BaseCommand item)
+        {
             Commands.Add(item);
             SequenceChanged(Commands);
         }
@@ -46,6 +47,11 @@ namespace Assets.Scripts
         public void Clear() {
             Commands.Clear();
             SequenceChanged(Commands);
+        }
+
+        public bool isEmpty(int index)
+        {
+            return Commands.Count < index;
         }
 
         public bool Contains(BaseCommand item) {
