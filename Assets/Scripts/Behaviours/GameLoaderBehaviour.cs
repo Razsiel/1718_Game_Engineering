@@ -28,7 +28,7 @@ namespace Assets.Scripts.Behaviours {
                 manager.GameRoot = gameRoot;
                 manager.PlayerPrefab = _playerPrefab;
             });
-            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
+            //var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
 
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
