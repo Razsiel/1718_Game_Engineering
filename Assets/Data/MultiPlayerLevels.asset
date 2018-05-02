@@ -8,9 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a58433807a8991448805b42d8130971, type: 3}
-  m_Name: SP_Tutorial_Interact_3_Monologue
+  m_Script: {fileID: 11500000, guid: 17a1b4818cb47d747974d38882e924ad, type: 3}
+  m_Name: MultiPlayerLevels
   m_EditorClassIdentifier: 
-  NpcName: 
-  NpcImage: {fileID: 0}
-  Sentences: []
+  Levels:
+  - {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}

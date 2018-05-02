@@ -10,6 +10,7 @@ using UnityEngine.Assertions;
 
 namespace Assets.Scripts {
     public class GameInfo {
+        public LevelLibrary LevelLibrary { get; set; }
         public LevelData Level { get; set; }
         public List<TGEPlayer> Players { get; set; }
         public bool IsMultiplayer { get; set; }

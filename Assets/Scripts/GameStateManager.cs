@@ -84,7 +84,7 @@ namespace Assets.Scripts {
                 StartSingleplayer();
             }
 
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
         public void OnDisable()
@@ -147,6 +147,7 @@ namespace Assets.Scripts {
         /// </summary>
         private void OnEditSequenceStateEnter() {
             print($"{nameof(GameStateManager)}: edit");
+            EventManager.OnSequenceChanged -= OnSequenceChanged;
             // allow players to interact with game world
             EventManager.UserInputEnable();
             EventManager.LevelReset(_gameInfo, _gameInfo.Players.Select(x => x.Player).ToList());
@@ -164,6 +165,10 @@ namespace Assets.Scripts {
                 print("all players are ready!");
                 fsm.Fire(GameStateTrigger.Next); // goto Simulate
             };
+
+            if (!_gameInfo.IsMultiplayer) {
+                EventManager.AllPlayersReady();
+            }
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {

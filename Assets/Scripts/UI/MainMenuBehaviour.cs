@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
@@ -11,20 +12,27 @@ namespace Assets {
         [SerializeField] private SceneField LevelSelect;
         [SerializeField] private SceneField LobbyScene;
 
+        [SerializeField] private LevelLibrary SinglePlayerLevels;
+        [SerializeField] private LevelLibrary MultiPlayerLevels;
+
         public void StartSingleplayer() {
             Assert.IsNotNull(LevelSelect);
-            GlobalData.Instance.GameInfo.Players = new List<TGEPlayer> {
+            var gameInfo = GlobalData.Instance.GameInfo;
+            gameInfo.Players = new List<TGEPlayer> {
                 new TGEPlayer()
             };
+            gameInfo.LevelLibrary = SinglePlayerLevels;
             SceneManager.LoadScene(LevelSelect);
         }
 
         public void StartMultiplayer() {
             Assert.IsNotNull(LobbyScene);
-            GlobalData.Instance.GameInfo.IsMultiplayer = true;
-            GlobalData.Instance.GameInfo.Players = new List<TGEPlayer> {
+            var gameInfo = GlobalData.Instance.GameInfo;
+            gameInfo.IsMultiplayer = true;
+            gameInfo.Players = new List<TGEPlayer> {
                 new TGEPlayer()
             };
+            gameInfo.LevelLibrary = MultiPlayerLevels;
             SceneManager.LoadScene(LobbyScene);
         }
     }
