@@ -28,7 +28,7 @@ namespace UnityEngine.UI.Extensions
         private RectTransform _fakeElement;
         private LayoutElement _fakeElementLE;
         private int _fromIndex;
-        private bool _isDragging;
+        public bool _isDragging;
         private RectTransform _rect;
         private ReorderableList _reorderableList;
         internal bool isValid;
@@ -261,7 +261,9 @@ namespace UnityEngine.UI.Extensions
                     }
                     else
                     {
+                        //Dropped outside of droppable list, element should be removed from sequence
                         CancelDrag();
+                        _draggingObject.GetComponent<Button>().onClick.Invoke();
                     }
                 }
             }

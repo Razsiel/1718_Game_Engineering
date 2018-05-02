@@ -134,7 +134,7 @@ public class SequenceBar : MonoBehaviour
             MoveCommandsToLeftFromIndex(commandSlotIndex);
 
             //Remove the command at that index from the player
-            Player.Sequence.RemoveAt(commandSlotIndex);
+            //Player.Sequence.RemoveAt(commandSlotIndex);
             
         }
     }

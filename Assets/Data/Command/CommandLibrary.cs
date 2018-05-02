@@ -23,7 +23,7 @@ namespace Assets.Data.Command {
                 new CommandKVP() {Key = CommandEnum.TurnRightCommand, Value = TurnRightCommand},
                 new CommandKVP() {Key = CommandEnum.WaitCommand, Value = WaitCommand},
                 new CommandKVP() {Key = CommandEnum.InteractCommand, Value = InteractCommand},
-                //new CommandKVP() {Key = CommandEnum.LoopCommand, Value = LoopCommand}
+                new CommandKVP() {Key = CommandEnum.LoopCommand, Value = LoopCommand}
             };
         }
 

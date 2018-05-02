@@ -49,9 +49,17 @@ namespace Assets.Scripts
             SequenceChanged(Commands);
         }
 
+        public void SwapAtIndexes(int i, int j)
+        {
+            BaseCommand temp = Commands[j];
+            Commands[j] = Commands[i];
+            Commands[i] = temp;
+            SequenceChanged(Commands);
+        }
+
         public bool isEmpty(int index)
         {
-            return Commands.Count < index;
+            return Commands.Count <= index;
         }
 
         public bool Contains(BaseCommand item) {

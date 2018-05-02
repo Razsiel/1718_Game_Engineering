@@ -99,6 +99,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         mainSequenceBarReorderableList.ContentLayout = commandsListFlowLayoutGroup;
         mainSequenceBarReorderableList.DraggableArea = transform.parent.GetComponent<RectTransform>();
         mainSequenceBarReorderableList.IsDraggable = true;
+        mainSequenceBarReorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
     }
 
     private void InitializeSecondaryCommandsList()
@@ -131,6 +132,19 @@ public class BottomPanelBehaviour : MonoBehaviour
         _readyButtonState = ReadyButtonState.Play;
 
         readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
+    }
+
+    private void RearrangeElementsInSequence(ReorderableList.ReorderableListEventStruct arg0)
+    {
+        if (arg0.ToIndex != arg0.FromIndex)
+        {
+            if (_gameInfo.LocalPlayer.Player.Sequence.isEmpty(arg0.ToIndex))
+            {
+                arg0.ToIndex = _gameInfo.LocalPlayer.Player.Sequence.Count - 1;
+            }
+
+            _gameInfo.LocalPlayer.Player.Sequence.SwapAtIndexes(arg0.ToIndex, arg0.FromIndex);
+        }
     }
 
     internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
@@ -215,13 +229,6 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     public void OnSequenceChanged(List<BaseCommand> commands)
     {
-        print("----------------------------------");
-        foreach (var VARIABLE in commands)
-        {
-            print(VARIABLE.Name);
-
-        }
-        print("----------------------------------");
 
         _mainBaseCommandsList = commands;
         ClearMainSequenceBar();
@@ -280,7 +287,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         var slotListItem = slot.AddComponent<ReorderableListElement>();
 
         slotSlotScript.index = index;
-        slotButton.onClick.AddListener(() => SlotClicked(slotSlotScript.index));
+        slotButton.onClick.AddListener(() => SlotClicked(slotListItem, slotSlotScript.index));
 
         slotContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         slotContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -295,9 +302,13 @@ public class BottomPanelBehaviour : MonoBehaviour
     }
 
 
-    private void SlotClicked(int i)
-    {
-        _gameInfo.LocalPlayer.Player.Sequence.RemoveAt(i);
+    private void SlotClicked(ReorderableListElement slotListElement, int i)
+    { 
+        //Only execute if not being dragged
+        if (!slotListElement._isDragging)
+        {
+            _gameInfo.LocalPlayer.Player.Sequence.RemoveAt(i);
+        }
     }
 
     void HideBottomPanel()
