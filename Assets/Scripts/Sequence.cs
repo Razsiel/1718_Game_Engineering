@@ -33,7 +33,6 @@ namespace Assets.Scripts
 
         public void Add(BaseCommand item)
         {
-            Debug.Log("toevoegen!!!");
             Commands.Add(item);
             SequenceChanged(Commands);
         }
@@ -48,6 +47,11 @@ namespace Assets.Scripts
         public void Clear() {
             Commands.Clear();
             SequenceChanged(Commands);
+        }
+
+        public bool isEmpty(int index)
+        {
+            return Commands.Count < index;
         }
 
         public bool Contains(BaseCommand item) {

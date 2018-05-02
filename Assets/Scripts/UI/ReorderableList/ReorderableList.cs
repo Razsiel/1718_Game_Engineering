@@ -76,7 +76,7 @@ namespace UnityEngine.UI.Extensions
             _listContent.Init(this);
         }
 
-        private void Awake()
+        private void Start()
         {
 
             if (ContentLayout == null)

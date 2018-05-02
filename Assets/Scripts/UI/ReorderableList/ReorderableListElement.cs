@@ -81,7 +81,7 @@ namespace UnityEngine.UI.Extensions
             //Put _dragging object into the dragging area
             _draggingObjectOriginalSize = gameObject.GetComponent<RectTransform>().rect.size;
             _draggingObjectLE = _draggingObject.GetComponent<LayoutElement>();
-            _draggingObject.SetParent(_reorderableList.DraggableArea, true);
+            _draggingObject.SetParent(_reorderableList.DraggableArea, false);
             _draggingObject.SetAsLastSibling();
 
             //Create a fake element for previewing placement
@@ -167,10 +167,10 @@ namespace UnityEngine.UI.Extensions
                     //Fix this to be able to drop the slots in the right place
                     if (_currentReorderableListRaycasted.ContentLayout is VerticalLayoutGroup)
                         dist = Mathf.Abs(c.position.y - worldPoint.y);
-                    else if (_currentReorderableListRaycasted.ContentLayout is HorizontalLayoutGroup)
-                        dist = Mathf.Abs(c.position.x - worldPoint.x);
-                    else if (_currentReorderableListRaycasted.ContentLayout is GridLayoutGroup ||
+                    else if (_currentReorderableListRaycasted.ContentLayout is HorizontalLayoutGroup ||
                              _currentReorderableListRaycasted.ContentLayout is FlowLayoutGroup)
+                        dist = Mathf.Abs(c.position.x - Input.mousePosition.x);
+                    else if (_currentReorderableListRaycasted.ContentLayout is GridLayoutGroup )
                         dist = (Mathf.Abs(c.position.x - worldPoint.x) + Mathf.Abs(c.position.y - worldPoint.y));
 
                     if (dist < minDistance)
@@ -224,15 +224,22 @@ namespace UnityEngine.UI.Extensions
                         return;
                     }
                     RefreshSizes();
-                    _draggingObject.SetParent(_currentReorderableListRaycasted.Content, false);
-                    _draggingObject.rotation = _currentReorderableListRaycasted.transform.rotation;
-                    _draggingObject.SetSiblingIndex(_fakeElement.GetSiblingIndex());
+
+                    //Dont actually drop the object into the sequence bar, we only need to fake it
+
+                    //_draggingObject.SetParent(_currentReorderableListRaycasted.Content, false);
+                    //_draggingObject.rotation = _currentReorderableListRaycasted.transform.rotation;
+                    //_draggingObject.SetSiblingIndex(_fakeElement.GetSiblingIndex());
+
+                    //Instead, cancel the drag so the fake element gets deleted before the sequence bar gets updated
+                    CancelDrag();
 
                     _reorderableList.OnElementAdded.Invoke(args);
                     
                     // Force refreshing both lists because otherwise we get inappropriate FromList in ReorderableListEventStruct 
                     _reorderableList.Refresh();
                     _currentReorderableListRaycasted.Refresh();
+
 
                     if(!isValid) throw new Exception("It's too late to cancel the Transfer! Do so in OnElementDropped!");
 
@@ -303,7 +310,7 @@ namespace UnityEngine.UI.Extensions
 
             //Delete fake element
             if (_fakeElement != null)
-                Destroy(_fakeElement.gameObject);
+                DestroyImmediate(_fakeElement.gameObject);
         }
 
         private void RefreshSizes()

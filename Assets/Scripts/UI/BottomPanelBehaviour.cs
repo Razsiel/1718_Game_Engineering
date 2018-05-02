@@ -20,6 +20,16 @@ public class BottomPanelBehaviour : MonoBehaviour
     private GameObject _mainSequenceBar;
     private GameObject _secondarySequenceBar;
     private List<BaseCommand> _mainBaseCommandsList;
+    private GameObject _readyButton;
+    private Sprite _readyButtonPlay;
+    private Sprite _readyButtonReady;
+    private Sprite _readyButtonStop;
+    private ReadyButtonState _readyButtonState;
+
+    public enum ReadyButtonState
+    {
+        Play, Ready, Stop
+    }
 
     void Awake ()
 	{
@@ -39,7 +49,7 @@ public class BottomPanelBehaviour : MonoBehaviour
     private void InitializeSequenceBars()
     {
 
-        //InitializeMainSequenceBar();
+        InitializeMainSequenceBar();
         InitializeSecondarySequenceBar();
 
     }
@@ -89,7 +99,6 @@ public class BottomPanelBehaviour : MonoBehaviour
         mainSequenceBarReorderableList.ContentLayout = commandsListFlowLayoutGroup;
         mainSequenceBarReorderableList.DraggableArea = transform.parent.GetComponent<RectTransform>();
         mainSequenceBarReorderableList.IsDraggable = true;
-
     }
 
     private void InitializeSecondaryCommandsList()
@@ -100,13 +109,13 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     private void InitializeReadyButton()
     {
-        GameObject readyButton = new GameObject("ReadyButton");
-        var readyButtonButton = readyButton.AddComponent<Button>();
-        var readyButtonSprite = readyButton.AddComponent<Image>();
-        var readyButtonLayoutElement = readyButton.AddComponent<LayoutElement>();
-        var readyButtonContentSizeFitter = readyButton.AddComponent<ContentSizeFitter>();
+        _readyButton = new GameObject("ReadyButton");
+        var readyButtonButton = _readyButton.AddComponent<Button>();
+        var readyButtonImage = _readyButton.AddComponent<Image>();
+        var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
+        var readyButtonContentSizeFitter = _readyButton.AddComponent<ContentSizeFitter>();
 
-        readyButton.transform.SetParent(transform.GetChild(2), false);
+        _readyButton.transform.SetParent(transform.GetChild(2), false);
 
         readyButtonLayoutElement.preferredWidth = 125;
         readyButtonLayoutElement.preferredHeight = 125;
@@ -114,19 +123,106 @@ public class BottomPanelBehaviour : MonoBehaviour
         readyButtonContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         readyButtonContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        readyButtonSprite.sprite = Resources.Load("Images/Img_Play_Temp") as Sprite;
+        _readyButtonPlay = Resources.Load("Images/Img_Play_Temp", typeof(Sprite)) as Sprite;
+        _readyButtonReady = Resources.Load("Images/Img_Ready_Temp", typeof(Sprite)) as Sprite;
+        _readyButtonStop = Resources.Load("Images/Img_Stop_Temp", typeof(Sprite)) as Sprite;
+
+        readyButtonImage.sprite = _readyButtonPlay;
+        _readyButtonState = ReadyButtonState.Play;
 
         readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
     }
 
+    internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
+    {
+        //Find what type of command was added
+        BaseCommand command;
+        CommandEnum commandType = arg0.SourceObject.GetComponent<CommandPanelCommand>().CommandType;
+        switch (commandType)
+        {
+            case CommandEnum.InteractCommand:
+                command = _gameInfo.AllCommands.InteractCommand;
+                break;
+            case CommandEnum.WaitCommand:
+                command = _gameInfo.AllCommands.WaitCommand;
+                break;
+            case CommandEnum.MoveCommand:
+                command = _gameInfo.AllCommands.MoveCommand;
+                break;
+            case CommandEnum.TurnLeftCommand:
+                command = _gameInfo.AllCommands.TurnLeftCommand;
+                break;
+            case CommandEnum.TurnRightCommand:
+                command = _gameInfo.AllCommands.TurnRightCommand;
+                break;
+            case CommandEnum.LoopCommand:
+                command = _gameInfo.AllCommands.LoopCommand;
+                break;
+            default:
+                command = _gameInfo.AllCommands.WaitCommand;
+                break;
+        }
+
+        //Find what index it should be set to
+        if (_gameInfo.LocalPlayer.Player.Sequence.isEmpty(arg0.ToIndex))
+        {
+            _gameInfo.LocalPlayer.Player.Sequence.Add(command);
+        }
+        else
+        {
+            _gameInfo.LocalPlayer.Player.Sequence.Insert(arg0.ToIndex, command);
+        }
+
+    }
+
+    private void SetReadyButtonState(ReadyButtonState newState)
+    {
+        if (newState == ReadyButtonState.Play)
+        {
+            _readyButton.GetComponent<Image>().sprite = _readyButtonPlay;
+        }
+        else if (newState == ReadyButtonState.Ready)
+        {
+            _readyButton.GetComponent<Image>().sprite = _readyButtonReady;
+            _gameInfo.LocalPlayer.Player.IsReady = true;
+        }
+        else
+        {
+            _readyButton.GetComponent<Image>().sprite = _readyButtonStop;
+            _gameInfo.LocalPlayer.Player.IsReady = false;
+        }
+
+        _readyButtonState = newState;
+    }
+
     private void ReadyButtonClicked()
     {
-        print("Ready button clicked");
+
+        if (_readyButtonState == ReadyButtonState.Play)
+        {
+            SetReadyButtonState(!_gameInfo.IsMultiplayer ? ReadyButtonState.Stop : ReadyButtonState.Ready);
+            EventManager.ReadyButtonClicked();
+
+        }else if (_readyButtonState == ReadyButtonState.Ready)
+        {
+            SetReadyButtonState(ReadyButtonState.Stop);
+        }else
+        {
+            SetReadyButtonState(ReadyButtonState.Play);
+        }
 
     }
 
     public void OnSequenceChanged(List<BaseCommand> commands)
     {
+        print("----------------------------------");
+        foreach (var VARIABLE in commands)
+        {
+            print(VARIABLE.Name);
+
+        }
+        print("----------------------------------");
+
         _mainBaseCommandsList = commands;
         ClearMainSequenceBar();
 
@@ -137,7 +233,14 @@ public class BottomPanelBehaviour : MonoBehaviour
     {
         for (int i = 0; i < _mainCommandsListPanel.transform.childCount; i++)
         {
-            _mainCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+            if (_mainCommandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
+            {
+                _mainCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+            }
+            else
+            {
+                print(_mainCommandsListPanel.transform.GetChild(i).name);
+            }
         }
     }
 
@@ -147,14 +250,15 @@ public class BottomPanelBehaviour : MonoBehaviour
 
         for (int i = 0; i < commands.Count; i++)
         {
-            Image slotImage = parent.GetChild(i).GetComponent<Image>();
-            slotImage.sprite = commands[i].Icon;
+            if (parent.GetChild(i).GetComponent<Image>() != null)
+            {
+                Image slotImage = parent.GetChild(i).GetComponent<Image>();
+                slotImage.sprite = commands[i].Icon;
+            }
         }
     }
     private void InitializeSequenceBarSlots(int amountOfSlots, bool isMainSequenceBar)
     {
-        print("filling sequence bar..");
-
         int size = isMainSequenceBar ? 95 : 55;
         Transform parent = isMainSequenceBar ? _mainCommandsListPanel.transform : _secondarySequenceBar.transform;
 
@@ -193,7 +297,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     private void SlotClicked(int i)
     {
-        print("You clicked slot: " + i);
+        _gameInfo.LocalPlayer.Player.Sequence.RemoveAt(i);
     }
 
     void HideBottomPanel()
