@@ -26,13 +26,13 @@ public class TGEMonoBehaviour : MonoBehaviour {
         OnStart?.Invoke();
     }
 
-    protected T Spawn<T>(string objectName, GameObject parent, UnityAction<T> initializer = null)
+    protected static T Spawn<T>(string objectName, GameObject parent = null, UnityAction<T> initializer = null)
         where T : MonoBehaviour {
         Assert.IsNotNull(objectName);
         Assert.IsNotNull(parent);
 
         var spawnedObject = new GameObject(objectName, typeof(T));
-        spawnedObject.transform.parent = parent.transform;
+        spawnedObject.transform.parent = parent?.transform;
         var component = spawnedObject.GetComponent<T>();
         initializer?.Invoke(component);
         return component;

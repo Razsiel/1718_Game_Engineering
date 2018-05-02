@@ -35,6 +35,7 @@ namespace Assets.Data.Command {
             Assert.IsNotNull(TurnRightCommand);
             Assert.IsNotNull(WaitCommand);
             Assert.IsNotNull(InteractCommand);
+            Assert.IsNotNull(LoopCommand);
         }
     }
 }

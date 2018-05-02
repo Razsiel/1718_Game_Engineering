@@ -4,88 +4,141 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Command;
+using Assets.Scripts.DataStructures;
+using Assets.Scripts.DataStructures.Command;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 namespace Assets.Scripts.UI
 {
-    public class DynamicUI : MonoBehaviour {
+    public class DynamicUI : MonoBehaviour
+    {
 
-        public GameObject CommandPanel;
-        public CommandLibrary CommandLibrary;
+        public GameObject BottomPanel;
+        private GameObject _commandPanel;
+        private GameObject _commandListPanel;
+        private CommandLibrary _commandLibrary;
+        private GameInfo _gameInfo;
+        private Player _player;
+        private BottomPanelBehaviour _bottomPanelBehaviour;
+        private FlowLayoutGroup _cmdFlowLayoutGroup;
+        private VerticalLayoutGroup _cmdListPanelVerticalLayout;
 
-        public void Start() {
+        public void Awake()
+        {
+            EventManager.OnInitializeUi += Initialize;
+            //EventManager.OnUserInputDisable += OnUserInputDisable;
+            //EventManager.OnUserInputEnable += OnUserInputEnable;
+        }
+
+        private void Initialize(GameInfo gameInfo)
+        {
+            _gameInfo = gameInfo;
+            _player = _gameInfo.LocalPlayer.Player;
+            _commandLibrary = _gameInfo.AllCommands;
+            _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
+            _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
+
+            InitializeCommandPanel();
+
+            InitializeCommandList();
+
             CreateCommands();
         }
 
+        private void InitializeCommandList()
+        {
+            _commandListPanel = new GameObject("Commands List");
+            _commandListPanel.transform.SetParent(_commandPanel.transform, false);
+
+            var _cmdListPanelVerticalLayout = _commandListPanel.AddComponent<VerticalLayoutGroup>();
+
+            _cmdListPanelVerticalLayout.childAlignment = TextAnchor.LowerRight;
+            _cmdListPanelVerticalLayout.spacing = 5;
+            _cmdListPanelVerticalLayout.childControlHeight = true;
+            _cmdListPanelVerticalLayout.childControlWidth = true;
+            _cmdListPanelVerticalLayout.childForceExpandHeight = true;
+            _cmdListPanelVerticalLayout.childForceExpandWidth = true;
+
+            var commandListContentSizeFitter = _commandListPanel.AddComponent<ContentSizeFitter>();
+            commandListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            commandListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var _commandPanelReorderableList = _commandPanel.AddComponent<ReorderableList>();
+            _commandPanelReorderableList.CloneDraggedObject = true;
+            _commandPanelReorderableList.IsDraggable = true;
+            _commandPanelReorderableList.IsDropable = false;
+            _commandPanelReorderableList.ContentLayout = _cmdListPanelVerticalLayout;
+            _commandPanelReorderableList.DraggableArea = transform.GetChild(0).GetComponent<RectTransform>();
+            _commandPanelReorderableList.OnElementAdded.AddListener(BottomPanel.GetComponent<BottomPanelBehaviour>().AddDroppedElementToMainSequence);
+        }
+
+        private void InitializeCommandPanel()
+        {
+            _commandPanel = new GameObject("Command Panel");
+            _commandPanel.transform.SetParent(transform.GetChild(0), false);
+            var image = _commandPanel.AddComponent<Image>();
+            image.color = new Color(0,0,0,0);
+
+            _cmdFlowLayoutGroup = _commandPanel.AddComponent<FlowLayoutGroup>();
+
+            _cmdFlowLayoutGroup.childAlignment = TextAnchor.UpperRight;
+            _cmdFlowLayoutGroup.horizontal = false;
+
+            var cmdRectTransform = _commandPanel.GetComponent<RectTransform>();
+            _commandPanel.transform.localPosition = new Vector3(-150,0,0);
+
+            cmdRectTransform.anchorMin = new Vector2(1, 0.5f);
+            cmdRectTransform.anchorMax = new Vector2(1f, 0.5f);
+            cmdRectTransform.sizeDelta = new Vector2(300, 700);
+        }
+
         public void CreateCommands() {
-            foreach (var command in CommandLibrary.Commands) { 
-                var uiCommand = CreateCommandButton(command.Value, CommandPanel, () => {
-                    Debug.Log($"pressed a button");
-                    //Player.SequenceChanged += OnSequenceChanged;
-                    //Player.AddCommand(command.Value);
+            foreach (var command in _commandLibrary.Commands)
+            {
+                CreateCommandButton(command, _commandListPanel, () => {
+                    _player.Sequence.Add(command.Value);
                 });
             }
         }
 
-        private void OnSequenceChanged(List<BaseCommand> commands) {
-            Debug.Log($"UI Update");
-            foreach (Transform child in transform) {
-                Destroy(child);
-            }
-
-            //foreach (var command in commands) {
-            //    var commandObject = CreateCommandButton(command, SequenceBar, () => {
-            //        Debug.Log("Removing command from sequence bar...");
-            //    });
-            //}
-        }
-
-        private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
+        private GameObject CreateCommandButton(CommandKVP command, GameObject parent, UnityAction onClick) {
             return CreateCommandButton(command, parent.transform, onClick);
         }
 
-        private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
+        private GameObject CreateCommandButton(CommandKVP command, Transform parent, UnityAction onClick) {
 
-            var commandObject = new GameObject(command.ToString());
+            var commandObject = new GameObject(command.Value.Name);
+
             commandObject.transform.SetParent(parent, false);
-            commandObject.AddComponent<LayoutElement>();
-            var commandHorizontalLayoutGroup = commandObject.AddComponent<HorizontalLayoutGroup>();
             commandObject.AddComponent<CanvasRenderer>();
 
-            commandHorizontalLayoutGroup.padding.left = 10;
-            commandHorizontalLayoutGroup.childAlignment = TextAnchor.MiddleCenter;
-            commandHorizontalLayoutGroup.childControlHeight = true;
-            commandHorizontalLayoutGroup.childControlWidth = true;
-            commandHorizontalLayoutGroup.childForceExpandHeight = true;
-            commandHorizontalLayoutGroup.childForceExpandWidth = true;
+            commandObject.AddComponent<Image>();
+            commandObject.GetComponent<Image>().sprite = command.Value.Icon;
+            var layoutElement = commandObject.AddComponent<LayoutElement>();
+            var button = commandObject.AddComponent<Button>();
+            var commandScript = commandObject.AddComponent<CommandPanelCommand>();
+            commandScript.CommandType = command.Key;
 
-            var text = new GameObject();
-            text.AddComponent<Text>();
-            text.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
-            text.GetComponent<Text>().fontSize = 25;
-            text.GetComponent<Text>().alignment = TextAnchor.MiddleLeft;
-            text.GetComponent<Text>().text = command.Name;
-            text.AddComponent<LayoutElement>();
-            text.GetComponent<LayoutElement>().preferredWidth = 120;
-
-            var image = new GameObject();
-            image.AddComponent<Image>();
-            image.GetComponent<Image>().sprite = command.Icon;
-            image.GetComponent<Image>().preserveAspect = true;
-            image.AddComponent<LayoutElement>();
-            image.AddComponent<Button>();
-
-            var button = image.GetComponent<Button>();
+            layoutElement.preferredWidth = 95;
+            layoutElement.preferredHeight = 95;
             Assert.IsNotNull(button);
             button.onClick.AddListener(onClick);
 
-            text.transform.SetParent(commandObject.transform, false);
-            image.transform.SetParent(commandObject.transform, false);
-
             return commandObject;
+        }
+
+        private void OnUserInputEnable()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnUserInputDisable()
+        {
+            _commandPanel.SetActive(false);
         }
     }
 }

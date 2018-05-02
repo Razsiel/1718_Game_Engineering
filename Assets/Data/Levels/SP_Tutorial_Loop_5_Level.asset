@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
+  m_Name: SP_Tutorial_Loop_5_Level
+  m_EditorClassIdentifier: 
+  Name: LEVEL_NAME_SP_TUTORIAL_5
+  BackgroundImage: {fileID: 0}
+  MaxCommands: 4
+  Goals:
+  - {fileID: 11400000, guid: 4731624438031da4e8ad25339c154c4d, type: 2}
+  GridMapData: {fileID: 11400000, guid: 0d42db9a00c0fad4fa6894b4d4cd7e81, type: 2}
+  TileScale: 32
+  Monologue: {fileID: 11400000, guid: d173e7172c0b4f545951642e9a9fb301, type: 2}
+  AllowedCommands:
+  - CommandType: 0
+    IsAllowed: 1
+  - CommandType: 1
+    IsAllowed: 0
+  - CommandType: 2
+    IsAllowed: 1
+  - CommandType: 3
+    IsAllowed: 1
+  - CommandType: 4
+    IsAllowed: 1
+  - CommandType: 5
+    IsAllowed: 1
