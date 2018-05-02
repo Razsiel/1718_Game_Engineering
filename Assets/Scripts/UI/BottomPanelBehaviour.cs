@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
+using Debug = System.Diagnostics.Debug;
 
 public class BottomPanelBehaviour : MonoBehaviour
 {
@@ -229,7 +230,12 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     public void OnSequenceChanged(List<BaseCommand> commands)
     {
-
+        print("-------------");
+        foreach (var command in commands)
+        {
+            print(command.Name);
+        }
+        print("-------------");
         _mainBaseCommandsList = commands;
         ClearMainSequenceBar();
 
@@ -261,6 +267,19 @@ public class BottomPanelBehaviour : MonoBehaviour
             {
                 Image slotImage = parent.GetChild(i).GetComponent<Image>();
                 slotImage.sprite = commands[i].Icon;
+                //if (commands[i].Name == _gameInfo.AllCommands.LoopCommand.Name)
+                //{
+                //    GameObject slotInSlot = CreateSequenceBarSlot(95, 0);
+                //    slotInSlot.transform.SetParent(parent.GetChild(i).transform, false);
+                //    var slotHorizontalLayoutGroup = slotInSlot.AddComponent<HorizontalLayoutGroup>();
+
+                //    var slotReorderableList = parent.GetChild(i).gameObject.AddComponent<ReorderableList>();
+                //    slotReorderableList.ContentLayout = slotHorizontalLayoutGroup;
+                //    slotReorderableList.DraggableArea = transform.parent.GetComponent<RectTransform>();
+                //    slotReorderableList.IsDraggable = true;
+                //    slotReorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
+
+                //}
             }
         }
     }
