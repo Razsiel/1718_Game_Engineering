@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class SequenceRunner : MonoBehaviour {
 
+    // TODO: GetPlayers through event param (dependency Injection)
+    // TODO: Create SequenceCycle object with the 2 Commands of that step + CommandList -> List<SequenceCycle>
+
     void Awake()
     {
         EventManager.OnSimulate += ExecuteSequences;
