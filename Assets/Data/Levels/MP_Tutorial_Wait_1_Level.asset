@@ -14,10 +14,11 @@ MonoBehaviour:
   Name: 
   BackgroundImage: {fileID: 0}
   MaxCommands: 0
-  Goals: []
-  GridMapData: {fileID: 0}
+  Goals:
+  - {fileID: 11400000, guid: 532744aaa84ab6841ad9a669e82ef2a8, type: 2}
+  GridMapData: {fileID: 11400000, guid: 3cf4ce1421c8f274f833eaf229902e56, type: 2}
   TileScale: 32
-  Monologue: {fileID: 0}
+  Monologue: {fileID: 11400000, guid: 516b1c7eadfdfc04db839a74eabcb6c8, type: 2}
   AllowedCommands:
   - CommandType: 0
     IsAllowed: 1
