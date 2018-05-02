@@ -8,6 +8,7 @@ namespace Assets.Data.Command {
     public abstract class BaseCommand : ScriptableObject {
         public Sprite Icon;
         public string Name;
+        public int Priority;
         public abstract IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player);
 
         public virtual BaseCommand Init() {

@@ -8,10 +8,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
-  m_Name: SP_Tutorial_Move_1_Goals
+  m_Script: {fileID: 11500000, guid: eaa2169745e098d46814bed62c591821, type: 3}
+  m_Name: MP_Tutorial_Wait_1_Grid
   m_EditorClassIdentifier: 
-  _presentableConfigurations: []
-  TargetGridPosition:
-  - PlayerNumber: 1
-    Location: {x: 4, y: 1}
+  DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
+  PlayerStartPositions: []
+  _map: []
+  _width: 0
+  _height: 0

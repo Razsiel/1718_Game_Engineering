@@ -8,10 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
-  m_Name: SP_Tutorial_Move_1_Goals
+  m_Script: {fileID: 11500000, guid: 17a1b4818cb47d747974d38882e924ad, type: 3}
+  m_Name: MultiPlayerLevels
   m_EditorClassIdentifier: 
-  _presentableConfigurations: []
-  TargetGridPosition:
-  - PlayerNumber: 1
-    Location: {x: 4, y: 1}
+  Levels:
+  - {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}

@@ -8,13 +8,17 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class GlobalData : MonoBehaviour
+    public class GlobalData : TGEMonoBehaviour
     {
-        public GameInfo GameInfo { get; } = new GameInfo();
+        public new GameInfo GameInfo { get; } = new GameInfo();
 
-        public static GlobalData Instance;
+        private static GlobalData _instance;
+        public static GlobalData Instance {
+            get { return _instance ?? (_instance = Spawn<GlobalData>(nameof(GlobalData))); }
+            private set { _instance = value; }
+        }
 
-        void Awake()
+        public override void Awake()
         {
             if (Instance == null)
             {
