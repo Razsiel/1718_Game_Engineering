@@ -12,7 +12,32 @@ MonoBehaviour:
   m_Name: MP_Tutorial_Wait_1_Grid
   m_EditorClassIdentifier: 
   DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
-  PlayerStartPositions: []
-  _map: []
-  _width: 0
-  _height: 0
+  PlayerStartPositions:
+  - StartPosition: {x: 1, y: 0}
+    Facing: 1
+  - StartPosition: {x: 1, y: 2}
+    Facing: 5
+  _map:
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 4b1d4ebe3b204b64cb2af13c76ff39d7, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 6e5a10b0098d6ba42b6b74d4ffaa5243, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  _width: 3
+  _height: 3

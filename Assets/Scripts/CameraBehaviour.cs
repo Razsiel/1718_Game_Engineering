@@ -15,8 +15,6 @@ public class CameraBehaviour : MonoBehaviour
             _camera = gameObject.GetComponent<Camera>();
             AutoZoomCamera(gameInfo.Level);
         };
-        EventManager.OnMonologueEnded += LevelRect;
-        EventManager.OnMonologueStart += MonologueRect;
     }
 
     /// <summary>
@@ -30,23 +28,5 @@ public class CameraBehaviour : MonoBehaviour
 
         // Camera should reduce the zoom-out by 0.2 per levelSize
         _camera.orthographicSize = 1 + (levelSize * aspectRatio) - (levelSize * 0.2f);
-    }
-
-    void LevelRect()
-    {
-        Rect r = new Rect(0f, 0.25f, 0.8f, 0.75f);
-        _camera.DORect(r, 1f);
-    }
-
-    void MonologueRect(Monologue m)
-    {
-        Rect r = new Rect(0f, 0.25f, 1f, 0.75f);
-        _camera.DORect(r, 1f);
-    }
-
-    void FullRect()
-    {
-        Rect r = new Rect(0f, 0f, 1f, 1f);
-        _camera.DORect(r, 1f);
     }
 }
