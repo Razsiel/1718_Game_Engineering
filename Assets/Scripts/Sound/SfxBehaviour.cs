@@ -6,7 +6,6 @@ using UnityEngine;
 public class SfxBehaviour : MonoBehaviour
 {
     private AudioSource sfxPlayer;
-    private PrefabContainer prefabContainer;
 
     private Dictionary<SFX, AudioClip> SoundEffects;
 
@@ -30,13 +29,12 @@ public class SfxBehaviour : MonoBehaviour
 	{
         print("audio init");
 	    sfxPlayer = GetComponent<AudioSource>();
-	    prefabContainer = null; //GameManager.GetInstance().PrefabContainer;
 
-	    SoundEffects = new Dictionary<SFX, AudioClip>();
+	    SoundEffects = new Dictionary<SFX, AudioClip>()
+	    {
+	        {SFX.ButtonHover, Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover")}
+	    };
 	    sfxPlayer.volume = 0.5f;
-
-        // Add all sound effects to Dictionary
-        SoundEffects.Add(SFX.ButtonHover, prefabContainer.sfx_button_hover);
 	}
     
     public static void PlaySfx(SFX soundName)
