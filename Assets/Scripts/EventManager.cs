@@ -25,6 +25,7 @@ public class EventManager {
     public static UnityAction OnUserInputEnable;
     public static UnityAction OnUserInputDisable;
     public static UnityAction<List<BaseCommand>> OnSequenceChanged;
+    public static UnityAction<List<BaseCommand>> OnSecondarySequenceChanged;
     public static UnityAction OnReadyButtonClicked;
     public static UnityAction<bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
@@ -88,6 +89,11 @@ public class EventManager {
 
     public static void AudioInitialized() {
         OnAudioInitialize?.Invoke();
+    }
+
+    public static void SecondarySequenceChanged(List<BaseCommand> commands)
+    {
+        OnSecondarySequenceChanged?.Invoke(commands);
     }
 
     public static void MonologueInitialized() {
