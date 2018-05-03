@@ -4,19 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
 {
-    public class GlobalData : TGEMonoBehaviour
-    {
+    public class GlobalData : TGEMonoBehaviour {
+
         public new GameInfo GameInfo { get; } = new GameInfo();
 
-        private static GlobalData _instance;
-        public static GlobalData Instance {
-            get { return _instance ?? (_instance = Spawn<GlobalData>(nameof(GlobalData))); }
-            private set { _instance = value; }
-        }
+        public static GlobalData Instance;
 
         public override void Awake()
         {
@@ -35,6 +32,21 @@ namespace Assets.Scripts
 
         private void OnSceneLoaded(Scene sceneLoaded, LoadSceneMode args) {
             print($"GLOBAL: Loaded new scene {sceneLoaded.name}");
+            gameObject.AddComponent<SceneDataLoader>();
+        }
+
+        public class SceneDataLoader : MonoBehaviour
+        {
+            public static UnityAction<GameInfo> OnSceneLoaded;
+            public void Start()
+            {
+                // Invoke the event for any interested
+                OnSceneLoaded?.Invoke(Instance.GameInfo);
+                // Clear the event listeners since it's a one-shot event
+                OnSceneLoaded = null;
+                // Clean up myself since my job has been done!
+                Destroy(this);
+            }
         }
     }
 }

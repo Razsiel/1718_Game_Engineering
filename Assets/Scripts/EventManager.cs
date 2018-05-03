@@ -26,6 +26,7 @@ public class EventManager {
     public static UnityAction OnUserInputDisable;
     public static UnityAction<List<BaseCommand>> OnSequenceChanged;
     public static UnityAction OnReadyButtonClicked;
+    public static UnityAction<bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
     public static UnityAction OnPhotonSynchronized;
     public static UnityAction<Monologue> OnMonologueStart;
@@ -59,6 +60,9 @@ public class EventManager {
     }
 
     public static void ReadyButtonClicked() {
+        OnReadyButtonClicked?.Invoke();
+    }
+    public static void StopButtonClicked() {
         OnReadyButtonClicked?.Invoke();
     }
 
@@ -109,6 +113,11 @@ public class EventManager {
 
     public static void LevelLoaded(GameInfo gameInfo) {
         OnLevelLoaded?.Invoke(gameInfo);
+    }
+
+    public static void PlayerReady(bool isReady)
+    {
+        OnPlayerReady?.Invoke(isReady);
     }
 
     public static void AllPlayersReady() {
