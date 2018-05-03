@@ -30,8 +30,16 @@ namespace Assets.Scripts.UI
         public void Awake()
         {
             EventManager.OnInitializeUi += Initialize;
+            EventManager.OnRepaintUi += Repaint;
             //EventManager.OnUserInputDisable += OnUserInputDisable;
             //EventManager.OnUserInputEnable += OnUserInputEnable;
+        }
+
+        private void Repaint()
+        {
+            print("ui repaint to fix flowlayout bug");
+            gameObject.SetActive(false);
+            gameObject.SetActive(true);
         }
 
         private void Initialize(GameInfo gameInfo)

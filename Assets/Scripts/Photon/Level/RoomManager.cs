@@ -241,3 +241,118 @@ using Assets.Scripts.Photon.RoomSelect;
 //    }
 //}
 
+        //public void UpdateGUI()
+        //{
+        //    Assert.IsNotNull(RoomView);
+        //    RoomView.ToString();
+        //    RoomView.UpdateListView(PhotonNetwork.GetRoomList());
+        //}
+
+//        public void AddRoom(RoomInfo room)
+//        {
+//            //this.photonRooms.Add(room);
+//        }
+
+//        public void CloseRoom(RoomInfo room)
+//        {
+//            //this.photonRooms.Remove(room);
+//        }
+
+//        [PunRPC]
+//        public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
+//        {
+//            PrintIfMultiplayer("Got RPC");
+//            var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
+//            //gameManager.Players.GetNetworkPlayer().Player.UpdateSequence(commands.list);
+//            //networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
+//        }
+
+//        [PunRPC]
+//        public void UpdateReadyState(PhotonMessageInfo info)
+//        {
+//            PrintIfMultiplayer("GOT RPC Ready state");
+//            //The other player is now ready
+
+//            //if(info.sender != gameManager.Players.GetLocalPlayer().photonPlayer)
+//            //    gameManager.Players.GetNetworkPlayer().Player.IsReady = true;
+
+//            //if(gameManager.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+//            //    if(gameManager.Players.All(x => x.Player.IsReady))
+//            //        SendStartExecution();
+//        }
+
+//        [PunRPC]
+//        public void UpdateUnreadyState(PhotonMessageInfo info)
+//        {
+//            //gameManager.Players.GetNetworkPlayer().Player.IsReady = false;
+//        }
+
+//        private void SendStartExecution()
+//        {
+//            this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
+//        }
+
+//        private void SendStopExecution()
+//        {
+//            this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
+//        }
+
+//        private int amountOfSequenceRan = 0;
+
+//        [PunRPC]
+//        public void StartExecution(PhotonMessageInfo info)
+//        {
+//            EventManager.OnExecutionStarted?.Invoke();
+
+//            //foreach(TGEPlayer p in gameManager.Players)
+//            //{
+//            //    p.Player.StartExecution();
+//            //    //p.Player.OnPlayerSequenceRan += (Player player) => PlayerSequenceRan(player);
+//            //}
+//        }
+
+//        private void PlayerSequenceRan(Player p)
+//        {
+//            amountOfSequenceRan++;
+//            if(amountOfSequenceRan > 1)
+//            {
+//                //if(!gameManager.LevelData.HasReachedAllGoals())
+//                //{
+//                //    //EventManager.OnLevelReset(gameManager.LevelData,
+//                //    //  gameManager.Players.Select(x => x.Player).ToList());
+//                //}
+//                //else
+//                //{
+//                //    EventManager.AllLevelGoalsReached();
+//                //}
+//                amountOfSequenceRan = 0;
+//            }
+
+//            //p.OnPlayerSequenceRan -= PlayerSequenceRan;
+//        }
+
+//        [PunRPC]
+//        public void StopExecution(PhotonMessageInfo info)
+//        {
+//            //foreach(TGEPlayer p in gameManager.Players)
+//            //{
+//            //    p.Player.StopAllCoroutines();
+//            //    //EventManager.LevelReset(gameManager.LevelData,
+//            //    //                gameManager.Players.Select(x => x.Player).ToList());
+//            //}
+//        }
+
+//        private void PrintIfMultiplayer(object message)
+//        {
+//            //if(gameManager.IsMultiPlayer)
+//            //    print(message);
+//        }
+
+//        private void PrintCodeAndMessage(object[] codeAndMsg)
+//        {
+//            print("Code: " + codeAndMsg[0] + "message: " + codeAndMsg[1]);
+//        }
+//    }
+//}
+//>>>>>>> 656b30a90c6bef0562a1b2e16594b0f4bdd241d0
+

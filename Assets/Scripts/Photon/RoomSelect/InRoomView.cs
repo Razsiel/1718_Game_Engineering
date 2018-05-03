@@ -22,11 +22,19 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Init()
         {
             Disable();
+            PlayButton.onClick.AddListener(StartGame);
+            //PlayButton.gameObject.SetActive(false);
             RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
             RoomEventManager.OnLocalPlayerLeftRoom += Disable;
             RoomEventManager.OnNetworkPlayerChanged += UpdatePlayersView;
             RoomEventManager.OnAllPlayersReady += OnAllPlayersReady;
             RoomEventManager.OnAnyPlayerUnready += OnAnyPlayerUnready;
+            RoomEventManager.OnBecomingMasterClient += OnBecomingMasterClient;           
+        }
+
+        private void OnBecomingMasterClient()
+        {
+            PlayButton.gameObject.SetActive(true);
         }
 
         private void OnAnyPlayerUnready()
@@ -44,6 +52,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Enable()
         {
             base.Activate();
+            OnAnyPlayerUnready();
             LeaveButton.onClick.RemoveAllListeners();
             LeaveButton.onClick.AddListener(LeaveRoom);
             UpdatePlayersView(PhotonConnectionManager.Instance.GetAllPlayersInRoom());
@@ -51,6 +60,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void Disable()
         {
+            PlayButton.gameObject.SetActive(false);
             base.Deactivate();
         }
 
@@ -83,8 +93,8 @@ namespace Assets.Scripts.Photon.RoomSelect
         }
 
         public void StartGame()
-        {
-            //Load new scene 
+        {            
+            PhotonConnectionManager.Instance.SendGoToLevelSelect();
         }
     }
 }

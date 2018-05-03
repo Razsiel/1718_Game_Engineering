@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Scripts.DataStructures;
 using Assets.Scripts.Lib.Extensions;
 using Assets.Scripts.Photon;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Utilities;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Assets.Scripts.Photon.RoomSelect
@@ -29,11 +32,19 @@ namespace Assets.Scripts.Photon.RoomSelect
         public InRoomView InRoomCanvas;
         public RoomListView RoomListView;
         public const string ReadyKey = "ready";
+        private GameInfo gameInfo;
+
+        [SerializeField]
+        public SceneField LevelSelectScene;
         #endregion
 
         private void Awake()
         {
             _instance = this;
+            GlobalData.SceneDataLoader.OnSceneLoaded += gameinfo =>
+            {
+                this.gameInfo = gameinfo;
+            };
             Init();
         }
 
@@ -49,7 +60,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             //    RoomEventManager.OnPhotonConnected += RoomListManager.Instance.UpdateRooms;
             print("photon connected = " + connected);
 
-            var customProperties = new Hashtable() { { ReadyKey, false } };            
+            var customProperties = new Hashtable() { { ReadyKey, false } };
             PhotonNetwork.player.SetCustomProperties(customProperties);
 
             //Implement Callbacks
@@ -59,7 +70,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             RoomEventManager.OnPhotonReceivedRoomListUpdate += UpdateRooms;
             RoomEventManager.OnNetworkPlayerJoinedRoom += NetworkPlayerChanged;
             RoomEventManager.OnNetworkPlayerLeftRoom += NetworkPlayerChanged;
-            RoomEventManager.OnLocalPlayerReadyStateChanged += OnLocalPlayerReadyStateChanged;    
+            RoomEventManager.OnLocalPlayerReadyStateChanged += OnLocalPlayerReadyStateChanged;
             RoomEventManager.OnPlayerPropertiesChanged += OnPlayerPropertiesChanged;
         }
 
@@ -70,19 +81,19 @@ namespace Assets.Scripts.Photon.RoomSelect
             var hashtable = (Hashtable)playerAndProperties[1];
             bool ready;
             hashtable.TryGetTypedValue(ReadyKey, out ready);
-            
+
             //Is the player a network player
             if (!player.Equals(PhotonNetwork.player))
             {
-                RoomEventManager.OnNetworkPlayerPropertiesChanged?.Invoke(ready);             
+                RoomEventManager.OnNetworkPlayerPropertiesChanged?.Invoke(ready);
             }
 
             //Is everyone ready?
-            if(AreAllPlayersReady())
+            if (AreAllPlayersReady())
                 RoomEventManager.OnAllPlayersReady?.Invoke();
 
             //Somebody unreadied
-            if(!ready)
+            if (!ready)
                 RoomEventManager.OnAnyPlayerUnready?.Invoke();
         }
 
@@ -98,7 +109,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             }
 
             return allReady;
-        }        
+        }
 
         private void OnLocalPlayerReadyStateChanged(bool ready)
         {
@@ -109,7 +120,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void UpdateRooms()
         {
-            var rooms = PhotonNetwork.GetRoomList();           
+            var rooms = PhotonNetwork.GetRoomList();
             RoomListView.UpdateListView(rooms);
         }
 
@@ -138,14 +149,31 @@ namespace Assets.Scripts.Photon.RoomSelect
         {
             PhotonNetwork.LeaveRoom();
         }
-        
+
         /// <summary>
         /// Gets the players in the room ordered by who is the masterclient (masterlclient is first in the list)
         /// </summary>
         /// <returns></returns>
         public List<PhotonPlayer> GetAllPlayersInRoom()
-        {            
+        {
             return PhotonNetwork.playerList.OrderByDescending(x => x.IsMasterClient).ToList();
+        }
+
+        public void SendGoToLevelSelect()
+        {
+            if (PhotonNetwork.player.IsMasterClient)
+                this.photonView.RPC(nameof(GoToLevelSelect), PhotonTargets.All);
+        }
+
+        [PunRPC]
+        public void GoToLevelSelect()
+        {
+            gameInfo.Players = new List<TGEPlayer>();
+            var players = GetAllPlayersInRoom();
+            foreach (var p in players)
+                gameInfo.Players.Add(new TGEPlayer() { photonPlayer = p });
+
+            SceneManager.LoadScene(LevelSelectScene);
         }
     }
 }

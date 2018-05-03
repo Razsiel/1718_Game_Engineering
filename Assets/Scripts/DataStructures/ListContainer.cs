@@ -3,15 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-[Serializable]
-public class ListContainer<T>
+namespace Assets.Scripts.DataStructures
 {
-    public List<T> list;
-
-    public ListContainer(){}
-
-    public ListContainer(List<T> list)
+    [Serializable]
+    public class ListContainer<T>
     {
-        this.list = list;
+        public List<T> list;
+
+        public ListContainer()
+        {
+        }
+
+        public ListContainer(List<T> list)
+        {
+            this.list = list;
+        }
     }
 }

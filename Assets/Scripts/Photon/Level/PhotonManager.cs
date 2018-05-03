@@ -62,20 +62,9 @@ namespace Assets.Scripts.Photon.Level
 
                 EventManager.OnPlayerSpawned += player =>
                 {
-                    _gameInfo.Players.GetLocalPlayer().Player.Sequence.OnSequenceChanged += sequence =>
-                    {
-                        var listCommands = new ListContainer<CommandEnum> { list = new List<CommandEnum>() };
-                        var commandOptions = CommandLib.Commands;
+                    EventManager.OnSequenceChanged += OnSequenceChanged;
 
-                        foreach (var bc in sequence)
-                            listCommands.list.Add(commandOptions.GetKey(bc));
-
-                        var seqJson = JsonUtility.ToJson(listCommands);
-
-                        this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
-                    };
-
-                    EventManager.OnReadyButtonClicked += () =>
+                    EventManager.OnPlayerReady += isReady =>
                     {
                         _gameInfo.Players.GetLocalPlayer().Player.IsReady = true;
                         this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
@@ -83,6 +72,19 @@ namespace Assets.Scripts.Photon.Level
                 };
                 
             };
+        }
+
+        private void OnSequenceChanged(List<BaseCommand> sequence)
+        {
+            var listCommands = new ListContainer<CommandEnum> { List = new List<CommandEnum>() };
+            var commandOptions = CommandLib.Commands;
+
+            //Add the enum of the command to our list
+            foreach (var bc in sequence) listCommands.List.Add(commandOptions.GetKey(bc));
+
+            var seqJson = JsonUtility.ToJson(listCommands);
+
+            this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
         }
 
         [PunRPC]
