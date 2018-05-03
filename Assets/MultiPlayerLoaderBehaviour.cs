@@ -27,6 +27,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             var photonConnectionManager = photonManager.GetComponent<PhotonConnectionManager>();
             photonConnectionManager.LevelSelectScene = _levelSelectScene;
             photonConnectionManager.RoomListView = roomListView;
+            photonManager.GetComponent<PhotonView>().viewID = 21;
 
             var inRoomScreenPlayerObjectPool = Instantiate(_InRoomScreenPlayerObjectPool);
             var inRoomScreen = Instantiate(_InRoomScreen);
