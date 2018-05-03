@@ -41,12 +41,9 @@ namespace Assets.Scripts {
                     Assert.IsNotNull(Level.AllowedCommands);
                     Assert.IsNotNull(AllCommands);
                     _cachedAllowedCommands = Level.AllowedCommands
-                                                  .Where(
-                                                      c => c
-                                                          .IsAllowed) // only select allowed commands before cross-referencing enum to values
+                                                  .Where(c => c.IsAllowed) // only select allowed commands before cross-referencing enum to values
                                                   .Join(AllCommands.Commands, // cross-ref source
-                                                        command => command
-                                                            .CommandType, // key of outer list to cross ref with inner key
+                                                        command => command.CommandType, // key of outer list to cross ref with inner key
                                                         kvp => kvp.Key, // key of inner list
                                                         (command, kvp) => kvp.Value); // select the baseCommand
                 }
