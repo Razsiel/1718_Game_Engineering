@@ -191,7 +191,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: simulating");
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
-            EventManager.Simulate();
+            EventManager.Simulate(Level, _gameInfo.Players);
             EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
         }
 

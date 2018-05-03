@@ -32,7 +32,7 @@ public class EventManager {
     public static UnityAction OnMonologueEnded;
     public static UnityAction OnExecutionStarted;
     
-    public static UnityAction OnSimulate;
+    public static UnityAction<LevelData, List<TGEPlayer>> OnSimulate;
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;
     public static UnityAction<GameInfo> OnLevelLoaded;
@@ -95,8 +95,8 @@ public class EventManager {
         OnMonologueStart?.Invoke(monologue);
     }
 
-    public static void Simulate() {
-        OnSimulate?.Invoke();
+    public static void Simulate(LevelData level, List<TGEPlayer> players) {
+        OnSimulate?.Invoke(level, players);
     }
 
     public static void LevelReset(GameInfo gameInfo, List<Player> players) {
