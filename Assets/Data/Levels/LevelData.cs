@@ -25,6 +25,7 @@ namespace Assets.Data.Levels
         [SerializeField] public int TileScale = 32;
         [SerializeField] public Monologue Monologue;
         [SerializeField] public List<AllowedCommand> AllowedCommands;
+        [SerializeField] public Sprite PreviewImage;
 
         [Serializable]
         public class AllowedCommand {
