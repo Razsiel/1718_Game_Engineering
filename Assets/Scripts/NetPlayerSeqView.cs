@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts {
     public class NetPlayerSeqView : MonoBehaviour {
-        public SequenceBar SequenceBar;
-
-        public void UpdateSequenceBar(List<CommandEnum> commands) {
-            SequenceBar.UpdateSequenceBarFromList(commands);
-        }
+//        public SequenceBar SequenceBar;
+//
+//        public void UpdateSequenceBar(List<CommandEnum> commands) {
+//            SequenceBar.UpdateSequenceBarFromList(commands);
+//        }
     }
 }

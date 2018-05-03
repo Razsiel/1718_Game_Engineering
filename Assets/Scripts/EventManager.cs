@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Command;
 using Assets.Data.Levels;
@@ -13,6 +14,7 @@ public class EventManager {
     public static UnityAction OnAllLevelGoalsReached;
 
     public static UnityAction<GameInfo> OnInitializeUi;
+    public static UnityAction OnRepaintUi;
     public static UnityAction<TGEPlayer> OnInitializePhoton;
     public static UnityAction OnAudioInitialize;
     public static UnityAction OnMonologueInitialized;
@@ -131,5 +133,10 @@ public class EventManager {
 
     public static void GameStart(GameInfo gameInfo) {
         OnGameStart?.Invoke(gameInfo);
+    }
+
+    public static void RepaintUI()
+    {
+        OnRepaintUi?.Invoke();
     }
 }

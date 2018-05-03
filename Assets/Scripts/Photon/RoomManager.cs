@@ -168,7 +168,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             PrintIfMultiplayer("Got RPC");
             var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
             _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(commands.list);
-            networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
+            //networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
         }
 
         [PunRPC]
