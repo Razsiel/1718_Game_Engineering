@@ -34,7 +34,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1271529645512180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 746.0229, y: 410.89105, z: -170.23755}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,7 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _commandLibrary: {fileID: 11400000, guid: 8ad1b1763d531de4a8c5e12566dc758c, type: 2}
-  _level: {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}
+  _level: {fileID: 11400000, guid: 5c7d4bffc33cdda499b2c5eb89c99d19, type: 2}
   _cameraContainerPrefab: {fileID: 1047995824625588, guid: c92c7c4bd72c89145b3ab41d6f1c5251,
     type: 2}
   _uiPrefab: {fileID: 1096184458154562, guid: c86f6431e4b897041b8043efd927007a, type: 2}
@@ -61,4 +61,6 @@ MonoBehaviour:
   _audioPrefab: {fileID: 1303610324601010, guid: b635690a945e5614bb42d8f8370ad7ef,
     type: 2}
   _playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
+    type: 2}
+  _sequenceRunnerPrefab: {fileID: 1774249200758122, guid: d444ae114eeb4604696594414eda63c7,
     type: 2}
