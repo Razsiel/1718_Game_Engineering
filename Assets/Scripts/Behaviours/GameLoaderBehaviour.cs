@@ -12,6 +12,7 @@ namespace Assets.Scripts.Behaviours {
         [SerializeField] private GameObject _monologuePrefab;
         [SerializeField] private GameObject _audioPrefab;
         [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _sequenceRunnerPrefab;
 
         // Use this for initialization
         public override void Start() {
@@ -28,12 +29,13 @@ namespace Assets.Scripts.Behaviours {
                 manager.GameRoot = gameRoot;
                 manager.PlayerPrefab = _playerPrefab;
             });
-            //var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
+//            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
 
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
             var ui = GameObject.Instantiate(_uiPrefab, gameRoot.transform);
             var monologue = GameObject.Instantiate(_monologuePrefab, gameRoot.transform);
+            var sequenceRunner = GameObject.Instantiate(_sequenceRunnerPrefab, gameRoot.transform);
 
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Finished setting up the scene. Cleaning myself up");
             Destroy(this.gameObject);
