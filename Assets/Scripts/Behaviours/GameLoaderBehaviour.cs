@@ -6,13 +6,13 @@ using UnityEngine;
 namespace Assets.Scripts.Behaviours {
     public class GameLoaderBehaviour : TGEMonoBehaviour {
         [SerializeField] private CommandLibrary _commandLibrary;
-        [SerializeField] private LevelData _level;
 
         [SerializeField] private GameObject _cameraContainerPrefab;
         [SerializeField] private GameObject _uiPrefab;
         [SerializeField] private GameObject _monologuePrefab;
         [SerializeField] private GameObject _audioPrefab;
         [SerializeField] private GameObject _playerPrefab;
+        [SerializeField] private GameObject _sequenceRunnerPrefab;
         [SerializeField] private GameObject _photonPrefab;
 
         // Use this for initialization
@@ -23,14 +23,14 @@ namespace Assets.Scripts.Behaviours {
 
             // Managers
             var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot, manager => {
-                manager.Level = _level;
-                manager.CommandLibrary = _commandLibrary;
+                //manager.Level = _level;
+                //manager.CommandLibrary = _commandLibrary;
             });
             var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot, manager => {
                 manager.GameRoot = gameRoot;
                 manager.PlayerPrefab = _playerPrefab;
             });
-            //var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
+//            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
 
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
             photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
@@ -39,6 +39,7 @@ namespace Assets.Scripts.Behaviours {
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
             var ui = GameObject.Instantiate(_uiPrefab, gameRoot.transform);
             var monologue = GameObject.Instantiate(_monologuePrefab, gameRoot.transform);
+            var sequenceRunner = GameObject.Instantiate(_sequenceRunnerPrefab, gameRoot.transform);
 
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Finished setting up the scene. Cleaning myself up");
             Destroy(this.gameObject);

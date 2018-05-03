@@ -50,6 +50,7 @@ namespace Assets.Scripts.UI
             _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
             _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
 
+
             InitializeCommandPanel();
 
             InitializeCommandList();
@@ -105,31 +106,32 @@ namespace Assets.Scripts.UI
         }
 
         public void CreateCommands() {
-            foreach (var command in _commandLibrary.Commands)
+            foreach (var command in _gameInfo.AllowedCommands)
             {
                 CreateCommandButton(command, _commandListPanel, () => {
-                    _player.Sequence.Add(command.Value);
+                    _player.Sequence.Add(command);
                 });
             }
         }
 
-        private GameObject CreateCommandButton(CommandKVP command, GameObject parent, UnityAction onClick) {
+        private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
             return CreateCommandButton(command, parent.transform, onClick);
         }
 
-        private GameObject CreateCommandButton(CommandKVP command, Transform parent, UnityAction onClick) {
+        private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
 
-            var commandObject = new GameObject(command.Value.Name);
+            var commandObject = new GameObject(command.Name);
 
             commandObject.transform.SetParent(parent, false);
             commandObject.AddComponent<CanvasRenderer>();
 
             commandObject.AddComponent<Image>();
-            commandObject.GetComponent<Image>().sprite = command.Value.Icon;
+            commandObject.GetComponent<Image>().sprite = command.Icon;
             var layoutElement = commandObject.AddComponent<LayoutElement>();
             var button = commandObject.AddComponent<Button>();
             var commandScript = commandObject.AddComponent<CommandPanelCommand>();
-            commandScript.CommandType = command.Key;
+
+            commandScript.command = command;
 
             layoutElement.preferredWidth = 95;
             layoutElement.preferredHeight = 95;

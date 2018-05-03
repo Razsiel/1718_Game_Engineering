@@ -27,12 +27,12 @@ namespace Assets.Scripts.Photon.RoomSelect
         }
 
         private static PhotonConnectionManager _instance;
-        public GameObject BtnCreateRoom;
-        public RoomSelectView RoomSelectCanvas;
-        public InRoomView InRoomCanvas;
+        //public GameObject BtnCreateRoom;
+        //public RoomSelectView RoomSelectCanvas;
+        //public InRoomView InRoomCanvas;
         public RoomListView RoomListView;
         public const string ReadyKey = "ready";
-        private GameInfo gameInfo;
+        private GameInfo _gameInfo;
 
         [SerializeField]
         public SceneField LevelSelectScene;
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             _instance = this;
             GlobalData.SceneDataLoader.OnSceneLoaded += gameinfo =>
             {
-                this.gameInfo = gameinfo;
+                this._gameInfo = gameinfo;
             };
             Init();
         }
@@ -53,7 +53,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             PhotonNetwork.autoJoinLobby = true;
 
             var connected = PhotonNetwork.ConnectUsingSettings("1.1");
-            Assert.IsTrue(connected);
+            //Assert.IsTrue(connected);
             print("lobby: " + PhotonNetwork.lobby + "In lobby: " + PhotonNetwork.insideLobby);
             //Show Error Because we dont have internet
             //if(connected)
@@ -168,10 +168,10 @@ namespace Assets.Scripts.Photon.RoomSelect
         [PunRPC]
         public void GoToLevelSelect()
         {
-            gameInfo.Players = new List<TGEPlayer>();
+            _gameInfo.Players = new List<TGEPlayer>();
             var players = GetAllPlayersInRoom();
             foreach (var p in players)
-                gameInfo.Players.Add(new TGEPlayer() { photonPlayer = p });
+                _gameInfo.Players.Add(new TGEPlayer() { photonPlayer = p });
 
             SceneManager.LoadScene(LevelSelectScene);
         }

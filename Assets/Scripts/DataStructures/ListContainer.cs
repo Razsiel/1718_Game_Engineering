@@ -8,7 +8,7 @@ namespace Assets.Scripts.DataStructures
     [Serializable]
     public class ListContainer<T>
     {
-        public List<T> list;
+        public List<T> List;
 
         public ListContainer()
         {
@@ -16,7 +16,7 @@ namespace Assets.Scripts.DataStructures
 
         public ListContainer(List<T> list)
         {
-            this.list = list;
+            this.List = list;
         }
     }
 }

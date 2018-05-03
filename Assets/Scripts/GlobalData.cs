@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Assets.Data.Command;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -11,6 +12,7 @@ namespace Assets.Scripts
 {
     public class GlobalData : TGEMonoBehaviour {
 
+        [SerializeField] private CommandLibrary AllCommands;
         public new GameInfo GameInfo { get; } = new GameInfo();
 
         public static GlobalData Instance;
@@ -26,6 +28,8 @@ namespace Assets.Scripts
             {
                 Destroy(gameObject);
             }
+
+            GameInfo.AllCommands = AllCommands;
 
             SceneManager.sceneLoaded += OnSceneLoaded;
         }

@@ -15,12 +15,11 @@ public class BottomPanelBehaviour : MonoBehaviour
 {
     public GameObject MainSequenceBar;
     public GameObject SecondarySequenceBar;
-    private GameObject _mainCommandsListPanel;
+    private GameObject _commandsListPanel;
     private GameObject _secondaryCommandsListPanel;
     private GameInfo _gameInfo;
     private GameObject _mainSequenceBar;
     private GameObject _secondarySequenceBar;
-    private List<BaseCommand> _mainBaseCommandsList;
     private GameObject _readyButton;
     private Sprite _readyButtonPlay;
     private Sprite _readyButtonReady;
@@ -43,6 +42,7 @@ public class BottomPanelBehaviour : MonoBehaviour
     void Initialize(GameInfo gameInfo)
     {
         _gameInfo = gameInfo;
+        EventManager.OnSecondarySequenceChanged += OnSecondarySequenceChanged;
         InitializeSequenceBars();
         InitializeReadyButton();
     }
@@ -61,8 +61,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
 
-
-        InitializeMainCommandsList();
+        InitializeCommandsList(true);
     }
 
     private void InitializeSecondarySequenceBar()
@@ -72,42 +71,55 @@ public class BottomPanelBehaviour : MonoBehaviour
         _secondarySequenceBar.transform.SetParent(transform.GetChild(0), false);
         _secondarySequenceBar.transform.SetSiblingIndex(1);
 
+        InitializeCommandsList(false);
     }
 
-    private void InitializeMainCommandsList()
+    private void InitializeCommandsList(bool isMainCommandsList)
     {
-        _mainCommandsListPanel = new GameObject("Main Commands list");
-        _mainCommandsListPanel.transform.SetParent(_mainSequenceBar.transform, false);
+        GameObject commandsListPanel = new GameObject("Commands list");
+        Transform parent = isMainCommandsList ? _mainSequenceBar.transform : _secondarySequenceBar.transform;
+        commandsListPanel.transform.SetParent(parent, false);
 
-        var commandsListContentSizeFitter = _mainCommandsListPanel.AddComponent<ContentSizeFitter>();
-        var commandsListLayoutElement = _mainCommandsListPanel.AddComponent<LayoutElement>();
-        var commandsListFlowLayoutGroup = _mainCommandsListPanel.AddComponent<FlowLayoutGroup>();
+        var commandsListContentSizeFitter = commandsListPanel.AddComponent<ContentSizeFitter>();
+        var commandsListLayoutElement = commandsListPanel.AddComponent<LayoutElement>();
+        var commandsListFlowLayoutGroup = commandsListPanel.AddComponent<FlowLayoutGroup>();
 
-        commandsListLayoutElement.preferredWidth = 2000;
-        commandsListLayoutElement.preferredHeight = 125;
+        commandsListLayoutElement.preferredWidth = isMainCommandsList ? 2000 : 1100;
+        commandsListLayoutElement.preferredHeight = isMainCommandsList ? 125 : 75;
 
         commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         commandsListFlowLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
-        commandsListFlowLayoutGroup.spacing = new Vector2(5f, 0f);
+        commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
 
-        InitializeSequenceBarSlots(15, true);
+        InitializeSequenceBarSlots(15, isMainCommandsList, commandsListPanel.transform);
 
-        _mainSequenceBar.GetComponent<ScrollRect>().content = _mainCommandsListPanel.GetComponent<RectTransform>();
-        var mainSequenceBarReorderableList = _mainSequenceBar.AddComponent<ReorderableList>();
-        mainSequenceBarReorderableList.ContentLayout = commandsListFlowLayoutGroup;
-        mainSequenceBarReorderableList.DraggableArea = transform.parent.GetComponent<RectTransform>();
-        mainSequenceBarReorderableList.IsDraggable = true;
-        mainSequenceBarReorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
+        GameObject sequenceBar = isMainCommandsList ? _mainSequenceBar : _secondarySequenceBar;
+
+        sequenceBar.GetComponent<ScrollRect>().content = commandsListPanel.GetComponent<RectTransform>();
+
+        AddReorderableListToComponent(sequenceBar, commandsListFlowLayoutGroup, transform.parent.GetComponent<RectTransform>(), isMainCommandsList, isMainCommandsList);
+
+        if (isMainCommandsList)
+            _commandsListPanel = commandsListPanel;
+        else
+            _secondaryCommandsListPanel = commandsListPanel;
     }
 
-    private void InitializeSecondaryCommandsList()
+    public void AddReorderableListToComponent(GameObject component, LayoutGroup contentLayoutGroup, RectTransform draggableArea, bool isDraggable, bool isRearrangeable)
     {
-        _secondaryCommandsListPanel = new GameObject("Secondary Commands list");
-        _secondaryCommandsListPanel.transform.SetParent(_secondarySequenceBar.transform, false);
+        var reorderableList = component.AddComponent<ReorderableList>();
+        reorderableList.ContentLayout = contentLayoutGroup;
+        reorderableList.DraggableArea = draggableArea;
+        reorderableList.IsDraggable = isDraggable;
+
+        if (isRearrangeable)
+            reorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
     }
+
+
 
     private void InitializeReadyButton()
     {
@@ -150,33 +162,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
-        //Find what type of command was added
-        BaseCommand command;
-        CommandEnum commandType = arg0.SourceObject.GetComponent<CommandPanelCommand>().CommandType;
-        switch (commandType)
-        {
-            case CommandEnum.InteractCommand:
-                command = _gameInfo.AllCommands.InteractCommand;
-                break;
-            case CommandEnum.WaitCommand:
-                command = _gameInfo.AllCommands.WaitCommand;
-                break;
-            case CommandEnum.MoveCommand:
-                command = _gameInfo.AllCommands.MoveCommand;
-                break;
-            case CommandEnum.TurnLeftCommand:
-                command = _gameInfo.AllCommands.TurnLeftCommand;
-                break;
-            case CommandEnum.TurnRightCommand:
-                command = _gameInfo.AllCommands.TurnRightCommand;
-                break;
-            case CommandEnum.LoopCommand:
-                command = _gameInfo.AllCommands.LoopCommand;
-                break;
-            default:
-                command = _gameInfo.AllCommands.WaitCommand;
-                break;
-        }
+        BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
 
         //Find what index it should be set to
         if (_gameInfo.LocalPlayer.Player.Sequence.isEmpty(arg0.ToIndex))
@@ -240,30 +226,46 @@ public class BottomPanelBehaviour : MonoBehaviour
             print(command.Name);
         }
         print("-------------");
-        _mainBaseCommandsList = commands;
-        ClearMainSequenceBar();
+        ClearSequenceBar(true);
 
         UpdateSequenceBar(commands, true);
     }
 
-    private void ClearMainSequenceBar()
+    private void OnSecondarySequenceChanged(List<BaseCommand> commands)
     {
-        for (int i = 0; i < _mainCommandsListPanel.transform.childCount; i++)
+        ClearSequenceBar(false);
+
+        UpdateSequenceBar(commands, false);
+    }
+
+    private void ClearSequenceBar(bool isMainSequenceBar)
+    {
+        if (isMainSequenceBar)
         {
-            if (_mainCommandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
+            for (int i = 0; i < _commandsListPanel.transform.childCount; i++)
             {
-                _mainCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
-            }
-            else
-            {
-                print(_mainCommandsListPanel.transform.GetChild(i).name);
+                if (_commandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
+                {
+                    _commandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+                }
             }
         }
+        else
+        {
+            for (int i = 0; i < _secondaryCommandsListPanel.transform.childCount; i++)
+            {
+                if (_secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
+                {
+                    _secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+                }
+            }
+        }
+
     }
 
     private void UpdateSequenceBar(List<BaseCommand> commands, bool isMainSequenceBar)
     {
-        Transform parent = isMainSequenceBar ? _mainCommandsListPanel.transform : _secondarySequenceBar.transform;
+        Transform parent = isMainSequenceBar ? _commandsListPanel.transform : _secondaryCommandsListPanel.transform;
 
         for (int i = 0; i < commands.Count; i++)
         {
@@ -287,39 +289,43 @@ public class BottomPanelBehaviour : MonoBehaviour
             }
         }
     }
-    private void InitializeSequenceBarSlots(int amountOfSlots, bool isMainSequenceBar)
+    private void InitializeSequenceBarSlots(int amountOfSlots, bool isMainSequenceBar, Transform parent)
     {
-        int size = isMainSequenceBar ? 95 : 55;
-        Transform parent = isMainSequenceBar ? _mainCommandsListPanel.transform : _secondarySequenceBar.transform;
-
         for (int i = 0; i < amountOfSlots; i++)
         {
-            GameObject slot = CreateSequenceBarSlot(size, i);
+            GameObject slot = CreateSequenceBarSlot(isMainSequenceBar, i);
             slot.transform.SetParent(parent, false);
         }
     }
 
-    private GameObject CreateSequenceBarSlot(int size, int index)
+    private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index)
     {
+        int size = isMainSequenceBar ? 95 : 55;
+
         GameObject slot = new GameObject(index.ToString());
         var slotImage = slot.AddComponent<Image>();
         var slotContentSizeFitter = slot.AddComponent<ContentSizeFitter>();
         var slotLayoutElement = slot.AddComponent<LayoutElement>();
         var slotSlotScript = slot.AddComponent<SlotScript>();
-        var slotButton = slot.AddComponent<Button>();
-        var slotListItem = slot.AddComponent<ReorderableListElement>();
+
+        if (isMainSequenceBar)
+        {
+            var slotButton = slot.AddComponent<Button>();
+            var slotListItem = slot.AddComponent<ReorderableListElement>();
+
+            slotButton.onClick.AddListener(() => SlotClicked(slotListItem, slotSlotScript.index));
+
+            slotListItem.IsGrabbable = true;
+            slotListItem.IsTransferable = true;
+        }
 
         slotSlotScript.index = index;
-        slotButton.onClick.AddListener(() => SlotClicked(slotListItem, slotSlotScript.index));
 
         slotContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         slotContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         slotLayoutElement.preferredHeight = size;
         slotLayoutElement.preferredWidth = size;
-
-        slotListItem.IsGrabbable = true;
-        slotListItem.IsTransferable = true;
 
         return slot;
     }

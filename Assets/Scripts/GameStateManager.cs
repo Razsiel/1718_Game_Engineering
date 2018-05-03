@@ -18,10 +18,6 @@ namespace Assets.Scripts {
     public class GameStateManager : SingleMonobehaviour<GameStateManager> {
         private GameInfo _gameInfo;
 
-        public LevelData Level;
-        public CommandLibrary CommandLibrary;
-        public bool IsMultiPlayer;
-
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
 
         public void Awake() {
@@ -55,17 +51,15 @@ namespace Assets.Scripts {
                .On(OnLevelCompleteStateEnter)
                .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
+
+            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
+                this._gameInfo = gameInfo;
+                Init();
+            };
         }
 
-        public void Start() {
+        public void Init() {
             Debug.Log($"Start: {nameof(GameStateManager)}");
-
-            _gameInfo = new GameInfo {
-                Level = Level,
-                IsMultiplayer = IsMultiPlayer,
-                Players = new List<TGEPlayer>(),
-                AllCommands = CommandLibrary
-            };
 
             EventManager.OnGameStart += gameInfo => {
                 print("loading level");
@@ -83,8 +77,6 @@ namespace Assets.Scripts {
             else {
                 StartSingleplayer();
             }
-
-            //DontDestroyOnLoad(this.gameObject);
         }
 
         public void OnDisable()
@@ -93,22 +85,16 @@ namespace Assets.Scripts {
         }
 
         private void StartSingleplayer() {
-            _gameInfo.Players.Add(new TGEPlayer());
             EventManager.GameStart(_gameInfo);
         }
 
         private void StartMultiplayer()
         {
             PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
-            _gameInfo.Players.Add(new TGEPlayer());
-            EventManager.InitializePhoton(_gameInfo.Players[0]);
         }
 
         private void OnAllPlayersJoined(Room room) {
             PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
-            for (int i = 0; i < room.PlayerCount; i++) {
-                _gameInfo.Players.Add(new TGEPlayer());
-            }
             EventManager.GameStart(_gameInfo);
         }
 
@@ -119,7 +105,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: cutscene");
             // start the cutscene / monologue
             EventManager.OnMonologueEnded += OnMonologueEnded;
-            EventManager.MonologueStart(Level.Monologue);
+            EventManager.MonologueStart(_gameInfo.Level.Monologue);
         }
 
         private void OnMonologueEnded() {
@@ -191,7 +177,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: simulating");
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
-            EventManager.Simulate();
+            EventManager.Simulate(_gameInfo.Level, _gameInfo.Players);
             EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
         }
 

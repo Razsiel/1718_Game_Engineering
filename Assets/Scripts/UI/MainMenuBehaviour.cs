@@ -15,24 +15,30 @@ namespace Assets {
         [SerializeField] private LevelLibrary SinglePlayerLevels;
         [SerializeField] private LevelLibrary MultiPlayerLevels;
 
+        private GameInfo _gameInfo;
+
+        void Awake() {
+            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
+                _gameInfo = gameInfo;
+            };
+        }
+
         public void StartSingleplayer() {
             Assert.IsNotNull(LevelSelect);
-            var gameInfo = GlobalData.Instance.GameInfo;
-            gameInfo.Players = new List<TGEPlayer> {
+            _gameInfo.Players = new List<TGEPlayer> {
                 new TGEPlayer()
             };
-            gameInfo.LevelLibrary = SinglePlayerLevels;
+            _gameInfo.LevelLibrary = SinglePlayerLevels;
             SceneManager.LoadScene(LevelSelect);
         }
 
         public void StartMultiplayer() {
             Assert.IsNotNull(LobbyScene);
-            var gameInfo = GlobalData.Instance.GameInfo;
-            gameInfo.IsMultiplayer = true;
-            gameInfo.Players = new List<TGEPlayer> {
+            _gameInfo.IsMultiplayer = true;
+            _gameInfo.Players = new List<TGEPlayer> {
                 new TGEPlayer()
             };
-            gameInfo.LevelLibrary = MultiPlayerLevels;
+            _gameInfo.LevelLibrary = MultiPlayerLevels;
             SceneManager.LoadScene(LobbyScene);
         }
     }

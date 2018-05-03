@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224438996927072532}
   - component: {fileID: 114184053377444794}
-  - component: {fileID: 114118017454510014}
   - component: {fileID: 114531225096679024}
+  - component: {fileID: 114637770785271196}
   m_Layer: 5
   m_Name: PhotonManager
   m_TagString: Untagged
@@ -29,18 +29,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114118017454510014
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1611335485350392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a46540cc1b2efa49a1526b1d5176d05, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  roomListView: {fileID: 0}
 --- !u!114 &114184053377444794
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,7 +40,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5070e3503fe3b60409a3f70a0bfad043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BtnCreateRoom: {fileID: 0}
+  RoomListView: {fileID: 0}
+  LevelSelectScene:
+    sceneAsset: {fileID: 102900000, guid: 174ef8bc03c4c4247b3eefb2b259ea2a, type: 3}
+    sceneName: Scenes/Other/LevelSelect
 --- !u!114 &114531225096679024
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -64,6 +55,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c1bab211ae65324192e3c69a19f0203, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114637770785271196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1611335485350392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ownerId: 0
+  group: 0
+  OwnerShipWasTransfered: 0
+  prefixBackup: -1
+  synchronization: 0
+  onSerializeTransformOption: 3
+  onSerializeRigidBodyOption: 2
+  ownershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 0}
+  ObservedComponentsFoldoutOpen: 1
+  viewIdField: 0
+  instantiationId: -1
+  currentMasterID: -1
+  isRuntimeInstantiated: 0
 --- !u!224 &224438996927072532
 RectTransform:
   m_ObjectHideFlags: 1

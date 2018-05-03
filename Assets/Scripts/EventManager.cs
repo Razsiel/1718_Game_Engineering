@@ -25,6 +25,7 @@ public class EventManager {
     public static UnityAction OnUserInputEnable;
     public static UnityAction OnUserInputDisable;
     public static UnityAction<List<BaseCommand>> OnSequenceChanged;
+    public static UnityAction<List<BaseCommand>> OnSecondarySequenceChanged;
     public static UnityAction OnReadyButtonClicked;
     public static UnityAction<bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
@@ -33,7 +34,7 @@ public class EventManager {
     public static UnityAction OnMonologueEnded;
     public static UnityAction OnExecutionStarted;
     
-    public static UnityAction OnSimulate;
+    public static UnityAction<LevelData, List<TGEPlayer>> OnSimulate;
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;
     public static UnityAction<GameInfo> OnLevelLoaded;
@@ -90,6 +91,11 @@ public class EventManager {
         OnAudioInitialize?.Invoke();
     }
 
+    public static void SecondarySequenceChanged(List<BaseCommand> commands)
+    {
+        OnSecondarySequenceChanged?.Invoke(commands);
+    }
+
     public static void MonologueInitialized() {
         OnMonologueInitialized?.Invoke();
     }
@@ -99,8 +105,8 @@ public class EventManager {
         OnMonologueStart?.Invoke(monologue);
     }
 
-    public static void Simulate() {
-        OnSimulate?.Invoke();
+    public static void Simulate(LevelData level, List<TGEPlayer> players) {
+        OnSimulate?.Invoke(level, players);
     }
 
     public static void LevelReset(GameInfo gameInfo, List<Player> players) {

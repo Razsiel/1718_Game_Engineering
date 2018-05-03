@@ -26,6 +26,7 @@ namespace Assets.Data.Levels
         [SerializeField] public Monologue Monologue;
         [SerializeField] public List<AllowedCommand> AllowedCommands;
         [SerializeField] public LevelScore LevelScore;
+        [SerializeField] public Sprite PreviewImage;
 
         [Serializable]
         public class AllowedCommand {
