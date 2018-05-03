@@ -34,10 +34,12 @@ namespace Assets.Scripts {
         public override void Awake() {
             Sequence = new Sequence();
             EventManager.OnSimulate += OnSimulate;
-
+            
             EventManager.OnLevelReset += (gameInfo, players) => {
                 Assert.IsNotNull(gameInfo);
                 this.GameInfo = gameInfo;
+
+                /* temp sequence
                 Sequence.Add(Object.Instantiate(gameInfo.AllCommands.MoveCommand));
                 var loop = Object.Instantiate(gameInfo.AllCommands.LoopCommand).Init() as LoopCommand;
                 for (int i = 0; i < 4; i++)
@@ -49,7 +51,7 @@ namespace Assets.Scripts {
 
                 this.IsReady = false;
 
-                StartCoroutine(WaitForInput());
+                StartCoroutine(WaitForInput());*/
             };
         }
 
@@ -58,12 +60,13 @@ namespace Assets.Scripts {
             
         }
 
-        private void OnSimulate() {
+        private void OnSimulate(LevelData levelData, List<TGEPlayer> players ) {
             StopCoroutine(_executeCoroutine);
             _executeCoroutine = StartCoroutine(ExecuteCommands());
         }
 
         //Press Spacebar to run sequence
+        /*
         IEnumerator WaitForInput() {
             while (true) {
                 yield return new WaitUntil(() => Input.GetAxis("Jump") != 0);
@@ -72,7 +75,7 @@ namespace Assets.Scripts {
 
                 yield return new WaitForSeconds(2);
             }
-        }
+        }*/
 
         public void UpdateSequence(List<CommandEnum> commands) {
             this.Sequence.Clear();

@@ -54,10 +54,11 @@ namespace Assets.Scripts {
 
             GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
                 this._gameInfo = gameInfo;
+                Init();
             };
         }
 
-        public void Start() {
+        public void Init() {
             Debug.Log($"Start: {nameof(GameStateManager)}");
 
             EventManager.OnGameStart += gameInfo => {
@@ -76,8 +77,6 @@ namespace Assets.Scripts {
             else {
                 StartSingleplayer();
             }
-
-            //DontDestroyOnLoad(this.gameObject);
         }
 
         public void OnDisable()
@@ -178,7 +177,7 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: simulating");
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
-            EventManager.Simulate(Level, _gameInfo.Players);
+            EventManager.Simulate(_gameInfo.Level, _gameInfo.Players);
             EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
         }
 
