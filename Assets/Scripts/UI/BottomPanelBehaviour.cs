@@ -162,33 +162,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
-        //Find what type of command was added
-        BaseCommand command;
-        CommandEnum commandType = arg0.SourceObject.GetComponent<CommandPanelCommand>().CommandType;
-        switch (commandType)
-        {
-            case CommandEnum.InteractCommand:
-                command = _gameInfo.AllCommands.InteractCommand;
-                break;
-            case CommandEnum.WaitCommand:
-                command = _gameInfo.AllCommands.WaitCommand;
-                break;
-            case CommandEnum.MoveCommand:
-                command = _gameInfo.AllCommands.MoveCommand;
-                break;
-            case CommandEnum.TurnLeftCommand:
-                command = _gameInfo.AllCommands.TurnLeftCommand;
-                break;
-            case CommandEnum.TurnRightCommand:
-                command = _gameInfo.AllCommands.TurnRightCommand;
-                break;
-            case CommandEnum.LoopCommand:
-                command = _gameInfo.AllCommands.LoopCommand;
-                break;
-            default:
-                command = _gameInfo.AllCommands.WaitCommand;
-                break;
-        }
+        BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
 
         //Find what index it should be set to
         if (_gameInfo.LocalPlayer.Player.Sequence.isEmpty(arg0.ToIndex))
