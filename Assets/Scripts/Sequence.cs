@@ -87,7 +87,11 @@ namespace Assets.Scripts
             SequenceChanged(Commands);
         }
 
-        public void RemoveAt(int index) {
+        public void RemoveAt(int index)
+        {
+            if (Commands.ElementAtOrDefault(index) == null)
+                return;
+
             Commands.RemoveAt(index);
             SequenceChanged(Commands);
         }

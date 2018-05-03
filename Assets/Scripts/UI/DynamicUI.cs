@@ -50,6 +50,7 @@ namespace Assets.Scripts.UI
             _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
             _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
 
+
             InitializeCommandPanel();
 
             InitializeCommandList();
