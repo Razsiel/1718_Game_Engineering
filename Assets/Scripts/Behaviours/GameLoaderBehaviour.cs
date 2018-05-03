@@ -31,7 +31,9 @@ namespace Assets.Scripts.Behaviours {
                 manager.PlayerPrefab = _playerPrefab;
             });
             var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
+
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
+            photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
 
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);

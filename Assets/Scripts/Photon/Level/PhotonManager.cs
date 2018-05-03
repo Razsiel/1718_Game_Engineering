@@ -23,7 +23,7 @@ namespace Assets.Scripts.Photon.Level
 
         private GameInfo _gameInfo;
 
-        //public CommandLibrary CommandLib;
+        public CommandLibrary CommandLib;
 
         ////Events to react on
         //public UnityAction TGEOnJoinedLobby;
@@ -55,37 +55,41 @@ namespace Assets.Scripts.Photon.Level
 
         void Awake()
         {
-            Instance = this;         
-            EventManager.OnGameStart += gameInfo => {
+            Instance = this;
+            EventManager.OnGameStart += gameInfo =>
+            {
                 _gameInfo = gameInfo;
 
-                EventManager.OnPlayerSpawned += player => { 
-                _gameInfo.Players.GetLocalPlayer().Player.Sequence.OnSequenceChanged += sequence =>
+                EventManager.OnPlayerSpawned += player =>
                 {
-                    var listCommands = new ListContainer<CommandEnum>() { list = new List<CommandEnum>() };
-                    var commandOptions = GameStateManager.Instance.CommandLibrary.Commands;
+                    _gameInfo.Players.GetLocalPlayer().Player.Sequence.OnSequenceChanged += sequence =>
+                    {
+                        var listCommands = new ListContainer<CommandEnum> { list = new List<CommandEnum>() };
+                        var commandOptions = CommandLib.Commands;
 
-                    foreach (var bc in sequence)
-                        listCommands.list.Add(commandOptions.GetKey(bc));
+                        foreach (var bc in sequence)
+                            listCommands.list.Add(commandOptions.GetKey(bc));
 
-                    var seqJson = JsonUtility.ToJson(listCommands);
+                        var seqJson = JsonUtility.ToJson(listCommands);
 
-                    this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);                    
+                        this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
+                    };
+
+                    EventManager.OnReadyButtonClicked += () =>
+                    {
+                        _gameInfo.Players.GetLocalPlayer().Player.IsReady = true;
+                        this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
+                    };
                 };
-                };
-                EventManager.OnReadyButtonClicked += () =>
-                {
-                    _gameInfo.Players.GetLocalPlayer().Player.IsReady = true;
-                    this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
-                };
+                
             };
         }
 
         [PunRPC]
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
-        {            
+        {
             var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
-            
+
             //networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
         }
 
@@ -94,13 +98,12 @@ namespace Assets.Scripts.Photon.Level
         {
             //The other player is now ready
 
-            if (info.sender.Equals(_gameInfo.Players.GetLocalPlayer().photonPlayer))
+            if (!info.sender.Equals(_gameInfo.Players.GetLocalPlayer().photonPlayer))
                 _gameInfo.Players.GetNetworkPlayer().Player.IsReady = true;
 
             if (_gameInfo.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
                 if (_gameInfo.Players.All(x => x.Player.IsReady))
-                    ;
-                    //SendStartExecution();
+                    SendStartExecution();
         }
 
         [PunRPC]
@@ -164,84 +167,9 @@ namespace Assets.Scripts.Photon.Level
             //}
         }
 
-
-
-
         //public void PlayersReady()
         //{
         //    TGEOnPlayersCreated?.Invoke();
-        //}
-
-        //public void CreateRoom(string roomName)
-        //{
-        //    print("Creating Room!");
-        //    PhotonNetwork.CreateRoom(roomName);
-        //}
-
-        //public void JoinRoom(string roomName)
-        //{
-        //    print("Joining Room!");
-        //    PhotonNetwork.JoinRoom(roomName);
-        //}
-
-        //#region PhotonCallbacks
-        //public override void OnJoinedLobby()
-        //{
-        //    Debug.Log("InPUNCAll");
-        //    TGEOnJoinedLobby?.Invoke();
-        //}
-
-        //public override void OnDisconnectedFromPhoton()
-        //{
-        //    //TGEOnDisconnectedFromPhoton?.Invoke();
-        //}
-
-        //public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-        //{
-        //    print("InPhotonPlayerConnected");
-        //    TGEOnPhotonPlayerConnected?.Invoke(newPlayer);
-        //}
-
-        //public override void OnConnectedToPhoton()
-        //{
-        //    Debug.Log("Connected");
-        //}
-
-        //public override void OnCreatedRoom()
-        //{
-        //    TGEOnCreatedRoom?.Invoke();
-        //}
-
-        //public override void OnJoinedRoom()
-        //{
-        //    TGEOnJoinedRoom?.Invoke();
-        //    //TGEOnPhotonPlayerConnected?.Invoke(PhotonNetwork.player);
-        //}
-
-
-        //public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
-        //{
-        //    TGEOnJoinRoomFailed?.Invoke(codeAndMsg); 
-        //}
-
-        //public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
-        //{
-        //    TGEOnJoinRandomRoomFailed?.Invoke(codeAndMsg);
-        //}
-
-        //public override void OnLeftRoom()
-        //{
-        //    TGEOnLeftRoom?.Invoke();
-        //}
-
-        //public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
-        //{
-        //    TGEOnPhotonPlayerDisconnected?.Invoke(otherPlayer);
-        //}
-
-        //public void OnAllPlayersJoined(Room room) {
-        //    TGEOnAllPlayersJoined?.Invoke(room);
-        //}
-        // #endregion
+        //}      
     }
 }
