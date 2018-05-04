@@ -48,7 +48,6 @@ namespace Assets.Scripts.UI
             _player = _gameInfo.LocalPlayer.Player;
             _commandLibrary = _gameInfo.AllCommands;
             _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
-            _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
 
 
             InitializeCommandPanel();

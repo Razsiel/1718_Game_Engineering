@@ -166,12 +166,25 @@ namespace UnityEngine.UI.Extensions
 
                     //Fix this to be able to drop the slots in the right place
                     if (_currentReorderableListRaycasted.ContentLayout is VerticalLayoutGroup)
+                    {
                         dist = Mathf.Abs(c.position.y - worldPoint.y);
+                    }
                     else if (_currentReorderableListRaycasted.ContentLayout is HorizontalLayoutGroup ||
                              _currentReorderableListRaycasted.ContentLayout is FlowLayoutGroup)
+                    {
+                        if (_currentReorderableListRaycasted.isContainerCommandList)
+                        {
+                            _currentReorderableListRaycasted.GetComponent<LayoutElement>().preferredWidth = ((_currentReorderableListRaycasted.transform.GetChild(0).childCount + 1) * 100) + 25;
+                            _currentReorderableListRaycasted.transform.GetChild(0).GetComponent<LayoutElement>()
+                                .preferredWidth = _currentReorderableListRaycasted.GetComponent<LayoutElement>()
+                                .preferredWidth;
+                        }
                         dist = Mathf.Abs(c.position.x - Input.mousePosition.x);
-                    else if (_currentReorderableListRaycasted.ContentLayout is GridLayoutGroup )
+                    }
+                    else if (_currentReorderableListRaycasted.ContentLayout is GridLayoutGroup)
+                    {
                         dist = (Mathf.Abs(c.position.x - worldPoint.x) + Mathf.Abs(c.position.y - worldPoint.y));
+                    }
 
                     if (dist < minDistance)
                     {
@@ -324,8 +337,9 @@ namespace UnityEngine.UI.Extensions
                 var firstChild = _currentReorderableListRaycasted.Content.GetChild(0);
                 if (firstChild != null)
                 {
-                    size.x = firstChild.GetComponent<LayoutElement>().preferredWidth;
-                    size.y = firstChild.GetComponent<LayoutElement>().preferredHeight;
+                    //The size of the Command once its dragged into the droppable list should always remain 95 * 95
+                    size.x = 95;
+                    size.y = 95;
                 }
             }
 

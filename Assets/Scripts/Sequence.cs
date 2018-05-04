@@ -13,14 +13,15 @@ namespace Assets.Scripts
 {
     public class Sequence : IList<BaseCommand> {
         public List<BaseCommand> Commands { get; set; }
+        private List<BaseCommand> _localPlayerCommands;
 
         public Sequence() {
             Commands = new List<BaseCommand>();
         }
 
-        public UnityAction<List<BaseCommand>> OnSequenceChanged;
-        public void SequenceChanged(List<BaseCommand> commands) {
-            OnSequenceChanged?.Invoke(commands);
+        public void SequenceChanged() {
+            Debug.Log("changeSequenmce");
+            EventManager.SequenceChanged();
         }
 
         public IEnumerator<BaseCommand> GetEnumerator() {
@@ -34,19 +35,57 @@ namespace Assets.Scripts
         public void Add(BaseCommand item)
         {
             Commands.Add(item);
-            SequenceChanged(Commands);
+            SequenceChanged();
+        }
+
+        public void Add(BaseCommand command, List<int> indexes)
+        {
+            List<BaseCommand> commands = Commands;
+
+            for (int i = 0; i < indexes.Count; i++)
+            {
+                //If we're at the last index, we need to add the command at that index
+                if (i == indexes.Count - 1)
+                {
+                    Debug.Log("Voeg toe aan commands");
+
+                    commands.Insert(indexes[i], command);
+                    SequenceChanged();
+                    return;
+                }
+                //If its a loop, get the commands inside the loop
+                if (commands[indexes[i]] is LoopCommand)
+                {
+                    //If the loop has children, get them
+                    if (((LoopCommand)Commands[indexes[i]]).Sequence != null)
+                    {
+                        commands = ((LoopCommand)Commands[indexes[i]]).Sequence.Commands;
+                    }//If the loop has no children, initialize the loop 
+                    else
+                    {
+                        ((LoopCommand) Commands[indexes[i]]).Init();
+                        commands = ((LoopCommand) Commands[indexes[i]]).Sequence.Commands;
+                    }
+
+                }//If its not a loop then i dont know what is going on
+                else
+                {
+                    Debug.Log("Huh??");
+                }
+            }
+            
         }
 
         public void AddRange(IEnumerable<BaseCommand> items) {
             foreach (var item in items) {
                 Commands.Add(item);
             }
-            SequenceChanged(Commands);
+            SequenceChanged();
         }
 
         public void Clear() {
             Commands.Clear();
-            SequenceChanged(Commands);
+            SequenceChanged();
         }
 
         public void SwapAtIndexes(int i, int j)
@@ -54,7 +93,7 @@ namespace Assets.Scripts
             BaseCommand temp = Commands[j];
             Commands[j] = Commands[i];
             Commands[i] = temp;
-            SequenceChanged(Commands);
+            SequenceChanged();
         }
 
         public bool isEmpty(int index)
@@ -72,7 +111,7 @@ namespace Assets.Scripts
 
         public bool Remove(BaseCommand item) {
             var isRemoved = Commands.Remove(item);
-            SequenceChanged(Commands);
+            SequenceChanged();
             return isRemoved;
         }
 
@@ -84,7 +123,7 @@ namespace Assets.Scripts
 
         public void Insert(int index, BaseCommand item) {
             Commands.Insert(index, item);
-            SequenceChanged(Commands);
+            SequenceChanged();
         }
 
         public void RemoveAt(int index)
@@ -93,7 +132,46 @@ namespace Assets.Scripts
                 return;
 
             Commands.RemoveAt(index);
-            SequenceChanged(Commands);
+            SequenceChanged();
+        }
+
+        public void RemoveAt(List<int> indexes)
+        {
+            //Item being removed is directly in the sequence bar
+            if (indexes.Count == 1)
+            {
+                RemoveAt(indexes[0]);
+                return;
+            }
+
+            List<BaseCommand> commands = Commands;
+            for (int i = 0; i < indexes.Count; i++)
+            {
+                //If its a loop, get the commands inside the loop
+                if (commands[indexes[i]] is LoopCommand)
+                {
+                    //If the loop has children, get them
+                    if (((LoopCommand) Commands[indexes[i]]).Sequence != null)
+                    {
+                        Debug.Log("pak de kinderen van de loop");
+
+                        commands = ((LoopCommand)Commands[indexes[i]]).Sequence.Commands;
+                    }//If the loop has no children, remove the loop
+                    else
+                    {
+                        Debug.Log("verwijderen de lege loop");
+                    
+                        commands.RemoveAt(indexes[i]);
+                        
+                    }
+                }//If its not a loop, the command has to be deleted
+                else
+                {
+                    commands.RemoveAt(indexes[i]);
+                    //I dont know why sequence changed is not called unless i put it here
+                    SequenceChanged();
+                }
+            }
         }
 
         public BaseCommand this[int index] {
