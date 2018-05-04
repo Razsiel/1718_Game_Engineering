@@ -106,10 +106,10 @@ namespace Assets.Scripts.UI
         }
 
         public void CreateCommands() {
-            foreach (var command in _gameInfo.AllowedCommands)
+            foreach (var command in _gameInfo.AllCommands.Commands)
             {
-                CreateCommandButton(command, _commandListPanel, () => {
-                    _player.Sequence.Add(command);
+                CreateCommandButton(command.Value, _commandListPanel, () => {
+                    _player.Sequence.Add(command.Value);
                 });
             }
         }
