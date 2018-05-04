@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
@@ -15,13 +16,13 @@ namespace Assets.Data.Command {
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player)
+        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player, SequenceCycle cycle)
         {
             // Can i move forward? if not: return
             GridCell destination;
-            if (!level.TryMoveInDirection(player, player.ViewDirection, out destination)
+            if (!level.TryMoveInDirection(player, player.ViewDirection, out destination, cycle)
                 || !destination.IsValid)
-                yield break;
+                yield break; // Animate half-move and bump
 
             // Get WorldPosition from destination-GridCell
             GridMapData gridMap = level.GridMapData;

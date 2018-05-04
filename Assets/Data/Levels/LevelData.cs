@@ -66,6 +66,32 @@ namespace Assets.Data.Levels
             return playerStartPos;
         }
 
+        public GridCell GetDestinationTile(Scripts.Player player)
+        {
+            var directionVector = player.ViewDirection.ToVector2();
+            GridCell destination = new GridCell(GridMapData, -1, -1);
+
+            // Get current player pos
+            Vector2Int playerPos;
+            if (!_playerPositions.TryGetValue(player, out playerPos))
+            {
+                Debug.Log(player.GetHashCode());
+                Debug.Log($"Could not move player: Player does not have a position on the grid");
+            }
+
+            Debug.Log(
+                $"... Trying to move \"{player.ViewDirection.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
+
+            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y,
+                out destination))
+            {
+                Debug.Log(
+                    $"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
+            }
+
+            return destination;
+        }
+
         /// <summary>
         /// Checks whether the given player is allowed to move in the direction given on the map
         /// </summary>
@@ -73,9 +99,23 @@ namespace Assets.Data.Levels
         /// <param name="direction">The direction the player wants to go from it's current position</param>
         /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination) {
-            var directionVector = direction.ToVector2();
+        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination, SequenceCycle cycle) {
+
+            var directionVector = player.ViewDirection.ToVector2();
             destination = new GridCell(GridMapData, -1, -1);
+
+            if (cycle.Commands.Count > 1)
+            {
+                if (cycle.Commands[0].Item2 == cycle.Commands[1].Item2)
+                {
+                    if (GetDestinationTile(cycle.Commands[0].Item1) == GetDestinationTile(cycle.Commands[1].Item1))
+                    {
+                        // Invoke BumpAnimationEvent
+                        return false;
+                    }
+                }
+            }
+            
 
             // Get current player pos
             Vector2Int playerPos;

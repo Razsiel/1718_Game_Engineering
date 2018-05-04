@@ -7,12 +7,11 @@ using Assets.Data.Command;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
 public class SequenceRunner : MonoBehaviour {
     
-    // TODO: Create SequenceCycle object with the 2 Commands of that step + CommandList -> List<SequenceCycle>
-
     void Awake()
     {
         EventManager.OnSimulate += ExecuteSequences;
@@ -79,20 +78,30 @@ public class SequenceRunner : MonoBehaviour {
         return commands;
     }
 
-    private IEnumerator RunBothSequences(LevelData levelData, List<SequenceCycle> CommandList)
+    private IEnumerator RunBothSequences(LevelData levelData, List<SequenceCycle> Cycles)
     {
 
         // Run every SequenceStep
-        for (int i = 0; i < CommandList.Count; i++)
+        for (int i = 0; i < Cycles.Count; i++)
         {
-            List<Tuple<Player, BaseCommand>> thisCycle = CommandList[i].Commands;
+            List<Tuple<Player, BaseCommand>> thisCycle = Cycles[i].Commands;
+
+//            GridCell dest1 = levelData.GetDestinationTile(thisCycle[0].Item1);
+//            GridCell dest2 = levelData.GetDestinationTile(thisCycle[1].Item1);
+//
+//            if (dest1 == dest2)
+//            {
+//                // dont move
+//                // do the bump animation this turn
+//            }
+
             DateTime beforeExecute = DateTime.Now;
             // Execute every player's command (but only wait for the last one)
             for (int j = 0; j < thisCycle.Count - 1; j++)
             {
-                StartCoroutine(thisCycle[j].Item2.Execute(this, levelData, thisCycle[j].Item1));
+                StartCoroutine(thisCycle[j].Item2.Execute(this, levelData, thisCycle[j].Item1, Cycles[i]));
             }
-            yield return StartCoroutine(thisCycle[thisCycle.Count-1].Item2.Execute(this, levelData, thisCycle[thisCycle.Count-1].Item1));
+            yield return StartCoroutine(thisCycle[thisCycle.Count-1].Item2.Execute(this, levelData, thisCycle[thisCycle.Count-1].Item1, Cycles[i]));
             DateTime afterExecute = DateTime.Now;
 
             // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST

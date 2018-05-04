@@ -19,7 +19,7 @@ public class TurnCommand : BaseCommand
     /// </summary>
     /// <param name="player"></param>
     /// <returns></returns>
-    public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Player player)
+    public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Player player, SequenceCycle cycle)
     {
         Debug.Log($"Turning: {angle}");
         // For swapping CardinalDirection: always 2 or -2 (90 / 45 = 2)
