@@ -72,6 +72,7 @@ namespace Assets.Scripts {
             };
 
             if (_gameInfo.IsMultiplayer) {
+                print("GameStateManager: We are gonna start in multiplayer");
                 StartMultiplayer();
             }
             else {

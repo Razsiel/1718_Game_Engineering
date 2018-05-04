@@ -37,4 +37,28 @@ public class TGEMonoBehaviour : MonoBehaviour {
         initializer?.Invoke(component);
         return component;
     }
+
+    /// <summary>
+    /// Make the attached <see cref="GameObject"/> active
+    /// </summary>
+    public virtual void Activate()
+    {
+        this.gameObject.SetActive(true);      
+    }
+
+    /// <summary>
+    /// Make the attached <see cref="GameObject"/> inactive
+    /// </summary>
+    public virtual void Deactivate()
+    {
+        this.gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Make the attached <see cref="GameObject"/> activatestate toggled
+    /// </summary>
+    public virtual void ToggleActivate()
+    {
+        this.gameObject.SetActive(!this.gameObject.activeSelf);
+    }
 }

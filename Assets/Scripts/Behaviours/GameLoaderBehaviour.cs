@@ -1,5 +1,6 @@
 ﻿using Assets.Data.Command;
 using Assets.Data.Levels;
+using Assets.Scripts.Photon.Level;
 using UnityEngine;
 
 namespace Assets.Scripts.Behaviours {
@@ -12,6 +13,7 @@ namespace Assets.Scripts.Behaviours {
         [SerializeField] private GameObject _audioPrefab;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _sequenceRunnerPrefab;
+        [SerializeField] private GameObject _photonPrefab;
 
         // Use this for initialization
         public override void Start() {
@@ -29,6 +31,9 @@ namespace Assets.Scripts.Behaviours {
                 manager.PlayerPrefab = _playerPrefab;
             });
 //            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
+           
+            var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
+            photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
 
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);

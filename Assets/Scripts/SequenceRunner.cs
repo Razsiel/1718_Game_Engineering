@@ -20,75 +20,79 @@ public class SequenceRunner : MonoBehaviour {
 
     private void ExecuteSequences(LevelData levelData, List<TGEPlayer> Players)
     {
+        List<Tuple<Player, Sequence>> ExecutionSequences = new List<Tuple<Player, Sequence>>();
+        foreach (TGEPlayer player in Players)
+        {
+            Sequence sequence = new Sequence();
+            
+            foreach (BaseCommand command in player.Player.Sequence)
+            {
+                // GetSimpleCommands
+                sequence.AddRange(GetContainedCommands(command));
+            }
+            ExecutionSequences.Add(new Tuple<Player, Sequence>(player.Player, sequence));
+        }
 
         // OrderedCommandList based on Command.Priority
-        List<Tuple<Player, BaseCommand>> CommandList = new List<Tuple<Player, BaseCommand>>();
+        List<SequenceCycle> sequenceCycles = new List<SequenceCycle>();
 
-        // Singleplayer only
-        if (Players.ElementAtOrDefault(1) == null)
+        int MaxCycles = ExecutionSequences.Max(t =>t.Item2.Count);
+
+        for (int i = 0; i < MaxCycles; i++)
         {
-            foreach (BaseCommand command in Players[0].Player.Sequence)
+            SequenceCycle thisCycle = new SequenceCycle();
+            foreach (Tuple<Player, Sequence> tuple in ExecutionSequences)
             {
-                CommandList.Add(new Tuple<Player, BaseCommand>(Players[0].Player, command));
+                if (tuple.Item2.Count > i)
+                    thisCycle.Commands.Add(new Tuple<Player, BaseCommand>(tuple.Item1, tuple.Item2[i]));
             }
 
-            StartCoroutine(RunSingleSequence(levelData, CommandList));
-            return;
-        }
-        
-        // Get both sequences (players)
-        Player player1 = Players[0].Player;
-        Player player2 = Players[1].Player;
-
-        // Add all commands to the CommandList (based on Command.Priority)
-        for (int i = 0; i < Mathf.Max(player1.Sequence.Count, player2.Sequence.Count); i++)
-        {
-            // If one seq is longer than other, last commands will only be of one player.
-            // Auto-take the others command
-            if (player1.Sequence[i] == null)
-            {
-                CommandList.Add(new Tuple<Player, BaseCommand>(player2, player2.Sequence[i]));
-                continue;
-            }
-            if (player2.Sequence[i] == null)
-            {
-                CommandList.Add(new Tuple<Player, BaseCommand>(player1, player1.Sequence[i]));
-                continue;
-            }
-
-            BaseCommand command1 = player1.Sequence[i];
-            BaseCommand command2 = player2.Sequence[i];
-            
-            if (command1.Priority < command2.Priority)
-            {
-                // Higher priority (Player2) first
-                CommandList.Add(new Tuple<Player, BaseCommand>(player2, command2));
-                CommandList.Add(new Tuple<Player, BaseCommand>(player1, command1));
-            }
-            else
-            {
-                // Default (Player1 first)
-                CommandList.Add(new Tuple<Player, BaseCommand>(player1, command1));
-                CommandList.Add(new Tuple<Player, BaseCommand>(player2, command2));
-            }
+            thisCycle.Commands = thisCycle.Commands.OrderByDescending(c => c.Item2.Priority).ToList();
+            sequenceCycles.Add(thisCycle);
         }
 
         // execute commands in ordered list
-        StartCoroutine(RunBothSequences(levelData, CommandList));
+        StartCoroutine(RunBothSequences(levelData, sequenceCycles));
     }
 
-    private IEnumerator RunBothSequences(LevelData levelData, List<Tuple<Player, BaseCommand>> CommandList)
+    private List<BaseCommand> GetContainedCommands(BaseCommand thisCommand)
+    {
+        // Only simple commands
+        List <BaseCommand> commands = new List<BaseCommand>();
+
+        // Return simple command
+        if (!(thisCommand is LoopCommand))
+        {
+            commands.Add(thisCommand);
+            return commands;
+        }
+
+        // Get all contained commands
+        for (int i = 0; i < ((LoopCommand)thisCommand).LoopCount; i++)
+        {
+            foreach (BaseCommand command in ((LoopCommand)thisCommand).Sequence)
+            {
+                commands.AddRange(GetContainedCommands(command));
+            }
+        }
+
+        return commands;
+    }
+
+    private IEnumerator RunBothSequences(LevelData levelData, List<SequenceCycle> CommandList)
     {
 
         // Run every SequenceStep
         for (int i = 0; i < CommandList.Count; i++)
         {
-            Tuple<Player, BaseCommand> command1 = CommandList[i]; // Prio Command
-            Tuple<Player, BaseCommand> command2 = CommandList[i+1]; // Non-Prio Command
-
+            List<Tuple<Player, BaseCommand>> thisCycle = CommandList[i].Commands;
             DateTime beforeExecute = DateTime.Now;
-            StartCoroutine(command1.Item2.Execute(this, levelData, command1.Item1));
-            yield return StartCoroutine(command2.Item2.Execute(this, levelData, command2.Item1));
+            // Execute every player's command (but only wait for the last one)
+            for (int j = 0; j < thisCycle.Count - 1; j++)
+            {
+                StartCoroutine(thisCycle[j].Item2.Execute(this, levelData, thisCycle[j].Item1));
+            }
+            yield return StartCoroutine(thisCycle[thisCycle.Count-1].Item2.Execute(this, levelData, thisCycle[thisCycle.Count-1].Item1));
             DateTime afterExecute = DateTime.Now;
 
             // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
@@ -97,23 +101,14 @@ public class SequenceRunner : MonoBehaviour {
             yield return new WaitForSeconds(delay);
         }
     }
+}
 
-    private IEnumerator RunSingleSequence(LevelData levelData, List<Tuple<Player, BaseCommand>> CommandList)
+public class SequenceCycle
+{
+    public List<Tuple<Player, BaseCommand>> Commands;
+
+    public SequenceCycle()
     {
-
-        // Run every SequenceStep
-        for (int i = 0; i < CommandList.Count; i++)
-        {
-            Tuple<Player, BaseCommand> command1 = CommandList[i]; // Prio Command
-
-            DateTime beforeExecute = DateTime.Now;
-            yield return StartCoroutine(command1.Item2.Execute(this, levelData, command1.Item1));
-            DateTime afterExecute = DateTime.Now;
-
-            // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-            float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
-
-            yield return new WaitForSeconds(delay);
-        }
+        Commands = new List<Tuple<Player, BaseCommand>>();
     }
 }
