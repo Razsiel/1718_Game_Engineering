@@ -19,9 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4214806772093522}
-  - component: {fileID: 114068457036429866}
-  - component: {fileID: 114512755704445868}
   - component: {fileID: 114100786264632884}
+  - component: {fileID: 114999341334928176}
   m_Layer: 0
   m_Name: PhotonManager
   m_TagString: Untagged
@@ -42,17 +41,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114068457036429866
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1494385930832512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de83a8fa9e5165e4693679c078b1dd02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114100786264632884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,7 +67,7 @@ MonoBehaviour:
   instantiationId: -1
   currentMasterID: -1
   isRuntimeInstantiated: 0
---- !u!114 &114512755704445868
+--- !u!114 &114999341334928176
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -87,10 +75,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1494385930832512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26e516676f395843b9c00c141997515, type: 3}
+  m_Script: {fileID: 11500000, guid: 93eac1a628633064299cca92fab784ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1113587650327536, guid: 0c876bf9cd3d52b409a4b4f05aaa24ba,
-    type: 2}
-  networkPlayerSequenceBarView: {fileID: 0}
-  RoomPanel: {fileID: 0}
+  CommandLib: {fileID: 0}
