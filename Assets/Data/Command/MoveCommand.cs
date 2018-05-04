@@ -20,16 +20,26 @@ namespace Assets.Data.Command {
         {
             // Can i move forward? if not: return
             GridCell destination;
-            if (!level.TryMoveInDirection(player, player.ViewDirection, out destination, cycle)
-                || !destination.IsValid)
-                yield break; // Animate half-move and bump
+
+            bool SuccesfulMove = level.TryMoveInDirection(player, player.ViewDirection, out destination, cycle) && destination.IsValid;
 
             // Get WorldPosition from destination-GridCell
             GridMapData gridMap = level.GridMapData;
             Vector3 destinationPosition = GridHelper.GridToWorldPosition(gridMap, destination.XY);
             destinationPosition.y = player.transform.position.y;
+
+            if (SuccesfulMove)
+            {
+                player.OnMoveTo?.Invoke(destinationPosition);
+            }
+            else
+            {
+                player.OnFailMoveTo?.Invoke(destinationPosition);
+                yield break;
+
+            }
+
             
-            player.OnMoveTo?.Invoke(destinationPosition);
         }
 
         public override string ToString()

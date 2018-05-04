@@ -19,6 +19,7 @@ namespace Assets.Scripts {
         public Sequence Sequence { get; private set; }
 
         public UnityAction<Vector3> OnMoveTo;
+        public UnityAction<Vector3> OnFailMoveTo;
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;

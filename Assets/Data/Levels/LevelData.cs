@@ -73,21 +73,8 @@ namespace Assets.Data.Levels
 
             // Get current player pos
             Vector2Int playerPos;
-            if (!_playerPositions.TryGetValue(player, out playerPos))
-            {
-                Debug.Log(player.GetHashCode());
-                Debug.Log($"Could not move player: Player does not have a position on the grid");
-            }
-
-            Debug.Log(
-                $"... Trying to move \"{player.ViewDirection.ToString().ToUpper()} {directionVector}\" from {playerPos} to cell ({playerPos.x + directionVector.x}, {playerPos.y + directionVector.y})");
-
-            if (!GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y,
-                out destination))
-            {
-                Debug.Log(
-                    $"Could not move player: Cell at ({destination.X}, {destination.Y}) does not exist/is out of bounds");
-            }
+            _playerPositions.TryGetValue(player, out playerPos);
+            GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination);
 
             return destination;
         }
@@ -102,20 +89,15 @@ namespace Assets.Data.Levels
         public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination, SequenceCycle cycle) {
 
             var directionVector = player.ViewDirection.ToVector2();
-            destination = new GridCell(GridMapData, -1, -1);
+            destination = GetDestinationTile(player);
 
-            if (cycle.Commands.Count > 1)
+            // IF: MultiPlayer, both MoveCommand and same destination
+            if (cycle.Commands.Count > 1 
+                && cycle.Commands[0].Item2 == cycle.Commands[1].Item2 
+                && GetDestinationTile(cycle.Commands[0].Item1) == GetDestinationTile(cycle.Commands[1].Item1))
             {
-                if (cycle.Commands[0].Item2 == cycle.Commands[1].Item2)
-                {
-                    if (GetDestinationTile(cycle.Commands[0].Item1) == GetDestinationTile(cycle.Commands[1].Item1))
-                    {
-                        // Invoke BumpAnimationEvent
-                        return false;
-                    }
-                }
+                return false;
             }
-            
 
             // Get current player pos
             Vector2Int playerPos;
