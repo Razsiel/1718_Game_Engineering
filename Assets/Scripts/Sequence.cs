@@ -250,6 +250,14 @@ namespace Assets.Scripts
             }
         }
 
+        public void LoopEdited(string newAmountOfLoops, List<int> indexes)
+        {
+            LoopCommand command = null;
+            command = (LoopCommand) GetCommandForListOfIndexes(indexes, Commands, command);
+            command.LoopCount = int.Parse(newAmountOfLoops);
+            SequenceChanged();
+        }
+
         public BaseCommand this[int index] {
             get { return Commands[index]; }
             set { Commands[index] = value; }

@@ -318,7 +318,13 @@ public class BottomPanelBehaviour : MonoBehaviour
     {
         for (int i = 0; i < commands.Count; i++)
         {
-            GameObject slot = CreateSequenceBarSlot(isMainSequenceBar, i, commands[i].Icon, commands[i] is LoopCommand);
+            var amountOfLoops = 0;
+            if (commands[i] is LoopCommand)
+            {
+                amountOfLoops = ((LoopCommand)commands[i]).LoopCount;
+            }
+
+            GameObject slot = CreateSequenceBarSlot(isMainSequenceBar, i, commands[i].Icon, commands[i] is LoopCommand, amountOfLoops);
             slot.transform.SetParent(parent, false);
 
             //Edit the SlotScript so that the right index is added to the slot
@@ -335,15 +341,6 @@ public class BottomPanelBehaviour : MonoBehaviour
             {
                 slotSlotScript.indexes.Add(i);
             }
-
-
-            //We're putting the slot inside of a loop or if else listpanel
-            //if (parent.GetComponent<SlotListPanel>() != null && parent.childCount > 1)
-            //{
-            //    //Adjust the size of the listpanel and the parent of the listpanel accordingly
-            //    parent.parent.GetComponent<LayoutElement>().preferredWidth += 100;
-            //    parent.GetComponent<LayoutElement>().preferredWidth += 100;
-            //}
 
             if (commands[i] is LoopCommand && ((LoopCommand) commands[i]).Sequence != null)
             {
@@ -376,7 +373,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         print(width);
     }
 
-    private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index, Sprite image, bool isLoopCommandSlot)
+    private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index, Sprite image, bool isLoopCommandSlot, int amountOfLoops)
     {
         int size = isMainSequenceBar ? 95 : 55;
 
@@ -388,10 +385,14 @@ public class BottomPanelBehaviour : MonoBehaviour
 
         slotLayoutElement.preferredHeight = size;
         slotLayoutElement.preferredWidth = size;
+        slotImage.sprite = image;
 
         //if Loop command, add reorderable list setup
         if (isLoopCommandSlot)
         {
+            //Disable the image because the loop image will be placed inside a child
+            slotImage.enabled = false;
+
             GameObject listInSlot = new GameObject("list in slot");
             var listInSlotFlow = listInSlot.AddComponent<FlowLayoutGroup>();
             var listInSlotContent = listInSlot.AddComponent<ContentSizeFitter>();
@@ -401,7 +402,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             listInSlotContent.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             listInSlotLayout.preferredHeight = 125;
-            listInSlotLayout.preferredWidth = 125;
+            listInSlotLayout.preferredWidth = 155;
 
             listInSlot.transform.SetParent(slot.transform);
             var slotReorderableList = slot.AddComponent<ReorderableList>();
@@ -415,10 +416,71 @@ public class BottomPanelBehaviour : MonoBehaviour
             listInSlotFlow.spacing = new Vector2(5f,0);
 
             slotLayoutElement.preferredHeight = size;
-            slotLayoutElement.preferredWidth = 125;
+            slotLayoutElement.preferredWidth = 155;
+
+            GameObject loopImageAndInput = new GameObject("loop image & input");
+            var loopAndImageFlowLayout = loopImageAndInput.AddComponent<FlowLayoutGroup>();
+            var loopAndImageLayoutElement = loopImageAndInput.AddComponent<LayoutElement>();
+            var loopAndImageContentSizeFitter = loopImageAndInput.AddComponent<ContentSizeFitter>();
+
+            loopAndImageContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            loopAndImageLayoutElement.preferredWidth = 155;
+            loopAndImageLayoutElement.preferredHeight = 95;
+
+            GameObject loopImage = new GameObject("image");
+            loopImage.AddComponent<Image>().sprite = image;
+            var loopImageContentSizeFitter = loopImage.AddComponent<ContentSizeFitter>();
+
+            loopImageContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            loopImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            var loopImageLayoutElement = loopImage.AddComponent<LayoutElement>();
+            loopImageLayoutElement.preferredWidth = 125;
+            loopImageLayoutElement.preferredHeight = 95;
+
+            GameObject loopInput = new GameObject("input");
+            var loopInputLayoutElement = loopInput.AddComponent<LayoutElement>();
+            var loopInputContentSizeFitter = loopInput.AddComponent<ContentSizeFitter>();
+            var loopInputImage = loopInput.AddComponent<Image>();
+
+            loopInputContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            loopInputContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            loopInputLayoutElement.preferredHeight = 95;
+            loopInputLayoutElement.preferredWidth = 30;
+
+            var loopInputField = loopInput.AddComponent<InputField>();
+
+            loopImage.transform.SetParent(loopImageAndInput.transform, false);
+            loopInput.transform.SetParent(loopImageAndInput.transform, false);
+
+            loopImageAndInput.transform.SetParent(slot.transform, false);
+
+            //Create the text field
+            GameObject inputText = new GameObject("text");
+            var inputTextText = inputText.AddComponent<Text>();
+            inputTextText.font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+            inputTextText.alignment = TextAnchor.MiddleCenter;
+            inputTextText.supportRichText = false;
+            inputTextText.color = Color.black;
+            inputTextText.fontSize = 50;
+            inputTextText.horizontalOverflow = HorizontalWrapMode.Overflow;
+            inputTextText.verticalOverflow = VerticalWrapMode.Overflow;
+
+            loopInputField.textComponent = inputTextText;
+            loopInputField.characterLimit = 1;
+            loopInputField.text = amountOfLoops.ToString();
+            loopInputField.targetGraphic = loopInputImage;
+            loopInputField.contentType = InputField.ContentType.IntegerNumber;
+            loopInputField.onEndEdit.AddListener((string newAmountOfLoops) => AmountOfLoopsEdited(newAmountOfLoops, slotSlotScript.indexes));
+
+            inputText.transform.SetParent(loopInputField.transform, false);
+            loopInput.transform.SetParent(loopInputField.transform, false);
+    
         }
 
-        slotImage.sprite = image;
         if (isMainSequenceBar)
         {
             var slotButton = slot.AddComponent<Button>();
@@ -434,6 +496,11 @@ public class BottomPanelBehaviour : MonoBehaviour
         slotContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         return slot;
+    }
+
+    private void AmountOfLoopsEdited(string newAmountOfLoops, List<int> indexes)
+    {
+        _localPlayer.Sequence.LoopEdited(newAmountOfLoops, indexes);
     }
 
 
