@@ -153,20 +153,51 @@ public class BottomPanelBehaviour : MonoBehaviour
 
     private void RearrangeElementsInSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
+        //this will go wrong 
         if (arg0.ToIndex != arg0.FromIndex)
         {
-            if (_localPlayer.Sequence.isEmpty(arg0.ToIndex))
+            List<int> toIndexes = new List<int>();
+            List<int> fromIndexes = new List<int>();
+            //If the list that we're dropping to has a slotscript, its not the sequence bar.
+            //Therefore we have to get the list of indexes to determine where to add the command to the player sequence.
+            if (arg0.ToList.GetComponent<SlotScript>() != null)
             {
-                arg0.ToIndex = _localPlayer.Sequence.Count - 1;
+                //SlotScript commandSlotScript = arg0.ToList.GetComponent<SlotScript>();
+
+                ////Indexes of the location the element is to be dropped to
+                //toIndexes.AddRange(commandSlotScript.indexes);
+                //toIndexes.Add(arg0.ToIndex);
+            }//The list we're dropping to is the sequence bar
+            else
+            {
+                toIndexes.Add(arg0.ToIndex);
             }
 
-            _localPlayer.Sequence.SwapAtIndexes(arg0.ToIndex, arg0.FromIndex);
+            //If true, we're taking from inside a loop
+            if (arg0.FromList.GetComponent<SlotScript>() != null)
+            {
+                //SlotScript commandSlotScript = arg0.FromList.GetComponent<SlotScript>();
+
+                ////Indexes of the location the element is to be dropped to
+                //fromIndexes.AddRange(commandSlotScript.indexes);
+                //fromIndexes.Add(arg0.ToIndex);
+
+            }//The list we're dropping from is the sequence bar
+            else
+            {
+                fromIndexes.Add(arg0.FromIndex);
+            }
+
+            //Swap the commands
+            _localPlayer.Sequence.SwapAtIndexes(fromIndexes, toIndexes);
+
         }
     }
 
     internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
+
 
         //If the list that we're dropping to has a slotscript, its not the sequence bar.
         //Therefore we have to get the list of indexes to determine where to add the command to the player sequence.

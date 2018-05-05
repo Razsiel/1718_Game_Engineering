@@ -96,9 +96,83 @@ namespace Assets.Scripts
             SequenceChanged();
         }
 
+        public void SwapAtIndexes(List<int> fromIndexes, List<int> toIndexes)
+        {
+            //If the swap is taking place at the surface level
+            if (fromIndexes.Count == 1 && toIndexes.Count == 1)
+            {
+                SwapAtIndexes(fromIndexes[0], toIndexes[0]);
+            }
+
+            BaseCommand temp = null;
+            BaseCommand fromCommand = null;
+            BaseCommand toCommand = null;
+            
+            List<BaseCommand> commands = Commands;
+
+            fromCommand = GetCommandForListOfIndexes(fromIndexes, commands, fromCommand);
+
+            commands = Commands;
+
+            toCommand = GetCommandForListOfIndexes(toIndexes, commands, toCommand);
+
+            //Swap the commands
+            temp = fromCommand;
+            fromCommand = toCommand;
+            toCommand = temp;
+
+        }
+
+        private BaseCommand GetCommandForListOfIndexes(List<int> indexes, List<BaseCommand> commands, BaseCommand command)
+        {
+            for (int i = 0; i < indexes.Count; i++)
+            {
+                if (commands[indexes[i]] is LoopCommand)
+                {
+                    //If the loop has children, get them
+                    if (((LoopCommand) Commands[indexes[i]]).Sequence != null)
+                    {
+                        Debug.Log("pak de kinderen van de loop");
+
+                        commands = ((LoopCommand) Commands[indexes[i]]).Sequence.Commands;
+                    } //If the loop has no children
+                    else
+                    {
+                        command = commands[indexes[i]];
+                    }
+                }
+                else
+                {
+                    command = commands[indexes[i]];
+                }
+            }
+
+            return command;
+        }
+
         public bool isEmpty(int index)
         {
             return Commands.Count <= index;
+        }
+
+        //See if index is empty in deeper level
+        public bool isEmpty(List<int> indexes)
+        {
+            if (indexes.Count == 1)
+            {
+                return isEmpty(indexes[0]);
+            }
+
+            List<BaseCommand> commands = Commands;
+            BaseCommand command = null;
+
+            command = GetCommandForListOfIndexes(indexes, commands, command);
+
+            if (command == null)
+                return true;
+            else
+                return false;
+            
         }
 
         public bool Contains(BaseCommand item) {
