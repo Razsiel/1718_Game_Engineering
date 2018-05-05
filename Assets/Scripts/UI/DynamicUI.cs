@@ -108,7 +108,18 @@ namespace Assets.Scripts.UI
             foreach (var command in _gameInfo.AllowedCommands)
             {
                 CreateCommandButton(command, _commandListPanel, () => {
-                    _player.Sequence.Add(command);
+                    if (command is LoopCommand)
+                    {
+                        BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
+                        newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
+                        newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
+                        _player.Sequence.Add(newCommand);
+                    }
+                    else
+                    {
+                        _player.Sequence.Add(command);
+                    }
                 });
             }
         }

@@ -197,6 +197,13 @@ public class BottomPanelBehaviour : MonoBehaviour
     internal void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
+        if (command is LoopCommand)
+        {
+            command = ScriptableObject.CreateInstance<LoopCommand>();
+            command.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
+            command.Name = _gameInfo.AllCommands.LoopCommand.Name;
+            command.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
+        }
 
 
         //If the list that we're dropping to has a slotscript, its not the sequence bar.
