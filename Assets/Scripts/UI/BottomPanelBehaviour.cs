@@ -337,20 +337,43 @@ public class BottomPanelBehaviour : MonoBehaviour
             }
 
 
-            //We're dropping the slot inside of a loop or if else listpanel
-            if (parent.GetComponent<SlotListPanel>() != null && parent.childCount > 1)
-            {
-                //Adjust the size of the listpanel and the parent of the listpanel accordingly
-                parent.parent.GetComponent<LayoutElement>().preferredWidth += 100;
-                parent.GetComponent<LayoutElement>().preferredWidth += 100;
-            }
+            //We're putting the slot inside of a loop or if else listpanel
+            //if (parent.GetComponent<SlotListPanel>() != null && parent.childCount > 1)
+            //{
+            //    //Adjust the size of the listpanel and the parent of the listpanel accordingly
+            //    parent.parent.GetComponent<LayoutElement>().preferredWidth += 100;
+            //    parent.GetComponent<LayoutElement>().preferredWidth += 100;
+            //}
 
             if (commands[i] is LoopCommand && ((LoopCommand) commands[i]).Sequence != null)
             {
                 //Update sequence bar with the new slots inside of the loop
                 UpdateSequenceBar(((LoopCommand) commands[i]).Sequence.Commands, slot.transform.GetChild(0), true);
+                
+                SetWidthOfChildren(slot.transform.GetChild(0).gameObject);
+                SetWidthOfChildren(slot);
             }
         }
+    }
+
+    private void SetWidthOfChildren(GameObject item)
+    {
+        List<GameObject> children = new List<GameObject>();
+        float width = 25;
+
+        foreach (Transform child in item.transform)
+        {
+            width += child.GetComponent<LayoutElement>().preferredWidth + 5;
+        }
+
+        if (item.transform.childCount == 0)
+        {
+            width = 125;
+        }
+
+        var itemLayout = item.GetComponent<LayoutElement>();
+        itemLayout.preferredWidth = width;
+        print(width);
     }
 
     private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index, Sprite image, bool isLoopCommandSlot)

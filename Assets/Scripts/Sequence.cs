@@ -57,14 +57,14 @@ namespace Assets.Scripts
                 if (commands[indexes[i]] is LoopCommand)
                 {
                     //If the loop has children, get them
-                    if (((LoopCommand)Commands[indexes[i]]).Sequence != null)
+                    if (((LoopCommand)commands[indexes[i]]).Sequence != null)
                     {
-                        commands = ((LoopCommand)Commands[indexes[i]]).Sequence.Commands;
+                        commands = ((LoopCommand)commands[indexes[i]]).Sequence.Commands;
                     }//If the loop has no children, initialize the loop 
                     else
                     {
-                        ((LoopCommand) Commands[indexes[i]]).Init();
-                        commands = ((LoopCommand) Commands[indexes[i]]).Sequence.Commands;
+                        ((LoopCommand) commands[indexes[i]]).Init();
+                        commands = ((LoopCommand)commands[indexes[i]]).Sequence.Commands;
                     }
 
                 }//If its not a loop then i dont know what is going on
@@ -225,17 +225,19 @@ namespace Assets.Scripts
                 if (commands[indexes[i]] is LoopCommand)
                 {
                     //If the loop has children, get them
-                    if (((LoopCommand) Commands[indexes[i]]).Sequence != null)
+                    if (((LoopCommand) commands[indexes[i]]).Sequence != null && 
+                        ((LoopCommand)commands[indexes[i]]).Sequence.Commands.Count != 0)
                     {
                         Debug.Log("pak de kinderen van de loop");
 
-                        commands = ((LoopCommand)Commands[indexes[i]]).Sequence.Commands;
+                        commands = ((LoopCommand)commands[indexes[i]]).Sequence.Commands;
                     }//If the loop has no children, remove the loop
                     else
                     {
                         Debug.Log("verwijderen de lege loop");
                     
                         commands.RemoveAt(indexes[i]);
+                        SequenceChanged();
                         
                     }
                 }//If its not a loop, the command has to be deleted
