@@ -11,7 +11,7 @@ namespace Assets.Data.Command {
     [System.Serializable]
     public class InteractCommand : BaseCommand
     {
-        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player) {
+        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player, SequenceCycle cycle) {
             IEnumerable<DecorationConfiguration> decorationsToAnimate;
             if (level.TryInteract(player, player.ViewDirection, out decorationsToAnimate))
             {

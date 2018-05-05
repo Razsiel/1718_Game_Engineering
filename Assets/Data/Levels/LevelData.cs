@@ -66,6 +66,19 @@ namespace Assets.Data.Levels
             return playerStartPos;
         }
 
+        public GridCell GetDestinationTile(Scripts.Player player)
+        {
+            var directionVector = player.ViewDirection.ToVector2();
+            GridCell destination = new GridCell(GridMapData, -1, -1);
+
+            // Get current player pos
+            Vector2Int playerPos;
+            _playerPositions.TryGetValue(player, out playerPos);
+            GridMapData.TryGetCell(playerPos.x + directionVector.x, playerPos.y + directionVector.y, out destination);
+
+            return destination;
+        }
+
         /// <summary>
         /// Checks whether the given player is allowed to move in the direction given on the map
         /// </summary>
@@ -73,9 +86,18 @@ namespace Assets.Data.Levels
         /// <param name="direction">The direction the player wants to go from it's current position</param>
         /// <param name="destination">The calculated destination cell containing it's grid position</param>
         /// <returns>Return true if the player can move in the direction. Returns false if there are any obstructions or other players on the destination</returns>
-        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination) {
-            var directionVector = direction.ToVector2();
-            destination = new GridCell(GridMapData, -1, -1);
+        public bool TryMoveInDirection(Scripts.Player player, CardinalDirection direction, out GridCell destination, SequenceCycle cycle) {
+
+            var directionVector = player.ViewDirection.ToVector2();
+            destination = GetDestinationTile(player);
+
+            // IF: MultiPlayer, both MoveCommand and same destination
+            if (cycle.Commands.Count > 1 
+                && cycle.Commands[0].Item2 == cycle.Commands[1].Item2 
+                && GetDestinationTile(cycle.Commands[0].Item1) == GetDestinationTile(cycle.Commands[1].Item1))
+            {
+                return false;
+            }
 
             // Get current player pos
             Vector2Int playerPos;

@@ -19,6 +19,7 @@ namespace Assets.Scripts {
         public Sequence Sequence { get; private set; }
 
         public UnityAction<Vector3> OnMoveTo;
+        public UnityAction<Vector3> OnFailMoveTo;
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;
@@ -47,21 +48,14 @@ namespace Assets.Scripts {
             
         }
 
-        public void UpdateSequence(List<CommandEnum> commands) {
+        public void UpdateSequence(List<CommandEnum> commands)
+        {
             this.Sequence.Clear();
 
             var commandOptions = GameInfo.AllCommands.Commands;
             var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
 
             this.Sequence.AddRange(commandValues);
-        }
-
-        public void StartExecution() {
-            this._executeCoroutine = StartCoroutine(ExecuteCommands());
-        }
-
-        IEnumerator ExecuteCommands() {
-            yield return Sequence.Run(this, this.GameInfo.Level, this);
         }
 
         public void StopExecution() {

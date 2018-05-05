@@ -253,18 +253,18 @@ namespace Assets.Scripts
             set { Commands[index] = value; }
         }
 
-        public IEnumerator Run(MonoBehaviour coroutineRunner, LevelData level, Player player) {
-            foreach (BaseCommand command in this)
-            {
-                DateTime beforeExecute = DateTime.Now;
-                yield return coroutineRunner.StartCoroutine(command.Execute(coroutineRunner, level, player));
-                DateTime afterExecute = DateTime.Now;
-
-                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
-
-                yield return new WaitForSeconds(delay);
-            }
-        }
+//        public IEnumerator Run(MonoBehaviour coroutineRunner, LevelData level, Player player) {
+//            foreach (BaseCommand command in this)
+//            {
+//                DateTime beforeExecute = DateTime.Now;
+//                yield return coroutineRunner.StartCoroutine(command.Execute(coroutineRunner, level, player));
+//                DateTime afterExecute = DateTime.Now;
+//
+//                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
+//                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+//
+//                yield return new WaitForSeconds(delay);
+//            }
+//        }
     }
 }
