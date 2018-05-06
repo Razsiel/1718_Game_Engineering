@@ -48,7 +48,6 @@ namespace Assets.Scripts.UI
             _player = _gameInfo.LocalPlayer.Player;
             _commandLibrary = _gameInfo.AllCommands;
             _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
-            _player.Sequence.OnSequenceChanged += _bottomPanelBehaviour.OnSequenceChanged;
 
 
             InitializeCommandPanel();
@@ -106,10 +105,21 @@ namespace Assets.Scripts.UI
         }
 
         public void CreateCommands() {
-            foreach (var command in _gameInfo.AllowedCommands)
+            foreach (var command in _gameInfo.AllCommands.Commands)
             {
-                CreateCommandButton(command, _commandListPanel, () => {
-                    _player.Sequence.Add(command);
+                CreateCommandButton(command.Value, _commandListPanel, () => {
+                    if (command.Value is LoopCommand)
+                    {
+                        BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
+                        newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
+                        newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
+                        _player.Sequence.Add(newCommand);
+                    }
+                    else
+                    {
+                        _player.Sequence.Add(command.Value);
+                    }
                 });
             }
         }

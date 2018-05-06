@@ -1,12 +1,18 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Experimental.UIElements;
 
 public class SlotScript : MonoBehaviour
 {
     //private SequenceBar _sequenceBar;
-    public int index;
+    public List<int> indexes;
+
+    void Awake()
+    {
+        indexes = new List<int>();
+    }
 
     void Start()
     {

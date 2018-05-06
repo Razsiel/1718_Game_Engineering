@@ -20,29 +20,33 @@ public class PlayerBehaviour : MonoBehaviour
         player.OnTurn += AnimateTurn;
         player.OnWait += AnimateWait;
         player.OnInteract += AnimateInteract;
+        player.OnFailMoveTo += AnimateFailedMove;
     }
 
     public void AnimateMoveTo(Vector3 to)
     {
         transform.DOMove(to, 1f);
-
-        // Visual movement
-//        while (!player.transform.position.AlmostEquals(destinationPosition, player.Data.MovementData.OffsetAlmostPosition))
-//        {
-//            player.transform.position = Vector3.Lerp(
-//                player.transform.position,
-//                destinationPosition,
-//                player.Data.MovementData.MovementSpeed * Time.deltaTime);
-//
-//            yield return new WaitForEndOfFrame();
-//        }
-//
-//        player.transform.position = destinationPosition;
     }
 
     public void AnimateTurn(Vector3 targetRotation)
     {
         transform.DORotate(targetRotation, 1f);
+    }
+
+    // Bump into wall or player
+    public void AnimateFailedMove(Vector3 targetDestination)
+    {
+        Vector3 bumpPosition = (transform.position + targetDestination) / 2;
+
+        StartCoroutine(RunBumpAnimation(transform.position, bumpPosition));
+    }
+
+    private IEnumerator RunBumpAnimation(Vector3 startPosition, Vector3 bumpPosition)
+    {
+        Tween move = transform.DOMove(bumpPosition, 0.5f);
+        yield return move.WaitForCompletion();
+        transform.DOShakeScale(0.3f, 0.2f, 30, 20f);
+        transform.DOMove(startPosition, 0.5f);
     }
 
     public void AnimateInteract()
