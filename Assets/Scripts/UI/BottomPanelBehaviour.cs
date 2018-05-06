@@ -5,6 +5,7 @@ using System.Linq;
 using Assets.Data.Command;
 using Assets.Scripts;
 using DG.Tweening;
+using NPOI.OpenXmlFormats.Vml.Spreadsheet;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -345,10 +346,17 @@ public class BottomPanelBehaviour : MonoBehaviour
             if (commands[i] is LoopCommand && ((LoopCommand) commands[i]).Sequence != null)
             {
                 //Update sequence bar with the new slots inside of the loop
-                UpdateSequenceBar(((LoopCommand) commands[i]).Sequence.Commands, slot.transform.GetChild(0), true);
+                UpdateSequenceBar(((LoopCommand) commands[i]).Sequence.Commands, slot.transform.GetChild(1), true);
                 
-                SetWidthOfChildren(slot.transform.GetChild(0).gameObject);
-                SetWidthOfChildren(slot);
+                //Set the loop and its contents widths to fit the children
+                SetWidthOfChildren(slot.transform.GetChild(1).gameObject);
+                slot.GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
+                slot.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
+                slot.transform.GetChild(0).GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth - 30;
+
             }
         }
     }
@@ -356,7 +364,7 @@ public class BottomPanelBehaviour : MonoBehaviour
     private void SetWidthOfChildren(GameObject item)
     {
         List<GameObject> children = new List<GameObject>();
-        float width = 25;
+        float width = 55;
 
         foreach (Transform child in item.transform)
         {
@@ -365,7 +373,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
         if (item.transform.childCount == 0)
         {
-            width = 125;
+            width = 155;
         }
 
         var itemLayout = item.GetComponent<LayoutElement>();
@@ -390,8 +398,9 @@ public class BottomPanelBehaviour : MonoBehaviour
         //if Loop command, add reorderable list setup
         if (isLoopCommandSlot)
         {
-            //Disable the image because the loop image will be placed inside a child
-            slotImage.enabled = false;
+            //Set the slot image to be invisible, it has to have one for it to be droppable but we dont want to see it
+            slotImage.color = new Color(0f, 0f, 0f, 0f);
+
 
             GameObject listInSlot = new GameObject("list in slot");
             var listInSlotFlow = listInSlot.AddComponent<FlowLayoutGroup>();
@@ -404,7 +413,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             listInSlotLayout.preferredHeight = 125;
             listInSlotLayout.preferredWidth = 155;
 
-            listInSlot.transform.SetParent(slot.transform);
+            listInSlot.transform.SetParent(slot.transform, false);
             var slotReorderableList = slot.AddComponent<ReorderableList>();
             slotReorderableList.ContentLayout = listInSlotFlow;
             slotReorderableList.DraggableArea = _mainPanel;
@@ -457,6 +466,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             loopInput.transform.SetParent(loopImageAndInput.transform, false);
 
             loopImageAndInput.transform.SetParent(slot.transform, false);
+            loopImageAndInput.transform.SetSiblingIndex(0);
 
             //Create the text field
             GameObject inputText = new GameObject("text");
@@ -478,7 +488,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);
-    
+
         }
 
         if (isMainSequenceBar)

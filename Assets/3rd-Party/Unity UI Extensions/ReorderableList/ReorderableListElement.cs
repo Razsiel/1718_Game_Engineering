@@ -172,12 +172,29 @@ namespace UnityEngine.UI.Extensions
                     else if (_currentReorderableListRaycasted.ContentLayout is HorizontalLayoutGroup ||
                              _currentReorderableListRaycasted.ContentLayout is FlowLayoutGroup)
                     {
+                        //The element we're hovering above is a loop
                         if (_currentReorderableListRaycasted.isContainerCommandList)
                         {
-                            _currentReorderableListRaycasted.GetComponent<LayoutElement>().preferredWidth = ((_currentReorderableListRaycasted.transform.GetChild(0).childCount + 1) * 100) + 25;
-                            _currentReorderableListRaycasted.transform.GetChild(0).GetComponent<LayoutElement>()
-                                .preferredWidth = _currentReorderableListRaycasted.GetComponent<LayoutElement>()
+                            //Widen the loop and all the appropriate elements to show the element will be dropped in
+                            
+                            //Set the width of the listpanel in the loop to the width of the children + the draggable object
+                            SetWidthOfChildrenPlusRoomForDraggableObject(_currentReorderableListRaycasted.transform.GetChild(1).gameObject, _draggingObject.gameObject);
+
+                            float listPanelWidth = _currentReorderableListRaycasted.transform.GetChild(1)
+                                .GetComponent<LayoutElement>()
                                 .preferredWidth;
+                            
+                            //Set the width of the loop slot itsself to the width of the listpanel
+                            _currentReorderableListRaycasted.GetComponent<LayoutElement>().preferredWidth =
+                                listPanelWidth;                           
+                            
+                            //Set the width of the image and input panel
+                            _currentReorderableListRaycasted.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+                                listPanelWidth;
+
+                            //Set the width of the loop image
+                            _currentReorderableListRaycasted.transform.GetChild(0).GetChild(0).GetComponent<LayoutElement>()
+                                .preferredWidth = listPanelWidth - 30;
                         }
                         dist = Mathf.Abs(c.position.x - Input.mousePosition.x);
                     }
@@ -200,6 +217,26 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
+        private void SetWidthOfChildrenPlusRoomForDraggableObject(GameObject item, GameObject currentDraggedObject)
+        {
+            List<GameObject> children = new List<GameObject>();
+            float width = 55;
+
+            foreach (Transform child in item.transform)
+            {
+                width += child.GetComponent<LayoutElement>().preferredWidth + 5;
+            }
+
+            if (item.transform.childCount == 0)
+            {
+                width = 155;
+            }
+
+            var itemLayout = item.GetComponent<LayoutElement>();
+            width += currentDraggedObject.GetComponent<LayoutElement>().preferredWidth + 5;
+            itemLayout.preferredWidth = width;
+
+        }
         #endregion
 
         #region IEndDragHandler Members
