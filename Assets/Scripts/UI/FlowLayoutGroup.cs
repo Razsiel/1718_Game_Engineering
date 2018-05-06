@@ -21,13 +21,11 @@ public class FlowLayoutGroup : LayoutGroup
     protected FlowLayoutGroup()
     { }
 
-#if UNITY_EDITOR
     protected override void OnValidate()
     {
         base.OnValidate();
     }
 
-#endif
 
     public override void CalculateLayoutInputHorizontal()
     {
@@ -45,6 +43,8 @@ public class FlowLayoutGroup : LayoutGroup
             padding.horizontal + (cellSize.x + spacing.x) * minColumns - spacing.x,
             padding.horizontal + (cellSize.x + spacing.x) * preferredColumns - spacing.x,
             -1, 0);
+
+        OnValidate();
     }
 
     public override void CalculateLayoutInputVertical()
@@ -57,6 +57,8 @@ public class FlowLayoutGroup : LayoutGroup
         minRows = 1;
         float minSpace = padding.vertical + (cellSize.y + spacing.y) * minRows - spacing.y;
         SetLayoutInputForAxis(minSpace, minSpace, -1, 1);
+
+        OnValidate();
     }
 
     public override void SetLayoutHorizontal()
