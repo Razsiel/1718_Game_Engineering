@@ -125,6 +125,10 @@ namespace Assets.Scripts
 
         private BaseCommand GetCommandForListOfIndexes(List<int> indexes, List<BaseCommand> commands, BaseCommand command)
         {
+            if (indexes.Count == 1)
+            {
+                return commands[indexes[0]];
+            }
             for (int i = 0; i < indexes.Count; i++)
             {
                 if (commands[indexes[i]] is LoopCommand)
@@ -254,6 +258,7 @@ namespace Assets.Scripts
         {
             LoopCommand command = null;
             command = (LoopCommand) GetCommandForListOfIndexes(indexes, Commands, command);
+            Debug.Log("asd");
             command.LoopCount = int.Parse(newAmountOfLoops);
             SequenceChanged();
         }
