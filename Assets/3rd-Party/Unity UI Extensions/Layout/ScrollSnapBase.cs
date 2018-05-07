@@ -174,7 +174,7 @@ namespace UnityEngine.UI.Extensions
 
             _screensContainer = _scroll_rect.content;
 
-            InitialiseChildObjects();
+            //InitialiseChildObjects();
 
             if (NextButton)
                 NextButton.GetComponent<Button>().onClick.AddListener(() => { NextScreen(); });
@@ -199,7 +199,7 @@ namespace UnityEngine.UI.Extensions
             }
             else
             {
-                InitialiseChildObjectsFromScene();
+                //InitialiseChildObjectsFromScene();
             }
         }
 
@@ -234,7 +234,7 @@ namespace UnityEngine.UI.Extensions
                     childRect.position = _screensContainer.position;
                 }
 
-                child.transform.SetParent(_screensContainer.transform);
+                child.transform.SetParent(_screensContainer.transform, false);
                 ChildObjects[i] = child;
                 if (MaskArea && ChildObjects[i].activeSelf)
                 {

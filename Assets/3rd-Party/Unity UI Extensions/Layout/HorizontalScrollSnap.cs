@@ -108,6 +108,7 @@ namespace UnityEngine.UI.Extensions
         public void AddChild(GameObject GO, bool WorldPositionStays)
         {
             _scroll_rect.horizontalNormalizedPosition = 0;
+            print("added kind");
             GO.transform.SetParent(_screensContainer, WorldPositionStays);
             InitialiseChildObjectsFromScene();
             DistributePages();
