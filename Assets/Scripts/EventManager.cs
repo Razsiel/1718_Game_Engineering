@@ -91,6 +91,11 @@ public class EventManager {
         OnAudioInitialize?.Invoke();
     }
 
+    public static void SequenceChanged()
+    {
+        OnSequenceChanged?.Invoke(GlobalData.Instance.GameInfo.LocalPlayer.Player.Sequence.Commands);
+    }
+
     public static void SecondarySequenceChanged(List<BaseCommand> commands)
     {
         OnSecondarySequenceChanged?.Invoke(commands);

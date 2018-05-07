@@ -22,6 +22,10 @@ namespace UnityEngine.UI.Extensions
 
         [Tooltip("Can new draggable items be dropped in to the container?")]
         public bool IsDropable = true;
+
+        public bool isContainerCommandList;
+
+        public int indexInParent;
         
 
         [Header("UI Re-orderable Events")]

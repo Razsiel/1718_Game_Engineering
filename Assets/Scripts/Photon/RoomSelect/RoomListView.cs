@@ -17,6 +17,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void UpdateListView(RoomInfo[] rooms)
         {
+            RemoveButtons();
             AddButtons(rooms);      
         }
 
@@ -30,33 +31,38 @@ namespace Assets.Scripts.Photon.RoomSelect
                 newButton.transform.SetParent(Panel.transform);
 
                 RoomListButton button = newButton.GetComponent<RoomListButton>();
+                button.RoomNameExPlayers = rooms[i].Name;
                 string roomName = rooms[i].Name + " Players: " + rooms[i].PlayerCount + "/" + rooms[i].MaxPlayers;
-               
+                
                 button.Setup(roomName, this);
 
-                newButton.GetComponent<Button>().onClick.AddListener(() => HandleClick(button.RoomName));
+                newButton.GetComponent<Button>().onClick.AddListener(() => HandleClick(button.RoomNameExPlayers));
 
             }
         }
 
         private void RemoveButtons()
         {
-            while (Panel.transform.childCount > 0)
+            //while (Panel.transform.childCount > 1)
+            //{
+            //    print("gonna remove a button: " + Panel.transform.childCount);
+            //    GameObject toRemove = Panel.transform.GetChild(0).gameObject;
+            //    ButtonObjectPool.ReturnObject(toRemove);
+            //}
+            print(Panel.transform);
+            print(Panel.transform.childCount);
+            foreach (Transform trans in Panel.transform)
             {
-                GameObject toRemove = transform.GetChild(0).gameObject;
+                print("Deleting child obj");
+                GameObject toRemove = trans.gameObject;
                 ButtonObjectPool.ReturnObject(toRemove);
             }
         }
 
         public void HandleClick(string roomName)
         {
-            Debug.Log("HandleClick: RoomListView");
-            PhotonManager.Instance.JoinRoom(roomName);
-        }
-
-        private void UpdateUI()
-        {
-
-        }
+            Debug.Log("HandleClick: RoomListView" + " RoomName: " + roomName);
+            PhotonConnectionManager.Instance.JoinRoom(roomName);
+        }      
     }
 }

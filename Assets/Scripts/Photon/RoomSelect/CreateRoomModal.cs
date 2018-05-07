@@ -15,16 +15,23 @@ namespace Assets.Scripts.Photon.RoomSelect
             this.Panel = this.gameObject;            
         }
 
+        public override void Show()
+        {
+            base.Show();
+            RoomName.Select();
+        }
+
         public override void Cancel()
         {
+            RoomName.text = string.Empty;
             base.Close();
         }
 
         public override void Submit()
         {
-            string roomName = RoomName.text;
-            print(roomName);
-            PhotonConnectionManager.Instance.CreateRoom(roomName);
+            PhotonConnectionManager.Instance.CreateRoom(RoomName.text);
+            RoomName.text = string.Empty;
+            base.Close();
         }
     }
 }

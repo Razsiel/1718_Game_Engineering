@@ -13,6 +13,9 @@ namespace Assets.Scripts.Photon.RoomSelect
     {
         public Button buttonComponent;
         private RoomListView listView;
+
+        public string RoomNameExPlayers;
+
         private string _roomName;
         public string RoomName
         {
@@ -45,13 +48,13 @@ namespace Assets.Scripts.Photon.RoomSelect
             
         }
 
-        /// <summary>
-        /// Deprecated
-        /// </summary>
-        public void HandleClick()
-        {
-            print("In HandleClick of our room");
-            listView.HandleClick(_roomName);
-        }
+        ///// <summary>
+        ///// Deprecated
+        ///// </summary>
+        //public void HandleClick()
+        //{
+        //    print("In HandleClick of our room");
+        //    listView.HandleClick(_roomName);
+        //}
     }
 }
