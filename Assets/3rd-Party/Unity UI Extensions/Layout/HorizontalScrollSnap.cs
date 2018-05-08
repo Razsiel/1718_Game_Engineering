@@ -17,6 +17,7 @@ namespace UnityEngine.UI.Extensions
             _childAnchorPoint = new Vector2(0, 0.5f);
             _currentPage = StartingScreen;
             panelDimensions = gameObject.GetComponent<RectTransform>().rect;
+            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
             UpdateLayout();
         }
 
@@ -35,10 +36,10 @@ namespace UnityEngine.UI.Extensions
             }
             else if (_lerp)
             {
-                _screensContainer.localPosition = Vector3.Lerp(_screensContainer.localPosition, _lerp_target, transitionSpeed * Time.deltaTime);
+                //_screensContainer.localPosition = Vector3.Lerp(_screensContainer.localPosition, _lerp_target, transitionSpeed * Time.deltaTime);
                 if (Vector3.Distance(_screensContainer.localPosition, _lerp_target) < 0.1f)
                 {
-                    _screensContainer.localPosition = _lerp_target;
+                    //_screensContainer.localPosition = _lerp_target;
                     _lerp = false;
                     EndScreenChange();
                 }
@@ -195,9 +196,11 @@ namespace UnityEngine.UI.Extensions
 
         private void SetScrollContainerPosition()
         {
-            _scrollStartPosition = _screensContainer.localPosition.x;
-            _scroll_rect.horizontalNormalizedPosition = (float)(_currentPage) / (_screens - 1);
-            OnCurrentScreenChange(_currentPage);
+            //_scrollStartPosition = _screensContainer.localPosition.x;
+            //_scroll_rect.horizontalNormalizedPosition = (float)(_currentPage) / (_screens - 1);
+            //OnCurrentScreenChange(_currentPage);
+            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
+
         }
 
         /// <summary>
@@ -210,6 +213,7 @@ namespace UnityEngine.UI.Extensions
             if (MaskArea) UpdateVisible();
             SetScrollContainerPosition();
             OnCurrentScreenChange(_currentPage);
+            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
         }
 
         private void OnRectTransformDimensionsChange()
