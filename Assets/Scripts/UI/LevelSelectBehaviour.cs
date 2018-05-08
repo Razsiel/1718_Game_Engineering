@@ -39,7 +39,7 @@ public class LevelSelectBehaviour : MonoBehaviour {
             Assert.IsNotNull(levelPreviewBehaviour);
             levelPreviewBehaviour.Init(1, levelNumber + 1, levelData);
 
-            //LevelScroller.AddChild(prefab);
+            LevelScroller.AddChild(prefab);
         }
 
         LevelScroller.OnSelectionPageChangedEvent.AddListener(page => {
