@@ -34,7 +34,6 @@ public class LevelSelectBehaviour : MonoBehaviour {
         for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++) {
             var levelData = levels[levelNumber];
             var prefab = Instantiate(LevelUIPrefab);
-            print("as");
             var levelPreviewBehaviour = prefab.GetComponent<LevelPreviewBehaviour>();
             Assert.IsNotNull(levelPreviewBehaviour);
             levelPreviewBehaviour.Init(1, levelNumber + 1, levelData);
