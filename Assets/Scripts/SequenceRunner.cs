@@ -86,15 +86,6 @@ public class SequenceRunner : MonoBehaviour {
         {
             List<Tuple<Player, BaseCommand>> thisCycle = Cycles[i].Commands;
 
-//            GridCell dest1 = levelData.GetDestinationTile(thisCycle[0].Item1);
-//            GridCell dest2 = levelData.GetDestinationTile(thisCycle[1].Item1);
-//
-//            if (dest1 == dest2)
-//            {
-//                // dont move
-//                // do the bump animation this turn
-//            }
-
             DateTime beforeExecute = DateTime.Now;
             // Execute every player's command (but only wait for the last one)
             for (int j = 0; j < thisCycle.Count - 1; j++)
