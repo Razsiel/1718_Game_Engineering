@@ -123,7 +123,7 @@ namespace Assets.Scripts
 
         }
 
-        private BaseCommand GetCommandForListOfIndexes(List<int> indexes, List<BaseCommand> commands, BaseCommand command)
+        private BaseCommand  GetCommandForListOfIndexes(List<int> indexes, List<BaseCommand> commands, BaseCommand command)
         {
             if (indexes.Count == 1)
             {
@@ -134,11 +134,18 @@ namespace Assets.Scripts
                 if (commands[indexes[i]] is LoopCommand)
                 {
                     //If the loop has children, get them
-                    if (((LoopCommand) Commands[indexes[i]]).Sequence != null)
+                    if (((LoopCommand) commands[indexes[i]]).Sequence != null && 
+                        ((LoopCommand) commands[indexes[i]]).Sequence.Commands.Count > 0)
                     {
+                        //If we're at the last index to check, take the loop
+                        if (i == indexes.Count - 1)
+                        {
+                            command = ((LoopCommand) commands[indexes[i]]);
+                        }
                         Debug.Log("pak de kinderen van de loop");
 
-                        commands = ((LoopCommand) Commands[indexes[i]]).Sequence.Commands;
+                        
+                        commands = ((LoopCommand) commands[indexes[i]]).Sequence.Commands;
                     } //If the loop has no children
                     else
                     {
@@ -258,7 +265,6 @@ namespace Assets.Scripts
         {
             LoopCommand command = null;
             command = (LoopCommand) GetCommandForListOfIndexes(indexes, Commands, command);
-            Debug.Log("asd");
             command.LoopCount = int.Parse(newAmountOfLoops);
             SequenceChanged();
         }

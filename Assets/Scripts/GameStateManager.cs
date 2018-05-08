@@ -25,8 +25,8 @@ namespace Assets.Scripts {
             fsm = new TinyStateMachine<GameState, GameStateTrigger>(GameState.Init);
 
             // START GAME -> CUTSCENE
-            fsm.Tr(GameState.Init, GameStateTrigger.Next, GameState.GameStart)
-               .On(OnStartGameStateEnter);
+            fsm.Tr(GameState.Init, GameStateTrigger.Next, GameState.Cutscene)
+               .On(OnCutsceneStateEnter);
 
             // CUTSCENE -> GAMESTART
             fsm.Tr(GameState.Cutscene, GameStateTrigger.Next, GameState.GameStart)

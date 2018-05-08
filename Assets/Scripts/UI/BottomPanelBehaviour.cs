@@ -477,6 +477,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             inputTextText.fontSize = 50;
             inputTextText.horizontalOverflow = HorizontalWrapMode.Overflow;
             inputTextText.verticalOverflow = VerticalWrapMode.Overflow;
+            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
 
             loopInputField.textComponent = inputTextText;
             loopInputField.characterLimit = 1;
@@ -484,6 +485,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             loopInputField.targetGraphic = loopInputImage;
             loopInputField.contentType = InputField.ContentType.IntegerNumber;
             loopInputField.onEndEdit.AddListener((string newAmountOfLoops) => AmountOfLoopsEdited(newAmountOfLoops, slotSlotScript.indexes));
+            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);
