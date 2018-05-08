@@ -29,7 +29,6 @@ namespace Assets.Data.Command
 
         public override BaseCommand Init() {
             Sequence = new Sequence();
-            LoopCount = 1;
             return this;
         }
     }
