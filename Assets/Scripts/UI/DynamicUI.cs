@@ -105,10 +105,10 @@ namespace Assets.Scripts.UI
         }
 
         public void CreateCommands() {
-            foreach (var command in _gameInfo.AllCommands.Commands)
+            foreach (var command in _gameInfo.AllowedCommands)
             {
-                CreateCommandButton(command.Value, _commandListPanel, () => {
-                    if (command.Value is LoopCommand)
+                CreateCommandButton(command, _commandListPanel, () => {
+                    if (command is LoopCommand)
                     {
                         BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
                         newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
@@ -118,7 +118,7 @@ namespace Assets.Scripts.UI
                     }
                     else
                     {
-                        _player.Sequence.Add(command.Value);
+                        _player.Sequence.Add(command);
                     }
                 });
             }
