@@ -21,26 +21,25 @@ public class SfxBehaviour : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        EventManager.OnAudioInitialize += Initialize;
-    }
-
-	void Initialize ()
-	{
-        print("audio init");
+        
 	    sfxPlayer = GetComponent<AudioSource>();
 
 	    SoundEffects = new Dictionary<SFX, AudioClip>()
 	    {
 	        {SFX.ButtonHover, Resources.Load<AudioClip>("Sound/SFX/sfx_button_hover")}
 	    };
-	    sfxPlayer.volume = 0.5f;
 	}
     
     public static void PlaySfx(SFX soundName)
     {
         AudioClip soundClip = Instance.SoundEffects[soundName];
         Instance.sfxPlayer.PlayOneShot(soundClip);
+    }
+
+    public void SetVolume(float newVolumeValue)
+    {
+        sfxPlayer.volume = newVolumeValue;
+        PlayerPrefs.SetFloat("SFX Volume", sfxPlayer.volume);
     }
 }
 
