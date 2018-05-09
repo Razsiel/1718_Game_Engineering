@@ -29,6 +29,7 @@ public class LevelSelectBehaviour : MonoBehaviour {
         var levels = _gameInfo.LevelLibrary.Levels;
         Assert.IsNotNull(levels);
         Assert.IsTrue(levels.Any());
+        print(levels.Count);
         _selectedLevel = levels[0];
         LevelScroller.ChildObjects = new GameObject[levels.Count];
         for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++) {

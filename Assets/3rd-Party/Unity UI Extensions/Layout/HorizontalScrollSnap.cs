@@ -196,9 +196,10 @@ namespace UnityEngine.UI.Extensions
 
         private void SetScrollContainerPosition()
         {
-            //_scrollStartPosition = _screensContainer.localPosition.x;
-            //_scroll_rect.horizontalNormalizedPosition = (float)(_currentPage) / (_screens - 1);
-            //OnCurrentScreenChange(_currentPage);
+            print("asd");
+            _scrollStartPosition = _screensContainer.localPosition.x;
+            _scroll_rect.horizontalNormalizedPosition = (float)(_currentPage) / (_screens - 1);
+            OnCurrentScreenChange(_currentPage);
             _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
 
         }
