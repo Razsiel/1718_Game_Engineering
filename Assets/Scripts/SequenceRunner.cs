@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using Assets.Data.Command;
@@ -10,8 +11,10 @@ using Assets.Scripts.DataStructures;
 using Assets.Scripts.Grid.DataStructure;
 using UnityEngine;
 
-public class SequenceRunner : MonoBehaviour {
-    
+public class SequenceRunner : MonoBehaviour
+{
+    private const float Steptime = 1500f;
+
     void Awake()
     {
         EventManager.OnSimulate += ExecuteSequences;
@@ -80,23 +83,26 @@ public class SequenceRunner : MonoBehaviour {
 
     private IEnumerator RunBothSequences(LevelData levelData, List<SequenceCycle> Cycles)
     {
-
         // Run every SequenceStep
         for (int i = 0; i < Cycles.Count; i++)
         {
             List<Tuple<Player, BaseCommand>> thisCycle = Cycles[i].Commands;
-
-            DateTime beforeExecute = DateTime.Now;
+            
+            Stopwatch st = Stopwatch.StartNew();
             // Execute every player's command (but only wait for the last one)
             for (int j = 0; j < thisCycle.Count - 1; j++)
             {
                 StartCoroutine(thisCycle[j].Item2.Execute(this, levelData, thisCycle[j].Item1, Cycles[i]));
             }
-            yield return StartCoroutine(thisCycle[thisCycle.Count-1].Item2.Execute(this, levelData, thisCycle[thisCycle.Count-1].Item1, Cycles[i]));
-            DateTime afterExecute = DateTime.Now;
+            yield return StartCoroutine(thisCycle[thisCycle.Count-1].Item2.Execute(
+                this, 
+                levelData, 
+                thisCycle[thisCycle.Count-1].Item1, 
+                Cycles[i]));
+            st.Stop();
 
-            // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-            float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
+            // A command should take 1.5 Seconds to complete (may change)
+            float delay = (Steptime - st.ElapsedMilliseconds) / 1000;
 
             yield return new WaitForSeconds(delay);
         }
