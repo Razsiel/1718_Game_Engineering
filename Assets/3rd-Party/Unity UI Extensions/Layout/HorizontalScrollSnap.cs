@@ -17,7 +17,6 @@ namespace UnityEngine.UI.Extensions
             _childAnchorPoint = new Vector2(0, 0.5f);
             _currentPage = StartingScreen;
             panelDimensions = gameObject.GetComponent<RectTransform>().rect;
-            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
             UpdateLayout();
         }
 
@@ -36,10 +35,10 @@ namespace UnityEngine.UI.Extensions
             }
             else if (_lerp)
             {
-                //_screensContainer.localPosition = Vector3.Lerp(_screensContainer.localPosition, _lerp_target, transitionSpeed * Time.deltaTime);
+                _screensContainer.localPosition = Vector3.Lerp(_screensContainer.localPosition, _lerp_target, transitionSpeed * Time.deltaTime);
                 if (Vector3.Distance(_screensContainer.localPosition, _lerp_target) < 0.1f)
                 {
-                    //_screensContainer.localPosition = _lerp_target;
+                    _screensContainer.localPosition = _lerp_target;
                     _lerp = false;
                     EndScreenChange();
                 }
@@ -76,9 +75,7 @@ namespace UnityEngine.UI.Extensions
             float _dimension = 0;
             Rect panelDimensions = gameObject.GetComponent<RectTransform>().rect;
             float currentXPosition = 0;
-            var pageStepValue = _childSize = 640;
-                
-                //(int)panelDimensions.width * ((PageStep == 0) ? 3 : PageStep);
+            var pageStepValue = _childSize = (int) panelDimensions.width; 
 
             for (int i = 0; i < _screensContainer.transform.childCount; i++)
             {
@@ -111,7 +108,6 @@ namespace UnityEngine.UI.Extensions
         public void AddChild(GameObject GO, bool WorldPositionStays)
         {
             _scroll_rect.horizontalNormalizedPosition = 0;
-            print("added kind");
             GO.transform.SetParent(_screensContainer, WorldPositionStays);
             InitialiseChildObjectsFromScene();
             DistributePages();
@@ -196,12 +192,9 @@ namespace UnityEngine.UI.Extensions
 
         private void SetScrollContainerPosition()
         {
-            print("asd");
             _scrollStartPosition = _screensContainer.localPosition.x;
             _scroll_rect.horizontalNormalizedPosition = (float)(_currentPage) / (_screens - 1);
             OnCurrentScreenChange(_currentPage);
-            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
-
         }
 
         /// <summary>
@@ -214,7 +207,6 @@ namespace UnityEngine.UI.Extensions
             if (MaskArea) UpdateVisible();
             SetScrollContainerPosition();
             OnCurrentScreenChange(_currentPage);
-            _screensContainer.GetComponent<RectTransform>().localPosition = new Vector2(2500f, -360f);
         }
 
         private void OnRectTransformDimensionsChange()
