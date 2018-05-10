@@ -62,7 +62,9 @@ namespace Assets.Scripts.Photon.Level
             GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
             {
                 this.photonView.viewID = (int)PhotonViewIndices.InLevel;
+                
                 TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+
             };
 
             EventManager.OnGameStart += gameInfo =>

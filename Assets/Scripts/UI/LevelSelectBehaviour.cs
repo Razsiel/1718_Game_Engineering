@@ -73,7 +73,10 @@ public class LevelSelectBehaviour : MonoBehaviour
         print($"We're gonna play level: {_selectedLevel.Name}");
 
         if (_gameInfo.IsMultiplayer)
+        {
+            print("Multiplayer: We are gonna start the selected level");
             LevelSelectPhotonManager.StartLevel(_selectedLevel);
+        }
         else
             SceneManager.LoadScene(LevelScene);
     }
