@@ -15,5 +15,6 @@ public class LevelPreviewBehaviour : MonoBehaviour {
 
         LevelTitle.text = $"{chapter}-{levelNumber}";
         LevelPreview.sprite = levelData.PreviewImage ?? Resources.Load<Sprite>("logo");
+
     }
 }

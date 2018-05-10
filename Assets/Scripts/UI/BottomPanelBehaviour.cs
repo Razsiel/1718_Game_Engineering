@@ -91,13 +91,15 @@ public class BottomPanelBehaviour : MonoBehaviour
 
         commandsListLayoutElement.preferredWidth = isMainCommandsList ? 2000 : 1100;
         commandsListLayoutElement.preferredHeight = isMainCommandsList ? 125 : 75;
+        commandsListLayoutElement.minHeight = 0;
 
         commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        commandsListFlowLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
+        commandsListFlowLayoutGroup.childAlignment = isMainCommandsList ? TextAnchor.MiddleLeft: TextAnchor.UpperLeft;
         commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
+        commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
 
         GameObject sequenceBar = isMainCommandsList ? _mainSequenceBar : _secondarySequenceBar;
 
@@ -106,9 +108,15 @@ public class BottomPanelBehaviour : MonoBehaviour
         AddReorderableListToComponent(sequenceBar, commandsListFlowLayoutGroup, _mainPanel, isMainCommandsList, isMainCommandsList);
 
         if (isMainCommandsList)
+        {
             _commandsListPanel = commandsListPanel;
+            _commandsListPanel.transform.localPosition = new Vector3(230, 0, 0);
+        }
         else
+        {
+            commandsListPanel.transform.localPosition = new Vector3(100, 0, 0);
             _secondaryCommandsListPanel = commandsListPanel;
+        }
         
     }
 
@@ -307,7 +315,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             {
                 if (_secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
                 {
-                    _secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+                    Destroy(_secondaryCommandsListPanel.transform.GetChild(i).gameObject);
                 }
             }
         }
