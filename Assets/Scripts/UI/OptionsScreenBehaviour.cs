@@ -8,7 +8,6 @@ using Utilities;
 
 public class OptionsScreenBehaviour : MonoBehaviour {
     
-    [SerializeField] private Button BackToMainMenu;
     [SerializeField] private Button LanguageFlagDutch;
     [SerializeField] private Button LanguageFlagEnglish;
     [SerializeField] private Slider BgmVolumeSlider;
@@ -44,12 +43,14 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to Dutch
         LanguageManager.Instance.ChangeLanguage("nl-NL");
+        print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
     public void OnClick_LanguageFlagEnglish()
     {
         // Set current language setting to English
         LanguageManager.Instance.ChangeLanguage("en-GB");
+        print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
     public void OnChanged_BgmVolumeSlider(Slider BgmSlider)
