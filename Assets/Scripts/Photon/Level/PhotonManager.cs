@@ -105,8 +105,12 @@ namespace Assets.Scripts.Photon.Level
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
         {
             var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
+            var commandOptions = CommandLib.Commands;
+            var baseCommands = new List<BaseCommand>();
 
-            //networkPlayerSequenceBarView.UpdateSequenceBar(commands.list);
+            foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
+
+            EventManager.OnSecondarySequenceChanged?.Invoke(baseCommands);           
         }
 
         [PunRPC]
