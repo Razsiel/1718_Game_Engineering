@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Levels;
 using Assets.Scripts;
+using Assets.Scripts.Photon.LevelSelect;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI.Extensions;
 using Utilities;
+using UnityEngine.UI;
 
-public class LevelSelectBehaviour : MonoBehaviour {
+public class LevelSelectBehaviour : MonoBehaviour
+{
 
     private GameInfo _gameInfo;
     private LevelData _selectedLevel;
@@ -17,22 +20,29 @@ public class LevelSelectBehaviour : MonoBehaviour {
     public SceneField LevelScene;
     public HorizontalScrollSnap LevelScroller;
     public GameObject LevelUIPrefab;
+    public GameObject PlayButton;
+    public GameObject LevelSelectPhotonManagerGO;
+    private LevelSelectPhotonManager LevelSelectPhotonManager;
 
-    void Awake() {
-        GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
+    void Awake()
+    {
+        GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
+        {
             this._gameInfo = gameInfo;
             Init();
         };
     }
 
-    void Init() {
+    void Init()
+    {
         var levels = _gameInfo.LevelLibrary.Levels;
         Assert.IsNotNull(levels);
         Assert.IsTrue(levels.Any());
         print(levels.Count);
         _selectedLevel = levels[0];
         LevelScroller.ChildObjects = new GameObject[levels.Count];
-        for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++) {
+        for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++)
+        {
             var levelData = levels[levelNumber];
             var prefab = Instantiate(LevelUIPrefab);
             var levelPreviewBehaviour = prefab.GetComponent<LevelPreviewBehaviour>();
@@ -42,17 +52,29 @@ public class LevelSelectBehaviour : MonoBehaviour {
             LevelScroller.AddChild(prefab);
         }
 
-        LevelScroller.OnSelectionPageChangedEvent.AddListener(page => {
+        if (_gameInfo.IsMultiplayer)
+        {
+            this.LevelSelectPhotonManager = LevelSelectPhotonManagerGO.GetComponent<LevelSelectPhotonManager>();
+            LevelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo);
+        }
+
+        LevelScroller.OnSelectionPageChangedEvent.AddListener(page =>
+        {
             print($"Changed pagenr to #{page}");
             _selectedLevel = levels[page];
         });
     }
 
-    public void OnPlayClick() {
+    public void OnPlayClick()
+    {
         print("Clicked PLAY!");
         Assert.IsNotNull(_selectedLevel);
         _gameInfo.Level = _selectedLevel;
         print($"We're gonna play level: {_selectedLevel.Name}");
-        SceneManager.LoadScene(LevelScene);
+
+        if (_gameInfo.IsMultiplayer)
+            LevelSelectPhotonManager.StartLevel(_selectedLevel);
+        else
+            SceneManager.LoadScene(LevelScene);
     }
 }

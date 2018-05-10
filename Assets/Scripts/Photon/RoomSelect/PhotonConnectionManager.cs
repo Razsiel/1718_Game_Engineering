@@ -51,6 +51,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Init()
         {
             PhotonNetwork.autoJoinLobby = true;
+            PhotonNetwork.automaticallySyncScene = true;
 
             var connected = PhotonNetwork.ConnectUsingSettings("1.1");
             //Assert.IsTrue(connected);
@@ -161,8 +162,11 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void SendGoToLevelSelect()
         {
-            if (PhotonNetwork.player.IsMasterClient)
-                this.photonView.RPC(nameof(GoToLevelSelect), PhotonTargets.All);
+            //if (PhotonNetwork.player.IsMasterClient)
+            //    this.photonView.RPC(nameof(GoToLevelSelect), PhotonTargets.All);
+
+            if(PhotonNetwork.player.IsMasterClient)
+                PhotonNetwork.LoadLevel(LevelSelectScene);
         }
 
         [PunRPC]

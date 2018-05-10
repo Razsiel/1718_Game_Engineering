@@ -55,16 +55,23 @@ namespace Assets.Scripts.Photon.Level
 
         void Awake()
         {
-
+            
             print($"{nameof(PhotonManager)}: in awake");
             Instance = this;
-            TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+
+            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
+            {
+                this.photonView.viewID = (int)PhotonViewIndices.InLevel;
+                TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+            };
 
             EventManager.OnGameStart += gameInfo =>
             {
                 if (!gameInfo.IsMultiplayer) return;
                 _gameInfo = gameInfo;
-              
+                
+                print($"{nameof(PhotonManager)}: GameStarted");
+
                 EventManager.OnPlayerSpawned += player =>
                 {
                     EventManager.OnSequenceChanged += OnSequenceChanged;

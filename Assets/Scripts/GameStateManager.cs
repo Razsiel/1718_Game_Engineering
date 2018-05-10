@@ -96,6 +96,7 @@ namespace Assets.Scripts {
 
         private void OnAllPlayersJoined(Room room) {
             PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
+            print($"{nameof(GameStateManager)} OnAllPlayersJoined" + room);
             EventManager.GameStart(_gameInfo);
         }
 
