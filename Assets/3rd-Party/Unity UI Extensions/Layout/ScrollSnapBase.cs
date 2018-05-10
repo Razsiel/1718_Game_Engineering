@@ -195,7 +195,7 @@ namespace UnityEngine.UI.Extensions
                     return;
                 }
 
-                InitialiseChildObjectsFromArray();
+                //InitialiseChildObjectsFromArray();
             }
             else
             {

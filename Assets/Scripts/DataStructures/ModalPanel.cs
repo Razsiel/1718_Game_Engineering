@@ -30,8 +30,8 @@ namespace Assets.Scripts.DataStructures
         {
             this.gameObject.transform.SetAsLastSibling();
 
-            SubmitButton.onClick.RemoveAllListeners();
-            CloseButton.onClick.RemoveAllListeners();
+            SubmitButton.onClick?.RemoveAllListeners();
+            CloseButton.onClick?.RemoveAllListeners();
 
             SubmitButton.onClick.AddListener(Submit);
             CloseButton.onClick.AddListener(Cancel);
