@@ -50,6 +50,14 @@ public class BottomPanelBehaviour : MonoBehaviour
         EventManager.OnSequenceChanged += OnSequenceChanged;
         InitializeSequenceBars();
         InitializeReadyButton();
+
+        List<BaseCommand> list = new List<BaseCommand>();
+        list.Add(_gameInfo.AllCommands.MoveCommand);
+        list.Add(_gameInfo.AllCommands.MoveCommand);
+        list.Add(_gameInfo.AllCommands.MoveCommand);
+        list.Add(_gameInfo.AllCommands.MoveCommand);
+        list.Add(_gameInfo.AllCommands.MoveCommand);
+        UpdateSequenceBar(list, _secondaryCommandsListPanel.transform, false);
     }
 
     private void InitializeSequenceBars()
@@ -91,6 +99,7 @@ public class BottomPanelBehaviour : MonoBehaviour
 
         commandsListLayoutElement.preferredWidth = isMainCommandsList ? 2000 : 1100;
         commandsListLayoutElement.preferredHeight = isMainCommandsList ? 125 : 75;
+        commandsListLayoutElement.minHeight = 0;
 
         commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -98,6 +107,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         commandsListFlowLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
         commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
+        commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
 
         GameObject sequenceBar = isMainCommandsList ? _mainSequenceBar : _secondarySequenceBar;
 
@@ -106,9 +116,15 @@ public class BottomPanelBehaviour : MonoBehaviour
         AddReorderableListToComponent(sequenceBar, commandsListFlowLayoutGroup, _mainPanel, isMainCommandsList, isMainCommandsList);
 
         if (isMainCommandsList)
+        {
             _commandsListPanel = commandsListPanel;
+            _commandsListPanel.transform.localPosition = new Vector3(230, 0, 0);
+        }
         else
+        {
+            commandsListPanel.transform.localPosition = new Vector3(100, 0, 0);
             _secondaryCommandsListPanel = commandsListPanel;
+        }
         
     }
 
