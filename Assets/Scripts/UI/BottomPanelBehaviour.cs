@@ -50,14 +50,6 @@ public class BottomPanelBehaviour : MonoBehaviour
         EventManager.OnSequenceChanged += OnSequenceChanged;
         InitializeSequenceBars();
         InitializeReadyButton();
-
-        List<BaseCommand> list = new List<BaseCommand>();
-        list.Add(_gameInfo.AllCommands.MoveCommand);
-        list.Add(_gameInfo.AllCommands.MoveCommand);
-        list.Add(_gameInfo.AllCommands.MoveCommand);
-        list.Add(_gameInfo.AllCommands.MoveCommand);
-        list.Add(_gameInfo.AllCommands.MoveCommand);
-        UpdateSequenceBar(list, _secondaryCommandsListPanel.transform, false);
     }
 
     private void InitializeSequenceBars()
@@ -104,7 +96,7 @@ public class BottomPanelBehaviour : MonoBehaviour
         commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        commandsListFlowLayoutGroup.childAlignment = TextAnchor.MiddleLeft;
+        commandsListFlowLayoutGroup.childAlignment = isMainCommandsList ? TextAnchor.MiddleLeft: TextAnchor.UpperLeft;
         commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
         commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
@@ -323,7 +315,7 @@ public class BottomPanelBehaviour : MonoBehaviour
             {
                 if (_secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
                 {
-                    _secondaryCommandsListPanel.transform.GetChild(i).GetComponent<Image>().sprite = null;
+                    Destroy(_secondaryCommandsListPanel.transform.GetChild(i).gameObject);
                 }
             }
         }
