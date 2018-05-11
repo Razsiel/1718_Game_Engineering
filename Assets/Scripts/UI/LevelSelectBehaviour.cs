@@ -62,7 +62,21 @@ public class LevelSelectBehaviour : MonoBehaviour
         {
             print($"Changed pagenr to #{page}");
             _selectedLevel = levels[page];
+            UpdatePreviewImageColors(page);
+
         });
+    }
+
+    private void UpdatePreviewImageColors(int selectedLevel)
+    {
+        for (int i = 0; i < LevelScroller.ChildObjects.Length; i++)
+        {
+            LevelScroller.ChildObjects[i].transform.GetChild(2).GetChild(1).GetComponent<Image>().color =
+                new Color32(0x74, 0x41, 0x41, 0xFF);
+        }
+
+        LevelScroller.ChildObjects[selectedLevel].transform.GetChild(2).GetChild(1).GetComponent<Image>().color =
+            new Color(255f, 255f, 255f, 255f);
     }
 
     public void OnPlayClick()
