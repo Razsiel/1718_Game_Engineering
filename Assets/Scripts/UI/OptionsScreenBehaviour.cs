@@ -32,11 +32,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     public void OnClick_BackToMainMenu()
     {
-        // Hide this
         HideOptionsPanel();
-
-        // show MainMenu
-
     }
 
     public void OnClick_LanguageFlagDutch()
