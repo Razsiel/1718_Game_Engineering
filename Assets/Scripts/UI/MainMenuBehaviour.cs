@@ -41,5 +41,15 @@ namespace Assets {
             _gameInfo.LevelLibrary = MultiPlayerLevels;
             SceneManager.LoadScene(LobbyScene);
         }
+
+        public void HideMainMenuPanel()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void ShowMainMenuPanel()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

@@ -38,8 +38,6 @@ public class BgmBehaviour : TGEMonoBehaviour {
     {
         bgmPlayer.volume = newVolumeValue;
         PlayerPrefs.SetFloat("BGM Volume", bgmPlayer.volume);
-
-        Debug.Log("BGM Volume: " + bgmPlayer.volume);
     }
 }
 
