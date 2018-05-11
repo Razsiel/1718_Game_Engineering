@@ -7,11 +7,11 @@ using UnityEngine.Experimental.UIElements;
 public class SlotScript : MonoBehaviour
 {
     //private SequenceBar _sequenceBar;
-    public List<int> indexes;
+    public List<int> indices;
 
     void Awake()
     {
-        indexes = new List<int>();
+        indices = new List<int>();
     }
 
     void Start()

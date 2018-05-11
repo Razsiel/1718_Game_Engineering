@@ -23,7 +23,7 @@ namespace Assets.Scripts.UI
         private CommandLibrary _commandLibrary;
         private GameInfo _gameInfo;
         private Player _player;
-        private BottomPanelBehaviour _bottomPanelBehaviour;
+        private BottomPanelManager _bottomPanelManager;
         private FlowLayoutGroup _cmdFlowLayoutGroup;
         private VerticalLayoutGroup _cmdListPanelVerticalLayout;
 
@@ -47,7 +47,7 @@ namespace Assets.Scripts.UI
             _gameInfo = gameInfo;
             _player = _gameInfo.LocalPlayer.Player;
             _commandLibrary = _gameInfo.AllCommands;
-            _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
+            _bottomPanelManager = BottomPanel.GetComponent<BottomPanelManager>();
 
 
             InitializeCommandPanel();
@@ -81,7 +81,7 @@ namespace Assets.Scripts.UI
             _commandPanelReorderableList.IsDropable = false;
             _commandPanelReorderableList.ContentLayout = _cmdListPanelVerticalLayout;
             _commandPanelReorderableList.DraggableArea = transform.GetChild(0).GetComponent<RectTransform>();
-            _commandPanelReorderableList.OnElementAdded.AddListener(BottomPanel.GetComponent<BottomPanelBehaviour>().AddDroppedElementToMainSequence);
+            _commandPanelReorderableList.OnElementAdded.AddListener(EventManager.ElementDroppedToMainSequenceBar);
         }
 
         private void InitializeCommandPanel()

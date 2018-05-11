@@ -7,6 +7,7 @@ using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI.Extensions;
 
 public class EventManager {
     public static UnityAction OnLevelSelected;
@@ -26,6 +27,7 @@ public class EventManager {
     public static UnityAction OnUserInputDisable;
     public static UnityAction<List<BaseCommand>> OnSequenceChanged;
     public static UnityAction<List<BaseCommand>> OnSecondarySequenceChanged;
+    public static UnityAction<ReorderableList.ReorderableListEventStruct> OnElementDroppedToMainSequenceBar;
     public static UnityAction OnReadyButtonClicked;
     public static UnityAction<bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
@@ -89,6 +91,11 @@ public class EventManager {
 
     public static void AudioInitialized() {
         OnAudioInitialize?.Invoke();
+    }
+
+    public static void ElementDroppedToMainSequenceBar(ReorderableList.ReorderableListEventStruct arg0)
+    {
+        OnElementDroppedToMainSequenceBar?.Invoke(arg0);
     }
 
     public static void SequenceChanged()
