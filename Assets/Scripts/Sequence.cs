@@ -75,11 +75,12 @@ namespace Assets.Scripts
             
         }
 
-        public void AddRange(IEnumerable<BaseCommand> items) {
+        public void AddRange(IEnumerable<BaseCommand> items, bool callEvent) {
             foreach (var item in items) {
                 Commands.Add(item);
             }
-            SequenceChanged();
+            if(callEvent)
+                SequenceChanged();
         }
 
         public void Clear() {

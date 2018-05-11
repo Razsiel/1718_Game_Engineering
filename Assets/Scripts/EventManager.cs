@@ -66,7 +66,7 @@ public class EventManager {
         OnReadyButtonClicked?.Invoke();
     }
     public static void StopButtonClicked() {
-        OnReadyButtonClicked?.Invoke();
+        OnStopButtonClicked?.Invoke();
     }
 
     public static void LevelSelected() {
