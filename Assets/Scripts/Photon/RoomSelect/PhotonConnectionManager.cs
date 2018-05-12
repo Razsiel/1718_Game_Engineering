@@ -51,6 +51,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Init()
         {
             PhotonNetwork.autoJoinLobby = true;
+            PhotonNetwork.automaticallySyncScene = true;
 
             var connected = PhotonNetwork.ConnectUsingSettings("1.1");
             //Assert.IsTrue(connected);
@@ -151,7 +152,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         }
 
         /// <summary>
-        /// Gets the players in the room ordered by who is the masterclient (masterlclient is first in the list)
+        /// Gets the players in the room ordered by who is the masterclient (masterclient is first in the list)
         /// </summary>
         /// <returns></returns>
         public List<PhotonPlayer> GetAllPlayersInRoom()
@@ -161,19 +162,26 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void SendGoToLevelSelect()
         {
+            //if (PhotonNetwork.player.IsMasterClient)
+            //    this.photonView.RPC(nameof(GoToLevelSelect), PhotonTargets.All);
+
+
             if (PhotonNetwork.player.IsMasterClient)
-                this.photonView.RPC(nameof(GoToLevelSelect), PhotonTargets.All);
+            {
+                this.photonView.RPC(nameof(SetPlayers), PhotonTargets.All);
+                PhotonNetwork.LoadLevel(LevelSelectScene);
+            }
         }
 
         [PunRPC]
-        public void GoToLevelSelect()
+        public void SetPlayers()
         {
             _gameInfo.Players = new List<TGEPlayer>();
             var players = GetAllPlayersInRoom();
             foreach (var p in players)
-                _gameInfo.Players.Add(new TGEPlayer() { photonPlayer = p });
+                _gameInfo.Players.Add(new TGEPlayer { photonPlayer = p });
 
-            SceneManager.LoadScene(LevelSelectScene);
+            //SceneManager.LoadScene(LevelSelectScene);
         }
     }
 }

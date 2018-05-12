@@ -55,7 +55,7 @@ namespace Assets.Scripts {
             var commandOptions = GameInfo.AllCommands.Commands;
             var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
 
-            this.Sequence.AddRange(commandValues);
+            this.Sequence.AddRange(commandValues, true);
         }
 
         public void StopExecution() {

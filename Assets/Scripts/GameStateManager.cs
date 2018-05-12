@@ -48,13 +48,13 @@ namespace Assets.Scripts {
 
             // SIMULATE -> LEVELCOMPLETE
             fsm.Tr(GameState.Simulate, GameStateTrigger.Next, GameState.LevelComplete)
-               .On(OnLevelCompleteStateEnter)
+                .On(OnLevelCompleteStateEnter)
                .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
             GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
                 this._gameInfo = gameInfo;
-                Init();
+                Init(); 
             };
         }
 
@@ -96,6 +96,7 @@ namespace Assets.Scripts {
 
         private void OnAllPlayersJoined(Room room) {
             PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
+            print($"{nameof(GameStateManager)} OnAllPlayersJoined" + room);
             EventManager.GameStart(_gameInfo);
         }
 
@@ -187,7 +188,8 @@ namespace Assets.Scripts {
             fsm.Fire(GameStateTrigger.Back);
         }
 
-        private void OnAllLevelGoalsReached() {
+        private void OnAllLevelGoalsReached()
+        {
             EventManager.OnAllLevelGoalsReached -= OnAllLevelGoalsReached;
             fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }

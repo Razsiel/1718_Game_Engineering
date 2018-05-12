@@ -10,7 +10,6 @@ namespace Assets.Scripts.Behaviours {
         [SerializeField] private GameObject _cameraContainerPrefab;
         [SerializeField] private GameObject _uiPrefab;
         [SerializeField] private GameObject _monologuePrefab;
-        [SerializeField] private GameObject _audioPrefab;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _sequenceRunnerPrefab;
         [SerializeField] private GameObject _photonPrefab;
@@ -30,7 +29,6 @@ namespace Assets.Scripts.Behaviours {
                 manager.GameRoot = gameRoot;
                 manager.PlayerPrefab = _playerPrefab;
             });
-//            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
            
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
             photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
