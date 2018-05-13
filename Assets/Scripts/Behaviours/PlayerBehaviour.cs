@@ -93,11 +93,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void StopJumping()
     {
-        if (_isJumping)
-        {
-            StopCoroutine(JumpAnimationCoroutine);
-            _isJumping = false;
-        }
+        if (JumpAnimationCoroutine == null) return;
+
+        StopCoroutine(JumpAnimationCoroutine);
+        _isJumping = false;
     }
 
     private IEnumerator RunBumpAnimation(Vector3 startPosition, Vector3 bumpPosition)
