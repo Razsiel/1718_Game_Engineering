@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Levels;
 using Assets.Scripts;
+using Assets.Scripts.DataStructures;
 using DG.Tweening;
 using UnityEngine;
 
@@ -15,8 +17,8 @@ public class PlayerBehaviour : MonoBehaviour
     {
         EventManager.OnPlayerSpawned += OnPlayerSpawned;
         EventManager.OnPlayerReady += AnimatePlayerReady;
-        EventManager.OnAllPlayersReady += StopJumping;
         EventManager.OnStopButtonClicked += OnSimulationEnded;
+        EventManager.OnSimulate += OnSimulationStarted;
 
         _isJumping = false;
     }
@@ -24,6 +26,12 @@ public class PlayerBehaviour : MonoBehaviour
     public void OnSimulationEnded()
     {
         _isSimulating = false;
+    }
+
+    public void OnSimulationStarted(LevelData lvlData, List<TGEPlayer> players)
+    {
+        _isSimulating = true;
+        StopJumping();
     }
 
     void OnPlayerSpawned(Player player)
@@ -85,9 +93,11 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void StopJumping()
     {
-        StopCoroutine(JumpAnimationCoroutine);
-        _isJumping = false;
-        _isJumping = true;
+        if (_isJumping)
+        {
+            StopCoroutine(JumpAnimationCoroutine);
+            _isJumping = false;
+        }
     }
 
     private IEnumerator RunBumpAnimation(Vector3 startPosition, Vector3 bumpPosition)
