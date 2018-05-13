@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NPOI.SS.UserModel;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     void Awake()
     {
+        LanguageManager.Instance.ChangeLanguage(PlayerPrefs.GetString("Default language"));
         HideOptionsPanel();
     }
 
@@ -42,6 +44,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to Dutch
         LanguageManager.Instance.ChangeLanguage("nl-NL");
+        PlayerPrefs.SetString("Default language", "nl-NL");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -49,6 +52,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to English
         LanguageManager.Instance.ChangeLanguage("en-GB");
+        PlayerPrefs.SetString("Default language", "en-GB");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -66,6 +70,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         PlayerPrefs.SetFloat("BGM Volume", BgmVolumeSlider.value);
         PlayerPrefs.SetFloat("SFX Volume", SfxVolumeSlider.value);
+        PlayerPrefs.SetString("Default language", LanguageManager.Instance.CurrentlyLoadedCulture.languageCode);
 
         PlayerPrefs.Save();
     }
