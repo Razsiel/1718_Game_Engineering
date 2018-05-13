@@ -27,6 +27,7 @@ namespace Assets.Scripts
             else if (Instance != this)
             {
                 Destroy(gameObject);
+                return;
             }
 
             GameInfo.AllCommands = AllCommands;
