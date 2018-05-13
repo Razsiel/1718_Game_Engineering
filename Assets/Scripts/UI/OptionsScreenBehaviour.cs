@@ -16,14 +16,15 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        // Load settings from PlayerPrefs
         HideOptionsPanel();
     }
 
     public void ShowOptionsPanel()
     {
-        // Load settings from PlayerPrefs
         OptionsCanvas.SetActive(true);
+
+        BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGM Volume");
+        SfxVolumeSlider.value = PlayerPrefs.GetFloat("SFX Volume");
     }
 
     public void HideOptionsPanel()
@@ -33,6 +34,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     public void OnClick_BackToMainMenu()
     {
+        SaveSettings();
         HideOptionsPanel();
     }
 
@@ -62,6 +64,9 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     private void SaveSettings()
     {
-        // Save settings to PlayerPrefs
+        PlayerPrefs.SetFloat("BGM Volume", BgmVolumeSlider.value);
+        PlayerPrefs.SetFloat("SFX Volume", SfxVolumeSlider.value);
+
+        PlayerPrefs.Save();
     }
 }
