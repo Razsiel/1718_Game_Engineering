@@ -8,6 +8,7 @@ using Utilities;
 
 public class OptionsScreenBehaviour : MonoBehaviour {
     
+    [SerializeField] private GameObject OptionsCanvas;
     [SerializeField] private Button LanguageFlagDutch;
     [SerializeField] private Button LanguageFlagEnglish;
     [SerializeField] private Slider BgmVolumeSlider;
@@ -22,12 +23,12 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     public void ShowOptionsPanel()
     {
         // Load settings from PlayerPrefs
-        gameObject.SetActive(true);
+        OptionsCanvas.SetActive(true);
     }
 
     public void HideOptionsPanel()
     {
-        gameObject.SetActive(false);
+        OptionsCanvas.SetActive(false);
     }
 
     public void OnClick_BackToMainMenu()
