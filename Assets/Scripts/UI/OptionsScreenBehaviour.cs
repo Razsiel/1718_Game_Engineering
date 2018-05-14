@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NPOI.SS.UserModel;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ using Utilities;
 
 public class OptionsScreenBehaviour : MonoBehaviour {
     
+    [SerializeField] private GameObject OptionsCanvas;
     [SerializeField] private Button LanguageFlagDutch;
     [SerializeField] private Button LanguageFlagEnglish;
     [SerializeField] private Slider BgmVolumeSlider;
@@ -15,23 +17,26 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        // Load settings from PlayerPrefs
+        LanguageManager.Instance.ChangeLanguage(PlayerPrefs.GetString("Default language"));
         HideOptionsPanel();
     }
 
     public void ShowOptionsPanel()
     {
-        // Load settings from PlayerPrefs
-        gameObject.SetActive(true);
+        OptionsCanvas.SetActive(true);
+
+        BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGM Volume");
+        SfxVolumeSlider.value = PlayerPrefs.GetFloat("SFX Volume");
     }
 
     public void HideOptionsPanel()
     {
-        gameObject.SetActive(false);
+        OptionsCanvas.SetActive(false);
     }
 
     public void OnClick_BackToMainMenu()
     {
+        SaveSettings();
         HideOptionsPanel();
     }
 
@@ -39,6 +44,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to Dutch
         LanguageManager.Instance.ChangeLanguage("nl-NL");
+        PlayerPrefs.SetString("Default language", "nl-NL");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -46,6 +52,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to English
         LanguageManager.Instance.ChangeLanguage("en-GB");
+        PlayerPrefs.SetString("Default language", "en-GB");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -61,6 +68,10 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     private void SaveSettings()
     {
-        // Save settings to PlayerPrefs
+        PlayerPrefs.SetFloat("BGM Volume", BgmVolumeSlider.value);
+        PlayerPrefs.SetFloat("SFX Volume", SfxVolumeSlider.value);
+        PlayerPrefs.SetString("Default language", LanguageManager.Instance.CurrentlyLoadedCulture.languageCode);
+
+        PlayerPrefs.Save();
     }
 }
