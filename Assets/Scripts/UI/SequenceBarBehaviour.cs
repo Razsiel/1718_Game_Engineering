@@ -90,6 +90,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     public void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
+        //Fix when dropping from loop to main sequence bar
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
         if (command is LoopCommand)
         {
@@ -123,45 +124,50 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void RearrangeElementsInSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
+        //This function is called by reorderable list multiple times, 
+        //if its trying to alter the same index and the same list, ignore.
+
+        print($"From index: {arg0.FromIndex}, To index: {arg0.ToIndex}, From list: {arg0.FromList}, To list: {arg0.ToList}");
+
         if (arg0.ToIndex == arg0.FromIndex && arg0.ToList == arg0.FromList)
         {
             return;
         }
-
         List<int> toIndices = new List<int>();
-            List<int> fromIndices = new List<int>();
-            //If the list that we're dropping to has a slotscript, its not the sequence bar.
-            //Therefore we have to get the list of indices to determine where to add the command to the player sequence.
-            if (arg0.ToList.GetComponent<SlotScript>() != null)
-            {
-                SlotScript commandSlotScript = arg0.ToList.GetComponent<SlotScript>();
+        List<int> fromIndices = new List<int>();
+        
+        //If the list that we're dropping to has a slotscript, its not the sequence bar.
+        //Therefore we have to get the list of indices to determine where to add the command to the player sequence.
+        if (arg0.ToList.GetComponent<SlotScript>() != null)
+        {
+            SlotScript commandSlotScript = arg0.ToList.GetComponent<SlotScript>();
 
-                //indices of the location the element is to be dropped to
-                toIndices.AddRange(commandSlotScript.indices);
-                toIndices.Add(arg0.ToIndex);
-            }//The list we're dropping to is the sequence bar
-            else
-            {
-                toIndices.Add(arg0.ToIndex);
-            }
+            //indices of the location the element is to be dropped to
+            toIndices.AddRange(commandSlotScript.indices);
+            toIndices.Add(arg0.ToIndex);
+        }//The list we're dropping to is the sequence bar
+        else
+        {
+            toIndices.Add(arg0.ToIndex);
+        }
 
-            //If true, we're taking from inside a loop
-            if (arg0.FromList.GetComponent<SlotScript>() != null)
-            {
-                SlotScript commandSlotScript = arg0.FromList.GetComponent<SlotScript>();
+        //If true, we're taking from inside a loop
+        if (arg0.FromList.GetComponent<SlotScript>() != null)
+        {
+            SlotScript commandSlotScript = arg0.FromList.GetComponent<SlotScript>();
 
-                //indices of the location the element is to be dropped to
-                fromIndices.AddRange(commandSlotScript.indices);
-                fromIndices.Add(arg0.ToIndex);
+            //indices of the location the element is to be dropped to
+            fromIndices.AddRange(commandSlotScript.indices);
+            fromIndices.Add(arg0.ToIndex);
 
-            }//The list we're dropping from is the sequence bar
-            else
-            {
-                fromIndices.Add(arg0.FromIndex);
-            }
+        }//The list we're dropping from is the sequence bar
+        else
+        {
+            fromIndices.Add(arg0.FromIndex);
+        }
 
-            //Swap the commands
-            _localPlayer.Sequence.SwapAtindices(fromIndices, toIndices, arg0.ToList != arg0.FromList);
+        //Swap the commands
+        _localPlayer.Sequence.RemoveFromIndicesAndAddToIndices(fromIndices, toIndices, arg0.ToList != arg0.FromList);
 
     }
 
@@ -244,7 +250,6 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         var itemLayout = item.GetComponent<LayoutElement>();
         itemLayout.preferredWidth = width;
-        print(width);
     }
 
     private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index, Sprite image, bool isLoopCommandSlot, int amountOfLoops)
@@ -284,6 +289,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             slotReorderableList.DraggableArea = _mainPanel;
             slotReorderableList.isContainerCommandList = true;
             slotReorderableList.indexInParent = index;
+            slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
             listInSlotFlow.childAlignment = TextAnchor.MiddleLeft;
             listInSlotFlow.padding.left = 15;
