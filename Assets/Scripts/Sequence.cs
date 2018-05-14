@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Assets.Data.Command;
 using Assets.Data.Levels;
+using NPOI.SS.UserModel;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -96,34 +97,83 @@ namespace Assets.Scripts
             SequenceChanged();
         }
 
-        public void SwapAtindices(List<int> fromindices, List<int> toindices)
+        public void SwapAtindices(List<int> fromindices, List<int> toindices, bool addToLoop)
         {
             //If the swap is taking place at the surface level
             if (fromindices.Count == 1 && toindices.Count == 1)
             {
                 SwapAtindices(fromindices[0], toindices[0]);
             }
+            else
+            {
+                BaseCommand temp = null;
+                BaseCommand fromCommand = null;
+                BaseCommand toCommand = null;
 
-            BaseCommand temp = null;
-            BaseCommand fromCommand = null;
-            BaseCommand toCommand = null;
-            
-            List<BaseCommand> commands = Commands;
+                List<BaseCommand> commands = Commands;
 
-            fromCommand = GetCommandForListOfindices(fromindices, commands, fromCommand);
+                fromCommand = GetCommandForListOfindices(fromindices, commands, fromCommand);
 
-            commands = Commands;
+                commands = Commands;
 
-            toCommand = GetCommandForListOfindices(toindices, commands, toCommand);
+                Tuple<BaseCommand, int> toCommandInfo = GetLoopAndIndexToInsertOrAdd(toindices, commands, toCommand);
 
-            //Swap the commands
-            temp = fromCommand;
-            fromCommand = toCommand;
-            toCommand = temp;
-
+                if (addToLoop)
+                {
+                    ((LoopCommand)toCommand).Sequence.Add(fromCommand);
+                    Remove(fromCommand);
+                }
+                else
+                {
+                    //Swap the commands
+                    temp = fromCommand;
+                    fromCommand = toCommand;
+                    toCommand = temp;
+                }
+            }
         }
 
-        private BaseCommand  GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands, BaseCommand command)
+        private Tuple<BaseCommand, int> GetLoopAndIndexToInsertOrAdd(List<int> indices, List<BaseCommand> commands, BaseCommand command)
+        {
+            int returnIndex = 0;
+
+            for (int i = 0; i < indices.Count; i++)
+            {
+                //The index doesnt fit in the loop, we should add it to the loop
+                if (indices[i] >= commands.Count)
+                {
+                    return new Tuple<BaseCommand, int>((LoopCommand)commands[commands.Count], commands.Count);
+                }
+                else if (commands[indices[i]] is LoopCommand)
+                {
+                    //If the loop has children, get them
+                    if (((LoopCommand)commands[indices[i]]).Sequence != null &&
+                        ((LoopCommand)commands[indices[i]]).Sequence.Commands.Count > 0)
+                    {
+                        //If we're at the last index to check, take the loop
+
+                        Debug.Log("pak de kinderen van de loop");
+
+                        command = ((LoopCommand)commands[indices[i]]);
+                        commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
+                    } //If the loop has no children
+                    else
+                    {
+                        ((LoopCommand)commands[indices[i]]).Init();
+                        return commands[indices[i]];
+                    }
+                }
+                else
+                {
+
+                    return command;
+                }
+            }
+
+            return command;
+        }
+
+        private BaseCommand GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands, BaseCommand command)
         {
             if (indices.Count == 1)
             {
@@ -131,7 +181,12 @@ namespace Assets.Scripts
             }
             for (int i = 0; i < indices.Count; i++)
             {
-                if (commands[indices[i]] is LoopCommand)
+
+                if (indices[i] >= commands.Count)
+                {
+                    return command;
+                }
+                else if (commands[indices[i]] is LoopCommand)
                 {
                     //If the loop has children, get them
                     if (((LoopCommand) commands[indices[i]]).Sequence != null && 
@@ -144,17 +199,19 @@ namespace Assets.Scripts
                         }
                         Debug.Log("pak de kinderen van de loop");
 
-                        
+                        command = ((LoopCommand) commands[indices[i]]);
                         commands = ((LoopCommand) commands[indices[i]]).Sequence.Commands;
                     } //If the loop has no children
                     else
                     {
-                        command = commands[indices[i]];
+                        ((LoopCommand) commands[indices[i]]).Init();
+                        return commands[indices[i]];
                     }
                 }
                 else
                 {
-                    command = commands[indices[i]];
+
+                    return command;
                 }
             }
 

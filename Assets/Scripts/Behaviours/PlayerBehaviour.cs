@@ -14,7 +14,7 @@ public class PlayerBehaviour : MonoBehaviour
     void Awake()
     {
         EventManager.OnPlayerSpawned += OnPlayerSpawned;
-        EventManager.OnPlayerReady += AnimatePlayerReady;
+        //EventManager.OnPlayerReady += AnimatePlayerReady;
         EventManager.OnAllPlayersReady += StopJumping;
         EventManager.OnStopButtonClicked += OnSimulationEnded;
 
@@ -85,9 +85,13 @@ public class PlayerBehaviour : MonoBehaviour
 
     private void StopJumping()
     {
-        StopCoroutine(JumpAnimationCoroutine);
-        _isJumping = false;
-        _isJumping = true;
+        if (JumpAnimationCoroutine != null)
+        {
+            StopCoroutine(JumpAnimationCoroutine);
+            _isJumping = false;
+            _isJumping = true;
+        }
+ 
     }
 
     private IEnumerator RunBumpAnimation(Vector3 startPosition, Vector3 bumpPosition)
