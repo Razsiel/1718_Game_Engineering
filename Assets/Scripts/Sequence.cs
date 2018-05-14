@@ -40,7 +40,6 @@ namespace Assets.Scripts
 
         public void Add(BaseCommand command, List<int> indices)
         {
-            Debug.Log("ikbenaanhettoevoegen");
             List<BaseCommand> commands = Commands;
 
             for (int i = 0; i < indices.Count; i++)
@@ -125,46 +124,6 @@ namespace Assets.Scripts
                 RemoveAt(fromIndices);
 
             }
-        }
-
-        private Tuple<BaseCommand, int> GetLoopAndIndexToInsertOrAdd(List<int> indices, List<BaseCommand> commands, BaseCommand command)
-        {
-            int returnIndex = 0;
-
-            for (int i = 0; i < indices.Count; i++)
-            {
-                returnIndex = indices[i];
-                //The index doesnt fit in the loop, we should add it to the loop
-                if (indices[i] >= commands.Count)
-                {
-                    return new Tuple<BaseCommand, int>((LoopCommand)command, commands.Count);
-                }
-                else if (commands[indices[i]] is LoopCommand)
-                {
-                    //If the loop has children, get them
-                    if (((LoopCommand)commands[indices[i]]).Sequence != null &&
-                        ((LoopCommand)commands[indices[i]]).Sequence.Commands.Count > 0)
-                    {
-                        //If we're at the last index to check, take the loop
-
-                        Debug.Log("pak de kinderen van de loop");
-
-                        command = ((LoopCommand)commands[indices[i]]);
-                        commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
-                    } //If the loop has no children
-                    else
-                    {
-                        ((LoopCommand)commands[indices[i]]).Init();
-                        return new Tuple<BaseCommand, int> (commands[indices[i]], returnIndex);
-                    }
-                }
-                else
-                {
-                    return new Tuple<BaseCommand, int>(command, returnIndex);
-                }
-            }
-
-            return new Tuple<BaseCommand, int>(command, returnIndex);
         }
 
         private BaseCommand GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands, BaseCommand command)
@@ -298,6 +257,8 @@ namespace Assets.Scripts
                 }//If its not a loop, the command has to be deleted
                 else
                 {
+                    Debug.Log("verwijderen command: " + commands[indices[i]].Name);
+
                     commands.RemoveAt(indices[i]);
                     //I dont know why sequence changed is not called unless i put it here
                     SequenceChanged();

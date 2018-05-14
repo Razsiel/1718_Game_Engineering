@@ -91,6 +91,9 @@ public class SequenceBarBehaviour : MonoBehaviour
     public void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
         //Fix when dropping from loop to main sequence bar
+        //if (arg0.SourceObject.GetComponent<CommandPanelCommand>() == null)
+        //    return;
+
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
         if (command is LoopCommand)
         {
@@ -158,7 +161,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             //indices of the location the element is to be dropped to
             fromIndices.AddRange(commandSlotScript.indices);
-            fromIndices.Add(arg0.ToIndex);
+            fromIndices.Add(arg0.FromIndex);
 
         }//The list we're dropping from is the sequence bar
         else
@@ -284,12 +287,12 @@ public class SequenceBarBehaviour : MonoBehaviour
             listInSlotLayout.preferredWidth = 155;
 
             listInSlot.transform.SetParent(slot.transform, false);
-            var slotReorderableList = slot.AddComponent<ReorderableList>();
-            slotReorderableList.ContentLayout = listInSlotFlow;
-            slotReorderableList.DraggableArea = _mainPanel;
+
+            AddReorderableListToComponent(slot, listInSlotFlow, _mainPanel, true, true);
+            var slotReorderableList = slot.GetComponent<ReorderableList>();
             slotReorderableList.isContainerCommandList = true;
             slotReorderableList.indexInParent = index;
-            slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
+            //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
             listInSlotFlow.childAlignment = TextAnchor.MiddleLeft;
             listInSlotFlow.padding.left = 15;
