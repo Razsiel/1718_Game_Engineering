@@ -37,6 +37,12 @@ public class SequenceBarBehaviour : MonoBehaviour
         
     }
 
+    void OnDestroy() {
+        EventManager.OnSequenceChanged -= OnSequenceChanged;
+        EventManager.OnElementDroppedToMainSequenceBar -= AddDroppedElementToMainSequence;
+        EventManager.OnSecondarySequenceChanged -= OnSequenceChanged;
+    }
+
     private void InitializeCommandsList(bool isMainCommandsList)
     {
         GameObject commandsListPanel = new GameObject("Commands list");
@@ -391,8 +397,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
     }
 
-    public void OnSequenceChanged(List<BaseCommand> commands)
-    {
+    public void OnSequenceChanged(List<BaseCommand> commands) {
         ClearSequenceBar(true);
 
         UpdateSequenceBar(commands, _commandsListPanel.transform, true);

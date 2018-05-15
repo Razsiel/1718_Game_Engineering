@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 using Assets.Scripts.Photon.Level;
 
 namespace Assets.Scripts {
-    public class GameStateManager : SingleMonobehaviour<GameStateManager> {
+    public class GameStateManager : MonoBehaviour {
         private GameInfo _gameInfo;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
@@ -52,24 +52,19 @@ namespace Assets.Scripts {
                .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
-            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
-                this._gameInfo = gameInfo;
-                Init(); 
-            };
+            GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
         }
 
-        public void Init() {
+        private void OnSceneLoaded(GameInfo gameInfo) {
+            GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+            this._gameInfo = gameInfo;
+        }
+
+        public void Start() {
             Debug.Log($"Start: {nameof(GameStateManager)}");
 
-            EventManager.OnGameStart += gameInfo => {
-                print("loading level");
-                EventManager.LoadLevel(_gameInfo);
-            };
-
-            EventManager.OnLevelLoaded += (levelData) => {
-                print("level loaded and presented");
-                fsm.Fire(GameStateTrigger.Next); // goto Cutscene
-            };
+            EventManager.OnGameStart += OnGameStart;
+            EventManager.OnLevelLoaded += OnLevelLoaded;
 
             if (_gameInfo.IsMultiplayer) {
                 print("GameStateManager: We are gonna start in multiplayer");
@@ -78,6 +73,20 @@ namespace Assets.Scripts {
             else {
                 StartSingleplayer();
             }
+        }
+
+        private void OnLevelLoaded(GameInfo levelData)
+        {
+            EventManager.OnLevelLoaded -= OnLevelLoaded;
+            print("level loaded and presented");
+            fsm.Fire(GameStateTrigger.Next); // goto Cutscene
+        }
+
+        private void OnGameStart(GameInfo gameInfo)
+        {
+            EventManager.OnGameStart -= OnGameStart;
+            print("loading level");
+            EventManager.LoadLevel(_gameInfo);
         }
 
         public void OnDisable()
