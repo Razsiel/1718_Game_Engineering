@@ -156,7 +156,6 @@ public class BottomPanelManager : MonoBehaviour
 
     private void ReadyButtonClicked()
     {
-
         if (_readyButtonState == ReadyButtonState.Play)
         {
             SetReadyButtonState(_gameInfo.IsMultiplayer ? ReadyButtonState.Ready : ReadyButtonState.Stop);
@@ -173,7 +172,7 @@ public class BottomPanelManager : MonoBehaviour
             SetReadyButtonState(ReadyButtonState.Play);
             EventManager.StopButtonClicked();
         }
-
+        print($"Pressed button: {_readyButtonState}");
     }
 
     private void SecondaryPlayerIconClicked()
