@@ -37,6 +37,7 @@ public class LevelManager : TGEMonoBehaviour {
         Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
 
+        Assert.IsNotNull(GameRoot);
         // Create level objects in scene
         _levelObject = PresentLevel(levelData, players, GameRoot.transform);
         Assert.IsNotNull(_levelObject);

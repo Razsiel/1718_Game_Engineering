@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Command;
+using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
@@ -23,6 +24,7 @@ namespace Assets.Scripts {
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;
+        public UnityAction<PlayerStartPosition> OnReset;
 
         private Coroutine _executeCoroutine;
 
@@ -61,6 +63,10 @@ namespace Assets.Scripts {
         public void StopExecution() {
             if (_executeCoroutine != null)
                 StopCoroutine(_executeCoroutine);
+        }
+
+        public void Reset(PlayerStartPosition startPosition) {
+            OnReset?.Invoke(startPosition);
         }
     }
 }
