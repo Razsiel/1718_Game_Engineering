@@ -33,6 +33,8 @@ namespace Assets.Scripts.Behaviours {
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
             photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
 
+            var scoreManager = Spawn<PlayerScoreManager>("ScoreManager", managersRoot);
+
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);
             var ui = GameObject.Instantiate(_uiPrefab, gameRoot.transform);
