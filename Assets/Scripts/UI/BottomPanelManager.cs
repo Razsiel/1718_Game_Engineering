@@ -45,6 +45,7 @@ public class BottomPanelManager : MonoBehaviour
 
     void Initialize(GameInfo gameInfo)
     {
+        EventManager.OnInitializeUi -= Initialize;
         _gameInfo = gameInfo;
         _mainPanel = transform.parent.GetComponent<RectTransform>();
         _localPlayer = gameInfo.LocalPlayer.Player;

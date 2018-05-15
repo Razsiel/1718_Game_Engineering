@@ -21,5 +21,9 @@ namespace Assets.Scripts.Lib.Extensions {
             vector.Set(vector.x, newVector.y, newVector.z);
             return vector;
         }
+
+        public static void SetXZ(this Vector3 vector, Vector2Int vector2) {
+            vector.Set(vector2.x, vector.y, vector2.y);
+        }
     }
 }

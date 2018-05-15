@@ -45,6 +45,7 @@ namespace Assets.Scripts.UI
 
         private void Initialize(GameInfo gameInfo)
         {
+            EventManager.OnInitializeUi -= Initialize;
             _gameInfo = gameInfo;
             _player = _gameInfo.LocalPlayer.Player;
             _commandLibrary = _gameInfo.AllCommands;

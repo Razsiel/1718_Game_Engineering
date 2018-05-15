@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
 using UnityEngine;
 
@@ -13,6 +15,8 @@ public class PlayerBehaviour : MonoBehaviour
     private bool _isSimulating;
     private Coroutine JumpAnimationCoroutine;
 
+    private Tweener _currentAnimation;
+
     void Awake()
     {
         EventManager.OnPlayerSpawned += OnPlayerSpawned;
@@ -22,6 +26,22 @@ public class PlayerBehaviour : MonoBehaviour
         EventManager.OnSimulate += OnSimulationStarted;
 
         _isJumping = false;
+    }
+
+    void OnDestroy() {
+        EventManager.OnPlayerSpawned -= OnPlayerSpawned;
+        EventManager.OnAllPlayersReady -= StopJumping;
+        EventManager.OnPlayerReady -= AnimatePlayerReady;
+        EventManager.OnStopButtonClicked -= OnSimulationEnded;
+        EventManager.OnSimulate -= OnSimulationStarted;
+
+        if (_player != null) {
+            _player.OnMoveTo -= AnimateMoveTo;
+            _player.OnTurn -= AnimateTurn;
+            _player.OnWait -= AnimateWait;
+            _player.OnInteract -= AnimateInteract;
+            _player.OnFailMoveTo -= AnimateFailedMove;
+        }
     }
 
     public void OnSimulationEnded()
@@ -43,16 +63,25 @@ public class PlayerBehaviour : MonoBehaviour
         player.OnWait += AnimateWait;
         player.OnInteract += AnimateInteract;
         player.OnFailMoveTo += AnimateFailedMove;
+        player.OnReset += OnReset;
+    }
+
+    private void OnReset(PlayerStartPosition startState) {
+        _player.OnReset -= OnReset;
+        print("Resetting transform of player");
+        _currentAnimation.Complete();
+        transform.position.SetXZ(startState.StartPosition);
+        transform.rotation = Quaternion.Euler(startState.Facing.ToEuler());
     }
 
     public void AnimateMoveTo(Vector3 to)
     {
-        transform.DOMove(to, 1f);
+        _currentAnimation = transform.DOMove(to, 1f);
     }
 
     public void AnimateTurn(Vector3 targetRotation)
     {
-        transform.DORotate(targetRotation, 1f);
+        _currentAnimation = transform.DORotate(targetRotation, 1f);
     }
 
     // Bump into wall or player

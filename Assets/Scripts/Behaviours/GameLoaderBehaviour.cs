@@ -21,15 +21,10 @@ namespace Assets.Scripts.Behaviours {
             var gameRoot = new GameObject("Game");
 
             // Managers
-            var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot, manager => {
-                //manager.Level = _level;
-                //manager.CommandLibrary = _commandLibrary;
-            });
-            var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot, manager => {
-                manager.GameRoot = gameRoot;
-                manager.PlayerPrefab = _playerPrefab;
-            });
-           
+            var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot);
+            var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot);
+            levelPresenter.PlayerPrefab = _playerPrefab;
+
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
             photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
 
