@@ -149,14 +149,17 @@ namespace Assets.Scripts {
             // register if sequence is changed
             EventManager.OnSequenceChanged += OnSequenceChanged;
 
-            EventManager.OnAllPlayersReady += () => {
-                print("all players are ready!");
-                fsm.Fire(GameStateTrigger.Next); // goto Simulate
-            };
+            EventManager.OnAllPlayersReady += OnAllPlayersReady;
 
             if (!_gameInfo.IsMultiplayer) {
                 EventManager.AllPlayersReady();
             }
+        }
+
+        private void OnAllPlayersReady() {
+            EventManager.OnAllPlayersReady -= OnAllPlayersReady;
+            print("all players are ready!");
+            fsm.Fire(GameStateTrigger.Next); // goto Simulate
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
