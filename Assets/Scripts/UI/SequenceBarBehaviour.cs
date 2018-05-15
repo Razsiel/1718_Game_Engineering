@@ -90,10 +90,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     public void AddDroppedElementToMainSequence(ReorderableList.ReorderableListEventStruct arg0)
     {
-        //Fix when dropping from loop to main sequence bar
-        //if (arg0.SourceObject.GetComponent<CommandPanelCommand>() == null)
-        //    return;
-
+        print("Adding to main sequence bar");
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
         if (command is LoopCommand)
         {
@@ -364,6 +361,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);
+            slot.AddComponent<ReorderableListElement>().IsGrabbable = false;
 
         }
 
