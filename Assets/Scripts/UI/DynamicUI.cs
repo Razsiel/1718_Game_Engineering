@@ -129,7 +129,6 @@ namespace Assets.Scripts.UI
 
         private void InitializeWinScreen()
         {
-            print("a");
             GameObject _winScreen = Instantiate(WinScreen);
 
             WinScreenBehaviour winScreenBehaviour = _winScreen.AddComponent<WinScreenBehaviour>();

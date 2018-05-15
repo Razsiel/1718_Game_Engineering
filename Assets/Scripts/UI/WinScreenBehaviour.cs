@@ -4,22 +4,14 @@ using UnityEngine;
 
 public class WinScreenBehaviour : MonoBehaviour {
 
-    void Awake()
-    {
-    }
-
-	void Start () {
-		gameObject.SetActive(false);
-	}
-
     public void Initialize()
     {
         EventManager.OnAllLevelGoalsReached += ShowWinScreen;
+        gameObject.SetActive(false);
     }
 
     public void ShowWinScreen()
     {
-        print("asdsadasdsa");
         gameObject.SetActive(true);
     }
 

@@ -78,6 +78,7 @@ public class EventManager {
     }
 
     public static void AllLevelGoalsReached() {
+        Debug.Log("Levelgoals event fired");
         OnAllLevelGoalsReached?.Invoke();
     }
 

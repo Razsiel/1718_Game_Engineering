@@ -202,8 +202,9 @@ namespace Assets.Scripts {
 
         private void OnAllLevelGoalsReached()
         {
+            print("2");
             EventManager.OnAllLevelGoalsReached -= OnAllLevelGoalsReached;
-            fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
+            //fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }
 
         /// <summary>
