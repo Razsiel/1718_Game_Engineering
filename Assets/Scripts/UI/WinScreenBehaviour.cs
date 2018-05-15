@@ -6,15 +6,20 @@ public class WinScreenBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        EventManager.OnAllLevelGoalsReached += ShowWinScreen;
     }
 
 	void Start () {
 		gameObject.SetActive(false);
 	}
 
-    void ShowWinScreen()
+    public void Initialize()
     {
+        EventManager.OnAllLevelGoalsReached += ShowWinScreen;
+    }
+
+    public void ShowWinScreen()
+    {
+        print("asdsadasdsa");
         gameObject.SetActive(true);
     }
 
