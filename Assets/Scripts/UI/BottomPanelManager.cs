@@ -56,7 +56,8 @@ public class BottomPanelManager : MonoBehaviour
     private void InitializePlayerIcons()
     {
         InitializeIcons(true);
-        InitializeIcons(false);
+        if(_gameInfo.IsMultiplayer)
+            InitializeIcons(false);
     }
 
     private void InitializeIcons(bool isMainPlayerIcon)
@@ -82,7 +83,8 @@ public class BottomPanelManager : MonoBehaviour
     {
         
         InitializeMainSequenceBar();
-        InitializeSecondarySequenceBar();
+        if (_gameInfo.IsMultiplayer)
+            InitializeSecondarySequenceBar();
 
     }
 

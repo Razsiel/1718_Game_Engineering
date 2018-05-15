@@ -38,7 +38,6 @@ public class LevelSelectBehaviour : MonoBehaviour
         var levels = _gameInfo.LevelLibrary.Levels;
         Assert.IsNotNull(levels);
         Assert.IsTrue(levels.Any());
-        print(levels.Count);
         _selectedLevel = levels[0];
         LevelScroller.ChildObjects = new GameObject[levels.Count];
         for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++)
@@ -51,6 +50,8 @@ public class LevelSelectBehaviour : MonoBehaviour
 
             LevelScroller.AddChild(prefab);
         }
+        //Update the colors of the level images, the first level is selected on initialized
+        UpdatePreviewImageColors(0);
 
         if (_gameInfo.IsMultiplayer)
         {
@@ -63,7 +64,6 @@ public class LevelSelectBehaviour : MonoBehaviour
             print($"Changed pagenr to #{page}");
             _selectedLevel = levels[page];
             UpdatePreviewImageColors(page);
-
         });
     }
 

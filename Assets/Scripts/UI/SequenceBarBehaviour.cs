@@ -23,7 +23,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         _gameInfo = gameInfo;
         _localPlayer = gameInfo.LocalPlayer.Player;
 
-        if (isMainSequenceBar)
+        if (_isMainSequenceBar)
         {
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnElementDroppedToMainSequenceBar += AddDroppedElementToMainSequence;
@@ -33,7 +33,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             EventManager.OnSecondarySequenceChanged += OnSequenceChanged;
         }
 
-        InitializeCommandsList(isMainSequenceBar);
+        InitializeCommandsList(_isMainSequenceBar);
         
     }
 
