@@ -65,7 +65,7 @@ public class PlayerScoreManager : MonoBehaviour
         print($"{nameof(PlayerScoreManager)}: {combinedStars}");
         Assert.IsTrue(combinedStars > 0 && combinedStars <= 3);
       
-        EventManager.OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
+        EventManager.PlayersScoreDetermined(playerScoreDic, combinedStars);
     }
 
     private int DetermineStars(int count, LevelScore levelScore)

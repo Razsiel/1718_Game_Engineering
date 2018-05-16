@@ -61,6 +61,7 @@ public class WinScreenBehaviour : MonoBehaviour
 
     private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore)
     {
+        print("asd");
         textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
 
         for (int i = 0; i < playerInfo.Count; i++)
