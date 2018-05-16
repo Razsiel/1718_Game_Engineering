@@ -15,14 +15,14 @@ public class PlayerScoreManager : MonoBehaviour
     private GameInfo _gameInfo;
     public static PlayerScoreManager Instance { get; private set; }
 
-    public void Start()
+    public void Awake()
     {
         Instance = this;
+        print($"{nameof(PlayerScoreManager)}: awake");
         SceneDataLoader.OnSceneLoaded += gameInfo =>
         {
             this._gameInfo = gameInfo;
-            EventManager.OnAllLevelGoalsReached += DeterminePlayersScore;
-            EventManager.OnAllLevelGoalsReached -= DeterminePlayersScore;
+            EventManager.OnAllLevelGoalsReached += DeterminePlayersScore;          
         };        
     }
   
@@ -42,13 +42,19 @@ public class PlayerScoreManager : MonoBehaviour
 
     public void DeterminePlayersScore()
     {
+        EventManager.OnAllLevelGoalsReached -= DeterminePlayersScore;
+
+        print($"{nameof(PlayerScoreManager)}: in {nameof(DeterminePlayersScore)}");
         var starCount = 0;
         var playerScoreDic = new Dictionary<TGEPlayer, int>();
 
         foreach(var player in _gameInfo.Players)
         {
+            print($"{nameof(PlayerScoreManager)}: in foreach");
             var count = DeterminePlayerScore(player.Player.Sequence, 0);
+            print($"{nameof(PlayerScoreManager)}: seqCount {count}");
             var stars = DetermineStars(count, _gameInfo.Level.LevelScore);
+            print($"{nameof(PlayerScoreManager)}: {stars}");
             Assert.IsTrue(stars > 0 && stars <= 3);
             starCount += stars;
             playerScoreDic.Add(player, stars);
@@ -56,6 +62,7 @@ public class PlayerScoreManager : MonoBehaviour
 
         var averageStars = (float)starCount / _gameInfo.Players.Count;
         var combinedStars = MathHelper.RoundDown(averageStars);
+        print($"{nameof(PlayerScoreManager)}: {combinedStars}");
         Assert.IsTrue(combinedStars > 0 && combinedStars <= 3);
       
         EventManager.OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
