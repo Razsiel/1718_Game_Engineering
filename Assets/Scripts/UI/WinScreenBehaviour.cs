@@ -76,6 +76,7 @@ public class WinScreenBehaviour : MonoBehaviour
 
     public void ShowWinScreen()
     {
+        EventManager.OnAllLevelGoalsReached -= ShowWinScreen;
         gameObject.SetActive(true);
     }
 
