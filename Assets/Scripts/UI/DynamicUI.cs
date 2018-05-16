@@ -17,8 +17,8 @@ namespace Assets.Scripts.UI
     public class DynamicUI : MonoBehaviour
     {
         public GameObject BottomPanel;
-        public GameObject WinScreen;
-        private GameObject _winScreen;
+        public GameObject WinScreenMask;
+        private GameObject _winScreenMask;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
         private CommandLibrary _commandLibrary;
@@ -129,11 +129,11 @@ namespace Assets.Scripts.UI
 
         private void InitializeWinScreen()
         {
-            GameObject _winScreen = Instantiate(WinScreen);
+            GameObject _winScreenMask = Instantiate(WinScreenMask);
 
-            WinScreenBehaviour winScreenBehaviour = _winScreen.GetComponent<WinScreenBehaviour>();
+            WinScreenBehaviour winScreenBehaviour = _winScreenMask.GetComponent<WinScreenBehaviour>();
             winScreenBehaviour.Initialize();
-            _winScreen.transform.SetParent(transform, false);
+            _winScreenMask.transform.SetParent(transform, false);
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {

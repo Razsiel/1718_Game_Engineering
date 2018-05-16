@@ -9,40 +9,57 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1057132600084322}
+  m_RootGameObject: {fileID: 1926098324227882}
   m_IsPrefabParent: 1
---- !u!1 &1057132600084322
+--- !u!1 &1926098324227882
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224748704940250016}
-  - component: {fileID: 222947964517327322}
-  - component: {fileID: 114658489361411188}
-  - component: {fileID: 114299123137757186}
-  m_Layer: 0
-  m_Name: Win screen
+  - component: {fileID: 224012303998488598}
+  - component: {fileID: 222815393169283878}
+  - component: {fileID: 114646172209761994}
+  - component: {fileID: 114307723050392864}
+  - component: {fileID: 114592413396168660}
+  m_Layer: 5
+  m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114299123137757186
+--- !u!114 &114307723050392864
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1057132600084322}
+  m_GameObject: {fileID: 1926098324227882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
+--- !u!114 &114592413396168660
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1926098324227882}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1f086c9e1310440ad4ebd2f9fb3f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainPanel: {fileID: 0}
-  _player1Panel: {fileID: 0}
-  _player2Panel: {fileID: 0}
+  _mainPanelSelector: {fileID: 1057132600084322, guid: 561af46e649ba1d4c81dae60b516128a,
+    type: 2}
+  _mainPanel: {fileID: 1699940709811886, guid: 0b8ed2c9a8b9da0448f7e0e69f6a731f, type: 2}
+  _player1Panel: {fileID: 1574072276153810, guid: 00d4149dc0f8b9246ad7ea1133224d19,
+    type: 2}
+  _player2Panel: {fileID: 1976424666926412, guid: 106e351a85d9fab4db1d6967fd4a1ab2,
+    type: 2}
   _textAtTop: {fileID: 1532274721741374, guid: c2d09169b5e943344b9e4894b156a49b, type: 2}
   _totalStars: {fileID: 1511055484855070, guid: 116d47a7e253f854fa88fbfa77a0994f,
     type: 2}
@@ -60,12 +77,12 @@ MonoBehaviour:
     type: 2}
   _player2StarsImage: {fileID: 1085615922611522, guid: 12175f729f2d8804b9d2d775b02b1cf4,
     type: 2}
---- !u!114 &114658489361411188
+--- !u!114 &114646172209761994
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1057132600084322}
+  m_GameObject: {fileID: 1926098324227882}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
@@ -79,26 +96,26 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 0acbad2c50314944aa6ee947d7cf943a, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 051706c18c7b52f48abf2093ca22d83b, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!222 &222947964517327322
+--- !u!222 &222815393169283878
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1057132600084322}
---- !u!224 &224748704940250016
+  m_GameObject: {fileID: 1926098324227882}
+--- !u!224 &224012303998488598
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1057132600084322}
+  m_GameObject: {fileID: 1926098324227882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
