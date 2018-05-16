@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class WinScreenBehaviour : MonoBehaviour
 {
+    [SerializeField] private GameObject _mainPanelSelector;
     [SerializeField] private GameObject _mainPanel;
     [SerializeField] private GameObject _player1Panel;
     [SerializeField] private GameObject _player2Panel;
@@ -19,6 +20,7 @@ public class WinScreenBehaviour : MonoBehaviour
     [SerializeField] private GameObject _player2Image;
     [SerializeField] private GameObject _player2StarsImage;
 
+    private GameObject mainPanelSelector;
     private GameObject mainPanel;
     private GameObject player1Panel;
     private GameObject player2Panel;
@@ -35,7 +37,8 @@ public class WinScreenBehaviour : MonoBehaviour
     public void Initialize()
     {
         EventManager.OnAllLevelGoalsReached += ShowWinScreen;
-        mainPanel = Instantiate(_mainPanel, transform, false);
+        mainPanelSelector = Instantiate(_mainPanelSelector, transform, false);
+        mainPanel = Instantiate(_mainPanel, mainPanelSelector.transform, false);
         player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
         player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
         textAtTop = Instantiate(_textAtTop, mainPanel.transform, false);
