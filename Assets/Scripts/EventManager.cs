@@ -42,6 +42,7 @@ public class EventManager {
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;
     public static UnityAction<GameInfo> OnLevelLoaded;
+
     public static UnityAction OnMenuClicked;
     
     public static UnityAction OnAllPlayersReady;
@@ -172,5 +173,11 @@ public class EventManager {
     public static void RepaintUI()
     {
         OnRepaintUi?.Invoke();
+    }
+
+    public static void PlayersScoreDetermined(Dictionary<TGEPlayer, int> playerScoreDic, int combinedStars)
+    {
+        Debug.Log("invoking playerscore determined");
+        OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
     }
 }
