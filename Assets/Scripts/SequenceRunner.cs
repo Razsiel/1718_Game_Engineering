@@ -21,6 +21,11 @@ public class SequenceRunner : MonoBehaviour
         EventManager.OnStopButtonClicked += StopAllCoroutines;
     }
 
+    void OnDestroy() {
+        EventManager.OnSimulate -= ExecuteSequences;
+        EventManager.OnStopButtonClicked -= StopAllCoroutines;
+    }
+
     private void ExecuteSequences(LevelData levelData, List<TGEPlayer> Players)
     {
         List<Tuple<Player, Sequence>> ExecutionSequences = new List<Tuple<Player, Sequence>>();

@@ -23,7 +23,6 @@ namespace Assets.Scripts.Behaviours {
             // Managers
             var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot);
             var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot);
-            levelPresenter.GameRoot = gameRoot;
             levelPresenter.PlayerPrefab = _playerPrefab;
 
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);

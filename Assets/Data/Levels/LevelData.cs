@@ -39,7 +39,7 @@ namespace Assets.Data.Levels
             }
         }
 
-        private Dictionary<Scripts.Player, Vector2Int> _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
+        private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
         public void OnEnable() {
             if (AllowedCommands == null || AllowedCommands.Count < Enum.GetValues(typeof(CommandEnum)).Length) {
@@ -54,10 +54,8 @@ namespace Assets.Data.Levels
             return Goals.All(goal => goal.HasBeenReached(_playerPositions.Select(p => p.Key)));
         }
 
-        public void Init(List<TGEPlayer> players) {
-            for (int i = 0; i < players.Count; i++) {
-                _playerPositions.Add(players[i].Player, GetPlayerStartPosition(i).StartPosition);
-            }
+        public void Init() {
+            _playerPositions = new Dictionary<Scripts.Player, Vector2Int>();
         }
 
         public PlayerStartPosition InitPlayer(Scripts.Player player) {

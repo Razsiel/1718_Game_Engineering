@@ -11,10 +11,13 @@ public class CameraBehaviour : MonoBehaviour
     private Camera _camera;
 
     void Awake() {
-        EventManager.OnLevelLoaded += (gameInfo) => {
-            _camera = gameObject.GetComponent<Camera>();
-            AutoZoomCamera(gameInfo.Level);
-        };
+        EventManager.OnLevelLoaded += OnLevelLoaded;
+    }
+
+    private void OnLevelLoaded(GameInfo gameInfo) {
+        EventManager.OnLevelLoaded -= OnLevelLoaded;
+        _camera = gameObject.GetComponent<Camera>();
+        AutoZoomCamera(gameInfo.Level);
     }
 
     /// <summary>

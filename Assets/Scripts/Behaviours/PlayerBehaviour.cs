@@ -28,6 +28,22 @@ public class PlayerBehaviour : MonoBehaviour
         _isJumping = false;
     }
 
+    void OnDestroy() {
+        EventManager.OnPlayerSpawned -= OnPlayerSpawned;
+        EventManager.OnAllPlayersReady -= StopJumping;
+        EventManager.OnPlayerReady -= AnimatePlayerReady;
+        EventManager.OnStopButtonClicked -= OnSimulationEnded;
+        EventManager.OnSimulate -= OnSimulationStarted;
+
+        if (_player != null) {
+            _player.OnMoveTo -= AnimateMoveTo;
+            _player.OnTurn -= AnimateTurn;
+            _player.OnWait -= AnimateWait;
+            _player.OnInteract -= AnimateInteract;
+            _player.OnFailMoveTo -= AnimateFailedMove;
+        }
+    }
+
     public void OnSimulationEnded()
     {
         _isSimulating = false;
@@ -50,8 +66,8 @@ public class PlayerBehaviour : MonoBehaviour
         player.OnReset += OnReset;
     }
 
-    private void OnReset(PlayerStartPosition startState)
-    {
+    private void OnReset(PlayerStartPosition startState) {
+        _player.OnReset -= OnReset;
         print("Resetting transform of player");
         _currentAnimation.Complete();
         transform.position.SetXZ(startState.StartPosition);

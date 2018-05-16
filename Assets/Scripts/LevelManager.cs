@@ -15,20 +15,22 @@ using UnityEngine;
 public class LevelManager : TGEMonoBehaviour {
     [SerializeField]
     public GameObject PlayerPrefab;
-
-    private static GameObject _levelObject;
-    public GameObject GameRoot { get; set; }
+    private GameObject _levelObject;
 
     public override void Awake() {
         EventManager.OnLoadLevel += Present;
-        EventManager.OnLevelReset += (gameInfo, players) => {
-            // reset internal data
-            gameInfo.Level.Reset(players, ResetPlayers);
-        };
+        EventManager.OnLevelReset += OnLevelReset;
+    }
+
+    private void OnLevelReset(GameInfo gameInfo, List<Player> players) {
+        EventManager.OnLevelReset -= OnLevelReset;
+        // reset internal data
+        gameInfo.Level.Reset(players, ResetPlayers);
     }
 
     // Use this for initialization
     public void Present(GameInfo gameInfo) {
+        EventManager.OnLoadLevel -= Present;
         Assert.IsNotNull(gameInfo);
         var levelData = gameInfo.Level;
         var players = gameInfo.Players;
@@ -36,10 +38,9 @@ public class LevelManager : TGEMonoBehaviour {
         Assert.IsNotNull(levelData);
         Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
-
-        Assert.IsNotNull(GameRoot);
+        
         // Create level objects in scene
-        _levelObject = PresentLevel(levelData, players, GameRoot.transform);
+        _levelObject = PresentLevel(levelData, players, this.transform);
         Assert.IsNotNull(_levelObject);
         
         EventManager.LevelLoaded(gameInfo);
@@ -47,6 +48,8 @@ public class LevelManager : TGEMonoBehaviour {
 
     public GameObject PresentLevel(LevelData data, List<TGEPlayer> players, Transform parent = null, bool hideInHierarchy = false) {
         Destroy(_levelObject);
+
+        data.Init();
         var grid = data.GridMapData;
 
         GameObject root = new GameObject("Level Object") {
