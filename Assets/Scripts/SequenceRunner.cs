@@ -107,6 +107,10 @@ public class SequenceRunner : MonoBehaviour
 
             yield return new WaitForSeconds(delay);
         }
+
+        if (levelData.HasReachedAllGoals()) {
+            EventManager.AllLevelGoalsReached();
+        }
     }
 }
 

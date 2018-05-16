@@ -209,7 +209,9 @@ namespace Assets.Data.Levels
             Assert.IsNotNull(_playerPositions);
             foreach (var player in players) {
                 Assert.IsNotNull(player);
-                _playerPositions[player] = GetPlayerStartPosition(player.PlayerNumber).StartPosition;
+                var startPosition = GetPlayerStartPosition(player.PlayerNumber);
+                _playerPositions[player] = startPosition.StartPosition;
+                player.Reset(startPosition);
             }
             foreach (var gridCell in GridMapData) {
                 foreach (var decorationConfig in gridCell.Value.DecorationConfigs) {

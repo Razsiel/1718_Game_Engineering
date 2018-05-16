@@ -19,9 +19,15 @@ public class PlayerScoreManager : MonoBehaviour
         {
             this._gameInfo = gameInfo;
             if(_gameInfo.IsMultiplayer)
+            {
                 EventManager.OnAllLevelGoalsReached += DetermineMultiplayerScore;
+                EventManager.OnAllLevelGoalsReached -= DetermineMultiplayerScore;
+            }
             else
+            {
                 EventManager.OnAllLevelGoalsReached += DetermineSinglePlayerScore;
+                EventManager.OnAllLevelGoalsReached -= DetermineSinglePlayerScore;
+            }
         };        
     }
 
@@ -30,6 +36,10 @@ public class PlayerScoreManager : MonoBehaviour
         var player = _gameInfo.LocalPlayer.Player.Sequence;
         
         var score = DeterminePlayerScore(player, 0);
+        var levelScore = _gameInfo.Level.LevelScore;
+
+        
+
         print($"{nameof(PlayerScoreManager)}: SinglePlayer score is: {score}");   
     }
 
@@ -49,10 +59,26 @@ public class PlayerScoreManager : MonoBehaviour
 
     public void DetermineMultiplayerScore()
     {
-        foreach(TGEPlayer p in _gameInfo.Players)
+        var totalCount = 0;
+        foreach(var player in _gameInfo.Players)
         {
-            int count = DeterminePlayerScore(p.Player.Sequence, 0);
+            var count = DeterminePlayerScore(player.Player.Sequence, 0);
+            var stars = DetermineStars(count, _gameInfo.Level.LevelScore);
         }
+
+        
+    }
+
+    private int DetermineStars(int count, LevelScore levelScore)
+    {
+        if(count <= levelScore.HighestScore)
+            return 3;
+        else if(count <= levelScore.DecentScore && count > levelScore.HighestScore)
+            return 2;
+        else if(count >= levelScore.BadScore)
+            return 1;
+        else
+            return -1;
     }
 
     #region DEPRECATED

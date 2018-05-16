@@ -56,7 +56,8 @@ public class BottomPanelManager : MonoBehaviour
     private void InitializePlayerIcons()
     {
         InitializeIcons(true);
-        InitializeIcons(false);
+        if(_gameInfo.IsMultiplayer)
+            InitializeIcons(false);
     }
 
     private void InitializeIcons(bool isMainPlayerIcon)
@@ -82,7 +83,8 @@ public class BottomPanelManager : MonoBehaviour
     {
         
         InitializeMainSequenceBar();
-        InitializeSecondarySequenceBar();
+        if (_gameInfo.IsMultiplayer)
+            InitializeSecondarySequenceBar();
 
     }
 
@@ -154,7 +156,6 @@ public class BottomPanelManager : MonoBehaviour
 
     private void ReadyButtonClicked()
     {
-
         if (_readyButtonState == ReadyButtonState.Play)
         {
             SetReadyButtonState(_gameInfo.IsMultiplayer ? ReadyButtonState.Ready : ReadyButtonState.Stop);
@@ -171,7 +172,7 @@ public class BottomPanelManager : MonoBehaviour
             SetReadyButtonState(ReadyButtonState.Play);
             EventManager.StopButtonClicked();
         }
-
+        print($"Pressed button: {_readyButtonState}");
     }
 
     private void SecondaryPlayerIconClicked()

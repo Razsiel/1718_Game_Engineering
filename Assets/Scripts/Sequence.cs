@@ -120,10 +120,34 @@ namespace Assets.Scripts
 
                 fromCommand = GetCommandForListOfindices(fromIndices, commands, fromCommand);
 
-                Add(fromCommand, toIndices);
-                RemoveAt(fromIndices);
-
+                if (ToIndicesIsGreaterThanFromIndices(toIndices, fromIndices))
+                {
+                    Add(fromCommand, toIndices);
+                    RemoveAt(fromIndices);
+                }
+                else
+                {
+                    RemoveAt(fromIndices);
+                    Add(fromCommand, toIndices);
+                }
             }
+        }
+
+        private bool ToIndicesIsGreaterThanFromIndices(List<int> toIndices, List<int> fromIndices)
+        {
+            int shortestList = toIndices.Count <= fromIndices.Count ? toIndices.Count : fromIndices.Count;
+            for (int i = 0; i < shortestList; i++)
+            {
+                if (toIndices[i] > fromIndices[i])
+                {
+                    return true;
+                }else if (toIndices[i] < fromIndices[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private BaseCommand GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands, BaseCommand command)
@@ -252,7 +276,7 @@ namespace Assets.Scripts
                     
                         commands.RemoveAt(indices[i]);
                         SequenceChanged();
-                        
+                        return;
                     }
                 }//If its not a loop, the command has to be deleted
                 else
@@ -262,8 +286,9 @@ namespace Assets.Scripts
                     commands.RemoveAt(indices[i]);
                     //I dont know why sequence changed is not called unless i put it here
                     SequenceChanged();
+                    return;
                 }
-            }
+            }   
         }
 
         public void LoopEdited(string newAmountOfLoops, List<int> indices)

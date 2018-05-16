@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
 using UnityEngine;
 
@@ -12,6 +14,8 @@ public class PlayerBehaviour : MonoBehaviour
     private bool _isJumping;
     private bool _isSimulating;
     private Coroutine JumpAnimationCoroutine;
+
+    private Tweener _currentAnimation;
 
     void Awake()
     {
@@ -43,16 +47,25 @@ public class PlayerBehaviour : MonoBehaviour
         player.OnWait += AnimateWait;
         player.OnInteract += AnimateInteract;
         player.OnFailMoveTo += AnimateFailedMove;
+        player.OnReset += OnReset;
+    }
+
+    private void OnReset(PlayerStartPosition startState)
+    {
+        print("Resetting transform of player");
+        _currentAnimation.Complete();
+        transform.position.SetXZ(startState.StartPosition);
+        transform.rotation = Quaternion.Euler(startState.Facing.ToEuler());
     }
 
     public void AnimateMoveTo(Vector3 to)
     {
-        transform.DOMove(to, 1f);
+        _currentAnimation = transform.DOMove(to, 1f);
     }
 
     public void AnimateTurn(Vector3 targetRotation)
     {
-        transform.DORotate(targetRotation, 1f);
+        _currentAnimation = transform.DORotate(targetRotation, 1f);
     }
 
     // Bump into wall or player
