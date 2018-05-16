@@ -49,16 +49,17 @@ public class SequenceBarBehaviour : MonoBehaviour
         GameObject sequenceBar = gameObject;
         commandsListPanel.transform.SetParent(sequenceBar.transform, false);
 
-        var commandsListContentSizeFitter = commandsListPanel.AddComponent<ContentSizeFitter>();
+        //var commandsListContentSizeFitter = commandsListPanel.AddComponent<ContentSizeFitter>();
         var commandsListLayoutElement = commandsListPanel.AddComponent<LayoutElement>();
         var commandsListFlowLayoutGroup = commandsListPanel.AddComponent<FlowLayoutGroup>();
 
         commandsListLayoutElement.preferredWidth = isMainCommandsList ? 2000 : 1100;
         commandsListLayoutElement.preferredHeight = isMainCommandsList ? 125 : 75;
+        commandsListLayoutElement.flexibleWidth = 999;
         commandsListLayoutElement.minHeight = 0;
 
-        commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-        commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        //commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        //commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         commandsListFlowLayoutGroup.childAlignment = isMainCommandsList ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
         commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);

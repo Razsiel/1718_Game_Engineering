@@ -40,9 +40,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1f086c9e1310440ad4ebd2f9fb3f1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainPanel: {fileID: 0}
-  _player1Panel: {fileID: 0}
-  _player2Panel: {fileID: 0}
+  _mainPanel: {fileID: 1699940709811886, guid: 0b8ed2c9a8b9da0448f7e0e69f6a731f, type: 2}
+  _player1Panel: {fileID: 1574072276153810, guid: 00d4149dc0f8b9246ad7ea1133224d19,
+    type: 2}
+  _player2Panel: {fileID: 1976424666926412, guid: 106e351a85d9fab4db1d6967fd4a1ab2,
+    type: 2}
   _textAtTop: {fileID: 1532274721741374, guid: c2d09169b5e943344b9e4894b156a49b, type: 2}
   _totalStars: {fileID: 1511055484855070, guid: 116d47a7e253f854fa88fbfa77a0994f,
     type: 2}

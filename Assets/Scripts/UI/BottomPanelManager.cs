@@ -21,9 +21,16 @@ public class BottomPanelManager : MonoBehaviour
     private GameObject _mainSequenceBar;
     private GameObject _secondarySequenceBar;
     private GameObject _readyButton;
-    private Sprite _readyButtonPlay;
-    private Sprite _readyButtonReady;
-    private Sprite _readyButtonStop;
+    private GameObject _readyButtonIcon;
+    [SerializeField] private Sprite _buttonBackground;
+    [SerializeField] private Sprite _readyButtonPlay;
+    [SerializeField] private Sprite _readyButtonReady;
+    [SerializeField] private Sprite _readyButtonStop;
+
+    [SerializeField] private Color _playStateColor;
+    [SerializeField] private Color _readyStateColor;
+    [SerializeField] private Color _stopStateColor;
+
     private ReadyButtonState _readyButtonState;
     private RectTransform _mainPanel;
     private Player _localPlayer;
@@ -69,7 +76,7 @@ public class BottomPanelManager : MonoBehaviour
         secondaryPlayerIcon.transform.SetAsFirstSibling();
         var image = secondaryPlayerIcon.AddComponent<Image>();
         var layoutElement = secondaryPlayerIcon.AddComponent<LayoutElement>();
-        var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
+        //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
 
         if (!isMainPlayerIcon)
         {
@@ -77,7 +84,8 @@ public class BottomPanelManager : MonoBehaviour
         }
 
         layoutElement.preferredWidth = layoutElement.preferredHeight = isMainPlayerIcon ? 125 : 75;
-        contentSizeFitter.horizontalFit = contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        layoutElement.flexibleWidth = 0;
+        //contentSizeFitter.horizontalFit = contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 
     private void InitializeSequenceBars()
@@ -114,22 +122,29 @@ public class BottomPanelManager : MonoBehaviour
         var readyButtonButton = _readyButton.AddComponent<Button>();
         var readyButtonImage = _readyButton.AddComponent<Image>();
         var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
-        var readyButtonContentSizeFitter = _readyButton.AddComponent<ContentSizeFitter>();
+        //var readyButtonContentSizeFitter = _readyButton.AddComponent<ContentSizeFitter>();
 
         _readyButton.transform.SetParent(transform.GetChild(2), false);
 
-        readyButtonLayoutElement.preferredWidth = 125;
+        readyButtonLayoutElement.preferredWidth = 200;
         readyButtonLayoutElement.preferredHeight = 125;
+        readyButtonLayoutElement.flexibleWidth = 0;
 
-        readyButtonContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-        readyButtonContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+        //readyButtonContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+        //readyButtonContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-        _readyButtonPlay = Resources.Load("Images/Img_Play_Temp", typeof(Sprite)) as Sprite;
-        _readyButtonReady = Resources.Load("Images/Img_Ready_Temp", typeof(Sprite)) as Sprite;
-        _readyButtonStop = Resources.Load("Images/Img_Stop_Temp", typeof(Sprite)) as Sprite;
+        readyButtonImage.sprite = _buttonBackground;
+        _readyButtonIcon = new GameObject("Icon");
+        var icon = _readyButtonIcon.AddComponent<Image>();
+        icon.preserveAspect = true;
+        _readyButtonIcon.transform.SetParent(readyButtonImage.transform, false);
+        var iconTransform = (RectTransform) _readyButtonIcon.transform;
+        iconTransform.localScale = Vector3.one * 0.5f;
+        iconTransform.sizeDelta = Vector2.one;
+        iconTransform.anchorMin = Vector2.zero;
+        iconTransform.anchorMax = Vector2.one;
 
-        readyButtonImage.sprite = _readyButtonPlay;
-        _readyButtonState = ReadyButtonState.Play;
+        SetReadyButtonState(ReadyButtonState.Play);
 
         readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
     }
@@ -139,16 +154,19 @@ public class BottomPanelManager : MonoBehaviour
     {
         if (newState == ReadyButtonState.Play)
         {
-            _readyButton.GetComponent<Image>().sprite = _readyButtonPlay;
+            _readyButton.GetComponent<Image>().color = _playStateColor;
+            _readyButtonIcon.GetComponent<Image>().sprite = _readyButtonPlay;
         }
         else if (newState == ReadyButtonState.Ready)
         {
-            _readyButton.GetComponent<Image>().sprite = _readyButtonReady;
+            _readyButton.GetComponent<Image>().color = _readyStateColor;
+            _readyButtonIcon.GetComponent<Image>().sprite = _readyButtonReady;
             _localPlayer.IsReady = true;
         }
         else
         {
-            _readyButton.GetComponent<Image>().sprite = _readyButtonStop;
+            _readyButton.GetComponent<Image>().color = _stopStateColor;
+            _readyButtonIcon.GetComponent<Image>().sprite = _readyButtonStop;
             _localPlayer.IsReady = false;
         }
 
