@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts;
+using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,7 +37,7 @@ public class WinScreenBehaviour : MonoBehaviour
 
     public void Initialize()
     {
-        EventManager.OnAllLevelGoalsReached += ShowWinScreen;
+        EventManager.OnPlayersScoreDetermined += ShowWinScreen;
         mainPanelSelector = Instantiate(_mainPanelSelector, transform, false);
         mainPanel = Instantiate(_mainPanel, mainPanelSelector.transform, false);
         player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
@@ -54,15 +55,19 @@ public class WinScreenBehaviour : MonoBehaviour
         player2StarsImage = Instantiate(_player2StarsImage, player2Panel.transform, false);
 
         continueButton.GetComponent<Button>().onClick.AddListener(ContinueButtonClicked);
-        UpdateWinScreenValues();
+        //UpdateWinScreenValues();
         gameObject.SetActive(false);
     }
 
-    public void UpdateWinScreenValues()
+    private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore)
     {
         textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
 
-        player1Name.GetComponent<Text>().text = "Player1 Naam";
+        for (int i = 0; i < playerInfo.Count; i++)
+        {
+            print("asd");
+        }
+        player1Name.GetComponent<Text>().text = "asd";
         player1Image.GetComponent<Image>().sprite = null;
         player1StarsImage.GetComponent<Image>().sprite = null;
 
@@ -71,7 +76,6 @@ public class WinScreenBehaviour : MonoBehaviour
         player2StarsImage.GetComponent<Image>().sprite = null;
 
         totalStars.GetComponent<Image>().sprite = null;
-
     }
 
     public void ShowWinScreen()
