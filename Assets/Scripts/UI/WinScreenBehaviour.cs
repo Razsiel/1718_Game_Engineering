@@ -19,27 +19,56 @@ public class WinScreenBehaviour : MonoBehaviour
     [SerializeField] private GameObject _player2Image;
     [SerializeField] private GameObject _player2StarsImage;
 
+    private GameObject mainPanel;
+    private GameObject player1Panel;
+    private GameObject player2Panel;
+    private GameObject textAtTop;
+    private GameObject totalStars;
+    private GameObject continueButton;
+    private GameObject player1Name;
+    private GameObject player1Image;
+    private GameObject player1StarsImage;
+    private GameObject player2Name;
+    private GameObject player2Image;
+    private GameObject player2StarsImage;
 
     public void Initialize()
     {
         EventManager.OnAllLevelGoalsReached += ShowWinScreen;
-        GameObject mainPanel = Instantiate(_mainPanel, transform, false);
-        GameObject player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
-        GameObject player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
-        Instantiate(_textAtTop, mainPanel.transform, false);
-        Instantiate(_totalStars, mainPanel.transform, false);
-        GameObject continueButton = Instantiate(_continueButton, mainPanel.transform, false);
+        mainPanel = Instantiate(_mainPanel, transform, false);
+        player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
+        player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
+        textAtTop = Instantiate(_textAtTop, mainPanel.transform, false);
+        totalStars = Instantiate(_totalStars, mainPanel.transform, false);
+        continueButton = Instantiate(_continueButton, mainPanel.transform, false);
 
-        Instantiate(_player1Name, player1Panel.transform, false);
-        Instantiate(_player1Image, player1Panel.transform, false);
-        Instantiate(_player1StarsImage, player1Panel.transform, false);
+        player1Name = Instantiate(_player1Name, player1Panel.transform, false);
+        player1Image = Instantiate(_player1Image, player1Panel.transform, false);
+        player1StarsImage = Instantiate(_player1StarsImage, player1Panel.transform, false);
 
-        Instantiate(_player2Name, player2Panel.transform, false);
-        Instantiate(_player2Image, player2Panel.transform, false);
-        Instantiate(_player2StarsImage, player2Panel.transform, false);
+        player2Name = Instantiate(_player2Name, player2Panel.transform, false);
+        player2Image = Instantiate(_player2Image, player2Panel.transform, false);
+        player2StarsImage = Instantiate(_player2StarsImage, player2Panel.transform, false);
 
         continueButton.GetComponent<Button>().onClick.AddListener(ContinueButtonClicked);
+        UpdateWinScreenValues();
         gameObject.SetActive(false);
+    }
+
+    public void UpdateWinScreenValues()
+    {
+        textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
+
+        player1Name.GetComponent<Text>().text = "Player1 Naam";
+        player1Image.GetComponent<Image>().sprite = null;
+        player1StarsImage.GetComponent<Image>().sprite = null;
+
+        player2Name.GetComponent<Text>().text = "Player2 Naam";
+        player2Image.GetComponent<Image>().sprite = null;
+        player2StarsImage.GetComponent<Image>().sprite = null;
+
+        totalStars.GetComponent<Image>().sprite = null;
+
     }
 
     public void ShowWinScreen()
