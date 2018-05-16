@@ -13,6 +13,7 @@ public class EventManager {
     public static UnityAction OnLevelSelected;
     public static UnityAction OnLoadingCompleted;
     public static UnityAction OnAllLevelGoalsReached;
+    public static UnityAction OnWinScreenContinueClicked;
 
     public static UnityAction<GameInfo> OnInitializeUi;
     public static UnityAction OnRepaintUi;
@@ -78,8 +79,12 @@ public class EventManager {
     }
 
     public static void AllLevelGoalsReached() {
-        Debug.Log("Levelgoals event fired");
         OnAllLevelGoalsReached?.Invoke();
+    }
+
+    public static void WinScreenContinueClicked()
+    {
+        OnWinScreenContinueClicked?.Invoke();
     }
 
     public static void PhotonSynchronized() {

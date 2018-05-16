@@ -43,7 +43,6 @@ public class CustomAnalytics : MonoBehaviour
 
     private void SendDataOnLevelComplete()
     {
-        print("1");
         _stopwatch.Stop();
         TimeSpan totalPlayTime = _stopwatch.Elapsed;
 

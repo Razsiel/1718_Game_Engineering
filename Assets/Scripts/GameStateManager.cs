@@ -192,7 +192,7 @@ namespace Assets.Scripts {
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
             EventManager.Simulate(_gameInfo.Level, _gameInfo.Players);
-            EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
+            EventManager.OnWinScreenContinueClicked += OnWinScreenContinueClicked;
         }
 
         private void OnStopButtonClicked() {
@@ -200,11 +200,10 @@ namespace Assets.Scripts {
             fsm.Fire(GameStateTrigger.Back);
         }
 
-        private void OnAllLevelGoalsReached()
+        private void OnWinScreenContinueClicked()
         {
-            print("2");
-            EventManager.OnAllLevelGoalsReached -= OnAllLevelGoalsReached;
-            //fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
+            EventManager.OnWinScreenContinueClicked -= OnWinScreenContinueClicked;
+            fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }
 
         /// <summary>
