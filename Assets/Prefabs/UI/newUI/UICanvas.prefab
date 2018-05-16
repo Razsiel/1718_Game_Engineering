@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 114053162991603026}
   - component: {fileID: 114166629091313114}
   - component: {fileID: 114987219846941394}
-  - component: {fileID: 114337651232692450}
+  - component: {fileID: 114056742790750858}
   m_Layer: 5
   m_Name: MainSequenceBarPanel
   m_TagString: Untagged
@@ -616,6 +616,28 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114056742790750858
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1586465061561776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 25
+    m_Right: 25
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 100
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
 --- !u!114 &114068676876222936
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1036,25 +1058,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114337651232692450
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1586465061561776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d0a1810729d376468c033cc565e805b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 50
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: {x: 25, y: 0}
-  m_Horizontal: 1
 --- !u!114 &114366686389043828
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1722,6 +1725,13 @@ MonoBehaviour:
     type: 2}
   SecondarySequenceBar: {fileID: 1028985079536304, guid: de2551f81868ed04e8ddc082f37aa61a,
     type: 2}
+  _buttonBackground: {fileID: 21300000, guid: 6268c6539f90bac4892da4f1af401cb5, type: 3}
+  _readyButtonPlay: {fileID: 21300000, guid: d2bd049e1a476c94c9b4c98558eacdd0, type: 3}
+  _readyButtonReady: {fileID: 21300000, guid: a9fe65a630c14e0439a359a34c4cef6c, type: 3}
+  _readyButtonStop: {fileID: 21300000, guid: 4ba9d32cf0952ab43a2771f70f8f79dd, type: 3}
+  _playStateColor: {r: 0.26666668, g: 0.73333335, b: 0.25882354, a: 1}
+  _readyStateColor: {r: 1, g: 0.49381587, b: 0, a: 1}
+  _stopStateColor: {r: 1, g: 0.05882353, b: 0, a: 1}
 --- !u!114 &114845077249792844
 MonoBehaviour:
   m_ObjectHideFlags: 1
