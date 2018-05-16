@@ -16,8 +16,9 @@ namespace Assets.Scripts.UI
 {
     public class DynamicUI : MonoBehaviour
     {
-
         public GameObject BottomPanel;
+        public GameObject WinScreen;
+        private GameObject _winScreen;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
         private CommandLibrary _commandLibrary;
@@ -56,6 +57,7 @@ namespace Assets.Scripts.UI
             InitializeCommandList();
 
             CreateCommands();
+            InitializeWinScreen();
         }
 
         private void InitializeCommandList()
@@ -123,6 +125,15 @@ namespace Assets.Scripts.UI
                     }
                 });
             }
+        }
+
+        private void InitializeWinScreen()
+        {
+            GameObject _winScreen = Instantiate(WinScreen);
+
+            WinScreenBehaviour winScreenBehaviour = _winScreen.GetComponent<WinScreenBehaviour>();
+            winScreenBehaviour.Initialize();
+            _winScreen.transform.SetParent(transform, false);
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
