@@ -4,6 +4,7 @@ using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Scripts;
 using DG.Tweening;
+using RockVR.Video;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
@@ -18,6 +19,14 @@ public class CameraBehaviour : MonoBehaviour
         EventManager.OnLevelLoaded -= OnLevelLoaded;
         _camera = gameObject.GetComponent<Camera>();
         AutoZoomCamera(gameInfo.Level);
+
+        var VideoCaptureComponent = GetComponent<VideoCapture>();
+        VideoCaptureCtrl.instance.videoCaptures = new VideoCaptureBase[1] { VideoCaptureComponent };
+
+        if (PlayerPrefs.GetInt("ShouldRecord") == 1)
+        {
+            RecordVideo();
+        }
     }
 
     /// <summary>
@@ -31,5 +40,11 @@ public class CameraBehaviour : MonoBehaviour
 
         // Camera should reduce the zoom-out by 0.2 per levelSize
         _camera.orthographicSize = 1 + (levelSize * aspectRatio) - (levelSize * 0.2f);
+    }
+
+    void RecordVideo()
+    {
+        VideoCaptureCtrl.instance.StartCapture();
+        EventManager.OnWinScreenContinueClicked += VideoCaptureCtrl.instance.StopCapture;
     }
 }
