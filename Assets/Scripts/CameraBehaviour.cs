@@ -23,7 +23,7 @@ public class CameraBehaviour : MonoBehaviour
         var VideoCaptureComponent = GetComponent<VideoCapture>();
         VideoCaptureCtrl.instance.videoCaptures = new VideoCaptureBase[1] { VideoCaptureComponent };
 
-        if (PlayerPrefs.GetInt("ShouldRecord") == 1)
+        if (PlayerPrefs.GetInt("RecordVideos") == 1)
         {
             RecordVideo();
         }
