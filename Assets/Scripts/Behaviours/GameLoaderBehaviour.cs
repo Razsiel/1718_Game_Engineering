@@ -3,19 +3,29 @@ using Assets.Data.Levels;
 using Assets.Scripts.Photon.Level;
 using UnityEngine;
 
-namespace Assets.Scripts.Behaviours {
-    public class GameLoaderBehaviour : TGEMonoBehaviour {
-        [SerializeField] private CommandLibrary _commandLibrary;
+namespace Assets.Scripts.Behaviours
+{
+    public class GameLoaderBehaviour : TGEMonoBehaviour
+    {
+        [SerializeField]
+        private CommandLibrary _commandLibrary;
 
-        [SerializeField] private GameObject _cameraContainerPrefab;
-        [SerializeField] private GameObject _uiPrefab;
-        [SerializeField] private GameObject _monologuePrefab;
-        [SerializeField] private GameObject _playerPrefab;
-        [SerializeField] private GameObject _sequenceRunnerPrefab;
-        [SerializeField] private GameObject _photonPrefab;
+        [SerializeField]
+        private GameObject _cameraContainerPrefab;
+        [SerializeField]
+        private GameObject _uiPrefab;
+        [SerializeField]
+        private GameObject _monologuePrefab;
+        [SerializeField]
+        private GameObject _playerPrefab;
+        [SerializeField]
+        private GameObject _sequenceRunnerPrefab;
+        [SerializeField]
+        private GameObject _photonPrefab;
 
         // Use this for initialization
-        public override void Start() {
+        public override void Start()
+        {
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Start setting up the scene");
             var managersRoot = new GameObject("Managers");
             var gameRoot = new GameObject("Game");

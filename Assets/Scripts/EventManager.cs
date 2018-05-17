@@ -18,7 +18,7 @@ public class EventManager {
 
     public static UnityAction<GameInfo> OnInitializeUi;
     public static UnityAction OnRepaintUi;
-    public static UnityAction<TGEPlayer> OnInitializePhoton;
+    public static UnityAction OnInitializePhoton;
     public static UnityAction OnAudioInitialize;
     public static UnityAction OnMonologueInitialized;
 
@@ -53,8 +53,8 @@ public class EventManager {
         OnInitializeUi?.Invoke(gameInfo);
     }
 
-    public static void InitializePhoton(TGEPlayer localPlayer) {
-        OnInitializePhoton?.Invoke(localPlayer);
+    public static void InitializePhoton() {
+        OnInitializePhoton?.Invoke();
     }
 
     public static void UserInputEnable() {
