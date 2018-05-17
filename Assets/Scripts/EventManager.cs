@@ -7,11 +7,14 @@ using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI.Extensions;
 
 public class EventManager {
     public static UnityAction OnLevelSelected;
     public static UnityAction OnLoadingCompleted;
     public static UnityAction OnAllLevelGoalsReached;
+    public static UnityAction<Dictionary<TGEPlayer, int>, int> OnPlayersScoreDetermined;
+    public static UnityAction OnWinScreenContinueClicked;
 
     public static UnityAction<GameInfo> OnInitializeUi;
     public static UnityAction OnRepaintUi;
@@ -26,6 +29,7 @@ public class EventManager {
     public static UnityAction OnUserInputDisable;
     public static UnityAction<List<BaseCommand>> OnSequenceChanged;
     public static UnityAction<List<BaseCommand>> OnSecondarySequenceChanged;
+    public static UnityAction<ReorderableList.ReorderableListEventStruct> OnElementDroppedToMainSequenceBar;
     public static UnityAction OnReadyButtonClicked;
     public static UnityAction<bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
@@ -38,6 +42,7 @@ public class EventManager {
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;
     public static UnityAction<GameInfo> OnLevelLoaded;
+
     public static UnityAction OnMenuClicked;
     
     public static UnityAction OnAllPlayersReady;
@@ -64,7 +69,7 @@ public class EventManager {
         OnReadyButtonClicked?.Invoke();
     }
     public static void StopButtonClicked() {
-        OnReadyButtonClicked?.Invoke();
+        OnStopButtonClicked?.Invoke();
     }
 
     public static void LevelSelected() {
@@ -79,6 +84,11 @@ public class EventManager {
         OnAllLevelGoalsReached?.Invoke();
     }
 
+    public static void WinScreenContinueClicked()
+    {
+        OnWinScreenContinueClicked?.Invoke();
+    }
+
     public static void PhotonSynchronized() {
         OnPhotonSynchronized?.Invoke();
     }
@@ -89,6 +99,11 @@ public class EventManager {
 
     public static void AudioInitialized() {
         OnAudioInitialize?.Invoke();
+    }
+
+    public static void ElementDroppedToMainSequenceBar(ReorderableList.ReorderableListEventStruct arg0)
+    {
+        OnElementDroppedToMainSequenceBar?.Invoke(arg0);
     }
 
     public static void SequenceChanged()
@@ -158,5 +173,11 @@ public class EventManager {
     public static void RepaintUI()
     {
         OnRepaintUi?.Invoke();
+    }
+
+    public static void PlayersScoreDetermined(Dictionary<TGEPlayer, int> playerScoreDic, int combinedStars)
+    {
+        Debug.Log("invoking playerscore determined");
+        OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
     }
 }

@@ -10,7 +10,6 @@ namespace Assets.Scripts.Behaviours {
         [SerializeField] private GameObject _cameraContainerPrefab;
         [SerializeField] private GameObject _uiPrefab;
         [SerializeField] private GameObject _monologuePrefab;
-        [SerializeField] private GameObject _audioPrefab;
         [SerializeField] private GameObject _playerPrefab;
         [SerializeField] private GameObject _sequenceRunnerPrefab;
         [SerializeField] private GameObject _photonPrefab;
@@ -22,18 +21,14 @@ namespace Assets.Scripts.Behaviours {
             var gameRoot = new GameObject("Game");
 
             // Managers
-            var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot, manager => {
-                //manager.Level = _level;
-                //manager.CommandLibrary = _commandLibrary;
-            });
-            var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot, manager => {
-                manager.GameRoot = gameRoot;
-                manager.PlayerPrefab = _playerPrefab;
-            });
-            var audioManager = Instantiate(_audioPrefab, managersRoot.transform);
-           
+            var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot);
+            var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot);
+            levelPresenter.PlayerPrefab = _playerPrefab;
+
             var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
             photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
+
+            var scoreManager = Spawn<PlayerScoreManager>("ScoreManager", managersRoot);
 
             // Gameworld
             var cameraContainer = GameObject.Instantiate(_cameraContainerPrefab, gameRoot.transform);

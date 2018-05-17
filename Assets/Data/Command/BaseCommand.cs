@@ -9,6 +9,7 @@ namespace Assets.Data.Command {
         public Sprite Icon;
         public string Name;
         public int Priority;
+        public bool CountsTowardsScore;
         public abstract IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player, SequenceCycle cycle);
 
         public virtual BaseCommand Init() {

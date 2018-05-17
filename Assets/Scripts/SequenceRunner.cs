@@ -18,6 +18,12 @@ public class SequenceRunner : MonoBehaviour
     void Awake()
     {
         EventManager.OnSimulate += ExecuteSequences;
+        EventManager.OnStopButtonClicked += StopAllCoroutines;
+    }
+
+    void OnDestroy() {
+        EventManager.OnSimulate -= ExecuteSequences;
+        EventManager.OnStopButtonClicked -= StopAllCoroutines;
     }
 
     private void ExecuteSequences(LevelData levelData, List<TGEPlayer> Players)
@@ -30,7 +36,7 @@ public class SequenceRunner : MonoBehaviour
             foreach (BaseCommand command in player.Player.Sequence)
             {
                 // GetSimpleCommands
-                sequence.AddRange(GetContainedCommands(command));
+                sequence.AddRange(GetContainedCommands(command), false);
             }
             ExecutionSequences.Add(new Tuple<Player, Sequence>(player.Player, sequence));
         }
@@ -105,6 +111,10 @@ public class SequenceRunner : MonoBehaviour
             float delay = (Steptime - st.ElapsedMilliseconds) / 1000;
 
             yield return new WaitForSeconds(delay);
+        }
+
+        if (levelData.HasReachedAllGoals()) {
+            EventManager.AllLevelGoalsReached();
         }
     }
 }

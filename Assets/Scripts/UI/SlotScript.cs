@@ -7,11 +7,11 @@ using UnityEngine.Experimental.UIElements;
 public class SlotScript : MonoBehaviour
 {
     //private SequenceBar _sequenceBar;
-    public List<int> indexes;
+    public List<int> indices;
 
     void Awake()
     {
-        indexes = new List<int>();
+        indices = new List<int>();
     }
 
     void Start()
@@ -30,35 +30,4 @@ public class SlotScript : MonoBehaviour
             return null;
         }
     }
-    
-
-    //public void OnDrop(PointerEventData eventData)
-    //{
-    //    if (!Item)
-    //    {
-    //        _sequenceBar.HasChanged(int.Parse(name), DragHandler.ItemBeingDragged);
-    //    }
-    //    else
-    //    {
-    //        _sequenceBar.HasChangedInsert(int.Parse(name), DragHandler.ItemBeingDragged);
-    //    }
-    //}
-
-    //public void OnPointerEnter(PointerEventData eventData)
-    //{
-    //    //if (DragHandler.ItemBeingDragged != null)
-    //    //{
-    //    //    print("erin");
-    //    //    _sequenceBar.ShowDropInPoint(int.Parse(name));
-    //    //}
-    //}
-
-    //public void OnPointerExit(PointerEventData eventData)
-    //{
-    //    //if (DragHandler.ItemBeingDragged != null)
-    //    //{
-    //    //    print("eruit");
-    //    //    _sequenceBar.UnShowDropInPoint(int.Parse(name));
-    //    //}
-    //}
 }

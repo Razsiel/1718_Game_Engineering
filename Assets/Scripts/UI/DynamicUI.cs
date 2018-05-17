@@ -16,14 +16,15 @@ namespace Assets.Scripts.UI
 {
     public class DynamicUI : MonoBehaviour
     {
-
         public GameObject BottomPanel;
+        public GameObject WinScreenMask;
+        private GameObject _winScreenMask;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
         private CommandLibrary _commandLibrary;
         private GameInfo _gameInfo;
         private Player _player;
-        private BottomPanelBehaviour _bottomPanelBehaviour;
+        private BottomPanelManager _bottomPanelManager;
         private FlowLayoutGroup _cmdFlowLayoutGroup;
         private VerticalLayoutGroup _cmdListPanelVerticalLayout;
 
@@ -44,10 +45,11 @@ namespace Assets.Scripts.UI
 
         private void Initialize(GameInfo gameInfo)
         {
+            EventManager.OnInitializeUi -= Initialize;
             _gameInfo = gameInfo;
             _player = _gameInfo.LocalPlayer.Player;
             _commandLibrary = _gameInfo.AllCommands;
-            _bottomPanelBehaviour = BottomPanel.GetComponent<BottomPanelBehaviour>();
+            _bottomPanelManager = BottomPanel.GetComponent<BottomPanelManager>();
 
 
             InitializeCommandPanel();
@@ -55,6 +57,7 @@ namespace Assets.Scripts.UI
             InitializeCommandList();
 
             CreateCommands();
+            InitializeWinScreen();
         }
 
         private void InitializeCommandList()
@@ -81,7 +84,7 @@ namespace Assets.Scripts.UI
             _commandPanelReorderableList.IsDropable = false;
             _commandPanelReorderableList.ContentLayout = _cmdListPanelVerticalLayout;
             _commandPanelReorderableList.DraggableArea = transform.GetChild(0).GetComponent<RectTransform>();
-            _commandPanelReorderableList.OnElementAdded.AddListener(BottomPanel.GetComponent<BottomPanelBehaviour>().AddDroppedElementToMainSequence);
+            _commandPanelReorderableList.OnElementAdded.AddListener(EventManager.ElementDroppedToMainSequenceBar);
         }
 
         private void InitializeCommandPanel()
@@ -122,6 +125,15 @@ namespace Assets.Scripts.UI
                     }
                 });
             }
+        }
+
+        private void InitializeWinScreen()
+        {
+            GameObject _winScreenMask = Instantiate(WinScreenMask);
+
+            WinScreenBehaviour winScreenBehaviour = _winScreenMask.GetComponent<WinScreenBehaviour>();
+            winScreenBehaviour.Initialize();
+            _winScreenMask.transform.SetParent(transform, false);
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {

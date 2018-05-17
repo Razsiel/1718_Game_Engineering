@@ -13,8 +13,8 @@ namespace Assets.Scripts.DataStructures
         public Button SubmitButton;
         public Button CloseButton;
 
-        public abstract void Submit();
-        public abstract void Cancel();
+        public virtual void Submit() { }
+        public virtual void Cancel() { }
 
         public virtual void Show()
         {            
@@ -30,11 +30,11 @@ namespace Assets.Scripts.DataStructures
         {
             this.gameObject.transform.SetAsLastSibling();
 
-            SubmitButton.onClick?.RemoveAllListeners();
-            CloseButton.onClick?.RemoveAllListeners();
+            SubmitButton?.onClick?.RemoveAllListeners();
+            CloseButton?.onClick?.RemoveAllListeners();
 
-            SubmitButton.onClick.AddListener(Submit);
-            CloseButton.onClick.AddListener(Cancel);
+            SubmitButton?.onClick.AddListener(Submit);
+            CloseButton?.onClick.AddListener(Cancel);
         }
     }
 }

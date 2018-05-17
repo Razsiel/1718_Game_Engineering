@@ -15,7 +15,7 @@ using UnityEngine.SceneManagement;
 using Assets.Scripts.Photon.Level;
 
 namespace Assets.Scripts {
-    public class GameStateManager : SingleMonobehaviour<GameStateManager> {
+    public class GameStateManager : MonoBehaviour {
         private GameInfo _gameInfo;
 
         private TinyStateMachine<GameState, GameStateTrigger> fsm;
@@ -48,28 +48,23 @@ namespace Assets.Scripts {
 
             // SIMULATE -> LEVELCOMPLETE
             fsm.Tr(GameState.Simulate, GameStateTrigger.Next, GameState.LevelComplete)
-               .On(OnLevelCompleteStateEnter)
+                .On(OnLevelCompleteStateEnter)
                .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
-            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
-                this._gameInfo = gameInfo;
-                Init();
-            };
+            GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
         }
 
-        public void Init() {
+        private void OnSceneLoaded(GameInfo gameInfo) {
+            GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+            this._gameInfo = gameInfo;
+        }
+
+        public void Start() {
             Debug.Log($"Start: {nameof(GameStateManager)}");
 
-            EventManager.OnGameStart += gameInfo => {
-                print("loading level");
-                EventManager.LoadLevel(_gameInfo);
-            };
-
-            EventManager.OnLevelLoaded += (levelData) => {
-                print("level loaded and presented");
-                fsm.Fire(GameStateTrigger.Next); // goto Cutscene
-            };
+            EventManager.OnGameStart += OnGameStart;
+            EventManager.OnLevelLoaded += OnLevelLoaded;
 
             if (_gameInfo.IsMultiplayer) {
                 print("GameStateManager: We are gonna start in multiplayer");
@@ -78,6 +73,20 @@ namespace Assets.Scripts {
             else {
                 StartSingleplayer();
             }
+        }
+
+        private void OnLevelLoaded(GameInfo levelData)
+        {
+            EventManager.OnLevelLoaded -= OnLevelLoaded;
+            print("level loaded and presented");
+            fsm.Fire(GameStateTrigger.Next); // goto Cutscene
+        }
+
+        private void OnGameStart(GameInfo gameInfo)
+        {
+            EventManager.OnGameStart -= OnGameStart;
+            print("loading level");
+            EventManager.LoadLevel(_gameInfo);
         }
 
         public void OnDisable()
@@ -149,14 +158,17 @@ namespace Assets.Scripts {
             // register if sequence is changed
             EventManager.OnSequenceChanged += OnSequenceChanged;
 
-            EventManager.OnAllPlayersReady += () => {
-                print("all players are ready!");
-                fsm.Fire(GameStateTrigger.Next); // goto Simulate
-            };
+            EventManager.OnAllPlayersReady += OnAllPlayersReady;
 
             if (!_gameInfo.IsMultiplayer) {
                 EventManager.AllPlayersReady();
             }
+        }
+
+        private void OnAllPlayersReady() {
+            EventManager.OnAllPlayersReady -= OnAllPlayersReady;
+            print("all players are ready!");
+            fsm.Fire(GameStateTrigger.Next); // goto Simulate
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
@@ -180,7 +192,7 @@ namespace Assets.Scripts {
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
             EventManager.Simulate(_gameInfo.Level, _gameInfo.Players);
-            EventManager.OnAllLevelGoalsReached += OnAllLevelGoalsReached;
+            EventManager.OnWinScreenContinueClicked += OnWinScreenContinueClicked;
         }
 
         private void OnStopButtonClicked() {
@@ -188,8 +200,9 @@ namespace Assets.Scripts {
             fsm.Fire(GameStateTrigger.Back);
         }
 
-        private void OnAllLevelGoalsReached() {
-            EventManager.OnAllLevelGoalsReached -= OnAllLevelGoalsReached;
+        private void OnWinScreenContinueClicked()
+        {
+            EventManager.OnWinScreenContinueClicked -= OnWinScreenContinueClicked;
             fsm.Fire(GameStateTrigger.Next); // goto LevelComplete
         }
 
