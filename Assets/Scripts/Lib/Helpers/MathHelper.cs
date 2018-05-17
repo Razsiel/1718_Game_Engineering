@@ -20,16 +20,16 @@ namespace Assets.Scripts.Lib.Extensions
         }
 
         /// <summary>
-        /// Rounds the given float down if fraction is midpoint (1.5 becomes 1)
-        /// NOTE: This function only works on floats with one fraction (2.55 won't work)
+        /// Rounds the given decimal down if fraction is midpoint (1.5 becomes 1)
+        /// NOTE: This function only works on decimals with one fraction (2.55 won't work)
         /// </summary>
-        /// <param name="a">Our float value to be rounded</param>
-        /// <returns>Our rounded float value</returns>
-        public static int RoundDown(float a)
+        /// <param name="a">Our decimal value to be rounded</param>
+        /// <returns>Our rounded decimal value</returns>
+        public static int RoundDown(decimal a)
         {
-            int unrounded = (int)Mathf.Floor(a);
-            float fraction = a - unrounded;
-            if(fraction <= 0.5f) return unrounded;
+            int unrounded = (int)Math.Floor(a);
+            decimal fraction = a - unrounded;
+            if(fraction < 0.5m) return unrounded;
             else return unrounded + 1;
         }
     }
