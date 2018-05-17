@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Data.Grids;
 using Assets.Data.Levels;
@@ -19,9 +20,6 @@ public class CameraBehaviour : MonoBehaviour
         EventManager.OnLevelLoaded -= OnLevelLoaded;
         _camera = gameObject.GetComponent<Camera>();
         AutoZoomCamera(gameInfo.Level);
-
-        var VideoCaptureComponent = GetComponent<VideoCapture>();
-        VideoCaptureCtrl.instance.videoCaptures = new VideoCaptureBase[1] { VideoCaptureComponent };
 
         if (PlayerPrefs.GetInt("RecordVideos") == 1)
         {
@@ -44,7 +42,20 @@ public class CameraBehaviour : MonoBehaviour
 
     void RecordVideo()
     {
+        var VideoCaptureComponent = GetComponent<VideoCapture>();
+        
+        VideoCaptureComponent.customPath = true;
+        VideoCaptureComponent.customPathFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Progranimals\\Video";
+        PathConfig.SaveFolder = VideoCaptureComponent.customPathFolder + "\\";
+
+        VideoCaptureCtrl.instance.videoCaptures = new VideoCaptureBase[1] { VideoCaptureComponent };
+
         VideoCaptureCtrl.instance.StartCapture();
         EventManager.OnWinScreenContinueClicked += VideoCaptureCtrl.instance.StopCapture;
+    }
+
+    void OnDestroy()
+    {
+        VideoCaptureCtrl.instance.StopCapture();
     }
 }
