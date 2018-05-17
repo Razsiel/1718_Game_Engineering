@@ -17,7 +17,12 @@ public class EventManager {
     public static UnityAction OnWinScreenContinueClicked;
 
     public static UnityAction<GameInfo> OnInitializeUi;
+<<<<<<< HEAD
     public static UnityAction<TGEPlayer> OnInitializePhoton;
+=======
+    public static UnityAction OnRepaintUi;
+    public static UnityAction OnInitializePhoton;
+>>>>>>> 060f7ea10c8c1b4bdcff1dcd204b14fb626cc279
     public static UnityAction OnAudioInitialize;
     public static UnityAction OnMonologueInitialized;
 
@@ -52,8 +57,8 @@ public class EventManager {
         OnInitializeUi?.Invoke(gameInfo);
     }
 
-    public static void InitializePhoton(TGEPlayer localPlayer) {
-        OnInitializePhoton?.Invoke(localPlayer);
+    public static void InitializePhoton() {
+        OnInitializePhoton?.Invoke();
     }
 
     public static void UserInputEnable() {

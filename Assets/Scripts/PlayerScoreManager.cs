@@ -26,17 +26,24 @@ public class PlayerScoreManager : MonoBehaviour
         };        
     }
   
-    public int DeterminePlayerScore(Sequence sequence, int count)
+    public int DetermineSequenceCount(Sequence sequence, int count)
     {
         Assert.IsNotNull(sequence);
 
         foreach(var bc in sequence)
+        {
+            print($"{nameof(PlayerScoreManager)}: in foreach with basecommand { bc.GetType().Name }");
             if(!bc.CountsTowardsScore)
+            {
+                print($"{nameof(PlayerScoreManager)}: in if doesnt count towards score");
                 if(bc is LoopCommand)
-                    count += DeterminePlayerScore(((LoopCommand)bc).Sequence, 0);
-            else if(bc.CountsTowardsScore)
+                    count += DetermineSequenceCount(((LoopCommand)bc).Sequence, 0);               
+            }
+            else
+            {
                 count += 1;
-
+            }
+        }
         return count;
     }
 
@@ -51,18 +58,20 @@ public class PlayerScoreManager : MonoBehaviour
         foreach(var player in _gameInfo.Players)
         {
             print($"{nameof(PlayerScoreManager)}: in foreach");
-            var count = DeterminePlayerScore(player.Player.Sequence, 0);
-            print($"{nameof(PlayerScoreManager)}: seqCount {count}");
+            var count = DetermineSequenceCount(player.Player.Sequence, 0);
+            print($"{nameof(PlayerScoreManager)}: seqCount: {count}");
             var stars = DetermineStars(count, _gameInfo.Level.LevelScore);
-            print($"{nameof(PlayerScoreManager)}: {stars}");
+            print($"{nameof(PlayerScoreManager)}: personal stars: {stars}");
             Assert.IsTrue(stars > 0 && stars <= 3);
             starCount += stars;
             playerScoreDic.Add(player, stars);
         }
 
-        var averageStars = (float)starCount / _gameInfo.Players.Count;
+        var averageStars = (decimal)starCount / _gameInfo.Players.Count;
+        print($"{nameof(PlayerScoreManager)}: Average stars equals {averageStars}");
         var combinedStars = MathHelper.RoundDown(averageStars);
-        print($"{nameof(PlayerScoreManager)}: {combinedStars}");
+        print($"{nameof(PlayerScoreManager)}: Combined rounded equals {combinedStars}");
+        
         Assert.IsTrue(combinedStars > 0 && combinedStars <= 3);
       
         EventManager.PlayersScoreDetermined(playerScoreDic, combinedStars);
@@ -74,7 +83,7 @@ public class PlayerScoreManager : MonoBehaviour
             return 3;
         else if(count <= levelScore.DecentScore && count > levelScore.HighestScore)
             return 2;
-        else if(count >= levelScore.BadScore)
+        else if(count >= levelScore.DecentScore)
             return 1;
         else
             return -1;     

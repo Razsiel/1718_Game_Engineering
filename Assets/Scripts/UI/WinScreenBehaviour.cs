@@ -61,26 +61,23 @@ public class WinScreenBehaviour : MonoBehaviour
 
     private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore)
     {
+        EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
+        
         textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
 
-        //for (int i = 0; i < playerInfo.Count; i++)
-        //{
-        //    print("asd");
-        //}
-        player1Name.GetComponent<Text>().text = "asd";
+        for (int i = 0; i < playerInfo.Count; i++)
+        {
+            print("asd");
+        }
+        player1Name.GetComponent<Text>().text = "Player 1";
         player1Image.GetComponent<Image>().sprite = null;
         player1StarsImage.GetComponent<Image>().sprite = null;
 
-        player2Name.GetComponent<Text>().text = "Player2 Naam";
+        player2Name.GetComponent<Text>().text = "Player2";
         player2Image.GetComponent<Image>().sprite = null;
         player2StarsImage.GetComponent<Image>().sprite = null;
 
         totalStars.GetComponent<Image>().sprite = null;
-    }
-
-    public void ShowWinScreen()
-    {
-        EventManager.OnAllLevelGoalsReached -= ShowWinScreen;
         gameObject.SetActive(true);
     }
 

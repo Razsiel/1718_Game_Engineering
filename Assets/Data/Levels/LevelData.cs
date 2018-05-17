@@ -48,6 +48,9 @@ namespace Assets.Data.Levels
                     AllowedCommands.Add(new AllowedCommand(commandValue, true));
                 }
             }
+
+            if(LevelScore == null)
+                LevelScore = new LevelScore(0,0);
         }
 
         public bool HasReachedAllGoals() {
