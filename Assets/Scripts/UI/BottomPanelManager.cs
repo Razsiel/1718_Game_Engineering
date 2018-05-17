@@ -22,6 +22,7 @@ public class BottomPanelManager : MonoBehaviour
     private GameObject _secondarySequenceBar;
     private GameObject _readyButton;
     private GameObject _readyButtonIcon;
+
     [SerializeField] private Sprite _buttonBackground;
     [SerializeField] private Sprite _readyButtonPlay;
     [SerializeField] private Sprite _readyButtonReady;

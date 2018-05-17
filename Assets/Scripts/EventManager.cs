@@ -17,7 +17,6 @@ public class EventManager {
     public static UnityAction OnWinScreenContinueClicked;
 
     public static UnityAction<GameInfo> OnInitializeUi;
-    public static UnityAction OnRepaintUi;
     public static UnityAction<TGEPlayer> OnInitializePhoton;
     public static UnityAction OnAudioInitialize;
     public static UnityAction OnMonologueInitialized;
@@ -168,11 +167,6 @@ public class EventManager {
 
     public static void GameStart(GameInfo gameInfo) {
         OnGameStart?.Invoke(gameInfo);
-    }
-
-    public static void RepaintUI()
-    {
-        OnRepaintUi?.Invoke();
     }
 
     public static void PlayersScoreDetermined(Dictionary<TGEPlayer, int> playerScoreDic, int combinedStars)

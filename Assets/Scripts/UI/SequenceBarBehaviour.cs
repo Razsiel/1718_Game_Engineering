@@ -34,7 +34,22 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
 
         InitializeCommandsList(_isMainSequenceBar);
-        
+        InitializeScoreStars(_isMainSequenceBar);
+
+    }
+
+    private void InitializeScoreStars(bool isMainSequenceBar)
+    {
+        //Get the score ranges for the current level
+        uint decentScore = _gameInfo.Level.LevelScore.DecentScore;
+        uint lowestScore = _gameInfo.Level.LevelScore.BadScore;
+
+        //Create the image gameobjects for the stars
+
+
+
+
+
     }
 
     void OnDestroy() {
