@@ -6,6 +6,7 @@ using Assets.Scripts;
 using Assets.Scripts.Photon.LevelSelect;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI.Extensions;
 using Utilities;
@@ -22,7 +23,9 @@ public class LevelSelectBehaviour : MonoBehaviour
     public GameObject LevelUIPrefab;
     public GameObject PlayButton;
     public GameObject LevelSelectPhotonManagerGO;
-    private LevelSelectPhotonManager LevelSelectPhotonManager;
+    private LevelSelectPhotonManager _levelSelectPhotonManager;
+
+    public static UnityAction<int> SelectedLevelChanged;
 
     void Awake()
     {
@@ -54,8 +57,9 @@ public class LevelSelectBehaviour : MonoBehaviour
 
         if (_gameInfo.IsMultiplayer)
         {
-            this.LevelSelectPhotonManager = LevelSelectPhotonManagerGO.GetComponent<LevelSelectPhotonManager>();
-            LevelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo);
+            //if(_gameInfo.LocalPlayer.photonPlayer.IsMasterClient) 
+            this._levelSelectPhotonManager = LevelSelectPhotonManagerGO.GetComponent<LevelSelectPhotonManager>();
+            _levelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo, LevelScroller);
         }
 
         LevelScroller.OnSelectionPageChangedEvent.AddListener(page =>
@@ -75,7 +79,7 @@ public class LevelSelectBehaviour : MonoBehaviour
         if (_gameInfo.IsMultiplayer)
         {
             print("Multiplayer: We are gonna start the selected level");
-            LevelSelectPhotonManager.StartLevel(_selectedLevel);
+            _levelSelectPhotonManager.StartLevel(_selectedLevel);
         }
         else
             SceneManager.LoadScene(LevelScene);
