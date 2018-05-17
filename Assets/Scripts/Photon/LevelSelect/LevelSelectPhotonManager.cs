@@ -7,6 +7,7 @@ using Assets.Data.Levels;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 using Utilities;
 using MonoBehaviour = Photon.MonoBehaviour;
 
@@ -18,14 +19,23 @@ namespace Assets.Scripts.Photon.LevelSelect
         public SceneField LevelScene;
         private GameInfo _gameInfo;
         //public LevelLibrary LevelLibrary;
+        private HorizontalScrollSnap _horizontalScrollSnap;
 
-        public void Init(GameObject playButton, SceneField levelScene, GameInfo gameInfo)
+        public void Init(GameObject playButton, SceneField levelScene, GameInfo gameInfo, HorizontalScrollSnap scrollSnap)
         {
             this.PlayButton = playButton;
             this.LevelScene = levelScene;
             this._gameInfo = gameInfo;
+            this._horizontalScrollSnap = scrollSnap;
             this.photonView.viewID = (int)PhotonViewIndices.LevelSelect;
             PlayButton.SetActive(PhotonNetwork.player.IsMasterClient);
+
+            LevelSelectBehaviour.SelectedLevelChanged += SelectedLevelChanged;
+        }
+
+        private void SelectedLevelChanged(int page)
+        {
+            _horizontalScrollSnap.GoToScreen(page);
         }
 
         public void StartLevel(LevelData level)

@@ -101,6 +101,7 @@ namespace Assets.Scripts {
         private void StartMultiplayer()
         {
             PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
+            EventManager.InitializePhoton();
         }
 
         private void OnAllPlayersJoined(Room room) {
