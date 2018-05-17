@@ -26,6 +26,7 @@ namespace Assets.Scripts.Behaviours
         // Use this for initialization
         public override void Start()
         {
+
             Debug.Log($"{nameof(GameLoaderBehaviour)}: Start setting up the scene");
             var managersRoot = new GameObject("Managers");
             var gameRoot = new GameObject("Game");
@@ -35,8 +36,14 @@ namespace Assets.Scripts.Behaviours
             var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot);
             levelPresenter.PlayerPrefab = _playerPrefab;
 
-            var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
-            photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
+            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
+            {
+                if (gameInfo.IsMultiplayer)
+                {
+                    var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
+                    photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
+                }
+            };
 
             var scoreManager = Spawn<PlayerScoreManager>("ScoreManager", managersRoot);
 

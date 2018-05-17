@@ -36,8 +36,7 @@ namespace Assets.Scripts.Photon.Level
         private PhotonManager() { }
 
         void Awake()
-        {
-            if (!_gameInfo.IsMultiplayer) return;
+        {            
             print($"{nameof(PhotonManager)}: in awake");
             Instance = this;
 

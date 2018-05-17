@@ -37,9 +37,11 @@ public class PlayerScoreManager : MonoBehaviour
             {
                 print($"{nameof(PlayerScoreManager)}: in if doesnt count towards score");
                 if(bc is LoopCommand)
-                    count += DetermineSequenceCount(((LoopCommand)bc).Sequence, 0);
-                else if(bc.CountsTowardsScore)
-                    count += 1;
+                    count += DetermineSequenceCount(((LoopCommand)bc).Sequence, 0);               
+            }
+            else
+            {
+                count += 1;
             }
         }
         return count;
@@ -57,20 +59,23 @@ public class PlayerScoreManager : MonoBehaviour
         {
             print($"{nameof(PlayerScoreManager)}: in foreach");
             var count = DetermineSequenceCount(player.Player.Sequence, 0);
-            print($"{nameof(PlayerScoreManager)}: seqCount {count}");
+            print($"{nameof(PlayerScoreManager)}: seqCount: {count}");
             var stars = DetermineStars(count, _gameInfo.Level.LevelScore);
-            print($"{nameof(PlayerScoreManager)}: {stars}");
+            print($"{nameof(PlayerScoreManager)}: personal stars: {stars}");
             Assert.IsTrue(stars > 0 && stars <= 3);
             starCount += stars;
             playerScoreDic.Add(player, stars);
         }
 
         var averageStars = (decimal)starCount / _gameInfo.Players.Count;
+        print($"{nameof(PlayerScoreManager)}: Average stars equals {averageStars}");
         var combinedStars = MathHelper.RoundDown(averageStars);
-        print($"{nameof(PlayerScoreManager)}: {combinedStars}");
+        print($"{nameof(PlayerScoreManager)}: Combined rounded equals {combinedStars}");
+        
         Assert.IsTrue(combinedStars > 0 && combinedStars <= 3);
       
-        EventManager.OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
+        EventManager.PlayersScoreDetermined(playerScoreDic, combinedStars);
+        //EventManager.OnPlayersScoreDetermined?.Invoke(playerScoreDic, combinedStars);
     }
 
     private int DetermineStars(int count, LevelScore levelScore)
