@@ -41,8 +41,8 @@ public class SequenceBarBehaviour : MonoBehaviour
     private void InitializeScoreStars(bool isMainSequenceBar)
     {
         //Get the score ranges for the current level
-        uint decentScore = _gameInfo.Level.LevelScore.DecentScore;
-        uint lowestScore = _gameInfo.Level.LevelScore.BadScore;
+        //uint decentScore = _gameInfo.Level.LevelScore.DecentScore;
+        //uint lowestScore = _gameInfo.Level.LevelScore.;
 
         //Create the image gameobjects for the stars
 
