@@ -19,22 +19,10 @@ namespace Assets.Scripts.Photon.Level
     {
         //Backing field of our singleton instance
         private static PhotonManager _instance;
-        //private RoomManager _roomManager;
 
         private GameInfo _gameInfo;
-
         public CommandLibrary CommandLib;
 
-        ////Events to react on
-        //public UnityAction TGEOnJoinedLobby;
-        //public UnityAction<PhotonPlayer> TGEOnPhotonPlayerConnected;
-        //public UnityAction<object[]> TGEOnJoinRandomRoomFailed;
-        //public UnityAction<object[]> TGEOnJoinRoomFailed;
-        //public UnityAction TGEOnCreatedRoom;
-        //public UnityAction TGEOnJoinedRoom;
-        //public UnityAction TGEOnLeftRoom;
-        //public UnityAction<PhotonPlayer> TGEOnPhotonPlayerDisconnected;
-        //public UnityAction TGEOnPlayersCreated;
         public UnityAction<Room> TGEOnAllPlayersJoined;
 
         //Our singleton instance of the Photonmanager
@@ -44,48 +32,46 @@ namespace Assets.Scripts.Photon.Level
             private set { _instance = value; }
         }
 
-        //public RoomManager RoomManager
-        //{
-        //    get { return _roomManager; }
-        //    set { _roomManager = value; }
-        //}
-
         //Private because of SingleTon
         private PhotonManager() { }
 
         void Awake()
         {
-            
+            if (!_gameInfo.IsMultiplayer) return;
             print($"{nameof(PhotonManager)}: in awake");
             Instance = this;
 
-            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
-            {
-                this.photonView.viewID = (int)PhotonViewIndices.InLevel;
-                
-                TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+            EventManager.OnInitializePhoton += OnInitializePhoton;
 
-            };
+            EventManager.OnGameStart += OnGameStart;
+        }
 
-            EventManager.OnGameStart += gameInfo =>
-            {
-                if (!gameInfo.IsMultiplayer) return;
-                _gameInfo = gameInfo;
-                
-                print($"{nameof(PhotonManager)}: GameStarted");
+        #region EventImplementations
+        private void OnInitializePhoton()
+        {
+            EventManager.OnInitializePhoton -= OnInitializePhoton;
+            this.photonView.viewID = (int)PhotonViewIndices.InLevel;
+            TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+        }
 
-                EventManager.OnPlayerSpawned += player =>
-                {
-                    EventManager.OnSequenceChanged += OnSequenceChanged;
+        private void OnGameStart(GameInfo gameInfo)
+        {
+            EventManager.OnGameStart -= OnGameStart;
+            _gameInfo = gameInfo;
+            EventManager.OnPlayerSpawned += OnPlayerSpawned;
+        }
 
-                    EventManager.OnPlayerReady += isReady =>
-                    {
-                        _gameInfo.Players.GetLocalPlayer().Player.IsReady = true;
-                        this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.MasterClient);
-                    };
-                };
-                
-            };
+        private void OnPlayerSpawned(Player player)
+        {
+            EventManager.OnPlayerSpawned -= OnPlayerSpawned;
+            EventManager.OnSequenceChanged += OnSequenceChanged;
+            EventManager.OnPlayerReady += OnPlayerReady;
+        }
+
+        private void OnPlayerReady(bool isReady)
+        {
+            _gameInfo.Players.GetLocalPlayer().Player.IsReady = isReady;
+            this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.Others, isReady);
         }
 
         private void OnSequenceChanged(List<BaseCommand> sequence)
@@ -100,6 +86,7 @@ namespace Assets.Scripts.Photon.Level
 
             this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
         }
+        #endregion
 
         [PunRPC]
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
@@ -110,16 +97,14 @@ namespace Assets.Scripts.Photon.Level
 
             foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
 
-            EventManager.OnSecondarySequenceChanged?.Invoke(baseCommands);           
+            EventManager.SecondarySequenceChanged(baseCommands);
         }
 
         [PunRPC]
-        public void UpdateReadyState(PhotonMessageInfo info)
+        public void UpdateReadyState(bool isReady, PhotonMessageInfo info)
         {
-            //The other player is now ready
-
-            if (!info.sender.Equals(_gameInfo.Players.GetLocalPlayer().photonPlayer))
-                _gameInfo.Players.GetNetworkPlayer().Player.IsReady = true;
+            //The other player is now (un)ready
+            _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
 
             if (_gameInfo.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
                 if (_gameInfo.Players.All(x => x.Player.IsReady))
@@ -147,6 +132,8 @@ namespace Assets.Scripts.Photon.Level
         [PunRPC]
         public void StartExecution(PhotonMessageInfo info)
         {
+            //Start the execution on both players
+
             //EventManager.OnExecutionStarted?.Invoke();
 
             //foreach(TGEPlayer p in gameManager.Players)
@@ -179,6 +166,8 @@ namespace Assets.Scripts.Photon.Level
         [PunRPC]
         public void StopExecution(PhotonMessageInfo info)
         {
+            //Stop the execution
+
             //foreach(TGEPlayer p in gameManager.Players)
             //{
             //    p.Player.StopAllCoroutines();
