@@ -102,12 +102,19 @@ namespace Assets.Scripts.Photon.Level
         [PunRPC]
         public void UpdateReadyState(bool isReady, PhotonMessageInfo info)
         {
+            print($"{nameof(PhotonManager)} in updatereadystate");
             //The other player is now (un)ready
             _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
-
+            print($"{nameof(PhotonManager)} in startexecution: ready: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
             if (_gameInfo.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+            {
+                print($"{nameof(PhotonManager)} im the masterclient");
                 if (_gameInfo.Players.All(x => x.Player.IsReady))
+                {
+                    print($"{nameof(PhotonManager)} everybody is ready");
                     SendStartExecution();
+                }
+            }
         }
 
         [PunRPC]
@@ -118,6 +125,7 @@ namespace Assets.Scripts.Photon.Level
 
         private void SendStartExecution()
         {
+            print($"{nameof(PhotonManager)} in sendstartexecution");
             this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
         }
 
@@ -132,6 +140,8 @@ namespace Assets.Scripts.Photon.Level
         public void StartExecution(PhotonMessageInfo info)
         {
             //Start the execution on both players
+            print($"{nameof(PhotonManager)} in startexecution");
+            EventManager.AllPlayersReady();
 
             //EventManager.OnExecutionStarted?.Invoke();
 
@@ -166,6 +176,7 @@ namespace Assets.Scripts.Photon.Level
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
+            
 
             //foreach(TGEPlayer p in gameManager.Players)
             //{
