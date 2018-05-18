@@ -154,12 +154,13 @@ namespace Assets.Scripts {
 
         private void OnReadyButtonClicked() {
             EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
-            fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
+            print($"{nameof(GameStateManager)}: ready!");
 
             // register if sequence is changed
             EventManager.OnSequenceChanged += OnSequenceChanged;
-
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
+
+            fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
         }
 
         private void OnAllPlayersReady() {

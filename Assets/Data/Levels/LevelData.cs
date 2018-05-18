@@ -205,6 +205,7 @@ namespace Assets.Data.Levels
         }
 
         public void Reset(List<Scripts.Player> players, Action<List<Scripts.Player>, LevelData> animateCallback) {
+            Debug.Log($"Resetting level state...");
             Assert.IsNotNull(players);
             Assert.IsTrue(players.Any());
             Assert.IsNotNull(_playerPositions);
@@ -212,7 +213,6 @@ namespace Assets.Data.Levels
                 Assert.IsNotNull(player);
                 var startPosition = GetPlayerStartPosition(player.PlayerNumber);
                 _playerPositions[player] = startPosition.StartPosition;
-                player.Reset(startPosition);
             }
             foreach (var gridCell in GridMapData) {
                 foreach (var decorationConfig in gridCell.Value.DecorationConfigs) {

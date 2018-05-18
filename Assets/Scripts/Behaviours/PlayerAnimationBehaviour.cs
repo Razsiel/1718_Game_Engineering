@@ -8,7 +8,7 @@ using Assets.Scripts.Lib.Extensions;
 using DG.Tweening;
 using UnityEngine;
 
-public class PlayerBehaviour : MonoBehaviour
+public class PlayerAnimationBehaviour : MonoBehaviour
 {
     private Player _player;
     private bool _isJumping;
@@ -66,12 +66,9 @@ public class PlayerBehaviour : MonoBehaviour
         player.OnReset += OnReset;
     }
 
-    private void OnReset(PlayerStartPosition startState) {
-        _player.OnReset -= OnReset;
-        print("Resetting transform of player");
+    private void OnReset() {
+        print("Completing player animation");
         _currentAnimation.Complete();
-        transform.position.SetXZ(startState.StartPosition);
-        transform.rotation = Quaternion.Euler(startState.Facing.ToEuler());
     }
 
     public void AnimateMoveTo(Vector3 to)
