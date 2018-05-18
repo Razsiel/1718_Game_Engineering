@@ -52,15 +52,6 @@ namespace Assets.Scripts {
         // Use this for initialization
         public override void Start() { }
 
-        public void UpdateSequence(List<CommandEnum> commands) {
-            this.Sequence.Clear();
-
-            var commandOptions = GameInfo.AllCommands.Commands;
-            var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
-
-            this.Sequence.AddRange(commandValues, true);
-        }
-
         public void StopExecution() {
             if (_executeCoroutine != null)
                 StopCoroutine(_executeCoroutine);
