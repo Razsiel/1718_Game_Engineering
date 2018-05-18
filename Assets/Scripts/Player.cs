@@ -52,13 +52,13 @@ namespace Assets.Scripts {
         // Use this for initialization
         public override void Start() { }
 
-        public void UpdateSequence(List<CommandEnum> commands) {
+        public void UpdateSequence(List<BaseCommand> commands) {
             this.Sequence.Clear();
 
-            var commandOptions = GameInfo.AllCommands.Commands;
-            var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
+            //var commandOptions = GameInfo.AllCommands.Commands;
+            //var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
 
-            this.Sequence.AddRange(commandValues, true);
+            this.Sequence.AddRange(commands, false);
         }
 
         public void StopExecution() {

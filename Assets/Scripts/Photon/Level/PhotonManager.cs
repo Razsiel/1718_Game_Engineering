@@ -70,7 +70,7 @@ namespace Assets.Scripts.Photon.Level
         private void OnPlayerReady(bool isReady)
         {
             _gameInfo.Players.GetLocalPlayer().Player.IsReady = isReady;
-            this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.Others, isReady);
+            this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.All, isReady);
         }
 
         private void OnSequenceChanged(List<BaseCommand> sequence)
@@ -96,6 +96,7 @@ namespace Assets.Scripts.Photon.Level
 
             foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
 
+            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands);
             EventManager.SecondarySequenceChanged(baseCommands);
         }
 
@@ -104,11 +105,15 @@ namespace Assets.Scripts.Photon.Level
         {
             print($"{nameof(PhotonManager)} in updatereadystate");
             //The other player is now (un)ready
-            _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
-            print($"{nameof(PhotonManager)} in startexecution: ready: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
+            if (!info.sender.Equals(PhotonNetwork.player))
+            {
+                print($"{nameof(PhotonManager)}: Readystate of Network player: {info.sender} is now {isReady}");
+                _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
+            }
+            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
             if (_gameInfo.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
             {
-                print($"{nameof(PhotonManager)} im the masterclient");
+                print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
                 if (_gameInfo.Players.All(x => x.Player.IsReady))
                 {
                     print($"{nameof(PhotonManager)} everybody is ready");
@@ -141,6 +146,8 @@ namespace Assets.Scripts.Photon.Level
         {
             //Start the execution on both players
             print($"{nameof(PhotonManager)} in startexecution");
+            foreach (var player in _gameInfo.Players)
+                print($"Player {player.photonPlayer}, IsMasterClient: {player.photonPlayer.IsMasterClient}, IsLocalPlayer: {player.photonPlayer.IsLocal}");
             EventManager.AllPlayersReady();
 
             //EventManager.OnExecutionStarted?.Invoke();
