@@ -21,26 +21,20 @@ namespace Assets.Scripts.UI
         private GameObject _winScreenMask;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
-        private CommandLibrary _commandLibrary;
         private GameInfo _gameInfo;
         private Player _player;
-        private BottomPanelManager _bottomPanelManager;
         private FlowLayoutGroup _cmdFlowLayoutGroup;
         private VerticalLayoutGroup _cmdListPanelVerticalLayout;
+
+        [SerializeField] private GameObject _threeStarsImage;
+        [SerializeField] private GameObject _twoStarsImage;
+        [SerializeField] private GameObject _oneStarImage;
 
         public void Awake()
         {
             EventManager.OnInitializeUi += Initialize;
-            EventManager.OnRepaintUi += Repaint;
             //EventManager.OnUserInputDisable += OnUserInputDisable;
             //EventManager.OnUserInputEnable += OnUserInputEnable;
-        }
-
-        private void Repaint()
-        {
-            print("ui repaint to fix flowlayout bug");
-            gameObject.SetActive(false);
-            gameObject.SetActive(true);
         }
 
         private void Initialize(GameInfo gameInfo)
@@ -48,9 +42,6 @@ namespace Assets.Scripts.UI
             EventManager.OnInitializeUi -= Initialize;
             _gameInfo = gameInfo;
             _player = _gameInfo.LocalPlayer.Player;
-            _commandLibrary = _gameInfo.AllCommands;
-            _bottomPanelManager = BottomPanel.GetComponent<BottomPanelManager>();
-
 
             InitializeCommandPanel();
 

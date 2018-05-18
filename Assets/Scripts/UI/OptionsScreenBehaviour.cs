@@ -1,5 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using NPOI.SS.UserModel;
+using RockVR.Video;
 using SmartLocalization;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -63,6 +66,11 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     public void OnChanged_SfxVolumeSlider(Slider SfxSlider)
     {
         SfxBehaviour.Instance.SetVolume(SfxSlider.value);
+    }
+
+    public void OnToggleRecordVideos(Toggle recordToggle)
+    {
+        PlayerPrefs.SetInt("RecordVideos", Convert.ToInt32(recordToggle.isOn));
     }
 
     private void SaveSettings()

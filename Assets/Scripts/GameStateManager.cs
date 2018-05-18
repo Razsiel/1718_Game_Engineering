@@ -160,10 +160,6 @@ namespace Assets.Scripts {
             EventManager.OnSequenceChanged += OnSequenceChanged;
 
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
-
-            if (!_gameInfo.IsMultiplayer) {
-                EventManager.AllPlayersReady();
-            }
         }
 
         private void OnAllPlayersReady() {
@@ -182,7 +178,13 @@ namespace Assets.Scripts {
         /// </summary>
         private void OnPlayerReadyStateEnter() {
             print($"{nameof(GameStateManager)}: ready and waiting for other players");
-            // if all players are ready; goto Simulate
+            
+            if (!_gameInfo.IsMultiplayer) {
+                EventManager.AllPlayersReady();
+            }
+            else {
+                // if all players are ready; goto Simulate
+            }
         }
 
         /// <summary>

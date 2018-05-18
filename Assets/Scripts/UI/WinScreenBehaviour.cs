@@ -81,12 +81,6 @@ public class WinScreenBehaviour : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    //public void ShowWinScreen()
-    //{
-    //    EventManager.OnAllLevelGoalsReached -= ShowWinScreen;
-    //    gameObject.SetActive(true);
-    //}
-
     public void OnClickContinue()
     {
         // Restart level? To level Select?
