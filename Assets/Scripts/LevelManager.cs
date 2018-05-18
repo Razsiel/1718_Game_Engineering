@@ -22,8 +22,12 @@ public class LevelManager : TGEMonoBehaviour {
         EventManager.OnLevelReset += OnLevelReset;
     }
 
-    private void OnLevelReset(GameInfo gameInfo, List<Player> players) {
+    private void OnDestroy() {
         EventManager.OnLevelReset -= OnLevelReset;
+    }
+
+    private void OnLevelReset(GameInfo gameInfo, List<Player> players) {
+        print($"{nameof(LevelManager)}: Delegating reset level");
         // reset internal data
         gameInfo.Level.Reset(players, ResetPlayers);
     }
@@ -119,6 +123,7 @@ public class LevelManager : TGEMonoBehaviour {
     {
         foreach (var player in players)
         {
+            player.Reset();
             PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
         }
     }
