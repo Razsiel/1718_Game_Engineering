@@ -56,6 +56,6 @@ public class CameraBehaviour : MonoBehaviour
 
     void OnDestroy()
     {
-        VideoCaptureCtrl.instance.StopCapture();
+        VideoCaptureCtrl.instance?.StopCapture();
     }
 }
