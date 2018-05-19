@@ -123,16 +123,12 @@ public class BottomPanelManager : MonoBehaviour
         var readyButtonButton = _readyButton.AddComponent<Button>();
         var readyButtonImage = _readyButton.AddComponent<Image>();
         var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
-        //var readyButtonContentSizeFitter = _readyButton.AddComponent<ContentSizeFitter>();
 
         _readyButton.transform.SetParent(transform.GetChild(2), false);
 
         readyButtonLayoutElement.preferredWidth = 200;
         readyButtonLayoutElement.preferredHeight = 125;
         readyButtonLayoutElement.flexibleWidth = 0;
-
-        //readyButtonContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-        //readyButtonContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         readyButtonImage.sprite = _buttonBackground;
         _readyButtonIcon = new GameObject("Icon");
