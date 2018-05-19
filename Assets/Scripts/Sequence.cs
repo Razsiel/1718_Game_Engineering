@@ -302,19 +302,21 @@ namespace Assets.Scripts
             get { return Commands[index]; }
             set { Commands[index] = value; }
         }
-
-//        public IEnumerator Run(MonoBehaviour coroutineRunner, LevelData level, Player player) {
-//            foreach (BaseCommand command in this)
-//            {
-//                DateTime beforeExecute = DateTime.Now;
-//                yield return coroutineRunner.StartCoroutine(command.Execute(coroutineRunner, level, player));
-//                DateTime afterExecute = DateTime.Now;
-//
-//                // A command should take 1.5 Seconds to complete (may change) TODO: Link to some ScriptableObject CONST
-//                float delay = (1500f - (float)(afterExecute - beforeExecute).TotalMilliseconds) / 1000;
-//
-//                yield return new WaitForSeconds(delay);
-//            }
-//        }
+        
+        public IEnumerable<BaseCommand> Expanded() {
+            var expanded = new List<BaseCommand>();
+            foreach (var command in Commands) {
+                if (command is LoopCommand) {
+                    var loop = command as LoopCommand;
+                    for (int i = 0; i < loop.LoopCount; i++) {
+                        expanded.AddRange(loop.Sequence.Expanded());
+                    }
+                }
+                else {
+                    expanded.Add(command);
+                }
+            }
+            return expanded;
+        }
     }
 }

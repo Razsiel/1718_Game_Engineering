@@ -51,5 +51,9 @@ namespace Assets {
         {
             gameObject.SetActive(true);
         }
+
+        public void CloseApplication() {
+            Application.Quit();
+        }
     }
 }

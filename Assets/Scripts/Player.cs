@@ -7,6 +7,7 @@ using Assets.Data.Grids;
 using Assets.Data.Levels;
 using Assets.Data.Player;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Extensions;
 using Assets.Scripts.Lib.Helpers;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -24,7 +25,7 @@ namespace Assets.Scripts {
         public UnityAction<Vector3> OnTurn;
         public UnityAction OnWait;
         public UnityAction OnInteract;
-        public UnityAction<PlayerStartPosition> OnReset;
+        public UnityAction OnReset;
 
         private Coroutine _executeCoroutine;
 
@@ -36,37 +37,28 @@ namespace Assets.Scripts {
 
         public override void Awake() {
             Sequence = new Sequence();
-            
+
             EventManager.OnLevelReset += (gameInfo, players) => {
                 Assert.IsNotNull(gameInfo);
                 this.GameInfo = gameInfo;
 
                 this.IsReady = false;
             };
+
+            // Generate head
+            Data.GenerateGameObject(this.gameObject);
         }
 
         // Use this for initialization
-        public override void Start() {
-            
-        }
-
-        public void UpdateSequence(List<CommandEnum> commands)
-        {
-            this.Sequence.Clear();
-
-            var commandOptions = GameInfo.AllCommands.Commands;
-            var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
-
-            this.Sequence.AddRange(commandValues, true);
-        }
+        public override void Start() { }
 
         public void StopExecution() {
             if (_executeCoroutine != null)
                 StopCoroutine(_executeCoroutine);
         }
 
-        public void Reset(PlayerStartPosition startPosition) {
-            OnReset?.Invoke(startPosition);
+        public void Reset() {
+            OnReset?.Invoke();
         }
     }
 }

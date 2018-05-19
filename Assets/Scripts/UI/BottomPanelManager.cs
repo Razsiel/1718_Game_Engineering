@@ -170,25 +170,24 @@ public class BottomPanelManager : MonoBehaviour
         _readyButtonState = newState;
     }
 
-    private void ReadyButtonClicked()
-    {
-        if (_readyButtonState == ReadyButtonState.Play)
-        {
-            SetReadyButtonState(_gameInfo.IsMultiplayer ? ReadyButtonState.Ready : ReadyButtonState.Stop);
-            EventManager.ReadyButtonClicked();
-            EventManager.PlayerReady(true);
-
-        }else if (_readyButtonState == ReadyButtonState.Ready)
-        {
-            SetReadyButtonState(ReadyButtonState.Play);
-            EventManager.PlayerReady(false);
-
-        }else
-        {
-            SetReadyButtonState(ReadyButtonState.Play);
-            EventManager.StopButtonClicked();
-        }
+    private void ReadyButtonClicked() {
         print($"Pressed button: {_readyButtonState}");
+        switch (_readyButtonState) {
+            case ReadyButtonState.Play:
+                SetReadyButtonState(_gameInfo.IsMultiplayer ? ReadyButtonState.Ready : ReadyButtonState.Stop);
+                EventManager.ReadyButtonClicked();
+                EventManager.PlayerReady(true);
+                break;
+            case ReadyButtonState.Ready:
+                SetReadyButtonState(ReadyButtonState.Play);
+                EventManager.PlayerReady(false);
+                break;
+            case ReadyButtonState.Stop:
+            default:
+                SetReadyButtonState(ReadyButtonState.Play);
+                EventManager.StopButtonClicked();
+                break;
+        }
     }
 
     private void SecondaryPlayerIconClicked()

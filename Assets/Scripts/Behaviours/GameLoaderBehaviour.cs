@@ -33,7 +33,7 @@ namespace Assets.Scripts.Behaviours
 
             // Managers
             var gameStateManager = Spawn<GameStateManager>("GameStateManager", managersRoot);
-            var levelPresenter = Spawn<LevelManager>("LevelPresentation", managersRoot);
+            var levelPresenter = Spawn<LevelManager>("LevelManager", managersRoot);
             levelPresenter.PlayerPrefab = _playerPrefab;
 
             GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
