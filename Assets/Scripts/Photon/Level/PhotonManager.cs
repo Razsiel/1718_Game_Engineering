@@ -36,7 +36,7 @@ namespace Assets.Scripts.Photon.Level
         private PhotonManager() { }
 
         void Awake()
-        {            
+        {
             print($"{nameof(PhotonManager)}: in awake");
             Instance = this;
 
@@ -111,15 +111,20 @@ namespace Assets.Scripts.Photon.Level
                 _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
             }
             print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
-            if (_gameInfo.Players.GetLocalPlayer().photonPlayer.IsMasterClient)
+            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
+            if (_gameInfo.Players.All(x => x.Player.IsReady))
             {
-                print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
-                if (_gameInfo.Players.All(x => x.Player.IsReady))
-                {
-                    print($"{nameof(PhotonManager)} everybody is ready");
-                    SendStartExecution();
-                }
+                print($"{nameof(PhotonManager)} everybody is ready");
+                if (_gameInfo.LocalPlayer.photonPlayer.IsMasterClient) SendStartExecution();
+                else this.photonView.RPC(nameof(MasterClientShouldStart), PhotonTargets.MasterClient);
             }
+
+        }
+
+        [PunRPC]
+        public void MasterClientShouldStart(PhotonMessageInfo info)
+        {
+            SendStartExecution();
         }
 
         [PunRPC]
@@ -183,7 +188,7 @@ namespace Assets.Scripts.Photon.Level
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
-            
+
 
             //foreach(TGEPlayer p in gameManager.Players)
             //{
