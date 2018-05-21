@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
 using UnityEngine;
@@ -20,6 +21,10 @@ public class WinScreenBehaviour : MonoBehaviour
     [SerializeField] private GameObject _player2Name;
     [SerializeField] private GameObject _player2Image;
     [SerializeField] private GameObject _player2StarsImage;
+    [SerializeField] private Sprite _oneStarSprite; 
+    [SerializeField] private Sprite _twoStarsSprite; 
+    [SerializeField] private Sprite _threeStarSprite; 
+
 
     private GameObject mainPanelSelector;
     private GameObject mainPanel;
@@ -34,14 +39,23 @@ public class WinScreenBehaviour : MonoBehaviour
     private GameObject player2Name;
     private GameObject player2Image;
     private GameObject player2StarsImage;
+    private bool _isMultiplayer;
 
-    public void Initialize()
+
+    public void Initialize(bool isMultiplayer)
     {
+        _isMultiplayer = isMultiplayer;
         EventManager.OnPlayersScoreDetermined += ShowWinScreen;
         mainPanelSelector = Instantiate(_mainPanelSelector, transform, false);
         mainPanel = Instantiate(_mainPanel, mainPanelSelector.transform, false);
+        
         player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
-        player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
+        if (!isMultiplayer)
+        {
+            player1Panel.GetComponent<RectTransform>().offsetMin = new Vector2(600, 200);
+            player1Panel.GetComponent<RectTransform>().offsetMax = new Vector2(-600, -200);
+        }
+
         textAtTop = Instantiate(_textAtTop, mainPanel.transform, false);
         totalStars = Instantiate(_totalStars, mainPanel.transform, false);
         continueButton = Instantiate(_continueButton, mainPanel.transform, false);
@@ -50,34 +64,58 @@ public class WinScreenBehaviour : MonoBehaviour
         player1Image = Instantiate(_player1Image, player1Panel.transform, false);
         player1StarsImage = Instantiate(_player1StarsImage, player1Panel.transform, false);
 
-        player2Name = Instantiate(_player2Name, player2Panel.transform, false);
-        player2Image = Instantiate(_player2Image, player2Panel.transform, false);
-        player2StarsImage = Instantiate(_player2StarsImage, player2Panel.transform, false);
+        if (isMultiplayer)
+        {
+            player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
+            player2Name = Instantiate(_player2Name, player2Panel.transform, false);
+            player2Image = Instantiate(_player2Image, player2Panel.transform, false);
+            player2StarsImage = Instantiate(_player2StarsImage, player2Panel.transform, false);
+        }
+
 
         continueButton.GetComponent<Button>().onClick.AddListener(ContinueButtonClicked);
-        //UpdateWinScreenValues();
         gameObject.SetActive(false);
     }
 
     private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore)
     {
         EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
-        
+
         textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
 
-        for (int i = 0; i < playerInfo.Count; i++)
+        List<int> playerScores = new List<int>();
+        //No idea if player1 score will be actual player 1 in multiplay
+        foreach (var playerScore in playerInfo)
         {
-            print("asd");
+            playerScores.Add(playerScore.Value);
         }
         player1Name.GetComponent<Text>().text = "Player 1";
         player1Image.GetComponent<Image>().sprite = null;
-        player1StarsImage.GetComponent<Image>().sprite = null;
 
-        player2Name.GetComponent<Text>().text = "Player2";
-        player2Image.GetComponent<Image>().sprite = null;
-        player2StarsImage.GetComponent<Image>().sprite = null;
+        player1StarsImage.GetComponent<Image>().sprite =
+            playerScores[0] == 1 ? _oneStarSprite
+            : playerScores[0] == 2 ? _twoStarsSprite
+            : _threeStarSprite;
 
-        totalStars.GetComponent<Image>().sprite = null;
+        print(playerScores[0]);
+
+        if (_isMultiplayer)
+        {
+            player2Name.GetComponent<Text>().text = "Player2";
+            player2Image.GetComponent<Image>().sprite = null;
+            player2StarsImage.GetComponent<Image>().sprite = null;
+        }
+
+        switch (totalScore)
+        {
+            case 1: totalStars.GetComponent<Image>().sprite = _oneStarSprite;
+                break;
+            case 2: totalStars.GetComponent<Image>().sprite = _twoStarsSprite;
+                break;
+            default: totalStars.GetComponent<Image>().sprite = _threeStarSprite;
+                break;
+        }
+        
         gameObject.SetActive(true);
     }
 

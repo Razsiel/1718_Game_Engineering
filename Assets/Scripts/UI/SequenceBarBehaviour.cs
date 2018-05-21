@@ -14,7 +14,10 @@ public class SequenceBarBehaviour : MonoBehaviour
     private GameObject _commandsListPanel;
     private GameInfo _gameInfo;
     private Player _localPlayer;
-
+    private GameObject _decentScorePanel;
+    private GameObject _highestScorePanel;
+    private uint _decentScore;
+    private uint _highestScore;
 
     public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo)
     {
@@ -22,6 +25,11 @@ public class SequenceBarBehaviour : MonoBehaviour
         _mainPanel = mainPanel;
         _gameInfo = gameInfo;
         _localPlayer = gameInfo.LocalPlayer.Player;
+        _decentScore = _gameInfo.Level.LevelScore.DecentScore;
+        _highestScore = _gameInfo.Level.LevelScore.HighestScore;
+
+        _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
+        _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
 
         if (_isMainSequenceBar)
         {
@@ -35,21 +43,17 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         InitializeCommandsList(_isMainSequenceBar);
         InitializeScoreStars(_isMainSequenceBar);
-
     }
 
     private void InitializeScoreStars(bool isMainSequenceBar)
     {
-        //Get the score ranges for the current level
-        //uint decentScore = _gameInfo.Level.LevelScore.DecentScore;
-        //uint lowestScore = _gameInfo.Level.LevelScore.;
+        _highestScorePanel.GetComponent<LayoutElement>().preferredWidth = _highestScore * 100;
+        _decentScorePanel.GetComponent<LayoutElement>().preferredWidth = _decentScore * 100 - (_highestScore * 100) + 200;
+    }
 
-        //Create the image gameobjects for the stars
-
-
-
-
-
+    private void AdjustStarPositions()
+    {
+        
     }
 
     void OnDestroy() {
@@ -416,6 +420,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     public void OnSequenceChanged(List<BaseCommand> commands) {
         ClearSequenceBar(true);
 
-        UpdateSequenceBar(commands, _commandsListPanel.transform, true);
+        UpdateSequenceBar(commands, _commandsListPanel.transform, _isMainSequenceBar);
     }
+
 }
