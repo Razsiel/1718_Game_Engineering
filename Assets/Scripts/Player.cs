@@ -45,17 +45,19 @@ namespace Assets.Scripts {
                 this.IsReady = false;
             };
 
-            EventManager.OnPlayerReady += (player, isReady) =>
-            {
-                if (this == player)
-                {
-                    print($"Invoking player ready! {this.PlayerNumber}");
-                    this.OnReady?.Invoke(true);
-                }
-            };
+            EventManager.OnPlayerReady += OnPlayerReady;
 
             // Generate head
             Data.GenerateGameObject(this.gameObject, PlayerNumber);
+        }
+
+        private void OnPlayerReady(Player player, bool isReady) {
+            if (this == player)
+            {
+                EventManager.OnPlayerReady -= OnPlayerReady;
+                print($"Invoking player ready! {this.PlayerNumber}");
+                this.OnReady?.Invoke(true);
+            }
         }
 
         // Use this for initialization
