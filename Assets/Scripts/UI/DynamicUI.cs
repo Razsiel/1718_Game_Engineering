@@ -26,10 +26,6 @@ namespace Assets.Scripts.UI
         private FlowLayoutGroup _cmdFlowLayoutGroup;
         private VerticalLayoutGroup _cmdListPanelVerticalLayout;
 
-        [SerializeField] private GameObject _threeStarsImage;
-        [SerializeField] private GameObject _twoStarsImage;
-        [SerializeField] private GameObject _oneStarImage;
-
         public void Awake()
         {
             EventManager.OnInitializeUi += Initialize;
@@ -123,7 +119,7 @@ namespace Assets.Scripts.UI
             GameObject _winScreenMask = Instantiate(WinScreenMask);
 
             WinScreenBehaviour winScreenBehaviour = _winScreenMask.GetComponent<WinScreenBehaviour>();
-            winScreenBehaviour.Initialize();
+            winScreenBehaviour.Initialize(_gameInfo.IsMultiplayer);
             _winScreenMask.transform.SetParent(transform, false);
         }
 
