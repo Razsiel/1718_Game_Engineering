@@ -96,7 +96,7 @@ namespace Assets.Scripts.Photon.Level
 
             foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
 
-            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands);
+            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);
             EventManager.SecondarySequenceChanged(baseCommands);
         }
 
