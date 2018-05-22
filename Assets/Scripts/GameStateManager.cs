@@ -43,7 +43,7 @@ namespace Assets.Scripts {
                .On(OnEditSequenceStateEnter);
 
             // READYANDWAITINGFORPLAYERS -> SIMULATE
-            fsm.Tr(GameState.ReadyAndWaitingForPlayers, GameStateTrigger.Next, GameState.Simulate)
+            fsm.Tr(GameState.ReadyAndWaitingForPlayers, GameStateTrigger.Simulate, GameState.Simulate)
                .On(OnSimulateStateEnter);
 
             // SIMULATE -> LEVELCOMPLETE
@@ -166,7 +166,7 @@ namespace Assets.Scripts {
         private void OnAllPlayersReady() {
             EventManager.OnAllPlayersReady -= OnAllPlayersReady;
             print("all players are ready!");
-            fsm.Fire(GameStateTrigger.Next); // goto Simulate
+            fsm.Fire(GameStateTrigger.Simulate); // goto Simulate
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
@@ -236,6 +236,8 @@ namespace Assets.Scripts {
 
     public enum GameStateTrigger {
         Next,
-        Back
+        Back,
+
+        Simulate
     }
 }
