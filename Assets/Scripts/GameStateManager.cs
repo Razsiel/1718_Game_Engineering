@@ -33,13 +33,13 @@ namespace Assets.Scripts {
                .On(OnStartGameStateEnter);
 
             // GAMESTART -> EDITSEQUENCE
-            fsm.Tr(GameState.GameStart, GameStateTrigger.Next, GameState.EditSequence)
+            fsm.Tr(GameState.GameStart, GameStateTrigger.Edit, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
             // EDITSEQUENCE <-> READYANDWAITINGFORPLAYERS
             fsm.Tr(GameState.EditSequence, GameStateTrigger.Next, GameState.ReadyAndWaitingForPlayers)
                .On(OnPlayerReadyStateEnter)
-               .Tr(GameState.ReadyAndWaitingForPlayers, GameStateTrigger.Back, GameState.EditSequence)
+               .Tr(GameState.ReadyAndWaitingForPlayers, GameStateTrigger.Edit, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
             // READYANDWAITINGFORPLAYERS -> SIMULATE
@@ -49,7 +49,7 @@ namespace Assets.Scripts {
             // SIMULATE -> LEVELCOMPLETE
             fsm.Tr(GameState.Simulate, GameStateTrigger.Next, GameState.LevelComplete)
                 .On(OnLevelCompleteStateEnter)
-               .Tr(GameState.Simulate, GameStateTrigger.Back, GameState.EditSequence)
+               .Tr(GameState.Simulate, GameStateTrigger.Edit, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
             GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
@@ -137,7 +137,7 @@ namespace Assets.Scripts {
                 print($"    - {allowedCommand.Name}");
             }
 
-            fsm.Fire(GameStateTrigger.Next); // goto EditSequence
+            fsm.Fire(GameStateTrigger.Edit); // goto EditSequence
         }
 
         /// <summary>
@@ -157,7 +157,6 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: ready!");
 
             // register if sequence is changed
-            EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
 
             fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
@@ -171,7 +170,7 @@ namespace Assets.Scripts {
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
             EventManager.OnSequenceChanged -= OnSequenceChanged;
-            fsm.Fire(GameStateTrigger.Back);
+            fsm.Fire(GameStateTrigger.Edit);
         }
 
         /// <summary>
@@ -180,6 +179,8 @@ namespace Assets.Scripts {
         private void OnPlayerReadyStateEnter() {
             print($"{nameof(GameStateManager)}: ready and waiting for other players");
             
+            EventManager.OnSequenceChanged += OnSequenceChanged;
+
             if (!_gameInfo.IsMultiplayer) {
                 EventManager.AllPlayersReady();
             }
@@ -201,7 +202,7 @@ namespace Assets.Scripts {
 
         private void OnStopButtonClicked() {
             EventManager.OnStopButtonClicked -= OnStopButtonClicked;
-            fsm.Fire(GameStateTrigger.Back);
+            fsm.Fire(GameStateTrigger.Edit);
         }
 
         private void OnWinScreenContinueClicked()
@@ -238,6 +239,7 @@ namespace Assets.Scripts {
         Next,
         Back,
 
+        Edit,
         Simulate
     }
 }

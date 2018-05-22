@@ -88,6 +88,15 @@ namespace Assets.Scripts
             SequenceChanged();
         }
 
+        public void Clear(bool sendEvent)
+        {
+            Commands.Clear();
+            if (sendEvent)
+            {
+                SequenceChanged();
+            }
+        }
+
         public void SwapAtindices(int i, int j)
         {
             BaseCommand temp = Commands[j];
