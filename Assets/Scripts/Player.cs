@@ -26,11 +26,11 @@ namespace Assets.Scripts {
         public UnityAction OnWait;
         public UnityAction OnInteract;
         public UnityAction OnReset;
+        public UnityAction<bool> OnReady;
 
         private Coroutine _executeCoroutine;
 
         public bool IsReady = false;
-        public bool IsLocalPlayer;
 
         public CardinalDirection ViewDirection = CardinalDirection.North;
         public Vector2Int GridPosition;
@@ -45,12 +45,32 @@ namespace Assets.Scripts {
                 this.IsReady = false;
             };
 
+            EventManager.OnPlayerReady += OnPlayerReady;
+
             // Generate head
-            Data.GenerateGameObject(this.gameObject);
+            Data.GenerateGameObject(this.gameObject, PlayerNumber);
+        }
+
+        private void OnPlayerReady(Player player, bool isReady) {
+            if (this == player)
+            {
+                EventManager.OnPlayerReady -= OnPlayerReady;
+                print($"Invoking player ready! {this.PlayerNumber}");
+                this.OnReady?.Invoke(true);
+            }
         }
 
         // Use this for initialization
         public override void Start() { }
+
+        public void UpdateSequence(List<BaseCommand> commands, bool sendEvent) {
+            this.Sequence.Clear(sendEvent);
+
+            //var commandOptions = GameInfo.AllCommands.Commands;
+            //var commandValues = commands.Select(c => commandOptions.GetValue(c)).ToList();
+
+            this.Sequence.AddRange(commands, sendEvent);
+        }
 
         public void StopExecution() {
             if (_executeCoroutine != null)

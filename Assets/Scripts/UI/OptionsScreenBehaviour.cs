@@ -19,6 +19,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     void Awake()
     {
         LanguageManager.Instance.ChangeLanguage(PlayerPrefs.GetString("Default language"));
+        LanguageManager.SetDontDestroyOnLoad();
         HideOptionsPanel();
     }
 
@@ -45,6 +46,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to Dutch
         LanguageManager.Instance.ChangeLanguage("nl-NL");
+        LanguageManager.Instance.defaultLanguage = "nl-NL";
         PlayerPrefs.SetString("Default language", "nl-NL");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
@@ -53,6 +55,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to English
         LanguageManager.Instance.ChangeLanguage("en-GB");
+        LanguageManager.Instance.defaultLanguage = "en-GB";
         PlayerPrefs.SetString("Default language", "en-GB");
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }

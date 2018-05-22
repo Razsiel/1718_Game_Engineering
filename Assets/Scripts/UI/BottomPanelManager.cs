@@ -176,11 +176,11 @@ public class BottomPanelManager : MonoBehaviour
             case ReadyButtonState.Play:
                 SetReadyButtonState(_gameInfo.IsMultiplayer ? ReadyButtonState.Ready : ReadyButtonState.Stop);
                 EventManager.ReadyButtonClicked();
-                EventManager.PlayerReady(true);
+                EventManager.PlayerReady(_gameInfo.LocalPlayer.Player, true);
                 break;
             case ReadyButtonState.Ready:
                 SetReadyButtonState(ReadyButtonState.Play);
-                EventManager.PlayerReady(false);
+                EventManager.PlayerReady(_gameInfo.LocalPlayer.Player, false);
                 break;
             case ReadyButtonState.Stop:
             default:
