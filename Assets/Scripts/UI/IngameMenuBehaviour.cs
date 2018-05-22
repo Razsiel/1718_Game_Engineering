@@ -18,11 +18,8 @@ public class IngameMenuBehaviour : ModalPanel
 
     void Awake()
     {
-        this.Panel = this.gameObject;
-
         BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGM Volume");
         SfxVolumeSlider.value = PlayerPrefs.GetFloat("SFX Volume");
-
         Close();
     }
 
