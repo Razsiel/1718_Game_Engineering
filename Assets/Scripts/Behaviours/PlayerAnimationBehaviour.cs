@@ -19,9 +19,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour
 
     void Awake()
     {
-        EventManager.OnPlayerSpawned += OnPlayerSpawned;
         EventManager.OnAllPlayersReady += StopJumping;
-        EventManager.OnPlayerReady += AnimatePlayerReady;
         EventManager.OnStopButtonClicked += OnSimulationEnded;
         EventManager.OnSimulate += OnSimulationStarted;
 
@@ -29,13 +27,12 @@ public class PlayerAnimationBehaviour : MonoBehaviour
     }
 
     void OnDestroy() {
-        EventManager.OnPlayerSpawned -= OnPlayerSpawned;
         EventManager.OnAllPlayersReady -= StopJumping;
-        EventManager.OnPlayerReady -= AnimatePlayerReady;
         EventManager.OnStopButtonClicked -= OnSimulationEnded;
         EventManager.OnSimulate -= OnSimulationStarted;
 
         if (_player != null) {
+            _player.OnReady -= AnimatePlayerReady;
             _player.OnMoveTo -= AnimateMoveTo;
             _player.OnTurn -= AnimateTurn;
             _player.OnWait -= AnimateWait;
@@ -55,15 +52,16 @@ public class PlayerAnimationBehaviour : MonoBehaviour
         StopJumping();
     }
 
-    void OnPlayerSpawned(Player player)
+    public void OnPlayerSpawned(Player player)
     {
-        this._player = player;
-        player.OnMoveTo += AnimateMoveTo;
-        player.OnTurn += AnimateTurn;
-        player.OnWait += AnimateWait;
-        player.OnInteract += AnimateInteract;
-        player.OnFailMoveTo += AnimateFailedMove;
-        player.OnReset += OnReset;
+        _player = player;
+        _player.OnReady += AnimatePlayerReady;
+        _player.OnMoveTo += AnimateMoveTo;
+        _player.OnTurn += AnimateTurn;
+        _player.OnWait += AnimateWait;
+        _player.OnInteract += AnimateInteract;
+        _player.OnFailMoveTo += AnimateFailedMove;
+        _player.OnReset += OnReset;
     }
 
     private void OnReset() {
