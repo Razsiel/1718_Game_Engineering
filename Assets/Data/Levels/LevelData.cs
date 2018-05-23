@@ -38,7 +38,8 @@ namespace Assets.Data.Levels
                 this.IsAllowed = v;
             }
         }
-
+        
+        private string ScoreKey => $"SCORE_{Name}";
         private Dictionary<Scripts.Player, Vector2Int> _playerPositions;
 
         public void OnEnable() {
@@ -220,6 +221,15 @@ namespace Assets.Data.Levels
                 }
             }
             animateCallback(players, this);
+        }
+
+        public void SaveScore(int score) {
+            PlayerPrefs.SetInt(ScoreKey, score);
+            PlayerPrefs.Save();
+        }
+
+        public int GetScore() {
+            return PlayerPrefs.HasKey(ScoreKey) ? PlayerPrefs.GetInt(ScoreKey) : 0;
         }
     }
 }
