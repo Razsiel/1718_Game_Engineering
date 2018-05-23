@@ -71,7 +71,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             foreach (var player in players)
             {
                 GameObject newPlayerPanel = PlayerPanelObjectPool.GetObject();
-                newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform);
+                newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform, false);
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
