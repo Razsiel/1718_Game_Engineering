@@ -8,9 +8,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17a1b4818cb47d747974d38882e924ad, type: 3}
-  m_Name: MultiPlayerLevels
+  m_Script: {fileID: 11500000, guid: c6630866c4a843946a789218cf72f679, type: 3}
+  m_Name: MP_1_Goals
   m_EditorClassIdentifier: 
-  Levels:
-  - {fileID: 11400000, guid: 079bb4ae5838c364881f7eef29b8ca8a, type: 2}
-  - {fileID: 11400000, guid: 58e23c52880556947b9a7275f14b7cd9, type: 2}
+  _presentableConfigurations: []
+  TargetGridPosition:
+  - PlayerNumber: 0
+    Location: {x: 3, y: 0}
+  - PlayerNumber: 0
+    Location: {x: 0, y: 3}
