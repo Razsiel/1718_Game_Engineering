@@ -67,9 +67,9 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerReady += OnPlayerReady;
         }
 
-        private void OnPlayerReady(bool isReady)
+        private void OnPlayerReady(Player player, bool isReady)
         {
-            _gameInfo.Players.GetLocalPlayer().Player.IsReady = isReady;
+            player.IsReady = isReady;
             this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.All, isReady);
         }
 
@@ -96,7 +96,7 @@ namespace Assets.Scripts.Photon.Level
 
             foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
 
-            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands);
+            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);
             EventManager.SecondarySequenceChanged(baseCommands);
         }
 
@@ -108,7 +108,10 @@ namespace Assets.Scripts.Photon.Level
             if (!info.sender.Equals(PhotonNetwork.player))
             {
                 print($"{nameof(PhotonManager)}: Readystate of Network player: {info.sender} is now {isReady}");
-                _gameInfo.Players.GetNetworkPlayer().Player.IsReady = isReady;
+                var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
+                networkPlayer.IsReady = isReady;
+                networkPlayer.OnReady?.Invoke(isReady);
+
             }
             print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
             print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");

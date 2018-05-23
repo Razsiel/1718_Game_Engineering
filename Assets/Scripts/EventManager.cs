@@ -31,7 +31,7 @@ public class EventManager {
     public static UnityAction<List<BaseCommand>> OnSecondarySequenceChanged;
     public static UnityAction<ReorderableList.ReorderableListEventStruct> OnElementDroppedToMainSequenceBar;
     public static UnityAction OnReadyButtonClicked;
-    public static UnityAction<bool> OnPlayerReady;
+    public static UnityAction<Player, bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
     public static UnityAction OnPhotonSynchronized;
     public static UnityAction<Monologue> OnMonologueStart;
@@ -141,9 +141,9 @@ public class EventManager {
         OnLevelLoaded?.Invoke(gameInfo);
     }
 
-    public static void PlayerReady(bool isReady)
+    public static void PlayerReady(Player player, bool isReady)
     {
-        OnPlayerReady?.Invoke(isReady);
+        OnPlayerReady?.Invoke(player, isReady);
     }
 
     public static void AllPlayersReady() {

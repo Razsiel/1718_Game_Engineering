@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using RockVR.Video;
 using SmartLocalization;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     void Awake()
     {
-        LanguageManager.Instance.ChangeLanguage(PlayerPrefs.GetString("Default language"));
+        LanguageManager.SetDontDestroyOnLoad();
         HideOptionsPanel();
     }
 
@@ -45,7 +46,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to Dutch
         LanguageManager.Instance.ChangeLanguage("nl-NL");
-        PlayerPrefs.SetString("Default language", "nl-NL");
+        LanguageManager.Instance.defaultLanguage = "nl-NL";
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -53,7 +54,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     {
         // Set current language setting to English
         LanguageManager.Instance.ChangeLanguage("en-GB");
-        PlayerPrefs.SetString("Default language", "en-GB");
+        LanguageManager.Instance.defaultLanguage = "en-GB";
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
@@ -79,5 +80,11 @@ public class OptionsScreenBehaviour : MonoBehaviour {
         PlayerPrefs.SetString("Default language", LanguageManager.Instance.CurrentlyLoadedCulture.languageCode);
 
         PlayerPrefs.Save();
+    }
+
+    public void OnClickOpenVideoFolder()
+    {
+        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Progranimals\\Video";
+        Process.Start(@path);
     }
 }

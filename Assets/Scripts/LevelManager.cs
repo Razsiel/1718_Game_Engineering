@@ -98,9 +98,11 @@ public class LevelManager : TGEMonoBehaviour {
         {
             var playerObject = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity, parent);
             var playerComponent = playerObject.GetComponent<Player>();
+            var playerAnimation = playerObject.GetComponent<PlayerAnimationBehaviour>();
             players[i].Player = playerComponent;
             playerComponent.PlayerNumber = i;
 
+            playerAnimation.OnPlayerSpawned(playerComponent);
             EventManager.PlayerSpawned(playerComponent);
 
             var playerPos = data.InitPlayer(playerComponent);
