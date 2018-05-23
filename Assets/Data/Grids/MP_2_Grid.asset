@@ -1,0 +1,85 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa2169745e098d46814bed62c591821, type: 3}
+  m_Name: MP_2_Grid
+  m_EditorClassIdentifier: 
+  DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
+  PlayerStartPositions:
+  - StartPosition: {x: 0, y: 0}
+    Facing: 0
+  - StartPosition: {x: 6, y: 3}
+    Facing: 0
+  _map:
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 4b1d4ebe3b204b64cb2af13c76ff39d7, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: 6e5a10b0098d6ba42b6b74d4ffaa5243, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+  _width: 7
+  _height: 4
