@@ -19,7 +19,7 @@ public class PlayerScoreManager : MonoBehaviour
     {
         Instance = this;
         print($"{nameof(PlayerScoreManager)}: awake");
-        SceneDataLoader.OnSceneLoaded += gameInfo =>
+        SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) =>
         {
             this._gameInfo = gameInfo;
             EventManager.OnAllLevelGoalsReached += DeterminePlayersScore;          

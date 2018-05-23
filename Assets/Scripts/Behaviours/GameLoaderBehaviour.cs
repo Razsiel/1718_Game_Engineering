@@ -36,7 +36,7 @@ namespace Assets.Scripts.Behaviours
             var levelPresenter = Spawn<LevelManager>("LevelManager", managersRoot);
             levelPresenter.PlayerPrefab = _playerPrefab;
 
-            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
+            GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) =>
             {
                 if (gameInfo.IsMultiplayer)
                 {

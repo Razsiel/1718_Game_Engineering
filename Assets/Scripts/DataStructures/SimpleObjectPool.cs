@@ -38,7 +38,7 @@ namespace Assets.Scripts.DataStructures
                 pooledObject.pool = this;
             }
 
-            spawnedGameObject.transform.SetParent(null);
+            spawnedGameObject.transform.SetParent(null, false);
             spawnedGameObject.SetActive(true);
 
             return spawnedGameObject;
@@ -54,7 +54,7 @@ namespace Assets.Scripts.DataStructures
 
             if(pooledObject != null && pooledObject.pool == this)
             {
-                toReturn.transform.SetParent(transform);
+                toReturn.transform.SetParent(transform, false);
                 toReturn.SetActive(false);
                 inactiveInstances.Push(toReturn);
             }

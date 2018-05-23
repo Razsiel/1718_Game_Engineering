@@ -13,7 +13,8 @@ namespace Assets.Scripts.Photon.RoomSelect
         //public GameObject buttonPrefab;
         public GameObject Panel;
         public Vector3 Margin;
-        public SimpleObjectPool ButtonObjectPool;       
+        public SimpleObjectPool ButtonObjectPool;
+        public InputField roomName;
 
         public void UpdateListView(RoomInfo[] rooms)
         {
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             for (int i = 0; i < rooms.Length; i++)
             {
                 GameObject newButton = ButtonObjectPool.GetObject();
-                newButton.transform.SetParent(Panel.transform);
+                newButton.transform.SetParent(Panel.transform, false);
 
                 RoomListButton button = newButton.GetComponent<RoomListButton>();
                 button.RoomNameExPlayers = rooms[i].Name;
@@ -57,6 +58,12 @@ namespace Assets.Scripts.Photon.RoomSelect
             //    GameObject toRemove = trans.gameObject;
             //    ButtonObjectPool.ReturnObject(toRemove);
             //}
+        }
+
+        public void CreateRoom()
+        {
+            print(roomName.text);
+            PhotonConnectionManager.Instance.CreateRoom(roomName.text);
         }
 
         public void HandleClick(string roomName)

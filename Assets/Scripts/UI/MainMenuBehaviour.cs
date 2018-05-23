@@ -18,7 +18,7 @@ namespace Assets {
         private GameInfo _gameInfo;
 
         void Awake() {
-            GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo => {
+            GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) => {
                 _gameInfo = gameInfo;
             };
         }
