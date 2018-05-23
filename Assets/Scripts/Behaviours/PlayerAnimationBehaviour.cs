@@ -89,6 +89,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     // Ready and waiting
     public void AnimatePlayerReady(bool isReady) {
+        print($"{nameof(PlayerAnimationBehaviour)}: AnimatePlayerReady isReady = {isReady} isJumping = {_isJumping}");
         if (isReady) {
             if (!_isJumping && !_isSimulating)
                 _currentSequence = transform.DOJump(transform.position, 0.8f, 1, 0.35f)
