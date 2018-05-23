@@ -14,7 +14,6 @@ namespace Assets.Scripts.Photon.RoomSelect
         public GameObject Panel;
         public Vector3 Margin;
         public SimpleObjectPool ButtonObjectPool;
-        public InputField roomName;
 
         public void UpdateListView(RoomInfo[] rooms)
         {
@@ -58,12 +57,6 @@ namespace Assets.Scripts.Photon.RoomSelect
                 GameObject toRemove = trans.gameObject;
                 ButtonObjectPool.ReturnObject(toRemove);
             }
-        }
-
-        public void CreateRoom()
-        {
-            print(roomName.text);
-            PhotonConnectionManager.Instance.CreateRoom(roomName.text);
         }
 
         public void HandleClick(string roomName)

@@ -23,7 +23,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void CreateRoom()
         {
-            PhotonConnectionManager.Instance.CreateRoom(RoomName.text);
+            PhotonConnectionManager.Instance.CreateRoom(RoomName.text == "" ? " " : RoomName.text );
         }
 
         public void Enable()
