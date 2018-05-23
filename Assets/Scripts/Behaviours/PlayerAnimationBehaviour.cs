@@ -20,7 +20,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     void Awake() {
         EventManager.OnAllPlayersReady += StopJumping;
-        EventManager.OnStopButtonClicked += OnSimulationEnded;
+        EventManager.OnSimulationStop += OnSimulationEnded;
         EventManager.OnSimulate += OnSimulationStarted;
 
         _isJumping = false;
@@ -28,7 +28,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     void OnDestroy() {
         EventManager.OnAllPlayersReady -= StopJumping;
-        EventManager.OnStopButtonClicked -= OnSimulationEnded;
+        EventManager.OnSimulationStop -= OnSimulationEnded;
         EventManager.OnSimulate -= OnSimulationStarted;
 
         if (_player != null) {

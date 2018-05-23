@@ -65,6 +65,13 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerSpawned -= OnPlayerSpawned;
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnPlayerReady += OnPlayerReady;
+            EventManager.OnStopButtonClicked += OnStopButtonClicked;
+        }
+
+        private void OnStopButtonClicked()
+        {
+            print($"{nameof(PhotonManager)}: OnStopButtonClicked");
+            SendStopExecution();
         }
 
         private void OnPlayerReady(Player player, bool isReady)
@@ -118,8 +125,10 @@ namespace Assets.Scripts.Photon.Level
             if (_gameInfo.Players.All(x => x.Player.IsReady))
             {
                 print($"{nameof(PhotonManager)} everybody is ready");
-                if (_gameInfo.LocalPlayer.photonPlayer.IsMasterClient) SendStartExecution();
-                else this.photonView.RPC(nameof(MasterClientShouldStart), PhotonTargets.MasterClient);
+                if (_gameInfo.LocalPlayer.photonPlayer.IsMasterClient)
+                    SendStartExecution();
+                else
+                    this.photonView.RPC(nameof(MasterClientShouldStart), PhotonTargets.MasterClient);
             }
 
         }
@@ -144,6 +153,7 @@ namespace Assets.Scripts.Photon.Level
 
         private void SendStopExecution()
         {
+            print($"{nameof(PhotonManager)}: SendStopExecution RPC");
             this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
         }
 
@@ -191,7 +201,8 @@ namespace Assets.Scripts.Photon.Level
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
-
+            print($"{nameof(PhotonManager)}: StopExecution RPC");
+            EventManager.SimulationStop();
 
             //foreach(TGEPlayer p in gameManager.Players)
             //{

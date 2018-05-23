@@ -33,6 +33,7 @@ public class EventManager {
     public static UnityAction OnReadyButtonClicked;
     public static UnityAction<Player, bool> OnPlayerReady;
     public static UnityAction OnStopButtonClicked;
+    public static UnityAction OnSimulationStop;
     public static UnityAction OnPhotonSynchronized;
     public static UnityAction<Monologue> OnMonologueStart;
     public static UnityAction OnMonologueEnded;
@@ -68,7 +69,9 @@ public class EventManager {
     public static void ReadyButtonClicked() {
         OnReadyButtonClicked?.Invoke();
     }
+
     public static void StopButtonClicked() {
+        Debug.Log($"{nameof(EventManager)}: StopButtonClicked");   
         OnStopButtonClicked?.Invoke();
     }
 
@@ -168,6 +171,10 @@ public class EventManager {
 
     public static void GameStart(GameInfo gameInfo) {
         OnGameStart?.Invoke(gameInfo);
+    }
+
+    public static void SimulationStop() {
+        OnSimulationStop?.Invoke();
     }
 
     public static void PlayersScoreDetermined(Dictionary<TGEPlayer, int> playerScoreDic, int combinedStars)
