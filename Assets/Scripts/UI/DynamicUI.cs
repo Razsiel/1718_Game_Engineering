@@ -110,6 +110,7 @@ namespace Assets.Scripts.UI
                     if (command is LoopCommand)
                     {
                         BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        newCommand = newCommand.Init();
                         newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
                         newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
                         newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
