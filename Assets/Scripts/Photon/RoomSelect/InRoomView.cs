@@ -25,6 +25,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         {
             Disable();
             PlayButton.onClick.AddListener(StartGame);
+            PhotonNetwork.player.NickName = Environment.UserName;
             //PlayButton.gameObject.SetActive(false);
             RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
             RoomEventManager.OnLocalPlayerLeftRoom += Disable;
