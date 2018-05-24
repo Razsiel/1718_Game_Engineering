@@ -56,8 +56,6 @@ public class LevelSelectBehaviour : MonoBehaviour
 
             LevelScroller.AddChild(prefab);
         }
-        //Update the colors of the level images, the first level is selected on initialized
-        UpdatePreviewImageColors(0);
 
         if (_gameInfo.IsMultiplayer)
         {
@@ -67,6 +65,11 @@ public class LevelSelectBehaviour : MonoBehaviour
         }
 
         _selectedLevel = levels[0];
+
+        //Update the colors of the level images, the first level is selected on initialized
+        UpdatePreviewImageColors(0);
+        UpdateStarsImage(_selectedLevel);
+
         LevelScroller.OnSelectionPageChangedEvent.AddListener(page =>
         {
             print($"Changed pagenr to #{page}");
@@ -89,7 +92,6 @@ public class LevelSelectBehaviour : MonoBehaviour
                 break;
             default: SelectedLevelStars.sprite = null;
                 break;
-                
         }
     }
 

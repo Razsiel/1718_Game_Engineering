@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.DataStructures;
@@ -77,7 +78,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
-                playerPanel.Setup(player.NickName, this, player.IsLocal);
+                playerPanel.Setup(Environment.UserName, this, player.IsLocal);
             }           
         }
 
