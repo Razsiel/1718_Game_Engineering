@@ -121,13 +121,8 @@ public class SequenceBarBehaviour : MonoBehaviour
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
         if(command is LoopCommand)
         {
-            command = ScriptableObject.CreateInstance<LoopCommand>();
-            //TMP Test
+            command = Instantiate(_gameInfo.AllCommands.LoopCommand) as LoopCommand;
             command = command.Init();
-            ///
-            command.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
-            command.Name = _gameInfo.AllCommands.LoopCommand.Name;
-            command.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
         }
 
 

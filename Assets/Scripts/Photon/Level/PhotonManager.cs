@@ -176,7 +176,7 @@ namespace Assets.Scripts.Photon.Level
                 if(command.Command == CommandEnum.LoopCommand)
                 {                    
                     var unSerialized = GetBaseCommands(command.Commands);
-                    var baseLoop = (LoopCommand)CommandLib.Commands.GetValue(CommandEnum.LoopCommand);
+                    var baseLoop = Instantiate(CommandLib.LoopCommand) as LoopCommand;                   
                     baseLoop.LoopCount = command.LoopCount;
                     baseLoop.Sequence = new Sequence();
                     baseLoop.Sequence.Commands = unSerialized;
