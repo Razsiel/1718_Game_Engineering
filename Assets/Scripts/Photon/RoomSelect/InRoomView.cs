@@ -13,6 +13,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public GameObject PlayersViewPanel;
         public Button LeaveButton;
         public Button PlayButton;
+        public Text RoomName;
     
         public override void Awake()
         {
@@ -52,6 +53,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Enable()
         {
             base.Activate();
+            RoomName.text = PhotonNetwork.room.Name;
             OnAnyPlayerUnready();
             LeaveButton.onClick.RemoveAllListeners();
             LeaveButton.onClick.AddListener(LeaveRoom);
@@ -71,7 +73,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             foreach (var player in players)
             {
                 GameObject newPlayerPanel = PlayerPanelObjectPool.GetObject();
-                newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform);
+                newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform, false);
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
