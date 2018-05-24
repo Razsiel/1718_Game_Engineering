@@ -19,7 +19,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     private uint _decentScore;
     private uint _highestScore;
 
-    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo)
+    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, int playerNumber)
     {
         _isMainSequenceBar = isMainSequenceBar;
         _mainPanel = mainPanel;
@@ -30,6 +30,16 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
         _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
+
+        //The master player has an orange sequence bar, the client has blue
+        if (playerNumber == 0)
+        {
+            gameObject.GetComponent<Image>().color = new Color32(255, 184, 66, 255);
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = new Color32(0x44, 0xDE, 0xFF, 0xFF);
+        }
 
         if (_isMainSequenceBar)
         {

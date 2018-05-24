@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Command;
 using Assets.Scripts;
+using Assets.Scripts.Lib.Helpers;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,7 @@ public class BottomPanelManager : MonoBehaviour
     private ReadyButtonState _readyButtonState;
     private RectTransform _mainPanel;
     private Player _localPlayer;
+    private Player _masterPLayer;
 
     private bool _secondaryBarIsHidden;
 
@@ -110,7 +112,7 @@ public class BottomPanelManager : MonoBehaviour
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
 
-        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo);
+        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _gameInfo.LocalPlayer.Player.PlayerNumber);
     }
 
     private void InitializeSecondarySequenceBar()
@@ -120,7 +122,7 @@ public class BottomPanelManager : MonoBehaviour
         _secondarySequenceBar.transform.SetParent(transform.GetChild(0), false);
         _secondarySequenceBar.transform.SetSiblingIndex(1);
 
-        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo);
+        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo, _gameInfo.LocalPlayer.Player.PlayerNumber);
     }
 
     private void InitializeReadyButton()
