@@ -77,6 +77,10 @@ public class WinScreenBehaviour : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    void OnDestroy() {
+        EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
+    }
+
     private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore)
     {
         EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
