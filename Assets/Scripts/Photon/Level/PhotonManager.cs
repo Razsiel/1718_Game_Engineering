@@ -67,9 +67,9 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerReady += OnPlayerReady;
         }
 
-        private void OnPlayerReady(bool isReady)
+        private void OnPlayerReady(Player player, bool isReady)
         {
-            _gameInfo.Players.GetLocalPlayer().Player.IsReady = isReady;
+            player.IsReady = isReady;
             this.photonView.RPC(nameof(UpdateReadyState), PhotonTargets.All, isReady);
         }
 

@@ -155,8 +155,7 @@ namespace Assets.Scripts {
         private void OnReadyButtonClicked() {
             EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
             print($"{nameof(GameStateManager)}: ready!");
-
-            // register if sequence is changed
+            
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
 
             fsm.Fire(GameStateTrigger.Next); // goto ReadyAndWaiting
