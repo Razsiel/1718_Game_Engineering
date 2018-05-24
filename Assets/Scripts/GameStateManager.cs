@@ -55,7 +55,7 @@ namespace Assets.Scripts {
             GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
         }
 
-        private void OnSceneLoaded(GameInfo gameInfo) {
+        private void OnSceneLoaded(string previousSceneName, GameInfo gameInfo) {
             GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
             this._gameInfo = gameInfo;
         }
@@ -195,13 +195,23 @@ namespace Assets.Scripts {
             print($"{nameof(GameStateManager)}: simulating");
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
+            EventManager.OnSimulationStop += OnSimulationStop;
             EventManager.Simulate(_gameInfo.Level, _gameInfo.Players);
             EventManager.OnWinScreenContinueClicked += OnWinScreenContinueClicked;
         }
 
-        private void OnStopButtonClicked() {
-            EventManager.OnStopButtonClicked -= OnStopButtonClicked;
+        private void OnSimulationStop()
+        {
+            print($"{nameof(GameStateManager)}: simulation stop");
+            EventManager.OnSimulationStop -= OnSimulationStop;
             fsm.Fire(GameStateTrigger.Edit);
+        }
+
+        private void OnStopButtonClicked() {
+            print($"{nameof(GameStateManager)}: stop button clicked");
+            EventManager.OnStopButtonClicked -= OnStopButtonClicked;
+            if (!_gameInfo.IsMultiplayer)
+                EventManager.SimulationStop();          
         }
 
         private void OnWinScreenContinueClicked()

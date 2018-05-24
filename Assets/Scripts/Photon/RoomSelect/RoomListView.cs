@@ -13,7 +13,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         //public GameObject buttonPrefab;
         public GameObject Panel;
         public Vector3 Margin;
-        public SimpleObjectPool ButtonObjectPool;       
+        public SimpleObjectPool ButtonObjectPool;
 
         public void UpdateListView(RoomInfo[] rooms)
         {
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             for (int i = 0; i < rooms.Length; i++)
             {
                 GameObject newButton = ButtonObjectPool.GetObject();
-                newButton.transform.SetParent(Panel.transform);
+                newButton.transform.SetParent(Panel.transform, false);
 
                 RoomListButton button = newButton.GetComponent<RoomListButton>();
                 button.RoomNameExPlayers = rooms[i].Name;
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         private void RemoveButtons()
         {
-            //while (Panel.transform.childCount > 1)
+            //while (Panel.transform.childCount > 0)
             //{
             //    print("gonna remove a button: " + Panel.transform.childCount);
             //    GameObject toRemove = Panel.transform.GetChild(0).gameObject;
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             //}
             print(Panel.transform);
             print(Panel.transform.childCount);
-            foreach (Transform trans in Panel.transform)
+            foreach(Transform trans in Panel.transform)
             {
                 print("Deleting child obj");
                 GameObject toRemove = trans.gameObject;

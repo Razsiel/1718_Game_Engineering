@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
+  m_Name: MP_1_Level
+  m_EditorClassIdentifier: 
+  Name: 
+  BackgroundImage: {fileID: 0}
+  MaxCommands: 0
+  Goals:
+  - {fileID: 11400000, guid: 4e84d506a3f774143871552ded3b9339, type: 2}
+  GridMapData: {fileID: 11400000, guid: d3a1d7901005dc44b8fb54a1cd7207e4, type: 2}
+  TileScale: 32
+  Monologue: {fileID: 11400000, guid: 24517fb24372d354b97cff571a9fe960, type: 2}
+  AllowedCommands:
+  - CommandType: 0
+    IsAllowed: 1
+  - CommandType: 1
+    IsAllowed: 1
+  - CommandType: 2
+    IsAllowed: 1
+  - CommandType: 3
+    IsAllowed: 1
+  - CommandType: 4
+    IsAllowed: 1
+  - CommandType: 5
+    IsAllowed: 1
+  LevelScore:
+    HighestScore: 0
+    DecentScore: 0
+  PreviewImage: {fileID: 0}

@@ -12,6 +12,7 @@ using Assets.Scripts.DataStructures;
 using System.Linq;
 using Assets.Data.Command;
 using Assets.Scripts.Lib.Helpers;
+using System.Text;
 
 namespace Assets.Scripts.Photon.Level
 {
@@ -65,6 +66,13 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerSpawned -= OnPlayerSpawned;
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnPlayerReady += OnPlayerReady;
+            EventManager.OnStopButtonClicked += OnStopButtonClicked;
+        }
+
+        private void OnStopButtonClicked()
+        {
+            print($"{nameof(PhotonManager)}: OnStopButtonClicked");
+            SendStopExecution();
         }
 
         private void OnPlayerReady(Player player, bool isReady)
@@ -75,29 +83,107 @@ namespace Assets.Scripts.Photon.Level
 
         private void OnSequenceChanged(List<BaseCommand> sequence)
         {
-            var listCommands = new ListContainer<CommandEnum> { List = new List<CommandEnum>() };
+            //var listCommands = new ListContainer<CommandEnum> { List = new List<CommandEnum>() };
+            var listCommands = new ListContainer<SerializedLoopCommand> { List = new List<SerializedLoopCommand>() };
+
             var commandOptions = CommandLib.Commands;
 
             //Add the enum of the command to our list
-            foreach (var bc in sequence) listCommands.List.Add(commandOptions.GetKey(bc));
+            //foreach (var bc in sequence) listCommands.List.Add(commandOptions.GetKey(bc));
+
+            print("Serializing commands");
+            listCommands.List = GetSerializedCommands(sequence);
+                   
+            //print(testStringBuild(listCommands.List, 0));
 
             var seqJson = JsonUtility.ToJson(listCommands);
 
             this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
+        }
+
+        //private string testStringBuild(List<SerializedCommand> commands, int tabIndex)
+        //{
+        //    var sb = new StringBuilder();
+        //    foreach (var command in commands)
+        //    {
+        //        if (command is SerializedLoopCommand)
+        //        {
+        //            sb.AppendLine($"Loop");
+        //            tabIndex++;
+        //            for (int i = 0; i < tabIndex; i++)
+        //            {
+        //                sb.Append('\t');
+        //            }
+        //            sb.Append(testStringBuild((command as SerializedLoopCommand).Commands, tabIndex));
+        //            sb.Append('\n');
+        //        }
+        //        else
+        //        {
+        //            sb.AppendLine(command.Command.ToString());
+        //        }
+        //    }
+        //    return sb.ToString();
+        //}
+
+        private List<SerializedLoopCommand> GetSerializedCommands(List<BaseCommand> commands)
+        {
+            var serialized = new List<SerializedLoopCommand>();
+            foreach (var bc in commands)
+            {
+                if (bc is LoopCommand)
+                {
+                    var lc = (LoopCommand)bc;
+                    var serializeList = GetSerializedCommands(lc.Sequence.Commands);
+                   
+                    serialized.Add(new SerializedLoopCommand(lc.LoopCount, serializeList) { Command = CommandEnum.LoopCommand });
+                }
+                else
+                {
+                    serialized.Add(new SerializedLoopCommand() { Command = CommandLib.Commands.GetKey(bc) });
+                }
+            }            
+            return serialized;
         }
         #endregion
 
         [PunRPC]
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
         {
-            var commands = JsonUtility.FromJson<ListContainer<CommandEnum>>(commandsJson);
-            var commandOptions = CommandLib.Commands;
-            var baseCommands = new List<BaseCommand>();
-
-            foreach (var ce in commands.List) baseCommands.Add(commandOptions.GetValue(ce));
+            var commands = JsonUtility.FromJson<ListContainer<SerializedLoopCommand>>(commandsJson);            
+            var baseCommands = GetBaseCommands(commands.List);
+            TestJsonDeserialize(baseCommands);
 
             _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);
             EventManager.SecondarySequenceChanged(baseCommands);
+        }
+
+        private void TestJsonDeserialize(List<BaseCommand> commands)
+        {
+            foreach (BaseCommand lc in commands)
+                if (lc is LoopCommand)
+                    print($"Loop with loopcount: {((LoopCommand)lc).LoopCount} CommandsCount: {((LoopCommand)lc).Sequence.Count}");
+        }
+
+        private List<BaseCommand> GetBaseCommands(List<SerializedLoopCommand> commands)
+        {
+            var baseCommands = new List<BaseCommand>();
+            foreach(var command in commands)
+            {
+                if(command.Command == CommandEnum.LoopCommand)
+                {                    
+                    var unSerialized = GetBaseCommands(command.Commands);
+                    var baseLoop = (LoopCommand)CommandLib.Commands.GetValue(CommandEnum.LoopCommand);
+                    baseLoop.LoopCount = command.LoopCount;
+                    baseLoop.Sequence = new Sequence();
+                    baseLoop.Sequence.Commands = unSerialized;
+                    baseCommands.Add(baseLoop);
+                }
+                else
+                {
+                    baseCommands.Add(CommandLib.Commands.GetValue(command.Command));
+                }
+            }
+            return baseCommands;
         }
 
         [PunRPC]
@@ -110,7 +196,8 @@ namespace Assets.Scripts.Photon.Level
                 print($"{nameof(PhotonManager)}: Readystate of Network player: {info.sender} is now {isReady}");
                 var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
                 networkPlayer.IsReady = isReady;
-                networkPlayer.OnReady?.Invoke(isReady);                
+                networkPlayer.OnReady?.Invoke(isReady);
+
             }
 
             print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
@@ -146,6 +233,7 @@ namespace Assets.Scripts.Photon.Level
 
         private void SendStopExecution()
         {
+            print($"{nameof(PhotonManager)}: SendStopExecution RPC");
             this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
         }
 
@@ -193,7 +281,8 @@ namespace Assets.Scripts.Photon.Level
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
-
+            print($"{nameof(PhotonManager)}: StopExecution RPC");
+            EventManager.SimulationStop();
 
             //foreach(TGEPlayer p in gameManager.Players)
             //{

@@ -18,9 +18,11 @@ namespace Assets.Scripts.UI
     {
         public GameObject BottomPanel;
         public GameObject WinScreenMask;
+        public GameObject IngameMenuPanel;
         private GameObject _winScreenMask;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
+        private GameObject _ingameMenuPanel;
         private GameInfo _gameInfo;
         private Player _player;
         private FlowLayoutGroup _cmdFlowLayoutGroup;
@@ -39,12 +41,19 @@ namespace Assets.Scripts.UI
             _gameInfo = gameInfo;
             _player = _gameInfo.LocalPlayer.Player;
 
+            InitializeIngameMenuPanel();
             InitializeCommandPanel();
 
             InitializeCommandList();
 
             CreateCommands();
             InitializeWinScreen();
+        }
+
+        private void InitializeIngameMenuPanel()
+        {
+            _ingameMenuPanel = Instantiate(IngameMenuPanel);
+            _ingameMenuPanel.transform.SetParent(gameObject.transform.GetChild(0), false);
         }
 
         private void InitializeCommandList()
@@ -101,6 +110,7 @@ namespace Assets.Scripts.UI
                     if (command is LoopCommand)
                     {
                         BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        newCommand = newCommand.Init();
                         newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
                         newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
                         newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
@@ -112,6 +122,11 @@ namespace Assets.Scripts.UI
                     }
                 });
             }
+        }
+
+        public void MenuButtonClicked()
+        {
+            _ingameMenuPanel.SetActive(true);
         }
 
         private void InitializeWinScreen()

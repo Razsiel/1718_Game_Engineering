@@ -29,7 +29,7 @@ public class LevelSelectBehaviour : MonoBehaviour
 
     void Awake()
     {
-        GlobalData.SceneDataLoader.OnSceneLoaded += gameInfo =>
+        GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) =>
         {
             this._gameInfo = gameInfo;
             Init();
@@ -41,7 +41,6 @@ public class LevelSelectBehaviour : MonoBehaviour
         var levels = _gameInfo.LevelLibrary.Levels;
         Assert.IsNotNull(levels);
         Assert.IsTrue(levels.Any());
-        _selectedLevel = levels[0];
         LevelScroller.ChildObjects = new GameObject[levels.Count];
         for (var levelNumber = 0; levelNumber < levels.Count; levelNumber++)
         {
@@ -75,12 +74,11 @@ public class LevelSelectBehaviour : MonoBehaviour
     {
         for (int i = 0; i < LevelScroller.ChildObjects.Length; i++)
         {
-            LevelScroller.ChildObjects[i].transform.GetChild(2).GetChild(1).GetComponent<Image>().color =
-                new Color32(0x74, 0x41, 0x41, 0xFF);
+            //print($"level {i} selected: {i == selectedLevel}");
+            var preview = LevelScroller.ChildObjects[i];
+            var previewBehaviour = preview.GetComponent<LevelPreviewBehaviour>();
+            previewBehaviour.ChangeSelectedState(i == selectedLevel);
         }
-
-        LevelScroller.ChildObjects[selectedLevel].transform.GetChild(2).GetChild(1).GetComponent<Image>().color =
-            new Color(255f, 255f, 255f, 255f);
     }
 
     public void OnPlayClick()

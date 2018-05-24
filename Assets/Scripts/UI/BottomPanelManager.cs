@@ -46,10 +46,13 @@ public class BottomPanelManager : MonoBehaviour
     void Awake ()
 	{
 	    EventManager.OnInitializeUi += Initialize;
+	    EventManager.OnAllPlayersReady += SetReadyButtonStateOnAllPlayersReady;
+        EventManager.OnSimulationStop += OnSimulationStop;
 	    //EventManager.OnUserInputEnable += ShowBottomPanel;
 	    //EventManager.OnUserInputDisable += HideBottomPanel;
-
 	}
+
+   
 
     void Initialize(GameInfo gameInfo)
     {
@@ -146,6 +149,15 @@ public class BottomPanelManager : MonoBehaviour
         readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
     }
 
+    private void SetReadyButtonStateOnAllPlayersReady()
+    {
+        SetReadyButtonState(ReadyButtonState.Stop);
+    }
+
+    private void OnSimulationStop()
+    {
+        SetReadyButtonState(ReadyButtonState.Play);
+    }
 
     private void SetReadyButtonState(ReadyButtonState newState)
     {
