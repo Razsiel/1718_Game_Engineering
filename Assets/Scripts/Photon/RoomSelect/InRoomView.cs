@@ -79,7 +79,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
-                playerPanel.Setup(Environment.UserName, this, player.IsLocal);
+                playerPanel.Setup(player.NickName, this, player.IsLocal);
             }           
         }
 
