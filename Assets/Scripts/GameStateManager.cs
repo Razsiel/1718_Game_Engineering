@@ -61,7 +61,7 @@ namespace Assets.Scripts {
         }
 
         public void Start() {
-            Debug.Log($"Start: {nameof(GameStateManager)}");
+            Debug.Log($"Start: {nameof(GameStateManager)}. FSM state: {fsm.State}");
 
             EventManager.OnGameStart += OnGameStart;
             EventManager.OnLevelLoaded += OnLevelLoaded;
@@ -78,20 +78,20 @@ namespace Assets.Scripts {
         private void OnLevelLoaded(GameInfo levelData)
         {
             EventManager.OnLevelLoaded -= OnLevelLoaded;
-            print("level loaded and presented");
+            print($"{nameof(GameStateManager)}: level loaded and presented. FSM state: {fsm.State}");
             fsm.Fire(GameStateTrigger.Next); // goto Cutscene
         }
 
         private void OnGameStart(GameInfo gameInfo)
         {
             EventManager.OnGameStart -= OnGameStart;
-            print("loading level");
+            print($"{nameof(GameStateManager)}: loading level. FSM state: {fsm.State}");
             EventManager.LoadLevel(_gameInfo);
         }
 
         public void OnDisable()
         {
-            fsm.Reset();
+            //fsm.Reset();
         }
 
         private void StartSingleplayer() {
@@ -114,13 +114,14 @@ namespace Assets.Scripts {
         /// State transition Cutscene
         /// </summary>
         private void OnCutsceneStateEnter() {
-            print($"{nameof(GameStateManager)}: cutscene");
+            print($"{nameof(GameStateManager)}: cutscene. FSM state: {fsm.State}");
             // start the cutscene / monologue
             EventManager.OnMonologueEnded += OnMonologueEnded;
             EventManager.MonologueStart(_gameInfo.Level.Monologue);
         }
 
         private void OnMonologueEnded() {
+            print($"{nameof(GameStateManager)}: monoloque ended. FSM state: {fsm.State}");
             EventManager.OnMonologueEnded -= OnMonologueEnded;
             fsm.Fire(GameStateTrigger.Next); // goto StartGame
         }
@@ -129,7 +130,7 @@ namespace Assets.Scripts {
         /// State transition GameStart
         /// </summary>
         private void OnStartGameStateEnter() {
-            print($"{nameof(GameStateManager)}: game start");
+            print($"{nameof(GameStateManager)}: game start. FSM state: {fsm.State}");
             EventManager.InitializeUi(_gameInfo);
 
             print("Commands allowed:");
@@ -144,7 +145,7 @@ namespace Assets.Scripts {
         /// State transition EditSequence
         /// </summary>
         private void OnEditSequenceStateEnter() {
-            print($"{nameof(GameStateManager)}: edit");
+            print($"{nameof(GameStateManager)}: edit. FSM state: {fsm.State}");
             EventManager.OnSequenceChanged -= OnSequenceChanged;
             // allow players to interact with game world
             EventManager.UserInputEnable();
@@ -154,7 +155,7 @@ namespace Assets.Scripts {
 
         private void OnReadyButtonClicked() {
             EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
-            print($"{nameof(GameStateManager)}: ready!");
+            print($"{nameof(GameStateManager)}: ready! FSM state: {fsm.State}");
             
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
 

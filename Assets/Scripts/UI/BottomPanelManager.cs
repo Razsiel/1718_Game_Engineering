@@ -52,7 +52,10 @@ public class BottomPanelManager : MonoBehaviour
 	    //EventManager.OnUserInputDisable += HideBottomPanel;
 	}
 
-   
+    void OnDestroy() {
+        EventManager.OnAllPlayersReady -= SetReadyButtonStateOnAllPlayersReady;
+        EventManager.OnSimulationStop -= OnSimulationStop;
+    }
 
     void Initialize(GameInfo gameInfo)
     {
