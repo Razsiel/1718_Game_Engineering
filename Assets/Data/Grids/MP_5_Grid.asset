@@ -14,12 +14,14 @@ MonoBehaviour:
   DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
   PlayerStartPositions:
   - StartPosition: {x: 0, y: 0}
-    Facing: 7
-  - StartPosition: {x: 6, y: 1}
     Facing: 3
+  - StartPosition: {x: 6, y: 1}
+    Facing: 7
   _map:
   - _tiles:
     - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
       DecorationConfigs: []
@@ -56,6 +58,8 @@ MonoBehaviour:
         DefaultState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
   - _tiles:
     - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
       DecorationConfigs:
@@ -87,6 +91,8 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 3
         DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
     - Tile: {fileID: 0}
       DecorationConfigs: []
   - _tiles:
@@ -122,6 +128,8 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 2
         DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
   - _tiles:
     - Tile: {fileID: 0}
       DecorationConfigs: []
@@ -155,6 +163,8 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 1
         DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
   - _tiles:
     - Tile: {fileID: 0}
       DecorationConfigs: []
@@ -188,10 +198,14 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 3
         DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
   - _tiles:
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
       DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
   _width: 7
-  _height: 2
+  _height: 3
