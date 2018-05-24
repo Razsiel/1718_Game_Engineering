@@ -75,18 +75,17 @@ public class PlayerScoreManager : MonoBehaviour
         
         Assert.IsTrue(combinedStars > 0 && combinedStars <= 3);
 
-        IsNewHighScoreForLevel(_gameInfo.Level, combinedStars);
-        _gameInfo.Level.SaveScore(combinedStars);
+        if (IsNewHighScoreForLevel(_gameInfo.Level, combinedStars))
+        {
+            _gameInfo.Level.SaveScore(combinedStars);
+        }
         EventManager.PlayersScoreDetermined(playerScoreDic, combinedStars);
     }
 
-    private void IsNewHighScoreForLevel(LevelData level, int newScore)
+    private bool IsNewHighScoreForLevel(LevelData level, int newScore)
     {
         int oldScore = level.GetScore();
-        if (newScore > oldScore)
-        {
-            level.SaveScore(newScore);
-        } 
+        return newScore > oldScore ? true : false;
     }
 
     private int DetermineStars(int count, LevelScore levelScore)

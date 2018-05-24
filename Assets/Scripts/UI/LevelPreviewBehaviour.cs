@@ -14,6 +14,8 @@ public class LevelPreviewBehaviour : MonoBehaviour {
     [SerializeField] private Image _levelPreview;
     [SerializeField] private GameObject _contentContainer;
 
+    private int _levelScore;
+
     private Tweener _currentAnimation;
 
     public void Init(int chapter, int levelNumber, LevelData levelData) {
@@ -23,6 +25,7 @@ public class LevelPreviewBehaviour : MonoBehaviour {
 
         _levelTitle.text = $"{chapter}-{levelNumber}";
         _levelPreview.sprite = levelData.PreviewImage ?? Resources.Load<Sprite>("logo");
+        _levelScore = levelData.GetScore();
     }
 
     public void ChangeSelectedState(bool selected) {
