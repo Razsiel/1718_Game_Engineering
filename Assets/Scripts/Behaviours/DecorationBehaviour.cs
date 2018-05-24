@@ -18,6 +18,9 @@ namespace Assets.Scripts.Behaviours {
 
         public void Start() {
             Configuration.Init(OnActivate, OnDeactivate);
+            if (Configuration.DefaultState == DecorationConfiguration.DecorationState.Active) {
+                OnActivate(null);
+            }
         }
 
         private void OnActivate(Player player) {
