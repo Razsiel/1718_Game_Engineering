@@ -49,6 +49,8 @@ namespace Assets.Scripts {
 
             // Generate head
             Data.GenerateGameObject(this.gameObject, PlayerNumber);
+            // Set player color
+            GetComponent<MeshRenderer>().material = Data.PlayerColours[PlayerNumber];
         }
 
         private void OnPlayerReady(Player player, bool isReady) {

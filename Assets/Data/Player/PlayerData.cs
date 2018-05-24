@@ -7,6 +7,7 @@ namespace Assets.Data.Player
     public class PlayerData : ScriptableObject {
         public PlayerMovementData MovementData;
         public PlayerHeadData[] Heads;
+        public Material[] PlayerColours;
 
         public GameObject GenerateGameObject(GameObject parent, int playerNumber) {
             Debug.Log("Creating player customisation");
