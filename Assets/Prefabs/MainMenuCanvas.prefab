@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 224806116103408254}
   - component: {fileID: 222028317309438848}
   - component: {fileID: 114247904631954884}
-  - component: {fileID: 114427350621974862}
+  - component: {fileID: 114805798372572950}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -167,8 +167,7 @@ GameObject:
   - component: {fileID: 224595155272526988}
   - component: {fileID: 222717214464884092}
   - component: {fileID: 114202329385417622}
-  - component: {fileID: 114783770834688836}
-  - component: {fileID: 114519009641142402}
+  - component: {fileID: 114104969822078192}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -390,6 +389,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114104969822078192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1541903016263064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: MENU_MAIN_BUTTON_PLAY_SINGLEPLAYER
 --- !u!114 &114202329385417622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -652,19 +663,6 @@ MonoBehaviour:
     sceneName: Scenes/Other/MultiplayerLobby
   SinglePlayerLevels: {fileID: 11400000, guid: 41cfd2b1df005dc4abef3e0242724cd9, type: 2}
   MultiPlayerLevels: {fileID: 11400000, guid: 2196602b2e03c0f4fa2fcd20f448fac3, type: 2}
---- !u!114 &114427350621974862
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1235740355718260}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
 --- !u!114 &114463810329587658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -751,19 +749,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &114519009641142402
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1541903016263064}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 2
-  m_VerticalFit: 0
 --- !u!114 &114562917795680910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1039,18 +1024,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
---- !u!114 &114783770834688836
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1541903016263064}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aacb75e91154b1b4baaada40ab333874, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localizedKey: MENU_MAIN_BUTTON_SP
 --- !u!114 &114801688460608722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1114,6 +1087,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114805798372572950
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1235740355718260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: MENU_MAIN_BUTTON_PLAY_MULTIPLAYER
 --- !u!114 &114863200539377364
 MonoBehaviour:
   m_ObjectHideFlags: 1
