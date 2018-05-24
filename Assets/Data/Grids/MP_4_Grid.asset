@@ -12,7 +12,189 @@ MonoBehaviour:
   m_Name: MP_4_Grid
   m_EditorClassIdentifier: 
   DefaultTile: {fileID: 11400000, guid: 96c300b3e7b27994ba87712fdab1744e, type: 2}
-  PlayerStartPositions: []
-  _map: []
-  _width: 0
-  _height: 0
+  PlayerStartPositions:
+  - StartPosition: {x: 0, y: 4}
+    Facing: 3
+  - StartPosition: {x: 3, y: 0}
+    Facing: 1
+  _map:
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 99126c26551877946babed7444451c8e,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 1
+        TriggerType: 1
+        Channel: 2
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        - {fileID: 2100000, guid: c90bd5a85eef9e740855d192076c4b62, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: -16, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 2
+        TriggerType: 1
+        Channel: 1
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 6e5a10b0098d6ba42b6b74d4ffaa5243, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: -16}
+        Scale: 1
+        Rotation: 0
+        Orientation: 5
+        Type: 2
+        TriggerType: 1
+        Channel: 3
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: -16, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 2
+        TriggerType: 1
+        Channel: 2
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 99126c26551877946babed7444451c8e,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 7
+        Type: 1
+        TriggerType: 1
+        Channel: 1
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: -16, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 2
+        TriggerType: 1
+        Channel: 1
+        DefaultState: 1
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 99126c26551877946babed7444451c8e,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 7
+        Type: 1
+        TriggerType: 1
+        Channel: 3
+        DefaultState: 0
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  - _tiles:
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: 4b1d4ebe3b204b64cb2af13c76ff39d7, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 7a407827edbabf345b7a010f6d4941d9,
+          type: 2}
+        RelativePosition: {x: -16, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 3
+        Type: 2
+        TriggerType: 1
+        Channel: 2
+        DefaultState: 1
+    - Tile: {fileID: 0}
+      DecorationConfigs: []
+  _width: 5
+  _height: 6

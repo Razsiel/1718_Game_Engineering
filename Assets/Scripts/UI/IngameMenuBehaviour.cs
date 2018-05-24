@@ -42,7 +42,7 @@ public class IngameMenuBehaviour : ModalPanel
         // Inform other player
         // TableFlip
         // Load scene LevelSelect.scene
-        SceneManager.LoadScene(LevelSelect);
+        SceneManager.LoadScene(LevelSelect.SceneName);
     }
 
     public void OnChanged_BgmVolumeSlider(Slider BgmSlider)

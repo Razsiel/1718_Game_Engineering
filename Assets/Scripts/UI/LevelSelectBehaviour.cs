@@ -66,6 +66,7 @@ public class LevelSelectBehaviour : MonoBehaviour
             _levelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo, LevelScroller);
         }
 
+        _selectedLevel = levels[0];
         LevelScroller.OnSelectionPageChangedEvent.AddListener(page =>
         {
             print($"Changed pagenr to #{page}");
