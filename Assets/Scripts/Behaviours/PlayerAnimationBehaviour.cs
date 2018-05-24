@@ -20,7 +20,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     void Awake() {
         EventManager.OnAllPlayersReady += StopJumping;
-        EventManager.OnStopButtonClicked += OnSimulationEnded;
+        EventManager.OnSimulationStop += OnSimulationEnded;
         EventManager.OnSimulate += OnSimulationStarted;
 
         _isJumping = false;
@@ -28,7 +28,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     void OnDestroy() {
         EventManager.OnAllPlayersReady -= StopJumping;
-        EventManager.OnStopButtonClicked -= OnSimulationEnded;
+        EventManager.OnSimulationStop -= OnSimulationEnded;
         EventManager.OnSimulate -= OnSimulationStarted;
 
         if (_player != null) {
@@ -89,6 +89,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     // Ready and waiting
     public void AnimatePlayerReady(bool isReady) {
+        print($"{nameof(PlayerAnimationBehaviour)}: AnimatePlayerReady isReady = {isReady} isJumping = {_isJumping}");
         if (isReady) {
             if (!_isJumping && !_isSimulating)
                 _currentSequence = transform.DOJump(transform.position, 0.8f, 1, 0.35f)

@@ -37,9 +37,7 @@ namespace Assets.Data.Command {
                 player.OnFailMoveTo?.Invoke(destinationPosition);
                 yield break;
 
-            }
-
-            
+            }        
         }
 
         public override string ToString()

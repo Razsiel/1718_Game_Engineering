@@ -84,11 +84,9 @@ namespace Assets.Scripts.Photon.RoomSelect
             hashtable.TryGetTypedValue(ReadyKey, out ready);
 
             //Is the player a network player
-            if (!player.Equals(PhotonNetwork.player))
-            {
+            if (!player.Equals(PhotonNetwork.player))           
                 RoomEventManager.OnNetworkPlayerPropertiesChanged?.Invoke(ready);
-            }
-
+            
             //Is everyone ready?
             if (AreAllPlayersReady())
                 RoomEventManager.OnAllPlayersReady?.Invoke();
@@ -100,6 +98,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         private bool AreAllPlayersReady()
         {
+            if (PhotonNetwork.playerList.Count() < 2) return false;
             var allReady = true;
             foreach (var player in PhotonNetwork.playerList)
             {

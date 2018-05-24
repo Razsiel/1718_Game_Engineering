@@ -14,7 +14,6 @@ namespace Assets.Scripts.Photon.RoomSelect
         public GameObject Panel;
         public Vector3 Margin;
         public SimpleObjectPool ButtonObjectPool;
-        public InputField roomName;
 
         public void UpdateListView(RoomInfo[] rooms)
         {
@@ -44,26 +43,20 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         private void RemoveButtons()
         {
-            //while (Panel.transform.childCount > 1)
-            //{
-            //    print("gonna remove a button: " + Panel.transform.childCount);
-            //    GameObject toRemove = Panel.transform.GetChild(0).gameObject;
-            //    ButtonObjectPool.ReturnObject(toRemove);
-            //}
-            print(Panel.transform);
-            print(Panel.transform.childCount);
-            foreach (Transform trans in Panel.transform)
+            while (Panel.transform.childCount > 0)
             {
-                print("Deleting child obj");
-                GameObject toRemove = trans.gameObject;
+                print("gonna remove a button: " + Panel.transform.childCount);
+                GameObject toRemove = Panel.transform.GetChild(0).gameObject;
                 ButtonObjectPool.ReturnObject(toRemove);
             }
-        }
-
-        public void CreateRoom()
-        {
-            print(roomName.text);
-            PhotonConnectionManager.Instance.CreateRoom(roomName.text);
+            print(Panel.transform);
+            print(Panel.transform.childCount);
+            //foreach (Transform trans in Panel.transform)
+            //{
+            //    print("Deleting child obj");
+            //    GameObject toRemove = trans.gameObject;
+            //    ButtonObjectPool.ReturnObject(toRemove);
+            //}
         }
 
         public void HandleClick(string roomName)
