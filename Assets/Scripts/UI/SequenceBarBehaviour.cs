@@ -31,7 +31,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
         _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
 
-        if (_isMainSequenceBar)
+        if(_isMainSequenceBar)
         {
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnElementDroppedToMainSequenceBar += AddDroppedElementToMainSequence;
@@ -53,10 +53,11 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void AdjustStarPositions()
     {
-        
+
     }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         EventManager.OnSequenceChanged -= OnSequenceChanged;
         EventManager.OnElementDroppedToMainSequenceBar -= AddDroppedElementToMainSequence;
         EventManager.OnSecondarySequenceChanged -= OnSequenceChanged;
@@ -92,7 +93,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         _commandsListPanel = commandsListPanel;
 
-        if (isMainCommandsList)
+        if(isMainCommandsList)
         {
             _commandsListPanel.transform.localPosition = new Vector3(230, 0, 0);
         }
@@ -110,7 +111,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         reorderableList.DraggableArea = draggableArea;
         reorderableList.IsDraggable = isDraggable;
 
-        if (isRearrangeable)
+        if(isRearrangeable)
             reorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
     }
 
@@ -118,21 +119,16 @@ public class SequenceBarBehaviour : MonoBehaviour
     {
         print("Adding to main sequence bar");
         BaseCommand command = arg0.SourceObject.GetComponent<CommandPanelCommand>().command;
-        if (command is LoopCommand)
+        if(command is LoopCommand)
         {
-            command = ScriptableObject.CreateInstance<LoopCommand>();
-            //TMP Test
+            command = Instantiate(_gameInfo.AllCommands.LoopCommand) as LoopCommand;
             command = command.Init();
-            ///
-            command.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
-            command.Name = _gameInfo.AllCommands.LoopCommand.Name;
-            command.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
         }
 
 
         //If the list that we're dropping to has a slotscript, its not the sequence bar.
         //Therefore we have to get the list of indices to determine where to add the command to the player sequence.
-        if (arg0.ToList.GetComponent<SlotScript>() != null)
+        if(arg0.ToList.GetComponent<SlotScript>() != null)
         {
             SlotScript commandSlotScript = arg0.ToList.GetComponent<SlotScript>();
             List<int> indices = new List<int>();
@@ -141,7 +137,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             _localPlayer.Sequence.Add(command, indices);
         }//If the index we want to be dropping to is empty in the sequence bar, drop it there
-        else if (_localPlayer.Sequence.isEmpty(arg0.ToIndex))
+        else if(_localPlayer.Sequence.isEmpty(arg0.ToIndex))
         {
             _localPlayer.Sequence.Add(command);
         }//If the slot is not empty in the sequence bar, insert the command at the index
@@ -158,16 +154,16 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         print($"From index: {arg0.FromIndex}, To index: {arg0.ToIndex}, From list: {arg0.FromList}, To list: {arg0.ToList}");
 
-        if (arg0.ToIndex == arg0.FromIndex && arg0.ToList == arg0.FromList)
+        if(arg0.ToIndex == arg0.FromIndex && arg0.ToList == arg0.FromList)
         {
             return;
         }
         List<int> toIndices = new List<int>();
         List<int> fromIndices = new List<int>();
-        
+
         //If the list that we're dropping to has a slotscript, its not the sequence bar.
         //Therefore we have to get the list of indices to determine where to add the command to the player sequence.
-        if (arg0.ToList.GetComponent<SlotScript>() != null)
+        if(arg0.ToList.GetComponent<SlotScript>() != null)
         {
             SlotScript commandSlotScript = arg0.ToList.GetComponent<SlotScript>();
 
@@ -181,7 +177,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
 
         //If true, we're taking from inside a loop
-        if (arg0.FromList.GetComponent<SlotScript>() != null)
+        if(arg0.FromList.GetComponent<SlotScript>() != null)
         {
             SlotScript commandSlotScript = arg0.FromList.GetComponent<SlotScript>();
 
@@ -202,9 +198,9 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void ClearSequenceBar(bool isMainSequenceBar)
     {
-        for (int i = 0; i < _commandsListPanel.transform.childCount; i++)
+        for(int i = 0; i < _commandsListPanel.transform.childCount; i++)
         {
-            if (_commandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
+            if(_commandsListPanel.transform.GetChild(i).GetComponent<Image>() != null)
             {
                 Destroy(_commandsListPanel.transform.GetChild(i).gameObject);
             }
@@ -213,22 +209,26 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void UpdateSequenceBar(List<BaseCommand> commands, Transform parent, bool isMainSequenceBar)
     {
-        for (int i = 0; i < commands.Count; i++)
+        print($"{nameof(SequenceBarBehaviour)}: commands: {commands.Count} parent: {parent} isMainSequenceBar: {_isMainSequenceBar}");
+        for(int i = 0; i < commands.Count; i++)
         {
+            print($"{nameof(SequenceBarBehaviour)} in for loop: i {i}");
             var amountOfLoops = 0;
-            if (commands[i] is LoopCommand)
+            if(commands[i] is LoopCommand)
             {
                 amountOfLoops = ((LoopCommand)commands[i]).LoopCount;
+                print($"LoopCount: {amountOfLoops}");
             }
 
-            GameObject slot = CreateSequenceBarSlot(isMainSequenceBar, i, commands[i].Icon, commands[i] is LoopCommand, amountOfLoops);
+            GameObject slot = CreateSequenceBarSlot(_isMainSequenceBar, i, commands[i].Icon, commands[i] is LoopCommand, amountOfLoops);
             slot.transform.SetParent(parent, false);
+            print($"{nameof(SequenceBarBehaviour)}: we determined the slot");
 
             //Edit the SlotScript so that the right index is added to the slot
             //Check if im in a deeper level than the sequence bar
             var slotSlotScript = slot.GetComponent<SlotScript>();
 
-            if (slot.transform.parent != null && slot.transform.parent.parent.GetComponent<SlotScript>() != null)
+            if(slot.transform.parent != null && slot.transform.parent.parent.GetComponent<SlotScript>() != null)
             {
                 slotSlotScript.indices.AddRange(slot.transform.parent.parent.GetComponent<SlotScript>().indices);
                 slotSlotScript.indices.Add(i);
@@ -239,11 +239,13 @@ public class SequenceBarBehaviour : MonoBehaviour
                 slotSlotScript.indices.Add(i);
             }
 
-            if (commands[i] is LoopCommand && ((LoopCommand)commands[i]).Sequence != null)
+            if(commands[i] is LoopCommand && ((LoopCommand)commands[i]).Sequence != null)
             {
+                print($"The command is a LoopCommand");
                 //Update sequence bar with the new slots inside of the loop
-                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), true);
+                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), _isMainSequenceBar);
 
+                print($"We have done the recursion call");
                 //Set the loop and its contents widths to fit the children
                 SetWidthOfChildren(slot.transform.GetChild(1).gameObject);
                 slot.GetComponent<LayoutElement>().preferredWidth =
@@ -252,9 +254,10 @@ public class SequenceBarBehaviour : MonoBehaviour
                     slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
                 slot.transform.GetChild(0).GetChild(0).GetComponent<LayoutElement>().preferredWidth =
                     slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth - 30;
-
+                print($"End of if");
             }
         }
+        print($"End of Update sequence bar");
     }
 
     private void AmountOfLoopsEdited(string newAmountOfLoops, List<int> indices)
@@ -267,12 +270,12 @@ public class SequenceBarBehaviour : MonoBehaviour
         List<GameObject> children = new List<GameObject>();
         float width = 55;
 
-        foreach (Transform child in item.transform)
+        foreach(Transform child in item.transform)
         {
             width += child.GetComponent<LayoutElement>().preferredWidth + 5;
         }
 
-        if (item.transform.childCount == 0)
+        if(item.transform.childCount == 0)
         {
             width = 155;
         }
@@ -296,7 +299,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         slotImage.sprite = image;
 
         //if Loop command, add reorderable list setup
-        if (isLoopCommandSlot)
+        if(isLoopCommandSlot)
         {
             //Set the slot image to be invisible, it has to have one for it to be droppable but we dont want to see it
             slotImage.color = new Color(0f, 0f, 0f, 0f);
@@ -394,7 +397,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         }
 
-        if (isMainSequenceBar)
+        if(isMainSequenceBar)
         {
             var slotButton = slot.AddComponent<Button>();
             var slotListItem = slot.AddComponent<ReorderableListElement>();
@@ -414,14 +417,15 @@ public class SequenceBarBehaviour : MonoBehaviour
     private void SlotClicked(ReorderableListElement slotListElement, List<int> i)
     {
         //Only execute if not being dragged
-        if (!slotListElement._isDragging)
+        if(!slotListElement._isDragging)
         {
             _localPlayer.Sequence.RemoveAt(i);
         }
     }
 
-    public void OnSequenceChanged(List<BaseCommand> commands) {
-        ClearSequenceBar(true);
+    public void OnSequenceChanged(List<BaseCommand> commands)
+    {
+        ClearSequenceBar(_isMainSequenceBar);
 
         UpdateSequenceBar(commands, _commandsListPanel.transform, _isMainSequenceBar);
     }
