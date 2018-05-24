@@ -1096,6 +1096,7 @@ GameObject:
   - component: {fileID: 222959233446858882}
   - component: {fileID: 114114791048985630}
   - component: {fileID: 114954259887895446}
+  - component: {fileID: 114889748011935908}
   m_Layer: 5
   m_Name: ChapterTitle
   m_TagString: Untagged
@@ -1133,6 +1134,7 @@ GameObject:
   - component: {fileID: 222389814893297584}
   - component: {fileID: 114931268486817148}
   - component: {fileID: 114457768267119412}
+  - component: {fileID: 114506720681082456}
   m_Layer: 5
   m_Name: SubTitle
   m_TagString: Untagged
@@ -1152,6 +1154,7 @@ GameObject:
   - component: {fileID: 114173904986956884}
   - component: {fileID: 114593217939133000}
   - component: {fileID: 114064424439619718}
+  - component: {fileID: 114013563859054124}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1273,6 +1276,18 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114013563859054124
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1925625172441908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: BACK_BUTTON_TEXT
 --- !u!114 &114016672466187010
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3105,6 +3120,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114506720681082456
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1922234682302508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: CHAPTER_1_SUBTITLE
 --- !u!114 &114509257806769894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4756,6 +4783,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114889748011935908
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1878817330183714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: CHAPTER_1_TITLE
 --- !u!114 &114890785946290930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6849,7 +6888,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00007576058, y: -0.0000055705}
+  m_AnchoredPosition: {x: -0.000012884761, y: -0.0000055705}
   m_SizeDelta: {x: -0.12931013, y: 0.000011141}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224963483635065738
