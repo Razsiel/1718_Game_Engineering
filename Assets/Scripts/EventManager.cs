@@ -67,6 +67,7 @@ public class EventManager {
     }
 
     public static void ReadyButtonClicked() {
+        Debug.Log($"{nameof(EventManager)}: ReadyButtonClicked");
         OnReadyButtonClicked?.Invoke();
     }
 

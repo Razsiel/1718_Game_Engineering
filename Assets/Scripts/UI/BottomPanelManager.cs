@@ -6,6 +6,7 @@ using Assets.Data.Command;
 using Assets.Scripts;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -32,9 +33,12 @@ public class BottomPanelManager : MonoBehaviour
     [SerializeField] private Color _readyStateColor;
     [SerializeField] private Color _stopStateColor;
 
+    private Button _readyButtonButton;
     private ReadyButtonState _readyButtonState;
     private RectTransform _mainPanel;
     private Player _localPlayer;
+
+    
 
     private bool _secondaryBarIsHidden;
 
@@ -52,7 +56,10 @@ public class BottomPanelManager : MonoBehaviour
 	    //EventManager.OnUserInputDisable += HideBottomPanel;
 	}
 
-   
+    void OnDestroy() {
+        EventManager.OnAllPlayersReady -= SetReadyButtonStateOnAllPlayersReady;
+        EventManager.OnSimulationStop -= OnSimulationStop;
+    }
 
     void Initialize(GameInfo gameInfo)
     {
@@ -123,7 +130,7 @@ public class BottomPanelManager : MonoBehaviour
     private void InitializeReadyButton()
     {
         _readyButton = new GameObject("ReadyButton");
-        var readyButtonButton = _readyButton.AddComponent<Button>();
+        _readyButtonButton = _readyButton.AddComponent<Button>();
         var readyButtonImage = _readyButton.AddComponent<Image>();
         var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
 
@@ -146,7 +153,9 @@ public class BottomPanelManager : MonoBehaviour
 
         SetReadyButtonState(ReadyButtonState.Play);
 
-        readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
+        _readyButtonButton.onClick.RemoveAllListeners();
+        _readyButtonButton.onClick.AddListener(ReadyButtonClicked);
+        print($"Ready button clicked event listeners count: {_readyButtonButton.onClick}");
     }
 
     private void SetReadyButtonStateOnAllPlayersReady()

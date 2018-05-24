@@ -23,6 +23,10 @@ public class LevelSelectBehaviour : MonoBehaviour
     public GameObject LevelUIPrefab;
     public GameObject PlayButton;
     public GameObject LevelSelectPhotonManagerGO;
+    public Image SelectedLevelStars;
+    public Sprite ThreeStars;
+    public Sprite TwoStars;
+    public Sprite OneStars;
     private LevelSelectPhotonManager _levelSelectPhotonManager;
 
     public static UnityAction<int> SelectedLevelChanged;
@@ -52,8 +56,6 @@ public class LevelSelectBehaviour : MonoBehaviour
 
             LevelScroller.AddChild(prefab);
         }
-        //Update the colors of the level images, the first level is selected on initialized
-        UpdatePreviewImageColors(0);
 
         if (_gameInfo.IsMultiplayer)
         {
@@ -62,12 +64,35 @@ public class LevelSelectBehaviour : MonoBehaviour
             _levelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo, LevelScroller);
         }
 
+        _selectedLevel = levels[0];
+
+        //Update the colors of the level images, the first level is selected on initialized
+        UpdatePreviewImageColors(0);
+        UpdateStarsImage(_selectedLevel);
+
         LevelScroller.OnSelectionPageChangedEvent.AddListener(page =>
         {
             print($"Changed pagenr to #{page}");
             _selectedLevel = levels[page];
             UpdatePreviewImageColors(page);
+            UpdateStarsImage(_selectedLevel);
         });
+    }
+
+    private void UpdateStarsImage(LevelData selectedLevel)
+    {
+        int score = selectedLevel.GetScore();
+        switch (score)
+        {
+            case 1: SelectedLevelStars.sprite = OneStars;
+                break;
+            case 2: SelectedLevelStars.sprite = TwoStars;
+                break;
+            case 3: SelectedLevelStars.sprite = ThreeStars;
+                break;
+            default: SelectedLevelStars.sprite = null;
+                break;
+        }
     }
 
     private void UpdatePreviewImageColors(int selectedLevel)

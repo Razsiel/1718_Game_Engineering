@@ -11,14 +11,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
   m_Name: MP_5_Level
   m_EditorClassIdentifier: 
-  Name: 
+  Name: Hekwerk
   BackgroundImage: {fileID: 0}
-  MaxCommands: 0
+  MaxCommands: 10
   Goals:
   - {fileID: 11400000, guid: bf9d835f05b82d643b37430c50224c93, type: 2}
   GridMapData: {fileID: 11400000, guid: 02c834aebd076b649911e24e4bfe97d9, type: 2}
   TileScale: 32
-  Monologue: {fileID: 11400000, guid: 516b1c7eadfdfc04db839a74eabcb6c8, type: 2}
+  Monologue: {fileID: 11400000, guid: 7faa03777440d844abcb6ea49fdc02d6, type: 2}
   AllowedCommands:
   - CommandType: 0
     IsAllowed: 1
@@ -33,6 +33,6 @@ MonoBehaviour:
   - CommandType: 5
     IsAllowed: 1
   LevelScore:
-    HighestScore: 0
-    DecentScore: 0
+    HighestScore: 8
+    DecentScore: 10
   PreviewImage: {fileID: 0}

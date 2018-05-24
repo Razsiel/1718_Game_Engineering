@@ -244,23 +244,23 @@ public class SequenceBarBehaviour : MonoBehaviour
                 slotSlotScript.indices.Add(i);
             }
 
-            //if(commands[i] is LoopCommand && ((LoopCommand)commands[i]).Sequence != null)
-            //{
-            //    print($"The command is a LoopCommand");
-            //    //Update sequence bar with the new slots inside of the loop
-            //    UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), _isMainSequenceBar);
+            if(commands[i] is LoopCommand && ((LoopCommand)commands[i]).Sequence != null)
+            {
+                print($"The command is a LoopCommand");
+                //Update sequence bar with the new slots inside of the loop
+                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), _isMainSequenceBar);
 
-            //    print($"We have done the recursion call");
-            //    //Set the loop and its contents widths to fit the children
-            //    SetWidthOfChildren(slot.transform.GetChild(1).gameObject);
-            //    slot.GetComponent<LayoutElement>().preferredWidth =
-            //        slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
-            //    slot.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
-            //        slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
-            //    slot.transform.GetChild(0).GetChild(0).GetComponent<LayoutElement>().preferredWidth =
-            //        slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth - 30;
-            //    print($"End of if");
-            //}
+                print($"We have done the recursion call");
+                //Set the loop and its contents widths to fit the children
+                SetWidthOfChildren(slot.transform.GetChild(1).gameObject);
+                slot.GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
+                slot.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
+                slot.transform.GetChild(0).GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+                    slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth - 30;
+                print($"End of if");
+            }
         }
         print($"End of Update sequence bar");
     }
