@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Name: MP_4_Goals
   m_EditorClassIdentifier: 
   _presentableConfigurations: []
-  TargetGridPosition: []
+  TargetGridPosition:
+  - PlayerNumber: 0
+    Location: {x: 4, y: 4}
+  - PlayerNumber: 1
+    Location: {x: 2, y: 2}
