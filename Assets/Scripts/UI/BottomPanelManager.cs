@@ -7,6 +7,7 @@ using Assets.Scripts;
 using Assets.Scripts.Lib.Helpers;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -33,10 +34,13 @@ public class BottomPanelManager : MonoBehaviour
     [SerializeField] private Color _readyStateColor;
     [SerializeField] private Color _stopStateColor;
 
+    private Button _readyButtonButton;
     private ReadyButtonState _readyButtonState;
     private RectTransform _mainPanel;
     private Player _localPlayer;
     private Player _masterPLayer;
+
+    
 
     private bool _secondaryBarIsHidden;
 
@@ -128,7 +132,7 @@ public class BottomPanelManager : MonoBehaviour
     private void InitializeReadyButton()
     {
         _readyButton = new GameObject("ReadyButton");
-        var readyButtonButton = _readyButton.AddComponent<Button>();
+        _readyButtonButton = _readyButton.AddComponent<Button>();
         var readyButtonImage = _readyButton.AddComponent<Image>();
         var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
 
@@ -151,7 +155,9 @@ public class BottomPanelManager : MonoBehaviour
 
         SetReadyButtonState(ReadyButtonState.Play);
 
-        readyButtonButton.onClick.AddListener(() => ReadyButtonClicked());
+        _readyButtonButton.onClick.RemoveAllListeners();
+        _readyButtonButton.onClick.AddListener(ReadyButtonClicked);
+        print($"Ready button clicked event listeners count: {_readyButtonButton.onClick}");
     }
 
     private void SetReadyButtonStateOnAllPlayersReady()

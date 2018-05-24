@@ -20,6 +20,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     void Awake()
     {
         LanguageManager.SetDontDestroyOnLoad();
+        PlayerPrefs.SetInt("RecordVideos", 0); // Disable video recording
         HideOptionsPanel();
     }
 
