@@ -19,7 +19,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     private uint _decentScore;
     private uint _highestScore;
 
-    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, int playerNumber)
+    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, bool isHost)
     {
         _isMainSequenceBar = isMainSequenceBar;
         _mainPanel = mainPanel;
@@ -31,9 +31,8 @@ public class SequenceBarBehaviour : MonoBehaviour
         _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
         _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
 
-<<<<<<< HEAD
         //The master player has an orange sequence bar, the client has blue
-        if (playerNumber == 0)
+        if (isHost)
         {
             gameObject.GetComponent<Image>().color = new Color32(255, 184, 66, 255);
         }
@@ -42,10 +41,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             gameObject.GetComponent<Image>().color = new Color32(0x44, 0xDE, 0xFF, 0xFF);
         }
 
-        if (_isMainSequenceBar)
-=======
         if(_isMainSequenceBar)
->>>>>>> 2fd1fe60d854eaee7abe66169809fb20a75dcf64
         {
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnElementDroppedToMainSequenceBar += AddDroppedElementToMainSequence;
@@ -331,8 +327,10 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             listInSlotContent.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            listInSlotLayout.preferredHeight = 125;
-            listInSlotLayout.preferredWidth = 155;
+
+            listInSlotLayout.preferredHeight = size + 30;
+            listInSlotLayout.preferredWidth = size + 50;
+
 
             listInSlot.transform.SetParent(slot.transform, false);
 

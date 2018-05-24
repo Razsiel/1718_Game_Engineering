@@ -39,8 +39,7 @@ public class BottomPanelManager : MonoBehaviour
     private RectTransform _mainPanel;
     private Player _localPlayer;
     private Player _masterPLayer;
-
-    
+    private bool _isHost;
 
     private bool _secondaryBarIsHidden;
 
@@ -115,8 +114,8 @@ public class BottomPanelManager : MonoBehaviour
         _mainSequenceBar = Instantiate(MainSequenceBar);
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
-
-        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _gameInfo.LocalPlayer.Player.PlayerNumber);
+        bool isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
+        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _isHost);
     }
 
     private void InitializeSecondarySequenceBar()
@@ -126,7 +125,7 @@ public class BottomPanelManager : MonoBehaviour
         _secondarySequenceBar.transform.SetParent(transform.GetChild(0), false);
         _secondarySequenceBar.transform.SetSiblingIndex(1);
 
-        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo, _gameInfo.LocalPlayer.Player.PlayerNumber);
+        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo, !_isHost);
     }
 
     private void InitializeReadyButton()
