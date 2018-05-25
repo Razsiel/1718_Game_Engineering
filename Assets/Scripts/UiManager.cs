@@ -24,9 +24,4 @@ public class UiManager : TGEMonoBehaviour
         LEVEL_GOALS_TITLE.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_TITLE");
         LEVEL_GOALS_DESCRIPTION.text = LanguageManager.Instance.GetTextValue("LEVEL_GOALS_DEMO1");
     }
-
-    public void OnHoverOverElement()
-    {
-        SfxBehaviour.PlaySfx(SFX.ButtonHover);
-    }
 }

@@ -36,6 +36,11 @@ public class SfxBehaviour : MonoBehaviour
         Instance.sfxPlayer.PlayOneShot(soundClip);
     }
 
+    public void OnHover()
+    {
+        PlaySfx(SFX.ButtonHover);
+    }
+
     public void SetVolume(float newVolumeValue)
     {
         sfxPlayer.volume = newVolumeValue;
