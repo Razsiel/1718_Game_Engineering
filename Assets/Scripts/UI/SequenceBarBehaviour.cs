@@ -309,7 +309,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             listInSlotContent.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            listInSlotLayout.preferredHeight = 125;
+            listInSlotLayout.preferredHeight = isMainSequenceBar ? 125 : 55;
             listInSlotLayout.preferredWidth = 155;
 
             listInSlot.transform.SetParent(slot.transform, false);
@@ -336,7 +336,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             loopAndImageLayoutElement.preferredWidth = 155;
-            loopAndImageLayoutElement.preferredHeight = 95;
+            loopAndImageLayoutElement.preferredHeight = size;
 
             GameObject loopImage = new GameObject("image");
             loopImage.AddComponent<Image>().sprite = image;
@@ -347,7 +347,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             var loopImageLayoutElement = loopImage.AddComponent<LayoutElement>();
             loopImageLayoutElement.preferredWidth = 125;
-            loopImageLayoutElement.preferredHeight = 95;
+            loopImageLayoutElement.preferredHeight = size;
 
             GameObject loopInput = new GameObject("input");
             var loopInputLayoutElement = loopInput.AddComponent<LayoutElement>();
@@ -357,7 +357,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             loopInputContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            loopInputLayoutElement.preferredHeight = 95;
+            loopInputLayoutElement.preferredHeight = size;
             loopInputLayoutElement.preferredWidth = 30;
 
             var loopInputField = loopInput.AddComponent<InputField>();
@@ -378,7 +378,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             inputTextText.fontSize = 50;
             inputTextText.horizontalOverflow = HorizontalWrapMode.Overflow;
             inputTextText.verticalOverflow = VerticalWrapMode.Overflow;
-            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
+            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
 
             loopInputField.textComponent = inputTextText;
             loopInputField.characterLimit = 1;
@@ -386,7 +386,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputField.targetGraphic = loopInputImage;
             loopInputField.contentType = InputField.ContentType.IntegerNumber;
             loopInputField.onEndEdit.AddListener((string newAmountOfLoops) => AmountOfLoopsEdited(newAmountOfLoops, slotSlotScript.indices));
-            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
+            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);
