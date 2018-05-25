@@ -23,9 +23,15 @@ public class BgmBehaviour : TGEMonoBehaviour {
         
         bgmPlayer = GetComponent<AudioSource>();
 
-        MusicClips = new Dictionary<BGM, AudioClip>();
+        MusicClips = new Dictionary<BGM, AudioClip>()
+        {
+            {BGM.MainTheme, Resources.Load<AudioClip>("Sound/BGM/Main_Theme")}
+        };
+    }
 
-        // Add all music clips to Dictionary
+    public override void Start()
+    {
+        PlayMusicClip(BGM.MainTheme);
     }
 
     public static void PlayMusicClip(BGM clipName)
@@ -43,5 +49,5 @@ public class BgmBehaviour : TGEMonoBehaviour {
 
 public enum BGM
 {
-    
+    MainTheme
 }
