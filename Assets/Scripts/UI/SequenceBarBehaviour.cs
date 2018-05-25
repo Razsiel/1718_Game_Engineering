@@ -325,6 +325,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             listInSlotLayout.preferredHeight = isMainSequenceBar ? 125 : 55;
             listInSlotLayout.preferredWidth = 155;
+            listInSlotLayout.minHeight = 0;
 
             listInSlot.transform.SetParent(slot.transform, false);
 
@@ -334,7 +335,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             slotReorderableList.indexInParent = index;
             //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
-            listInSlotFlow.childAlignment = TextAnchor.MiddleLeft;
+            listInSlotFlow.childAlignment = isMainSequenceBar ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
             listInSlotFlow.padding.left = 15;
             listInSlotFlow.spacing = new Vector2(5f, 0);
 
@@ -349,6 +350,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopAndImageContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
+            loopAndImageLayoutElement.minHeight = 0;
             loopAndImageLayoutElement.preferredWidth = 155;
             loopAndImageLayoutElement.preferredHeight = size;
 
