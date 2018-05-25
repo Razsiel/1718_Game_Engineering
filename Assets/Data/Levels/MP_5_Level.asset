@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b25768f3b3700fe41ae35e3e0500e5c5, type: 3}
+  m_Name: MP_5_Level
+  m_EditorClassIdentifier: 
+  Name: Hekwerk
+  BackgroundImage: {fileID: 0}
+  MaxCommands: 10
+  Goals:
+  - {fileID: 11400000, guid: bf9d835f05b82d643b37430c50224c93, type: 2}
+  GridMapData: {fileID: 11400000, guid: 02c834aebd076b649911e24e4bfe97d9, type: 2}
+  TileScale: 32
+  Monologue: {fileID: 11400000, guid: 7faa03777440d844abcb6ea49fdc02d6, type: 2}
+  AllowedCommands:
+  - CommandType: 0
+    IsAllowed: 1
+  - CommandType: 1
+    IsAllowed: 1
+  - CommandType: 2
+    IsAllowed: 1
+  - CommandType: 3
+    IsAllowed: 1
+  - CommandType: 4
+    IsAllowed: 1
+  - CommandType: 5
+    IsAllowed: 1
+  LevelScore:
+    HighestScore: 8
+    DecentScore: 10
+  PreviewImage: {fileID: 0}

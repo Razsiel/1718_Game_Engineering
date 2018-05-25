@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.DataStructures;
@@ -24,6 +25,12 @@ namespace Assets.Scripts.Photon.RoomSelect
         {
             Disable();
             PlayButton.onClick.AddListener(StartGame);
+#if !UNITY_EDITOR
+            PhotonNetwork.player.NickName = Environment.UserName;
+#else
+            PhotonNetwork.player.NickName = Guid.NewGuid().ToString();
+#endif
+
             //PlayButton.gameObject.SetActive(false);
             RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
             RoomEventManager.OnLocalPlayerLeftRoom += Disable;

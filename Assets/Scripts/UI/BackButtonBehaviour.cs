@@ -6,19 +6,25 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.UI
-{
+namespace Assets.Scripts.UI {
     public class BackButtonBehaviour : MonoBehaviour {
+        private GameInfo _gameInfo;
         private string _previousScene;
 
         void Awake() {
             GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) => {
                 this._previousScene = previousScene;
+                this._gameInfo = gameInfo;
             };
         }
 
         public void Back() {
-            SceneManager.LoadScene(_previousScene);
+            if (_gameInfo.IsMultiplayer) {
+                PhotonNetwork.LoadLevel(_previousScene);
+            }
+            else {
+                SceneManager.LoadScene(_previousScene);
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Assets.Scripts {
 
             // SIMULATE -> LEVELCOMPLETE
             fsm.Tr(GameState.Simulate, GameStateTrigger.Next, GameState.LevelComplete)
-                .On(OnLevelCompleteStateEnter)
+               .On(OnLevelCompleteStateEnter)
                .Tr(GameState.Simulate, GameStateTrigger.Edit, GameState.EditSequence)
                .On(OnEditSequenceStateEnter);
 
@@ -61,7 +61,7 @@ namespace Assets.Scripts {
         }
 
         public void Start() {
-            Debug.Log($"Start: {nameof(GameStateManager)}");
+            Debug.Log($"Start: {nameof(GameStateManager)}. FSM state: {fsm.State}");
 
             EventManager.OnGameStart += OnGameStart;
             EventManager.OnLevelLoaded += OnLevelLoaded;
@@ -75,23 +75,34 @@ namespace Assets.Scripts {
             }
         }
 
+        void OnDestroy() {
+            EventManager.OnGameStart -= OnGameStart;
+            EventManager.OnLevelLoaded -= OnLevelLoaded;
+            EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
+            EventManager.OnAllPlayersReady -= OnAllPlayersReady;
+            EventManager.OnSequenceChanged -= OnSequenceChanged;
+            EventManager.OnStopButtonClicked -= OnStopButtonClicked;
+            EventManager.OnSimulationStop -= OnSimulationStop;
+            EventManager.OnWinScreenContinueClicked -= OnWinScreenContinueClicked;
+        }
+
         private void OnLevelLoaded(GameInfo levelData)
         {
             EventManager.OnLevelLoaded -= OnLevelLoaded;
-            print("level loaded and presented");
+            print($"{nameof(GameStateManager)}: level loaded and presented. FSM state: {fsm.State}");
             fsm.Fire(GameStateTrigger.Next); // goto Cutscene
         }
 
         private void OnGameStart(GameInfo gameInfo)
         {
             EventManager.OnGameStart -= OnGameStart;
-            print("loading level");
+            print($"{nameof(GameStateManager)}: loading level. FSM state: {fsm.State}");
             EventManager.LoadLevel(_gameInfo);
         }
 
         public void OnDisable()
         {
-            fsm.Reset();
+            //fsm.Reset();
         }
 
         private void StartSingleplayer() {
@@ -106,7 +117,7 @@ namespace Assets.Scripts {
 
         private void OnAllPlayersJoined(Room room) {
             PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
-            print($"{nameof(GameStateManager)} OnAllPlayersJoined" + room);
+            print($"{nameof(GameStateManager)} All players joing room: {room}");
             EventManager.GameStart(_gameInfo);
         }
 
@@ -114,13 +125,14 @@ namespace Assets.Scripts {
         /// State transition Cutscene
         /// </summary>
         private void OnCutsceneStateEnter() {
-            print($"{nameof(GameStateManager)}: cutscene");
+            print($"{nameof(GameStateManager)}: cutscene. FSM state: {fsm.State}");
             // start the cutscene / monologue
             EventManager.OnMonologueEnded += OnMonologueEnded;
             EventManager.MonologueStart(_gameInfo.Level.Monologue);
         }
 
         private void OnMonologueEnded() {
+            print($"{nameof(GameStateManager)}: monoloque ended. FSM state: {fsm.State}");
             EventManager.OnMonologueEnded -= OnMonologueEnded;
             fsm.Fire(GameStateTrigger.Next); // goto StartGame
         }
@@ -129,7 +141,7 @@ namespace Assets.Scripts {
         /// State transition GameStart
         /// </summary>
         private void OnStartGameStateEnter() {
-            print($"{nameof(GameStateManager)}: game start");
+            print($"{nameof(GameStateManager)}: game start. FSM state: {fsm.State}");
             EventManager.InitializeUi(_gameInfo);
 
             print("Commands allowed:");
@@ -144,17 +156,17 @@ namespace Assets.Scripts {
         /// State transition EditSequence
         /// </summary>
         private void OnEditSequenceStateEnter() {
-            print($"{nameof(GameStateManager)}: edit");
+            print($"{nameof(GameStateManager)}: edit. FSM state: {fsm.State}");
             EventManager.OnSequenceChanged -= OnSequenceChanged;
             // allow players to interact with game world
+            EventManager.OnReadyButtonClicked += OnReadyButtonClicked;
             EventManager.UserInputEnable();
             EventManager.LevelReset(_gameInfo, _gameInfo.Players.Select(x => x.Player).ToList());
-            EventManager.OnReadyButtonClicked += OnReadyButtonClicked;
         }
 
         private void OnReadyButtonClicked() {
             EventManager.OnReadyButtonClicked -= OnReadyButtonClicked;
-            print($"{nameof(GameStateManager)}: ready!");
+            print($"{nameof(GameStateManager)}: ready! FSM state: {fsm.State}");
             
             EventManager.OnAllPlayersReady += OnAllPlayersReady;
 
@@ -168,6 +180,7 @@ namespace Assets.Scripts {
         }
 
         private void OnSequenceChanged(List<BaseCommand> commands) {
+            print($"{nameof(GameStateManager)}: sequence was changed. Going back to edit sequence! FSM state: {fsm.State}");
             EventManager.OnSequenceChanged -= OnSequenceChanged;
             fsm.Fire(GameStateTrigger.Edit);
         }
@@ -176,15 +189,12 @@ namespace Assets.Scripts {
         /// State transition ReadyAndWaitingForPlayers
         /// </summary>
         private void OnPlayerReadyStateEnter() {
-            print($"{nameof(GameStateManager)}: ready and waiting for other players");
+            print($"{nameof(GameStateManager)}: ready and waiting for other players. FSM state: {fsm.State}");
             
             EventManager.OnSequenceChanged += OnSequenceChanged;
 
             if (!_gameInfo.IsMultiplayer) {
                 EventManager.AllPlayersReady();
-            }
-            else {
-                // if all players are ready; goto Simulate
             }
         }
 
@@ -192,7 +202,7 @@ namespace Assets.Scripts {
         /// State transition Simulate
         /// </summary>
         private void OnSimulateStateEnter() {
-            print($"{nameof(GameStateManager)}: simulating");
+            print($"{nameof(GameStateManager)}: simulating. FSM state: {fsm.State}");
             EventManager.UserInputDisable();
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
             EventManager.OnSimulationStop += OnSimulationStop;
@@ -202,13 +212,13 @@ namespace Assets.Scripts {
 
         private void OnSimulationStop()
         {
-            print($"{nameof(GameStateManager)}: simulation stop");
+            print($"{nameof(GameStateManager)}: simulation stop. FSM state: {fsm.State}");
             EventManager.OnSimulationStop -= OnSimulationStop;
             fsm.Fire(GameStateTrigger.Edit);
         }
 
         private void OnStopButtonClicked() {
-            print($"{nameof(GameStateManager)}: stop button clicked");
+            print($"{nameof(GameStateManager)}: stop button clicked. FSM state: {fsm.State}");
             EventManager.OnStopButtonClicked -= OnStopButtonClicked;
             if (!_gameInfo.IsMultiplayer)
                 EventManager.SimulationStop();          
@@ -224,7 +234,7 @@ namespace Assets.Scripts {
         /// State transition LevelComplete
         /// </summary>
         private void OnLevelCompleteStateEnter() {
-            print($"{nameof(GameStateManager)}: level complete!");
+            print($"{nameof(GameStateManager)}: level complete! FSM state: {fsm.State}");
             StartCoroutine(ReloadLevel());
         }
 

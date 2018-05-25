@@ -149,12 +149,16 @@ namespace Assets.Scripts.Photon.Level
         [PunRPC]
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
         {
-            var commands = JsonUtility.FromJson<ListContainer<SerializedLoopCommand>>(commandsJson);            
+            var commands = JsonUtility.FromJson<ListContainer<SerializedLoopCommand>>(commandsJson);
+            print($"{nameof(PhotonManager)}: received the commands and loaded them back to a list");
             var baseCommands = GetBaseCommands(commands.List);
-            TestJsonDeserialize(baseCommands);
+            print($"{nameof(PhotonManager)}: received the basecommands list");
+            //TestJsonDeserialize(baseCommands);
 
             _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);
+            print($"{nameof(PhotonManager)}: Updated list of secondary player");
             EventManager.SecondarySequenceChanged(baseCommands);
+            print($"{nameof(PhotonManager)}: Updated UI of the sequence");
         }
 
         private void TestJsonDeserialize(List<BaseCommand> commands)
@@ -172,7 +176,7 @@ namespace Assets.Scripts.Photon.Level
                 if(command.Command == CommandEnum.LoopCommand)
                 {                    
                     var unSerialized = GetBaseCommands(command.Commands);
-                    var baseLoop = (LoopCommand)CommandLib.Commands.GetValue(CommandEnum.LoopCommand);
+                    var baseLoop = Instantiate(CommandLib.LoopCommand) as LoopCommand;                   
                     baseLoop.LoopCount = command.LoopCount;
                     baseLoop.Sequence = new Sequence();
                     baseLoop.Sequence.Commands = unSerialized;
@@ -197,8 +201,8 @@ namespace Assets.Scripts.Photon.Level
                 var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
                 networkPlayer.IsReady = isReady;
                 networkPlayer.OnReady?.Invoke(isReady);
-
             }
+
             print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
             print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
             if (_gameInfo.Players.All(x => x.Player.IsReady))

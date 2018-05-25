@@ -11,7 +11,8 @@ namespace Assets.Scripts.DataStructures.Channel
         None,
         Channel1,
         Channel2,
-        Channel3
+        Channel3,
+        Channel4
     }
 
     public enum ChannelType {
