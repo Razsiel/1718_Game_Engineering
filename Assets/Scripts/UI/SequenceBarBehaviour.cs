@@ -217,7 +217,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
     }
 
-    private void UpdateSequenceBar(List<BaseCommand> commands, Transform parent, bool isMainSequenceBar)
+    private void UpdateSequenceBar(List<BaseCommand> commands, Transform parent)
     {
         print($"{nameof(SequenceBarBehaviour)}: commands: {commands.Count} parent: {parent} isMainSequenceBar: {_isMainSequenceBar}");
         for(int i = 0; i < commands.Count; i++)
@@ -253,7 +253,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             {
                 print($"The command is a LoopCommand");
                 //Update sequence bar with the new slots inside of the loop
-                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), _isMainSequenceBar);
+                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1));
 
                 print($"We have done the recursion call");
                 //Set the loop and its contents widths to fit the children
@@ -439,7 +439,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     {
         ClearSequenceBar(_isMainSequenceBar);
 
-        UpdateSequenceBar(commands, _commandsListPanel.transform, _isMainSequenceBar);
+        UpdateSequenceBar(commands, _commandsListPanel.transform);
     }
 
 }
