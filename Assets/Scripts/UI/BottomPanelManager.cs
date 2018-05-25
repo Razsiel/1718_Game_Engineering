@@ -111,7 +111,10 @@ public class BottomPanelManager : MonoBehaviour
         _mainSequenceBar = Instantiate(MainSequenceBar);
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
-        bool isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
+        if (_gameInfo.LocalPlayer.photonPlayer != null)
+        {
+            _isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
+        }
         _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _isHost);
     }
 

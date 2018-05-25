@@ -277,8 +277,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void SetWidthOfChildren(GameObject item)
     {
-        List<GameObject> children = new List<GameObject>();
-        float width = 55;
+        float width = _isMainSequenceBar ? 55 : 45;
 
         foreach(Transform child in item.transform)
         {
@@ -287,7 +286,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         if(item.transform.childCount == 0)
         {
-            width = 155;
+            width = _isMainSequenceBar ? 155 : 105;
         }
 
         var itemLayout = item.GetComponent<LayoutElement>();
@@ -324,7 +323,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             listInSlotLayout.preferredHeight = isMainSequenceBar ? 125 : 55;
-            listInSlotLayout.preferredWidth = 155;
+            listInSlotLayout.preferredWidth = isMainSequenceBar ? 155 : 105;
             listInSlotLayout.minHeight = 0;
 
             listInSlot.transform.SetParent(slot.transform, false);
@@ -336,11 +335,11 @@ public class SequenceBarBehaviour : MonoBehaviour
             //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
             listInSlotFlow.childAlignment = isMainSequenceBar ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
-            listInSlotFlow.padding.left = 15;
+            listInSlotFlow.padding.left = isMainSequenceBar ? 15 : 10;
             listInSlotFlow.spacing = new Vector2(5f, 0);
 
             slotLayoutElement.preferredHeight = size;
-            slotLayoutElement.preferredWidth = 155;
+            slotLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
 
             GameObject loopImageAndInput = new GameObject("loop image & input");
             var loopAndImageFlowLayout = loopImageAndInput.AddComponent<FlowLayoutGroup>();
@@ -351,7 +350,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             loopAndImageLayoutElement.minHeight = 0;
-            loopAndImageLayoutElement.preferredWidth = 155;
+            loopAndImageLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
             loopAndImageLayoutElement.preferredHeight = size;
 
             GameObject loopImage = new GameObject("image");
@@ -362,7 +361,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var loopImageLayoutElement = loopImage.AddComponent<LayoutElement>();
-            loopImageLayoutElement.preferredWidth = 125;
+            loopImageLayoutElement.preferredWidth = isMainSequenceBar ? 125 : 75;
             loopImageLayoutElement.preferredHeight = size;
 
             GameObject loopInput = new GameObject("input");
