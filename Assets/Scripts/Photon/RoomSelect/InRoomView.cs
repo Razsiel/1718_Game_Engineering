@@ -31,6 +31,8 @@ namespace Assets.Scripts.Photon.RoomSelect
             PhotonNetwork.player.NickName = Guid.NewGuid().ToString();
 #endif
 
+            //PhotonNetwork.player.NickName = Environment.UserName;
+
             //PlayButton.gameObject.SetActive(false);
             RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
             RoomEventManager.OnLocalPlayerLeftRoom += Disable;
