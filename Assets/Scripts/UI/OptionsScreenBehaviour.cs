@@ -17,19 +17,38 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     [SerializeField] private Slider BgmVolumeSlider;
     [SerializeField] private Slider SfxVolumeSlider;
 
-    void Awake()
+    void Start()
     {
         LanguageManager.SetDontDestroyOnLoad();
         PlayerPrefs.SetInt("RecordVideos", 0); // Disable video recording
+
+        if (PlayerPrefs.GetInt("IHavePlayedBefore") == 0)
+        {
+            BgmVolumeSlider.value = 0.5f;
+            SfxVolumeSlider.value = 0.5f;
+            OnClick_LanguageFlagDutch();
+
+            PlayerPrefs.SetInt("IHavePlayedBefore", 1);
+            SaveSettings();
+        }
+        else
+        {
+            LoadPlayerPreferences();
+        }
+
         HideOptionsPanel();
+    }
+
+    void LoadPlayerPreferences()
+    {
+        BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGM Volume");
+        SfxVolumeSlider.value = PlayerPrefs.GetFloat("SFX Volume");
     }
 
     public void ShowOptionsPanel()
     {
         OptionsCanvas.SetActive(true);
 
-        BgmVolumeSlider.value = PlayerPrefs.GetFloat("BGM Volume");
-        SfxVolumeSlider.value = PlayerPrefs.GetFloat("SFX Volume");
     }
 
     public void HideOptionsPanel()

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Data.Command;
 using Assets.Scripts;
+using Assets.Scripts.Lib.Helpers;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
@@ -32,13 +32,11 @@ public class BottomPanelManager : MonoBehaviour
     [SerializeField] private Color _playStateColor;
     [SerializeField] private Color _readyStateColor;
     [SerializeField] private Color _stopStateColor;
-
-    private Button _readyButtonButton;
+    
     private ReadyButtonState _readyButtonState;
     private RectTransform _mainPanel;
     private Player _localPlayer;
-
-    
+    private bool _isHost;
 
     private bool _secondaryBarIsHidden;
 
@@ -113,8 +111,11 @@ public class BottomPanelManager : MonoBehaviour
         _mainSequenceBar = Instantiate(MainSequenceBar);
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
-
-        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo);
+        if (_gameInfo.LocalPlayer.photonPlayer != null)
+        {
+            _isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
+        }
+        _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _isHost);
     }
 
     private void InitializeSecondarySequenceBar()
@@ -124,13 +125,13 @@ public class BottomPanelManager : MonoBehaviour
         _secondarySequenceBar.transform.SetParent(transform.GetChild(0), false);
         _secondarySequenceBar.transform.SetSiblingIndex(1);
 
-        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo);
+        _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo, !_isHost);
     }
 
     private void InitializeReadyButton()
     {
         _readyButton = new GameObject("ReadyButton");
-        _readyButtonButton = _readyButton.AddComponent<Button>();
+        var readyButtonButton = _readyButton.AddComponent<Button>();
         var readyButtonImage = _readyButton.AddComponent<Image>();
         var readyButtonLayoutElement = _readyButton.AddComponent<LayoutElement>();
 
@@ -153,9 +154,8 @@ public class BottomPanelManager : MonoBehaviour
 
         SetReadyButtonState(ReadyButtonState.Play);
 
-        _readyButtonButton.onClick.RemoveAllListeners();
-        _readyButtonButton.onClick.AddListener(ReadyButtonClicked);
-        print($"Ready button clicked event listeners count: {_readyButtonButton.onClick}");
+        readyButtonButton.onClick.RemoveAllListeners();
+        readyButtonButton.onClick.AddListener(ReadyButtonClicked);
     }
 
     private void SetReadyButtonStateOnAllPlayersReady()

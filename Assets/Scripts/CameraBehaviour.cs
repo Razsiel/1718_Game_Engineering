@@ -37,7 +37,7 @@ public class CameraBehaviour : MonoBehaviour
         float aspectRatio = (float)Screen.height / Screen.width;
 
         // Camera should reduce the zoom-out by 0.2 per levelSize
-        _camera.orthographicSize = 1 + (levelSize * aspectRatio) - (levelSize * 0.2f);
+        _camera.orthographicSize = 2.5f + (levelSize * aspectRatio) - (levelSize * 0.2f);
     }
 
     void RecordVideo()

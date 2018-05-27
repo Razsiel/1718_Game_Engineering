@@ -19,7 +19,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     private uint _decentScore;
     private uint _highestScore;
 
-    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo)
+    public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, bool isHost)
     {
         _isMainSequenceBar = isMainSequenceBar;
         _mainPanel = mainPanel;
@@ -30,6 +30,16 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
         _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
+
+        //The master player has an orange sequence bar, the client has blue
+        if (isHost)
+        {
+            gameObject.GetComponent<Image>().color = new Color32(255, 184, 66, 255);
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().color = new Color32(0x44, 0xDE, 0xFF, 0xFF);
+        }
 
         if(_isMainSequenceBar)
         {
@@ -207,7 +217,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
     }
 
-    private void UpdateSequenceBar(List<BaseCommand> commands, Transform parent, bool isMainSequenceBar)
+    private void UpdateSequenceBar(List<BaseCommand> commands, Transform parent)
     {
         print($"{nameof(SequenceBarBehaviour)}: commands: {commands.Count} parent: {parent} isMainSequenceBar: {_isMainSequenceBar}");
         for(int i = 0; i < commands.Count; i++)
@@ -243,7 +253,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             {
                 print($"The command is a LoopCommand");
                 //Update sequence bar with the new slots inside of the loop
-                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1), _isMainSequenceBar);
+                UpdateSequenceBar(((LoopCommand)commands[i]).Sequence.Commands, slot.transform.GetChild(1));
 
                 print($"We have done the recursion call");
                 //Set the loop and its contents widths to fit the children
@@ -267,8 +277,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     private void SetWidthOfChildren(GameObject item)
     {
-        List<GameObject> children = new List<GameObject>();
-        float width = 55;
+        float width = _isMainSequenceBar ? 55 : 45;
 
         foreach(Transform child in item.transform)
         {
@@ -277,7 +286,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         if(item.transform.childCount == 0)
         {
-            width = 155;
+            width = _isMainSequenceBar ? 155 : 105;
         }
 
         var itemLayout = item.GetComponent<LayoutElement>();
@@ -312,8 +321,10 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             listInSlotContent.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-            listInSlotLayout.preferredHeight = 125;
-            listInSlotLayout.preferredWidth = 155;
+
+            listInSlotLayout.preferredHeight = isMainSequenceBar ? 125 : 55;
+            listInSlotLayout.preferredWidth = isMainSequenceBar ? 155 : 105;
+            listInSlotLayout.minHeight = 0;
 
             listInSlot.transform.SetParent(slot.transform, false);
 
@@ -323,12 +334,12 @@ public class SequenceBarBehaviour : MonoBehaviour
             slotReorderableList.indexInParent = index;
             //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
-            listInSlotFlow.childAlignment = TextAnchor.MiddleLeft;
-            listInSlotFlow.padding.left = 15;
+            listInSlotFlow.childAlignment = isMainSequenceBar ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
+            listInSlotFlow.padding.left = isMainSequenceBar ? 15 : 10;
             listInSlotFlow.spacing = new Vector2(5f, 0);
 
             slotLayoutElement.preferredHeight = size;
-            slotLayoutElement.preferredWidth = 155;
+            slotLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
 
             GameObject loopImageAndInput = new GameObject("loop image & input");
             var loopAndImageFlowLayout = loopImageAndInput.AddComponent<FlowLayoutGroup>();
@@ -338,8 +349,9 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopAndImageContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            loopAndImageLayoutElement.preferredWidth = 155;
-            loopAndImageLayoutElement.preferredHeight = 95;
+            loopAndImageLayoutElement.minHeight = 0;
+            loopAndImageLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
+            loopAndImageLayoutElement.preferredHeight = size;
 
             GameObject loopImage = new GameObject("image");
             loopImage.AddComponent<Image>().sprite = image;
@@ -349,8 +361,8 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             var loopImageLayoutElement = loopImage.AddComponent<LayoutElement>();
-            loopImageLayoutElement.preferredWidth = 125;
-            loopImageLayoutElement.preferredHeight = 95;
+            loopImageLayoutElement.preferredWidth = isMainSequenceBar ? 125 : 75;
+            loopImageLayoutElement.preferredHeight = size;
 
             GameObject loopInput = new GameObject("input");
             var loopInputLayoutElement = loopInput.AddComponent<LayoutElement>();
@@ -360,7 +372,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             loopInputContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            loopInputLayoutElement.preferredHeight = 95;
+            loopInputLayoutElement.preferredHeight = size;
             loopInputLayoutElement.preferredWidth = 30;
 
             var loopInputField = loopInput.AddComponent<InputField>();
@@ -381,7 +393,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             inputTextText.fontSize = 50;
             inputTextText.horizontalOverflow = HorizontalWrapMode.Overflow;
             inputTextText.verticalOverflow = VerticalWrapMode.Overflow;
-            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
+            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
 
             loopInputField.textComponent = inputTextText;
             loopInputField.characterLimit = 1;
@@ -389,7 +401,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputField.targetGraphic = loopInputImage;
             loopInputField.contentType = InputField.ContentType.IntegerNumber;
             loopInputField.onEndEdit.AddListener((string newAmountOfLoops) => AmountOfLoopsEdited(newAmountOfLoops, slotSlotScript.indices));
-            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, 95);
+            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);
@@ -427,7 +439,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     {
         ClearSequenceBar(_isMainSequenceBar);
 
-        UpdateSequenceBar(commands, _commandsListPanel.transform, _isMainSequenceBar);
+        UpdateSequenceBar(commands, _commandsListPanel.transform);
     }
 
 }
