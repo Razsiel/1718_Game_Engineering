@@ -82,33 +82,33 @@ public class BottomPanelManager : MonoBehaviour
     {
         if (!_gameInfo.IsMultiplayer)
         {
-            InitializeIcons(true);
+            InitializeIcons(true, true);
         }
         else
         {
-            InitializeIcons(_isHost);
-            InitializeIcons(!_isHost);
+            InitializeIcons(true, _isHost);
+            InitializeIcons(false, !_isHost);
         }
 
     }
 
-    private void InitializeIcons(bool isMainPlayerIcon)
+    private void InitializeIcons(bool isMainPlayerIcon, bool isHost)
     {
-        GameObject secondaryPlayerIcon = new GameObject("PlayerIcon");
-        Transform parent = isMainPlayerIcon ? transform.GetChild(2).transform : transform.GetChild(0).transform; 
-        secondaryPlayerIcon.transform.SetParent(parent, false);
-        secondaryPlayerIcon.transform.SetAsFirstSibling();
-        var image = secondaryPlayerIcon.AddComponent<Image>();
-        var aspectFitter = secondaryPlayerIcon.AddComponent<AspectRatioFitter>();
+        GameObject playerIcon = new GameObject("PlayerIcon");
+        Transform parent = isMainPlayerIcon ? transform.GetChild(2).transform : transform.GetChild(0).transform;
+        playerIcon.transform.SetParent(parent, false);
+        playerIcon.transform.SetAsFirstSibling();
+        var image = playerIcon.AddComponent<Image>();
+        var aspectFitter = playerIcon.AddComponent<AspectRatioFitter>();
         aspectFitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
-        var layoutElement = secondaryPlayerIcon.AddComponent<LayoutElement>();
-        image.sprite = isMainPlayerIcon ? _mainPlayerIcon : _secondaryPlayerIcon;
+        var layoutElement = playerIcon.AddComponent<LayoutElement>();
+        image.sprite = isHost ? _mainPlayerIcon : _secondaryPlayerIcon;
 
         //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
 
         if (!isMainPlayerIcon)
         {
-            secondaryPlayerIcon.AddComponent<Button>().onClick.AddListener(SecondaryPlayerIconClicked);
+            playerIcon.AddComponent<Button>().onClick.AddListener(SecondaryPlayerIconClicked);
         }
 
         layoutElement.preferredWidth = layoutElement.preferredHeight = isMainPlayerIcon ? 125 : 75;
