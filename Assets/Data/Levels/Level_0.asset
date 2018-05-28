@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Level_0
   m_EditorClassIdentifier: 
   Name: Level 0 - The Test Level
-  BackgroundImage: {fileID: 2800000, guid: d197b6ca2c89c7340bbe1522a3240855, type: 3}
+  BackgroundImage: {fileID: 2800000, guid: a06f299cddae51549ab633c002e85949, type: 3}
   MaxCommands: 0
   Goals:
   - {fileID: 0}
@@ -32,3 +32,7 @@ MonoBehaviour:
     IsAllowed: 1
   - CommandType: 5
     IsAllowed: 1
+  LevelScore:
+    HighestScore: 0
+    DecentScore: 0
+  PreviewImage: {fileID: 0}

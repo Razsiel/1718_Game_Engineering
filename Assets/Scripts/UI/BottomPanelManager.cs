@@ -28,6 +28,8 @@ public class BottomPanelManager : MonoBehaviour
     [SerializeField] private Sprite _readyButtonPlay;
     [SerializeField] private Sprite _readyButtonReady;
     [SerializeField] private Sprite _readyButtonStop;
+    [SerializeField] private Sprite _mainPlayerIcon;
+    [SerializeField] private Sprite _secondaryPlayerIcon;
 
     [SerializeField] private Color _playStateColor;
     [SerializeField] private Color _readyStateColor;
@@ -79,12 +81,16 @@ public class BottomPanelManager : MonoBehaviour
 
     private void InitializeIcons(bool isMainPlayerIcon)
     {
-        GameObject secondaryPlayerIcon = new GameObject();
+        GameObject secondaryPlayerIcon = new GameObject("PlayerIcon");
         Transform parent = isMainPlayerIcon ? transform.GetChild(2).transform : transform.GetChild(0).transform; 
         secondaryPlayerIcon.transform.SetParent(parent, false);
         secondaryPlayerIcon.transform.SetAsFirstSibling();
         var image = secondaryPlayerIcon.AddComponent<Image>();
+        var aspectFitter = secondaryPlayerIcon.AddComponent<AspectRatioFitter>();
+        aspectFitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
         var layoutElement = secondaryPlayerIcon.AddComponent<LayoutElement>();
+        image.sprite = isMainPlayerIcon ? _mainPlayerIcon : _secondaryPlayerIcon;
+
         //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
 
         if (!isMainPlayerIcon)

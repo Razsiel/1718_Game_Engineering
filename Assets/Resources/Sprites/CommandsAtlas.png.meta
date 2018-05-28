@@ -1,19 +1,31 @@
 fileFormatVersion: 2
-guid: 0ad0cbd5e63920048ba2b34dcbe7ab34
-timeCreated: 1524636798
+guid: 7cdb982ae39b4e640883123648bde930
+timeCreated: 1527504345
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Arrow_up
-    21300002: turnleft
-    21300004: Action 1
-    21300006: Wait
-    21300008: turnright
+    21300000: Loop
+    21300002: Loop
+    21300004: Wait
+    21300006: Interact
+    21300008: Move
+    21300010: TurnLeft
+    21300012: TurnRight
+    21300014: Wait
+    21300016: Interact
+    21300018: TurnRight
+    21300020: TurnLeft
+    21300022: Move
+    21300024: Sprite_12
+    21300026: Sprite_13
+    21300028: Sprite_14
+    21300030: Sprite_15
+    21300032: Sprite_16
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -33,15 +45,15 @@ TextureImporter:
   cubemapConvolution: 0
   seamlessCubemap: 0
   textureFormat: 1
-  maxTextureSize: 4096
+  maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
     filterMode: 0
-    aniso: 4
-    mipBias: -1
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -51,7 +63,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 4
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -62,10 +74,30 @@ TextureImporter:
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 4096
+    maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: 4
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -75,13 +107,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Arrow_up
+      name: Loop
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 144
-        height: 127
+        width: 130
+        height: 130
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -89,13 +121,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turnleft
+      name: TurnLeft
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 145
-        height: 122
+        y: 131
+        width: 64
+        height: 64
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -103,13 +135,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: Action 1
+      name: TurnRight
       rect:
         serializedVersion: 2
-        x: 145
-        y: 0
-        width: 143
-        height: 121
+        x: 65
+        y: 131
+        width: 64
+        height: 64
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+    - serializedVersion: 2
+      name: Interact
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 131
+        width: 64
+        height: 64
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -120,10 +166,10 @@ TextureImporter:
       name: Wait
       rect:
         serializedVersion: 2
-        x: 146
-        y: 122
-        width: 144
-        height: 118
+        x: 131
+        y: 0
+        width: 64
+        height: 64
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,21 +177,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
     - serializedVersion: 2
-      name: turnright
+      name: Move
       rect:
         serializedVersion: 2
-        x: 289
-        y: 0
-        width: 141
-        height: 118
+        x: 131
+        y: 65
+        width: 64
+        height: 64
       alignment: 9
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
-    outline: []
-    physicsShape: []
+    outline:
+    - - {x: -2, y: -2}
+      - {x: -2, y: 2}
+      - {x: 2, y: 2}
+      - {x: 2, y: -2}
+    physicsShape:
+    - - {x: -2, y: -2}
+      - {x: -2, y: 2}
+      - {x: 2, y: 2}
+      - {x: 2, y: -2}
   spritePackingTag: 
   userData: 
   assetBundleName: 

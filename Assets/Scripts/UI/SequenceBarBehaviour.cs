@@ -312,7 +312,6 @@ public class SequenceBarBehaviour : MonoBehaviour
         {
             //Set the slot image to be invisible, it has to have one for it to be droppable but we dont want to see it
             slotImage.color = new Color(0f, 0f, 0f, 0f);
-
             GameObject listInSlot = new GameObject("list in slot");
             var listInSlotFlow = listInSlot.AddComponent<FlowLayoutGroup>();
             var listInSlotContent = listInSlot.AddComponent<ContentSizeFitter>();
@@ -355,6 +354,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             GameObject loopImage = new GameObject("image");
             loopImage.AddComponent<Image>().sprite = image;
+            loopImage.GetComponent<Image>().type = Image.Type.Sliced;
             var loopImageContentSizeFitter = loopImage.AddComponent<ContentSizeFitter>();
 
             loopImageContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
