@@ -11,21 +11,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c88e76926c9a64b92874e628e03a83, type: 3}
   m_Name: Sprite Packer
   m_EditorClassIdentifier: 
-  m_Texture: {fileID: 2800000, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
+  m_Texture: {fileID: 2800000, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
   m_Padding: 1
   m_MaxSize: 4096
   m_PackingMethod: 0
   m_DefaultPivot: 0
   m_DefaultCustomPivot: {x: 0.5, y: 0.5}
   m_Sprites:
-  - source: {fileID: 21300000, guid: 2f8208f0db3e7c74d87023d7d0054b2f, type: 3}
-    targetSprite: {fileID: 21300000, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
-  - source: {fileID: 21300000, guid: 1bd31c45e14f59842a23e0393475100d, type: 3}
-    targetSprite: {fileID: 21300002, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
-  - source: {fileID: 21300000, guid: 268a173df2f064c47b61e297d19892d0, type: 3}
-    targetSprite: {fileID: 21300004, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
-  - source: {fileID: 21300000, guid: 7cb5389fb00da9d4687414d7976230a0, type: 3}
-    targetSprite: {fileID: 21300006, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
-  - source: {fileID: 21300000, guid: 6bcefe00689d9d649860919d5c526177, type: 3}
-    targetSprite: {fileID: 21300008, guid: 0ad0cbd5e63920048ba2b34dcbe7ab34, type: 3}
+  - source: {fileID: 21300000, guid: b7d035ccce13dda4aaec649a5e1402a2, type: 3}
+    targetSprite: {fileID: 21300000, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
+  - source: {fileID: 21300000, guid: c94a83bfc0a803b41aa0c9fef8031613, type: 3}
+    targetSprite: {fileID: 21300010, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
+  - source: {fileID: 21300000, guid: 641b018141ea8a944be2a4bceb3fff85, type: 3}
+    targetSprite: {fileID: 21300012, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
+  - source: {fileID: 21300000, guid: 8995fb50f2312ff4ba897b301b64b94f, type: 3}
+    targetSprite: {fileID: 21300006, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
+  - source: {fileID: 21300000, guid: 3ee13eee8d9f25947beeef6235e0d28f, type: 3}
+    targetSprite: {fileID: 21300004, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
+  - source: {fileID: 21300000, guid: 988b4a092aa70f747bab1461b27526d3, type: 3}
+    targetSprite: {fileID: 21300008, guid: 7cdb982ae39b4e640883123648bde930, type: 3}
   m_PendingActions: []
