@@ -38,7 +38,7 @@ public class EventManager {
     public static UnityAction<Monologue> OnMonologueStart;
     public static UnityAction OnMonologueEnded;
     public static UnityAction OnExecutionStarted;
-    
+    public static UnityAction OnAllPlayersSpawned;
     public static UnityAction<LevelData, List<TGEPlayer>> OnSimulate;
     public static UnityAction<GameInfo, List<Player>> OnLevelReset;
     public static UnityAction<GameInfo> OnLoadLevel;
@@ -148,6 +148,10 @@ public class EventManager {
     public static void PlayerReady(Player player, bool isReady)
     {
         OnPlayerReady?.Invoke(player, isReady);
+    }
+
+    public static void AllPlayersSpawned() {
+        OnAllPlayersSpawned?.Invoke();
     }
 
     public static void AllPlayersReady() {
