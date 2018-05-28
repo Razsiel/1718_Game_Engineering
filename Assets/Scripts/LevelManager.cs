@@ -100,6 +100,13 @@ public class LevelManager : TGEMonoBehaviour {
             var playerComponent = playerObject.GetComponent<Player>();
             var playerAnimation = playerObject.GetComponent<PlayerAnimationBehaviour>();
             players[i].Player = playerComponent;
+
+            //if(players.Count == 1) playerComponent.PlayerNumber = 0;
+            //else if(players[i].photonPlayer.IsMasterClient) playerComponent.PlayerNumber = 0;
+            //else playerComponent.PlayerNumber = 1;
+            if(players.Count > 1)
+                print($"{nameof(LevelManager)}: playerNumber: {i}, MasterClient: {players[i].photonPlayer.IsMasterClient}");
+
             playerComponent.PlayerNumber = i;
 
             playerAnimation.OnPlayerSpawned(playerComponent);

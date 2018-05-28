@@ -51,6 +51,8 @@ public class LevelSelectBehaviour : MonoBehaviour {
             LevelScroller.AddChild(prefab);
         }
 
+        PlayButton.SetActive(true);
+
         if (_gameInfo.IsMultiplayer) {
             //if(_gameInfo.LocalPlayer.photonPlayer.IsMasterClient) 
             this._levelSelectPhotonManager = LevelSelectPhotonManagerGO.GetComponent<LevelSelectPhotonManager>();

@@ -47,6 +47,8 @@ namespace Assets.Scripts {
 
             EventManager.OnPlayerReady += OnPlayerReady;
 
+            print($"{PlayerNumber}: Am I the masterclient?");
+
             // Generate head
             Data.GenerateGameObject(this.gameObject, PlayerNumber);
             // Set player color
