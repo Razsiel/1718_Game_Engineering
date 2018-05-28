@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SP_Tutorial_Interact_3_Level
   m_EditorClassIdentifier: 
   Name: 
-  BackgroundImage: {fileID: 0}
+  BackgroundImage: {fileID: 2800000, guid: a06f299cddae51549ab633c002e85949, type: 3}
   MaxCommands: 8
   Goals:
   - {fileID: 11400000, guid: 37945bc50c0bb25429ce03ef00b4707b, type: 2}
@@ -25,11 +25,11 @@ MonoBehaviour:
   - CommandType: 1
     IsAllowed: 0
   - CommandType: 2
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 3
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 4
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 5
     IsAllowed: 0
   LevelScore:

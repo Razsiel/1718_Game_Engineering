@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: MP_3_Level
   m_EditorClassIdentifier: 
   Name: Level 3
-  BackgroundImage: {fileID: 0}
+  BackgroundImage: {fileID: 2800000, guid: a06f299cddae51549ab633c002e85949, type: 3}
   MaxCommands: 0
   Goals:
   - {fileID: 11400000, guid: 95f3ba021e389814e8d6cee4985f6e81, type: 2}
@@ -23,15 +23,15 @@ MonoBehaviour:
   - CommandType: 0
     IsAllowed: 1
   - CommandType: 1
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 2
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 3
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 4
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 5
-    IsAllowed: 1
+    IsAllowed: 0
   LevelScore:
     HighestScore: 0
     DecentScore: 0

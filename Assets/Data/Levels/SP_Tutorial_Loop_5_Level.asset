@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: SP_Tutorial_Loop_5_Level
   m_EditorClassIdentifier: 
   Name: LEVEL_NAME_SP_TUTORIAL_5
-  BackgroundImage: {fileID: 0}
+  BackgroundImage: {fileID: 2800000, guid: a06f299cddae51549ab633c002e85949, type: 3}
   MaxCommands: 4
   Goals:
   - {fileID: 11400000, guid: 4731624438031da4e8ad25339c154c4d, type: 2}
@@ -25,13 +25,13 @@ MonoBehaviour:
   - CommandType: 1
     IsAllowed: 0
   - CommandType: 2
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 3
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 4
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 5
-    IsAllowed: 1
+    IsAllowed: 0
   LevelScore:
     HighestScore: 4
     DecentScore: 5
