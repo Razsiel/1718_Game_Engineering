@@ -38,18 +38,24 @@ namespace Assets.Scripts {
         public override void Awake() {
             Sequence = new Sequence();
 
-            EventManager.OnLevelReset += (gameInfo, players) => {
-                Assert.IsNotNull(gameInfo);
-                this.GameInfo = gameInfo;
-
-                this.IsReady = false;
-            };
-
+            EventManager.OnLevelReset += OnLevelReset;
             EventManager.OnPlayerReady += OnPlayerReady;
-
             print($"{PlayerNumber}: Am I the masterclient?");
             EventManager.OnAllPlayersSpawned += OnAllPlayerSpawned;
            
+        }
+
+        private void OnLevelReset(GameInfo gameInfo, List<Player> players) {
+            Assert.IsNotNull(gameInfo);
+            this.GameInfo = gameInfo;
+
+            this.IsReady = false;
+        }
+
+        void OnDestroy() {
+            EventManager.OnPlayerReady -= OnPlayerReady;
+            EventManager.OnAllPlayersSpawned -= OnAllPlayerSpawned;
+            EventManager.OnLevelReset -= OnLevelReset;
         }
 
         private void OnAllPlayerSpawned()
