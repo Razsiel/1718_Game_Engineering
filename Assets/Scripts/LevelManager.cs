@@ -110,12 +110,13 @@ public class LevelManager : TGEMonoBehaviour {
             playerComponent.PlayerNumber = i;
 
             playerAnimation.OnPlayerSpawned(playerComponent);
+
             EventManager.PlayerSpawned(playerComponent);
 
             var playerPos = data.InitPlayer(playerComponent);
             PresentPlayerOnPosition(data, playerComponent, playerPos);
         }
-
+        EventManager.AllPlayersSpawned();
         return root;
     }
 
