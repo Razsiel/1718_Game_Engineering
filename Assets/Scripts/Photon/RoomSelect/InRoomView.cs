@@ -42,6 +42,15 @@ namespace Assets.Scripts.Photon.RoomSelect
             RoomEventManager.OnBecomingMasterClient += OnBecomingMasterClient;           
         }
 
+        void OnDestroy() {
+            RoomEventManager.OnLocalPlayerJoinedRoom -= Enable;
+            RoomEventManager.OnLocalPlayerLeftRoom -= Disable;
+            RoomEventManager.OnNetworkPlayerChanged -= UpdatePlayersView;
+            RoomEventManager.OnAllPlayersReady -= OnAllPlayersReady;
+            RoomEventManager.OnAnyPlayerUnready -= OnAnyPlayerUnready;
+            RoomEventManager.OnBecomingMasterClient -= OnBecomingMasterClient;
+        }
+
         private void OnBecomingMasterClient()
         {
             PlayButton.gameObject.SetActive(true);
