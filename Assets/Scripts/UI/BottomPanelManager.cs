@@ -79,11 +79,13 @@ public class BottomPanelManager : MonoBehaviour
 
     private void InitializeIcons(bool isMainPlayerIcon)
     {
-        GameObject secondaryPlayerIcon = new GameObject();
+        GameObject secondaryPlayerIcon = new GameObject("PlayerIcon");
         Transform parent = isMainPlayerIcon ? transform.GetChild(2).transform : transform.GetChild(0).transform; 
         secondaryPlayerIcon.transform.SetParent(parent, false);
         secondaryPlayerIcon.transform.SetAsFirstSibling();
         var image = secondaryPlayerIcon.AddComponent<Image>();
+        var aspectFitter = secondaryPlayerIcon.AddComponent<AspectRatioFitter>();
+        aspectFitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
         var layoutElement = secondaryPlayerIcon.AddComponent<LayoutElement>();
         //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
 
