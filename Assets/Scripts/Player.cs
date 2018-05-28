@@ -55,7 +55,8 @@ namespace Assets.Scripts {
         private void OnAllPlayerSpawned()
         {
             // Generate head
-            Data.GenerateGameObject(this.gameObject, PlayerNumber);
+            var head = Data.GenerateGameObject(this.gameObject, PlayerNumber);
+            head.transform.localRotation = Quaternion.identity;
             // Set player color
             GetComponent<MeshRenderer>().material = Data.PlayerColours[PlayerNumber];
         }
