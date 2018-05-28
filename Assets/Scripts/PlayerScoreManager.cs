@@ -85,7 +85,7 @@ public class PlayerScoreManager : MonoBehaviour
     private bool IsNewHighScoreForLevel(LevelData level, int newScore)
     {
         int oldScore = level.GetScore();
-        return newScore > oldScore ? true : false;
+        return newScore > oldScore;
     }
 
     private int DetermineStars(int count, LevelScore levelScore)

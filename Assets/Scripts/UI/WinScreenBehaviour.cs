@@ -21,9 +21,9 @@ public class WinScreenBehaviour : MonoBehaviour
     [SerializeField] private GameObject _player2Name;
     [SerializeField] private GameObject _player2Image;
     [SerializeField] private GameObject _player2StarsImage;
-    [SerializeField] private Sprite _oneStarSprite; 
-    [SerializeField] private Sprite _twoStarsSprite; 
-    [SerializeField] private Sprite _threeStarSprite; 
+    [SerializeField] private Sprite _oneStarSprite;
+    [SerializeField] private Sprite _twoStarsSprite;
+    [SerializeField] private Sprite _threeStarSprite;
 
 
     private GameObject mainPanelSelector;
@@ -48,9 +48,9 @@ public class WinScreenBehaviour : MonoBehaviour
         EventManager.OnPlayersScoreDetermined += ShowWinScreen;
         mainPanelSelector = Instantiate(_mainPanelSelector, transform, false);
         mainPanel = Instantiate(_mainPanel, mainPanelSelector.transform, false);
-        
+
         player1Panel = Instantiate(_player1Panel, mainPanel.transform, false);
-        if (!isMultiplayer)
+        if(!isMultiplayer)
         {
             player1Panel.GetComponent<RectTransform>().offsetMin = new Vector2(600, 200);
             player1Panel.GetComponent<RectTransform>().offsetMax = new Vector2(-600, -200);
@@ -64,7 +64,7 @@ public class WinScreenBehaviour : MonoBehaviour
         player1Image = Instantiate(_player1Image, player1Panel.transform, false);
         player1StarsImage = Instantiate(_player1StarsImage, player1Panel.transform, false);
 
-        if (isMultiplayer)
+        if(isMultiplayer)
         {
             player2Panel = Instantiate(_player2Panel, mainPanel.transform, false);
             player2Name = Instantiate(_player2Name, player2Panel.transform, false);
@@ -77,7 +77,8 @@ public class WinScreenBehaviour : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
     }
 
@@ -87,39 +88,50 @@ public class WinScreenBehaviour : MonoBehaviour
 
         textAtTop.GetComponent<Text>().text = "HIER KOMT EEN COMPLIMENT";
 
-        List<int> playerScores = new List<int>();
-        //No idea if player1 score will be actual player 1 in multiplay
-        foreach (var playerScore in playerInfo)
+        if(_isMultiplayer)
         {
-            playerScores.Add(playerScore.Value);
-        }
-        player1Name.GetComponent<Text>().text = "Player 1";
-        player1Image.GetComponent<Image>().sprite = null;
+            var master = playerInfo.Single(x => x.Key.photonPlayer.IsMasterClient);
 
-        player1StarsImage.GetComponent<Image>().sprite =
-            playerScores[0] == 1 ? _oneStarSprite
-            : playerScores[0] == 2 ? _twoStarsSprite
-            : _threeStarSprite;
+            player1Name.GetComponent<Text>().text = master.Key.photonPlayer.NickName;
+            player1Image.GetComponent<Image>().sprite = null;
 
-        print(playerScores[0]);
+            player1StarsImage.GetComponent<Image>().sprite =
+                master.Value == 1 ? _oneStarSprite
+                : master.Value == 2 ? _twoStarsSprite
+                : _threeStarSprite;
 
-        if (_isMultiplayer)
-        {
-            player2Name.GetComponent<Text>().text = "Player2";
+            var client = playerInfo.Single(x => !x.Key.photonPlayer.IsMasterClient);
+            player2Name.GetComponent<Text>().text = client.Key.photonPlayer.NickName;
             player2Image.GetComponent<Image>().sprite = null;
-            player2StarsImage.GetComponent<Image>().sprite = null;
+            player2StarsImage.GetComponent<Image>().sprite =
+                client.Value == 1 ? _oneStarSprite :
+                client.Value == 2 ? _twoStarsSprite :
+                _threeStarSprite;
+        }
+        else
+        {
+            var singlePlayer = playerInfo.First();
+            player1Name.GetComponent<Text>().text = "Player";
+            player1Image.GetComponent<Image>().sprite = null;
+            player1StarsImage.GetComponent<Image>().sprite =
+                singlePlayer.Value == 1 ? _oneStarSprite :
+                singlePlayer.Value == 2 ? _twoStarsSprite :
+                _threeStarSprite;
         }
 
-        switch (totalScore)
+        switch(totalScore)
         {
-            case 1: totalStars.GetComponent<Image>().sprite = _oneStarSprite;
+            case 1:
+                totalStars.GetComponent<Image>().sprite = _oneStarSprite;
                 break;
-            case 2: totalStars.GetComponent<Image>().sprite = _twoStarsSprite;
+            case 2:
+                totalStars.GetComponent<Image>().sprite = _twoStarsSprite;
                 break;
-            default: totalStars.GetComponent<Image>().sprite = _threeStarSprite;
+            default:
+                totalStars.GetComponent<Image>().sprite = _threeStarSprite;
                 break;
         }
-        
+
         gameObject.SetActive(true);
     }
 
