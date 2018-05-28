@@ -28,6 +28,8 @@ public class BottomPanelManager : MonoBehaviour
     [SerializeField] private Sprite _readyButtonPlay;
     [SerializeField] private Sprite _readyButtonReady;
     [SerializeField] private Sprite _readyButtonStop;
+    [SerializeField] private Sprite _mainPlayerIcon;
+    [SerializeField] private Sprite _secondaryPlayerIcon;
 
     [SerializeField] private Color _playStateColor;
     [SerializeField] private Color _readyStateColor;
@@ -87,6 +89,8 @@ public class BottomPanelManager : MonoBehaviour
         var aspectFitter = secondaryPlayerIcon.AddComponent<AspectRatioFitter>();
         aspectFitter.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
         var layoutElement = secondaryPlayerIcon.AddComponent<LayoutElement>();
+        image.sprite = isMainPlayerIcon ? _mainPlayerIcon : _secondaryPlayerIcon;
+
         //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
 
         if (!isMainPlayerIcon)
