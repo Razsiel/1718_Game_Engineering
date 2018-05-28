@@ -47,6 +47,13 @@ namespace Assets.Scripts {
 
             EventManager.OnPlayerReady += OnPlayerReady;
 
+            print($"{PlayerNumber}: Am I the masterclient?");
+            EventManager.OnAllPlayersSpawned += OnAllPlayerSpawned;
+           
+        }
+
+        private void OnAllPlayerSpawned()
+        {
             // Generate head
             Data.GenerateGameObject(this.gameObject, PlayerNumber);
             // Set player color
