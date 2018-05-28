@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: MP_5_Level
   m_EditorClassIdentifier: 
   Name: Hekwerk
-  BackgroundImage: {fileID: 0}
+  BackgroundImage: {fileID: 2800000, guid: a06f299cddae51549ab633c002e85949, type: 3}
   MaxCommands: 10
   Goals:
   - {fileID: 11400000, guid: bf9d835f05b82d643b37430c50224c93, type: 2}
@@ -23,15 +23,15 @@ MonoBehaviour:
   - CommandType: 0
     IsAllowed: 1
   - CommandType: 1
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 2
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 3
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 4
-    IsAllowed: 1
+    IsAllowed: 0
   - CommandType: 5
-    IsAllowed: 1
+    IsAllowed: 0
   LevelScore:
     HighestScore: 8
     DecentScore: 10
