@@ -67,6 +67,12 @@ public class BottomPanelManager : MonoBehaviour
         _gameInfo = gameInfo;
         _mainPanel = transform.parent.GetComponent<RectTransform>();
         _localPlayer = gameInfo.LocalPlayer.Player;
+
+        if (_gameInfo.LocalPlayer.photonPlayer != null)
+        {
+            _isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
+        }
+
         InitializeSequenceBars();
         InitializeReadyButton();
         InitializePlayerIcons();
@@ -74,9 +80,16 @@ public class BottomPanelManager : MonoBehaviour
 
     private void InitializePlayerIcons()
     {
-        InitializeIcons(true);
-        if(_gameInfo.IsMultiplayer)
-            InitializeIcons(false);
+        if (!_gameInfo.IsMultiplayer)
+        {
+            InitializeIcons(true);
+        }
+        else
+        {
+            InitializeIcons(_isHost);
+            InitializeIcons(!_isHost);
+        }
+
     }
 
     private void InitializeIcons(bool isMainPlayerIcon)
@@ -117,11 +130,6 @@ public class BottomPanelManager : MonoBehaviour
         _mainSequenceBar = Instantiate(MainSequenceBar);
         _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
-
-        if (_gameInfo.LocalPlayer.photonPlayer != null)
-        {
-            _isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
-        }
 
         if (!_gameInfo.IsMultiplayer)
         {
