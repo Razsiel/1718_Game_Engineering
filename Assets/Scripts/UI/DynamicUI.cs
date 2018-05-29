@@ -31,8 +31,6 @@ namespace Assets.Scripts.UI
         public void Awake()
         {
             EventManager.OnInitializeUi += Initialize;
-            //EventManager.OnUserInputDisable += OnUserInputDisable;
-            //EventManager.OnUserInputEnable += OnUserInputEnable;
         }
 
         private void Initialize(GameInfo gameInfo)
@@ -163,16 +161,6 @@ namespace Assets.Scripts.UI
             button.onClick.AddListener(onClick);
 
             return commandObject;
-        }
-
-        private void OnUserInputEnable()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void OnUserInputDisable()
-        {
-            _commandPanel.SetActive(false);
         }
     }
 }
