@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 114349396851706406}
   - component: {fileID: 114726557891601810}
   - component: {fileID: 114335611327302728}
+  - component: {fileID: 114273987021089050}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -120,7 +121,7 @@ GameObject:
   - component: {fileID: 114791897948608544}
   - component: {fileID: 114263464833927772}
   m_Layer: 5
-  m_Name: RoomSelectText (1)
+  m_Name: CreateRoomTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,6 +214,7 @@ GameObject:
   - component: {fileID: 224204887196809878}
   - component: {fileID: 222571059739492480}
   - component: {fileID: 114087659629327922}
+  - component: {fileID: 114363406360601096}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -402,7 +404,7 @@ GameObject:
   - component: {fileID: 114889569163606496}
   - component: {fileID: 114751692040716744}
   m_Layer: 5
-  m_Name: RoomSelectText
+  m_Name: LobbyTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -418,6 +420,7 @@ GameObject:
   - component: {fileID: 224360413749998062}
   - component: {fileID: 222464862846641360}
   - component: {fileID: 114796581173633294}
+  - component: {fileID: 114382563260183622}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -948,6 +951,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &114273987021089050
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1185192159078798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: TEAM_NAME
 --- !u!114 &114274540986721260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1132,6 +1147,18 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: BACK
+--- !u!114 &114363406360601096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1375612130175698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: CREATE_ROOM_TITLE
 --- !u!114 &114367624681986846
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1151,6 +1178,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &114382563260183622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1759055833438268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: CREATE_TEAM_BUTTON
 --- !u!114 &114395065279536672
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2152,7 +2191,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Room
+  m_Text: Lobby
 --- !u!114 &114982686295874266
 MonoBehaviour:
   m_ObjectHideFlags: 1

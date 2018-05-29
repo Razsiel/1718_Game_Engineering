@@ -119,11 +119,23 @@
 	<data name="BACK_BUTTON_TEXT" xml:space="preserve">
 		<value>Text voor back_buttons</value>
 	</data>
+	<data name="BACK_TO_GAME_BUTTON" xml:space="preserve">
+		<value>Text for back to back buttons</value>
+	</data>
+	<data name="BACK_TO_LEVELSELECT_BUTTON" xml:space="preserve">
+		<value>Text for back to level select buttons</value>
+	</data>
+	<data name="BACK_TO_MAINMENU_BUTTON" xml:space="preserve">
+		<value>Text for back to main menu buttons</value>
+	</data>
 	<data name="CHAPTER_1_SUBTITLE" xml:space="preserve">
 		<value>Subtitle for chapter 1</value>
 	</data>
 	<data name="CHAPTER_1_TITLE" xml:space="preserve">
 		<value>Title for chapter 1</value>
+	</data>
+	<data name="CREATE_ROOM_TITLE" xml:space="preserve">
+		<value>Text for lobby panel, create your own room</value>
 	</data>
 	<data name="LANGUAGE_LABEL" xml:space="preserve">
 		<value>Language option indicator</value>
@@ -133,6 +145,9 @@
 	</data>
 	<data name="LEVEL_GOALS_TITLE" xml:space="preserve">
 		<value>Title for the ingame goals-panel</value>
+	</data>
+	<data name="LEVELSELECT_PLAY_BUTTON" xml:space="preserve">
+		<value>Text for play button in level select scene</value>
 	</data>
 	<data name="MENU_BUTTON_INGAME" xml:space="preserve">
 		<value>Text for ingame menu button</value>
@@ -224,13 +239,10 @@
 	<data name="SP_TUTORIAL_TURN_2_LEVEL_NAME" xml:space="preserve">
 		<value>Ingame name of level 2</value>
 	</data>
-	<data name="BACK_TO_GAME_BUTTON" xml:space="preserve">
-		<value>Text for back to back buttons</value>
+	<data name="TEAM_NAME" xml:space="preserve">
+		<value>Label for team name input</value>
 	</data>
-	<data name="BACK_TO_MAINMENU_BUTTON" xml:space="preserve">
-		<value>Text for back to main menu buttons</value>
-	</data>
-	<data name="BACK_TO_LEVELSELECT_BUTTON" xml:space="preserve">
-		<value>Text for back to level select buttons</value>
+	<data name="CREATE_TEAM_BUTTON" xml:space="preserve">
+		<value>Text for create team button</value>
 	</data>
 </root>
