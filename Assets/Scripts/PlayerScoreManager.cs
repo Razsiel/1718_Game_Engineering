@@ -20,13 +20,15 @@ public class PlayerScoreManager : MonoBehaviour
     {
         Instance = this;
         print($"{nameof(PlayerScoreManager)}: awake");
-        SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) =>
-        {
-            this._gameInfo = gameInfo;
-            EventManager.OnAllLevelGoalsReached += DeterminePlayersScore;          
-        };        
+        SceneDataLoader.OnSceneLoaded += OnSceneLoaded;        
     }
-  
+
+    private void OnSceneLoaded(GameInfo gameInfo) {
+        SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+        this._gameInfo = gameInfo;
+        EventManager.OnAllLevelGoalsReached += DeterminePlayersScore;
+    }
+
     public int DetermineSequenceCount(Sequence sequence, int count)
     {
         Assert.IsNotNull(sequence);

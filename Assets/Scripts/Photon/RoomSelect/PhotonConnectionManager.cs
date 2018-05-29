@@ -41,11 +41,12 @@ namespace Assets.Scripts.Photon.RoomSelect
         private void Awake()
         {
             _instance = this;
-            GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameinfo) =>
-            {
-                this._gameInfo = gameinfo;
-            };
+            GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
             Init();
+        }
+
+        private void OnSceneLoaded(GameInfo gameinfo) {
+            this._gameInfo = gameinfo;
         }
 
         public void Init()

@@ -44,11 +44,11 @@ namespace Assets.Scripts {
 
         public class SceneDataLoader : MonoBehaviour {
             private string _previousSceneName;
-            public static UnityAction<string, GameInfo> OnSceneLoaded;
+            public static UnityAction<GameInfo> OnSceneLoaded;
 
             public void Start() {
                 // Invoke the event for any interested
-                OnSceneLoaded?.Invoke(_previousSceneName, Instance.GameInfo);
+                OnSceneLoaded?.Invoke(Instance.GameInfo);
                 // Clear the event listeners since it's a one-shot event
                 OnSceneLoaded = null;
                 // Clean up myself since my job has been done!

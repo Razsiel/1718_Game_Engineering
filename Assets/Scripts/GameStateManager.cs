@@ -55,7 +55,7 @@ namespace Assets.Scripts {
             GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
         }
 
-        private void OnSceneLoaded(string previousSceneName, GameInfo gameInfo) {
+        private void OnSceneLoaded(GameInfo gameInfo) {
             GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
             this._gameInfo = gameInfo;
         }
