@@ -312,16 +312,20 @@ namespace Assets.Scripts
             set { Commands[index] = value; }
         }
         
-        public IEnumerable<BaseCommand> Expanded() {
+        public IEnumerable<BaseCommand> Expanded(bool returnLoop) {
             var expanded = new List<BaseCommand>();
             foreach (var command in Commands) {
                 if (command is LoopCommand) {
+                    if(returnLoop)
+                        expanded.Add(command);
+
                     var loop = command as LoopCommand;
                     for (int i = 0; i < loop.LoopCount; i++) {
-                        expanded.AddRange(loop.Sequence.Expanded());
+                        expanded.AddRange(loop.Sequence.Expanded(returnLoop));
                     }
                 }
-                else {
+                else
+                {
                     expanded.Add(command);
                 }
             }
