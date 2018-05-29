@@ -4,26 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace Assets.Scripts.UI {
     public class BackButtonBehaviour : MonoBehaviour {
         private GameInfo _gameInfo;
-        private string _previousScene;
+        [SerializeField] private SceneField _previousSinglePlayerScene;
+        [SerializeField] private SceneField _previousMultiplayerPlayerScene;
 
         void Awake() {
-            GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) => {
-                this._previousScene = previousScene;
-                this._gameInfo = gameInfo;
-            };
+            Assert.IsNotNull(_previousSinglePlayerScene);
+            Assert.IsNotNull(_previousMultiplayerPlayerScene);
+            GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(GameInfo gameInfo) {
+            GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+            this._gameInfo = gameInfo;
         }
 
         public void Back() {
             if (_gameInfo.IsMultiplayer) {
-                PhotonNetwork.LoadLevel(_previousScene);
+                PhotonNetwork.LoadLevel(_previousMultiplayerPlayerScene);
             }
             else {
-                SceneManager.LoadScene(_previousScene);
+                SceneManager.LoadScene(_previousSinglePlayerScene);
             }
         }
     }

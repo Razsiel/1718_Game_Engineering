@@ -18,13 +18,20 @@ namespace Assets {
         private GameInfo _gameInfo;
 
         void Awake() {
-            GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) => {
-                _gameInfo = gameInfo;
-            };
+            GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
+        }
+
+        void OnDestroy() {
+            GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+        }
+
+        private void OnSceneLoaded(GameInfo gameInfo) {
+            _gameInfo = gameInfo;
         }
 
         public void StartSingleplayer() {
             Assert.IsNotNull(LevelSelect);
+            _gameInfo.IsMultiplayer = false;
             _gameInfo.Players = new List<TGEPlayer> {
                 new TGEPlayer()
             };

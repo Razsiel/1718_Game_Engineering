@@ -1845,6 +1845,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc3bafa832dc284ead739befbfbfd3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _previousSinglePlayerScene:
+    sceneAsset: {fileID: 102900000, guid: 5bea99599f6ce9344a9f483645457523, type: 3}
+    sceneName: Scenes/Main
+  _previousMultiplayerPlayerScene:
+    sceneAsset: {fileID: 102900000, guid: 5bea99599f6ce9344a9f483645457523, type: 3}
+    sceneName: Scenes/Main
 --- !u!114 &114811043423172760
 MonoBehaviour:
   m_ObjectHideFlags: 1

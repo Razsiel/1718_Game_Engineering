@@ -30,10 +30,13 @@ public class LevelSelectBehaviour : MonoBehaviour {
     public static UnityAction<int> SelectedLevelChanged;
 
     void Awake() {
-        GlobalData.SceneDataLoader.OnSceneLoaded += (previousScene, gameInfo) => {
-            this._gameInfo = gameInfo;
-            Init();
-        };
+        GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(GameInfo gameInfo) {
+        GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+        this._gameInfo = gameInfo;
+        Init();
     }
 
     void Init() {
