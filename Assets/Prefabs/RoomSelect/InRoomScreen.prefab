@@ -64,6 +64,7 @@ GameObject:
   - component: {fileID: 224906770353337266}
   - component: {fileID: 222791532169414816}
   - component: {fileID: 114771051507071746}
+  - component: {fileID: 114179469828091070}
   m_Layer: 5
   m_Name: Label
   m_TagString: Untagged
@@ -120,6 +121,7 @@ GameObject:
   - component: {fileID: 224777295165278976}
   - component: {fileID: 222083967878764676}
   - component: {fileID: 114510219932842010}
+  - component: {fileID: 114764918343024468}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -229,6 +231,7 @@ GameObject:
   - component: {fileID: 224447494360836962}
   - component: {fileID: 222050488942792788}
   - component: {fileID: 114433473181743660}
+  - component: {fileID: 114032576608992748}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -479,6 +482,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &114032576608992748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1465176062135312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: ROOM_EXIT_BUTTON
 --- !u!114 &114115808890907310
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -666,6 +681,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &114179469828091070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1121040042579730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: ROOM_READY_LABEL
 --- !u!114 &114194377502221328
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1367,6 +1394,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 2
+--- !u!114 &114764918343024468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1241141010533966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: ROOM_PLAY_BUTTON
 --- !u!114 &114766050193546748
 MonoBehaviour:
   m_ObjectHideFlags: 1
