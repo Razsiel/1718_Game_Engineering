@@ -78,14 +78,15 @@ public class OptionsScreenBehaviour : MonoBehaviour {
         print("Language set to: " + LanguageManager.Instance.CurrentlyLoadedCulture.nativeName);
     }
 
-    public void OnChanged_BgmVolumeSlider(Slider BgmSlider)
-    {
-        BgmBehaviour.Instance.SetVolume(BgmSlider.value);
+    public void OnChanged_BgmVolumeSlider(Slider BgmSlider) {
+        double newVolume = (Math.Exp(BgmSlider.value) - 1) / (Math.E - 1);
+        BgmBehaviour.Instance.SetVolume((float) newVolume);
     }
 
     public void OnChanged_SfxVolumeSlider(Slider SfxSlider)
     {
-        SfxBehaviour.Instance.SetVolume(SfxSlider.value);
+        double newVolume = (Math.Exp(SfxSlider.value) - 1) / (Math.E - 1);
+        SfxBehaviour.Instance.SetVolume((float) newVolume);
     }
 
     public void OnToggleRecordVideos(Toggle recordToggle)
