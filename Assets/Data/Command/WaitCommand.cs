@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Assets.Data.Levels;
 using UnityEngine;
 
 namespace Assets.Data.Command {
@@ -12,10 +13,9 @@ namespace Assets.Data.Command {
         /// </summary>
         /// <param name="player"></param>
         /// <returns></returns>
-        public override IEnumerator Execute(Scripts.Player player)
+        public override IEnumerator Execute(MonoBehaviour coroutineRunner, LevelData level, Scripts.Player player, SequenceCycle cycle)
         {
-            //WaitAnimation?
-
+            player.OnWait?.Invoke();
             yield break;
         }
 

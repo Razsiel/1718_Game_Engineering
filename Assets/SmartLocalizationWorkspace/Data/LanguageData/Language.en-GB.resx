@@ -116,16 +116,161 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+	<data name="AUDIO_LABEL" xml:space="preserve">
+		<value>Audio</value>
+	</data>
+	<data name="BACK_BUTTON_TEXT" xml:space="preserve">
+		<value>BACK</value>
+	</data>
+	<data name="BACK_TO_GAME_BUTTON" xml:space="preserve">
+		<value>Back to game</value>
+	</data>
+	<data name="BACK_TO_LEVELSELECT_BUTTON" xml:space="preserve">
+		<value>Back to level select</value>
+	</data>
+	<data name="BACK_TO_MAINMENU_BUTTON" xml:space="preserve">
+		<value>Back to main menu</value>
+	</data>
+	<data name="CHAPTER_1_SUBTITLE" xml:space="preserve">
+		<value>Getting used to the job</value>
+	</data>
+	<data name="CHAPTER_1_TITLE" xml:space="preserve">
+		<value>Chapter 1</value>
+	</data>
+	<data name="CREATE_ROOM_TITLE" xml:space="preserve">
+		<value>Create your own Team</value>
+	</data>
+	<data name="CREATE_TEAM_BUTTON" xml:space="preserve">
+		<value>Create Team</value>
+	</data>
+	<data name="LANGUAGE_LABEL" xml:space="preserve">
+		<value>Language</value>
+	</data>
 	<data name="LEVEL_GOALS_DEMO1" xml:space="preserve">
 		<value>Reach the endgoal.</value>
 	</data>
 	<data name="LEVEL_GOALS_TITLE" xml:space="preserve">
 		<value>Goals:</value>
 	</data>
+	<data name="LEVELSELECT_PLAY_BUTTON" xml:space="preserve">
+		<value>PLAY</value>
+	</data>
 	<data name="MENU_BUTTON_INGAME" xml:space="preserve">
 		<value>Menu</value>
 	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_MULTIPLAYER" xml:space="preserve">
+		<value>Play together</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_MULTIPLAYER_TITLE" xml:space="preserve">
+		<value>Help the citizens!</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_SINGLEPLAYER" xml:space="preserve">
+		<value>Learn to play</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_SINGLEPLAYER_TITLE" xml:space="preserve">
+		<value>Basic training</value>
+	</data>
 	<data name="MONOLOGUE_CLICK_TO_CONTINUE" xml:space="preserve">
 		<value>Click to continue...</value>
+	</data>
+	<data name="MP_1_MONOLOGUE_1" xml:space="preserve">
+		<value>Switch places!</value>
+	</data>
+	<data name="MP_2_MONOLOGUE_1" xml:space="preserve">
+		<value>Watch out for each other!</value>
+	</data>
+	<data name="MP_3_MONOLOGUE_1" xml:space="preserve">
+		<value>Sometimes you can't succeed without each other!</value>
+	</data>
+	<data name="MP_4_MONOLOGUE_1" xml:space="preserve">
+		<value>A switch can be linked to multiple fences!</value>
+	</data>
+	<data name="MP_5_MONOLOGUE_1" xml:space="preserve">
+		<value>This is a tough one. Think about it first!</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_GOALS" xml:space="preserve">
+		<value>Reach the flag</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Teamwork is important! You will not succeed without it!</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_NAME" xml:space="preserve">
+		<value>Teamwork</value>
+	</data>
+	<data name="MUSIC_LABEL" xml:space="preserve">
+		<value>Music</value>
+	</data>
+	<data name="RECORD_PLAYTHROUGH_LABEL" xml:space="preserve">
+		<value>Record level playthroughs</value>
+	</data>
+	<data name="ROOM_EXIT_BUTTON" xml:space="preserve">
+		<value>Leave</value>
+	</data>
+	<data name="ROOM_PLAY_BUTTON" xml:space="preserve">
+		<value>Play</value>
+	</data>
+	<data name="ROOM_READY_LABEL" xml:space="preserve">
+		<value>Ready</value>
+	</data>
+	<data name="SOUND_LABEL" xml:space="preserve">
+		<value>Sound</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_GOALS" xml:space="preserve">
+		<value>- Open the fence
+- Reach the flag</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>This is a fence. It blocks the path to the flag!</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Every fence can be opened using the right lever!</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_3" xml:space="preserve">
+		<value>Pull the lever with the &lt;sprite name="Interact"&gt; COMMAND</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_NAME" xml:space="preserve">
+		<value>Fence &amp; Lever</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_GOALS" xml:space="preserve">
+		<value>Reach the flag</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Time for some efficiency!</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Use the COMMAND &lt;sprite name="Loop"&gt; to run code multiple times!</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_NAME" xml:space="preserve">
+		<value>The Loop</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_GOALS" xml:space="preserve">
+		<value>Reach the flag</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Welcome to Team Fix-IT! Today is your first training!</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Your goal is the reach te flag.</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_3" xml:space="preserve">
+		<value>Use the COMMAND &lt;sprite name="Move"&gt; to move forward!</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_NAME" xml:space="preserve">
+		<value>First steps</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_GOALS" xml:space="preserve">
+		<value>Reach the flag</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>The path bends! You will have to turn!</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Use the COMMANDS &lt;sprite name="TurnLeft"&gt; and &lt;sprite name="TurnRight"&gt; to turn!</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_NAME" xml:space="preserve">
+		<value>The bend</value>
+	</data>
+	<data name="TEAM_NAME" xml:space="preserve">
+		<value>Team name: </value>
 	</data>
 </root>

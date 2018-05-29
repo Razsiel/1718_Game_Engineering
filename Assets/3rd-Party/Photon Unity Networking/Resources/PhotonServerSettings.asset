@@ -14,7 +14,7 @@ MonoBehaviour:
   AppID: 3c2655da-3dc0-415c-9507-5903d9bd4cae
   VoiceAppID: 
   ChatAppID: 
-  HostType: 1
+  HostType: 4
   PreferredRegion: 0
   EnabledRegions: -1
   Protocol: 0
@@ -48,4 +48,8 @@ MonoBehaviour:
   - UpdateReadyState
   - StopExecution
   - UpdateUnreadyState
+  - GoToLevelSelect
+  - SetLevel
+  - SetPlayers
+  - MasterClientShouldStart
   DisableAutoOpenWizard: 1

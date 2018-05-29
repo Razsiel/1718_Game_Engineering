@@ -13,10 +13,7 @@ namespace Assets.Scripts.Lib.Helpers
         public static T GetLocalPlayer<T>(this List<T> players) where T : TGEPlayer
         {
             Assert.IsNotNull(players);
-            if(GameManager.GetInstance().IsMultiPlayer)
-                return players.Single(x => x.photonPlayer.IsLocal);
-            else
-                return players.First();
+            return players.Single(p => p.photonPlayer == null || p.photonPlayer.IsLocal);
         }
 
         public static T GetNetworkPlayer<T>(this List<T> players) where T : TGEPlayer

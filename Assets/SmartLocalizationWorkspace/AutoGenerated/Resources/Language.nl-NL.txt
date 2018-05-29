@@ -116,6 +116,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+	<data name="AUDIO_LABEL" xml:space="preserve">
+		<value>Geluid</value>
+	</data>
+	<data name="BACK_BUTTON_TEXT" xml:space="preserve">
+		<value>TERUG</value>
+	</data>
+	<data name="BACK_TO_GAME_BUTTON" xml:space="preserve">
+		<value>Terug naar het spel</value>
+	</data>
+	<data name="BACK_TO_LEVELSELECT_BUTTON" xml:space="preserve">
+		<value>Terug naar levels</value>
+	</data>
+	<data name="BACK_TO_MAINMENU_BUTTON" xml:space="preserve">
+		<value>Terug naar het hoofdmenu </value>
+	</data>
+	<data name="CHAPTER_1_SUBTITLE" xml:space="preserve">
+		<value>Raak gewend aan de baan</value>
+	</data>
+	<data name="CHAPTER_1_TITLE" xml:space="preserve">
+		<value>Hoofdstuk 1</value>
+	</data>
+	<data name="CREATE_ROOM_TITLE" xml:space="preserve">
+		<value>Maak je eigen Team</value>
+	</data>
+	<data name="CREATE_TEAM_BUTTON" xml:space="preserve">
+		<value>Maak Team</value>
+	</data>
+	<data name="LANGUAGE_LABEL" xml:space="preserve">
+		<value>Taal</value>
+	</data>
 	<data name="LEVEL_GOALS_DEMO1" xml:space="preserve">
 		<value>1. Open het hek. 
 2. Bereik het eindpunt.</value>
@@ -123,10 +153,125 @@
 	<data name="LEVEL_GOALS_TITLE" xml:space="preserve">
 		<value>Doel</value>
 	</data>
+	<data name="LEVELSELECT_PLAY_BUTTON" xml:space="preserve">
+		<value>SPEEL</value>
+	</data>
 	<data name="MENU_BUTTON_INGAME" xml:space="preserve">
 		<value>Menu</value>
 	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_MULTIPLAYER" xml:space="preserve">
+		<value>Speel samen</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_MULTIPLAYER_TITLE" xml:space="preserve">
+		<value>Help de bewoners!</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_SINGLEPLAYER" xml:space="preserve">
+		<value>Leer het spel spelen</value>
+	</data>
+	<data name="MENU_MAIN_BUTTON_PLAY_SINGLEPLAYER_TITLE" xml:space="preserve">
+		<value>De basis</value>
+	</data>
 	<data name="MONOLOGUE_CLICK_TO_CONTINUE" xml:space="preserve">
 		<value>Klik om verder te gaan...</value>
+	</data>
+	<data name="MP_1_MONOLOGUE_1" xml:space="preserve">
+		<value>Wissel van plek!</value>
+	</data>
+	<data name="MP_2_MONOLOGUE_1" xml:space="preserve">
+		<value>Let op elkaar!</value>
+	</data>
+	<data name="MP_3_MONOLOGUE_1" xml:space="preserve">
+		<value>Soms zal je niet zonder elkaar kunnen!</value>
+	</data>
+	<data name="MP_4_MONOLOGUE_1" xml:space="preserve">
+		<value>Een schakelaar kan gebonden zijn aan meerdere hekken.</value>
+	</data>
+	<data name="MP_5_MONOLOGUE_1" xml:space="preserve">
+		<value>Dit is een lastige. Denk eerst goed na!</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_GOALS" xml:space="preserve">
+		<value>Bereik de vlag</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Samenwerken is belangrijk! Zonder overleg kom je nergens!</value>
+	</data>
+	<data name="MP_TUTORIAL_WAIT_1_LEVEL_NAME" xml:space="preserve">
+		<value>Samenwerken</value>
+	</data>
+	<data name="MUSIC_LABEL" xml:space="preserve">
+		<value>Muziek</value>
+	</data>
+	<data name="RECORD_PLAYTHROUGH_LABEL" xml:space="preserve">
+		<value>Maak video opnames</value>
+	</data>
+	<data name="ROOM_EXIT_BUTTON" xml:space="preserve">
+		<value>Verlaten</value>
+	</data>
+	<data name="ROOM_PLAY_BUTTON" xml:space="preserve">
+		<value>Speel</value>
+	</data>
+	<data name="ROOM_READY_LABEL" xml:space="preserve">
+		<value>Klaar</value>
+	</data>
+	<data name="SOUND_LABEL" xml:space="preserve">
+		<value>Geluid</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_GOALS" xml:space="preserve">
+		<value>- Open het hek
+- Bereik de vlag</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Dit is een hek. Het blokkeert de weg naar de vlag!</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Elk hek kan worden geopend met de bijbehorende schakelaar!</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_MONOLOGUE_3" xml:space="preserve">
+		<value>Gebruik de schakelaar met het COMMANDO &lt;sprite name="Interact"&gt;</value>
+	</data>
+	<data name="SP_TUTORIAL_INTERACT_3_LEVEL_NAME" xml:space="preserve">
+		<value>Hek &amp; Hendel</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_GOALS" xml:space="preserve">
+		<value>Bereik de vlag</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Tijd voor wat efficiëntie!</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Gebruik het COMMANDO &lt;sprite name="Loop"&gt; om een stuk van de code meerdere keren uit te voeren</value>
+	</data>
+	<data name="SP_TUTORIAL_LOOP_5_LEVEL_NAME" xml:space="preserve">
+		<value>De Loop</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_GOALS" xml:space="preserve">
+		<value>Bereik de vlag</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Welkom bij Team Fix-IT! Vandaag starten we met de eerste training!</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Het doel is om bij de vlag te komen.</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_MONOLOGUE_3" xml:space="preserve">
+		<value>Geef het COMMANDO &lt;sprite name="Move"&gt; om voorwaarts te bewegen!</value>
+	</data>
+	<data name="SP_TUTORIAL_MOVE_1_LEVEL_NAME" xml:space="preserve">
+		<value>Eerste stapjes</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_GOALS" xml:space="preserve">
+		<value>Bereik de vlag</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_MONOLOGUE_1" xml:space="preserve">
+		<value>Een bocht! Je zal moeten draaien!</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_MONOLOGUE_2" xml:space="preserve">
+		<value>Gebruik de COMMANDO’s &lt;sprite name="TurnLeft"&gt; en &lt;sprite name="TurnRight"&gt; om te draaien!</value>
+	</data>
+	<data name="SP_TUTORIAL_TURN_2_LEVEL_NAME" xml:space="preserve">
+		<value>De bocht</value>
+	</data>
+	<data name="TEAM_NAME" xml:space="preserve">
+		<value>Team naam:</value>
 	</data>
 </root>

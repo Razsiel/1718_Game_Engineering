@@ -13,6 +13,7 @@ namespace Assets.Data.Command {
         [SerializeField] public TurnCommand TurnLeftCommand;
         [SerializeField] public WaitCommand WaitCommand;
         [SerializeField] public InteractCommand InteractCommand;
+        [SerializeField] public LoopCommand LoopCommand;
 
         void OnEnable() {
             AssertCommandsAreSet();
@@ -21,7 +22,8 @@ namespace Assets.Data.Command {
                 new CommandKVP() {Key = CommandEnum.TurnLeftCommand, Value = TurnLeftCommand},
                 new CommandKVP() {Key = CommandEnum.TurnRightCommand, Value = TurnRightCommand},
                 new CommandKVP() {Key = CommandEnum.WaitCommand, Value = WaitCommand},
-                new CommandKVP() {Key = CommandEnum.InteractCommand, Value = InteractCommand}
+                new CommandKVP() {Key = CommandEnum.InteractCommand, Value = InteractCommand},
+                new CommandKVP() {Key = CommandEnum.LoopCommand, Value = LoopCommand}
             };
         }
 
@@ -33,6 +35,7 @@ namespace Assets.Data.Command {
             Assert.IsNotNull(TurnRightCommand);
             Assert.IsNotNull(WaitCommand);
             Assert.IsNotNull(InteractCommand);
+            Assert.IsNotNull(LoopCommand);
         }
     }
 }

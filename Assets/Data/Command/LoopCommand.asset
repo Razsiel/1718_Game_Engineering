@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd47bab561aa72489b65f75b0c051d4, type: 3}
+  m_Name: LoopCommand
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 21300000, guid: b7d035ccce13dda4aaec649a5e1402a2, type: 3}
+  Name: Loop
+  Priority: 0
+  CountsTowardsScore: 0
+  LoopCount: 0
