@@ -22,17 +22,23 @@ namespace Assets.Scripts.Photon.RoomSelect
             var roomSelect = Instantiate(_roomSelect);
             var roomListView = roomSelect.GetComponentInChildren<RoomListView>();
             roomListView.ButtonObjectPool = roomButtonObjectPool.GetComponent<SimpleObjectPool>();
-            
+            print($"roomlistview: {roomListView}");
+
             var photonManager = Instantiate(_photonManager);
             var photonConnectionManager = photonManager.GetComponent<PhotonConnectionManager>();
             photonConnectionManager.LevelSelectScene = _levelSelectScene;
             photonConnectionManager.RoomListView = roomListView;
             photonManager.GetComponent<PhotonView>().viewID = (int)PhotonViewIndices.RoomSelect;
-
+            
             var inRoomScreenPlayerObjectPool = Instantiate(_InRoomScreenPlayerObjectPool);
+            print($"{nameof(inRoomScreenPlayerObjectPool)} {inRoomScreenPlayerObjectPool}");
             var inRoomScreen = Instantiate(_InRoomScreen);
             var inRoomView = inRoomScreen.GetComponent<InRoomView>();
+
             inRoomView.PlayerPanelObjectPool = inRoomScreenPlayerObjectPool.GetComponent<SimpleObjectPool>();
+
+            RoomEventManager.AllGameObjectsSpawned();
+            Destroy(this.gameObject);
         }
     }
 }

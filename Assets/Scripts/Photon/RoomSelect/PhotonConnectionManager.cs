@@ -62,6 +62,13 @@ namespace Assets.Scripts.Photon.RoomSelect
             //    RoomEventManager.OnPhotonConnected += RoomListManager.Instance.UpdateRooms;
             print("photon connected = " + connected);
 
+            RoomEventManager.OnAllGameObjectsSpawned += OnAllGameObjectsSpawned;
+
+           
+        }
+
+        private void OnAllGameObjectsSpawned()
+        {
             var customProperties = new Hashtable() { { ReadyKey, false } };
             PhotonNetwork.player.SetCustomProperties(customProperties);
 
@@ -148,7 +155,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void LeaveRoom()
         {
-            PhotonNetwork.LeaveRoom();
+            PhotonNetwork.LeaveRoom(false);
         }
 
         /// <summary>
@@ -182,6 +189,16 @@ namespace Assets.Scripts.Photon.RoomSelect
                 _gameInfo.Players.Add(new TGEPlayer { photonPlayer = p });
 
             //SceneManager.LoadScene(LevelSelectScene);
+        }
+
+        public void OnDestroy()
+        {
+            RoomEventManager.OnAllGameObjectsSpawned -= OnAllGameObjectsSpawned;
+            RoomEventManager.OnPhotonReceivedRoomListUpdate -= UpdateRooms;
+            RoomEventManager.OnNetworkPlayerJoinedRoom -= NetworkPlayerChanged;
+            RoomEventManager.OnNetworkPlayerLeftRoom -= NetworkPlayerChanged;
+            RoomEventManager.OnLocalPlayerReadyStateChanged -= OnLocalPlayerReadyStateChanged;
+            RoomEventManager.OnPlayerPropertiesChanged -= OnPlayerPropertiesChanged;
         }
     }
 }

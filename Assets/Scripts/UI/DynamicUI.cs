@@ -107,11 +107,12 @@ namespace Assets.Scripts.UI
                 CreateCommandButton(command, _commandListPanel, () => {
                     if (command is LoopCommand)
                     {
-                        BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        //BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
+                        var newCommand = Instantiate(_gameInfo.AllCommands.LoopCommand) as LoopCommand as BaseCommand;
                         newCommand = newCommand.Init();
-                        newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
-                        newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
-                        newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
+                        //newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
+                        //newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
+                        //newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
                         _player.Sequence.Add(newCommand);
                     }
                     else
@@ -161,6 +162,11 @@ namespace Assets.Scripts.UI
             button.onClick.AddListener(onClick);
 
             return commandObject;
+        }
+
+        public void OnDestroy()
+        {
+            EventManager.OnInitializeUi -= Initialize;
         }
     }
 }
