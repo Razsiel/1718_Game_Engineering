@@ -28,8 +28,6 @@ public class SequenceBarBehaviour : MonoBehaviour
         _decentScore = _gameInfo.Level.LevelScore.DecentScore;
         _highestScore = _gameInfo.Level.LevelScore.HighestScore;
 
-        _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
-        _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
 
         //The master player has an orange sequence bar, the client has blue
         if (isHost)
@@ -52,13 +50,12 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
 
         InitializeCommandsList(_isMainSequenceBar);
-        InitializeScoreStars(_isMainSequenceBar);
     }
 
-    private void InitializeScoreStars(bool isMainSequenceBar)
+    public void InitializeScoreStars(GameObject starsPanel)
     {
-        _highestScorePanel.GetComponent<LayoutElement>().preferredWidth = _highestScore * 100;
-        _decentScorePanel.GetComponent<LayoutElement>().preferredWidth = _decentScore * 100 - (_highestScore * 100) + 200;
+        SequenceBarStarPanel panelScript = starsPanel.GetComponent<SequenceBarStarPanel>();
+        panelScript.Initialize(_highestScore, _decentScore);
     }
 
     private void AdjustStarPositions()

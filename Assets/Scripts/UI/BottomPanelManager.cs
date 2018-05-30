@@ -11,11 +11,14 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using Debug = System.Diagnostics.Debug;
+using Sequence = Assets.Scripts.Sequence;
 
 public class BottomPanelManager : MonoBehaviour
 {
     public GameObject MainSequenceBar;
     public GameObject SecondarySequenceBar;
+    public GameObject SequenceBarStars;
+
     private GameObject _commandsListPanel;
     private GameObject _secondaryCommandsListPanel;
     private GameInfo _gameInfo;
@@ -23,6 +26,7 @@ public class BottomPanelManager : MonoBehaviour
     private GameObject _secondarySequenceBar;
     private GameObject _readyButton;
     private GameObject _readyButtonIcon;
+    private GameObject _sequenceBarStars;
 
     [SerializeField] private Sprite _buttonBackground;
     [SerializeField] private Sprite _readyButtonPlay;
@@ -73,6 +77,7 @@ public class BottomPanelManager : MonoBehaviour
             _isHost = _gameInfo.LocalPlayer.photonPlayer.IsMasterClient;
         }
 
+        InitializeSequenceBarStars();
         InitializeSequenceBars();
         InitializeReadyButton();
         InitializePlayerIcons();
@@ -136,6 +141,14 @@ public class BottomPanelManager : MonoBehaviour
             _isHost = true;
         }
         _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _isHost);
+        _mainSequenceBar.GetComponent<SequenceBarBehaviour>().InitializeScoreStars(SequenceBarStars);
+    }
+
+    private void InitializeSequenceBarStars()
+    {
+        _sequenceBarStars = Instantiate(SequenceBarStars);
+        _sequenceBarStars.transform.SetParent(transform, false);
+        _sequenceBarStars.transform.SetSiblingIndex(1);
     }
 
     private void InitializeSecondarySequenceBar()
