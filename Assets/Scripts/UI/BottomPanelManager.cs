@@ -141,7 +141,7 @@ public class BottomPanelManager : MonoBehaviour
             _isHost = true;
         }
         _mainSequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(true, _mainPanel, _gameInfo, _isHost);
-        _mainSequenceBar.GetComponent<SequenceBarBehaviour>().InitializeScoreStars(SequenceBarStars);
+        _mainSequenceBar.GetComponent<SequenceBarBehaviour>().InitializeScoreStars(_sequenceBarStars);
     }
 
     private void InitializeSequenceBarStars()
