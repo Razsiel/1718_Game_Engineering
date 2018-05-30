@@ -13,6 +13,7 @@ public class LevelPreviewBehaviour : MonoBehaviour {
     [SerializeField] private Text _levelTitle;
     [SerializeField] private Image _levelPreview;
     [SerializeField] private GameObject _contentContainer;
+    [SerializeField] private Mask _mask;
 
     private int _levelScore;
 
@@ -30,6 +31,7 @@ public class LevelPreviewBehaviour : MonoBehaviour {
 
     public void ChangeSelectedState(bool selected) {
         _levelPreview.color = selected ? Color.white : _nonSelectedColor;
+        _mask.enabled = !selected;
         _currentAnimation?.Complete();
         _currentAnimation = _contentContainer.transform.DOScale(selected ? Vector3.one : Vector3.one * _nonSelectedScale, 0.5f);
     }

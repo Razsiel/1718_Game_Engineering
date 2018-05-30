@@ -17,7 +17,7 @@ namespace Assets.Scripts.UI
     public class DynamicUI : MonoBehaviour
     {
         public GameObject BottomPanel;
-        public GameObject WinScreenMask;
+        public GameObject WinScreen;
         public GameObject IngameMenuPanel;
         private GameObject _winScreenMask;
         private GameObject _commandPanel;
@@ -45,7 +45,6 @@ namespace Assets.Scripts.UI
             InitializeCommandList();
 
             CreateCommands();
-            InitializeWinScreen();
         }
 
         private void InitializeIngameMenuPanel()
@@ -125,15 +124,6 @@ namespace Assets.Scripts.UI
         public void MenuButtonClicked()
         {
             _ingameMenuPanel.SetActive(true);
-        }
-
-        private void InitializeWinScreen()
-        {
-            GameObject _winScreenMask = Instantiate(WinScreenMask);
-
-            WinScreenBehaviour winScreenBehaviour = _winScreenMask.GetComponent<WinScreenBehaviour>();
-            winScreenBehaviour.Initialize(_gameInfo.IsMultiplayer);
-            _winScreenMask.transform.SetParent(transform, false);
         }
 
         private GameObject CreateCommandButton(BaseCommand command, GameObject parent, UnityAction onClick) {
