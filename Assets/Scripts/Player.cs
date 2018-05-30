@@ -70,9 +70,8 @@ namespace Assets.Scripts {
         private void OnPlayerReady(Player player, bool isReady) {
             if (this == player)
             {
-                EventManager.OnPlayerReady -= OnPlayerReady;
                 print($"Invoking player ready! {this.PlayerNumber}");
-                this.OnReady?.Invoke(true);
+                this.OnReady?.Invoke(isReady);
             }
         }
 
