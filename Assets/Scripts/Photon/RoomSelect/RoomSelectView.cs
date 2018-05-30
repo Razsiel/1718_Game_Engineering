@@ -35,5 +35,11 @@ namespace Assets.Scripts.Photon.RoomSelect
         {
             base.Deactivate();
         }
+
+        public void OnDestroy()
+        {
+            RoomEventManager.OnLocalPlayerJoinedRoom -= Disable;
+            RoomEventManager.OnLocalPlayerLeftRoom -= Enable;
+        }
     }
 }
