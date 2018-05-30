@@ -201,10 +201,16 @@ namespace Assets.Scripts.Photon.Level
                 var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
                 networkPlayer.IsReady = isReady;
                 networkPlayer.OnReady?.Invoke(isReady);
+
+                if (!isReady)
+                {
+                    this.photonView.RPC(nameof(UpdateUnreadyState), PhotonTargets.Others);
+                }
             }
 
-            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
-            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
+            // This print code throws linq-exceptions...
+//            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
+//            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
             if (_gameInfo.Players.All(x => x.Player.IsReady))
             {
                 print($"{nameof(PhotonManager)} everybody is ready");
