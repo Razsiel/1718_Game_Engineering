@@ -21,23 +21,15 @@ namespace Assets.Scripts.Photon.RoomSelect
             AddButtons(rooms);      
         }
 
-        private void AddButtons(RoomInfo[] rooms)
-        {
-            print("Creating buttons for rooms: " + rooms.Length);
+        private void AddButtons(IReadOnlyCollection<RoomInfo> rooms) {
+            print("Creating buttons for rooms: " + rooms.Count);
             //Add button foreach room
-            for (int i = 0; i < rooms.Length; i++)
-            {
+            foreach (RoomInfo roomInfo in rooms) {
                 GameObject newButton = ButtonObjectPool.GetObject();
                 newButton.transform.SetParent(Panel.transform, false);
 
                 RoomListButton button = newButton.GetComponent<RoomListButton>();
-                button.RoomNameExPlayers = rooms[i].Name;
-                string roomName = rooms[i].Name + " Players: " + rooms[i].PlayerCount + "/" + rooms[i].MaxPlayers;
-                
-                button.Setup(roomName, this);
-
-                newButton.GetComponent<Button>().onClick.AddListener(() => HandleClick(button.RoomNameExPlayers));
-
+                button.Setup(roomInfo);
             }
         }
 
@@ -57,12 +49,6 @@ namespace Assets.Scripts.Photon.RoomSelect
                 GameObject toRemove = trans.gameObject;
                 ButtonObjectPool.ReturnObject(toRemove);
             }
-        }
-
-        public void HandleClick(string roomName)
-        {
-            Debug.Log("HandleClick: RoomListView" + " RoomName: " + roomName);
-            PhotonConnectionManager.Instance.JoinRoom(roomName);
-        }      
+        }     
     }
 }

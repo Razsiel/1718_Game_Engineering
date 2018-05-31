@@ -11,50 +11,31 @@ namespace Assets.Scripts.Photon.RoomSelect
 {
     public class RoomListButton : MonoBehaviour
     {
-        public Button buttonComponent;
-        private RoomListView listView;
-
-        public string RoomNameExPlayers;
+        [SerializeField] private Button _buttonComponent;
+        [SerializeField] private Text _roomNameText;
+        [SerializeField] private Text _playerCountText;
 
         private string _roomName;
-        public string RoomName
-        {
-            get
-            {
-                return _roomName;
-            }
-            private set
-            {
-                _roomName = value;
-            }
-        }
 
         void Awake()
-        {            
-            //To:do think of a way to make this button get the component
-            buttonComponent = this.GetComponent<Button>();
-            
-            //buttonComponent.onClick.AddListener(() => HandleClick());
-
+        {
+            Assert.IsNotNull(_buttonComponent);
+            Assert.IsNotNull(_roomNameText);
+            Assert.IsNotNull(_playerCountText);
         }
     
-        public void Setup(string roomName, RoomListView listView)
+        public void Setup(RoomInfo roomInfo)
         {
-            this.RoomName = roomName;
-            this.listView = listView;
-            Assert.IsNotNull(buttonComponent);
-            Assert.IsNotNull(listView);
-            buttonComponent.GetComponentInChildren<Text>().text = roomName;
-            
+            Assert.IsNotNull(roomInfo);
+            _roomName = roomInfo.Name;
+            _roomNameText.text = _roomName;
+            _playerCountText.text = $"{roomInfo.PlayerCount}/{roomInfo.MaxPlayers}";
         }
 
-        ///// <summary>
-        ///// Deprecated
-        ///// </summary>
-        //public void HandleClick()
-        //{
-        //    print("In HandleClick of our room");
-        //    listView.HandleClick(_roomName);
-        //}
+        public void OnClick() {
+            Assert.IsNotNull(_roomName);
+            Debug.Log("HandleClick: RoomListView" + " RoomName: " + _roomName);
+            PhotonConnectionManager.Instance.JoinRoom(_roomName);
+        }
     }
 }
