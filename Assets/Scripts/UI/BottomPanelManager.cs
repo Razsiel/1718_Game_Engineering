@@ -59,6 +59,7 @@ public class BottomPanelManager : MonoBehaviour
     void OnDestroy() {
         EventManager.OnAllPlayersReady -= SetReadyButtonStateOnAllPlayersReady;
         EventManager.OnSimulationStop -= OnSimulationStop;
+        EventManager.OnInitializeUi -= Initialize;
     }
 
     void Initialize(GameInfo gameInfo)
