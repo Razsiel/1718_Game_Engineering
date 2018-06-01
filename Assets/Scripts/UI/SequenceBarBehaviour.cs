@@ -287,42 +287,35 @@ public class SequenceBarBehaviour : MonoBehaviour
     {
         List<BaseCommand> expandedCommands = _gameInfo.LocalPlayer.Player.Sequence.Expanded(true).ToList();
         int loopCount = 0;
-        int standardCommandCountWhileHighestScore = 0;
-        int standardCommandCountWhileDecentScore = 0;
-        int loopCountWhileInHighestScore = 0;
-        int loopCountWhileInDecentScore = 0;
+        int standardCommandCount = 0;
+        float loopWidthInHighestScoreSegment = 0;
+        float loopWidthInDecentScoreSegment = 0;
 
         foreach (var command in expandedCommands)
         {
-            if (standardCommandCountWhileHighestScore == _highestScore)
-            {
-                loopCountWhileInHighestScore = loopCount;
-                print("loopcount in first part: " +loopCountWhileInHighestScore);
-            }
-
-            if (standardCommandCountWhileDecentScore == _decentScore)
-            {
-                loopCountWhileInDecentScore = loopCount;
-                print("loopcount in second part: " + loopCountWhileInDecentScore);
-            }
-
             if (command is LoopCommand)
             {
-                if (standardCommandCountWhileHighestScore < _highestScore)
-                    loopCountWhileInHighestScore++;
+                float additionalWidth = 0;
+                if (((LoopCommand) command).Sequence.Count > 0)
+                    additionalWidth = _loopWidth - _commandSize;
                 else
-                    loopCountWhileInDecentScore++;
+                    additionalWidth = _loopWidth;
+
+                if (standardCommandCount < _highestScore)
+                {
+                    loopWidthInHighestScoreSegment += additionalWidth;
+                }else if (standardCommandCount >= _highestScore && standardCommandCount < _decentScore)
+                {
+                    loopWidthInDecentScoreSegment += additionalWidth;
+                }
             }
             else
             {
-                if (standardCommandCountWhileHighestScore < _highestScore)
-                    standardCommandCountWhileHighestScore++;
-                else
-                    standardCommandCountWhileDecentScore++;
+                standardCommandCount++;
             }
         }
 
-        _panelScript.UpdateStarPanelWidths(loopCountWhileInHighestScore * 60, loopCountWhileInDecentScore * 60);
+        _panelScript.UpdateStarPanelWidths(loopWidthInHighestScoreSegment, loopWidthInDecentScoreSegment);
 
     }
 

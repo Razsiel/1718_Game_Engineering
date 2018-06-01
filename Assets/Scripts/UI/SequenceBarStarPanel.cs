@@ -43,13 +43,17 @@ public class SequenceBarStarPanel : MonoBehaviour
         Image threeStarImage = _threeStarPanel.transform.GetChild(0).GetComponent<Image>();
         Image twoStarImage = _twoStarPanel.transform.GetChild(0).GetComponent<Image>();
         Image oneStarImage = _oneStarPanel.transform.GetChild(0).GetComponent<Image>();
+        _twoStarPanel.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+            2 * _twoStarPanel.GetComponent<LayoutElement>().preferredHeight;
+        _oneStarPanel.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
+            _oneStarPanel.GetComponent<LayoutElement>().preferredHeight;
 
         threeStarImage.sprite = ThreeStarsSprite;
         twoStarImage.sprite = TwoStarsSprite;
         oneStarImage.sprite = OneStarSprite;
 
-        _startingWidthThreeStarPanel = highestScore * commandSize;
-        _startingWidthTwoStarPanel = decentScore * commandSize;
+        _startingWidthThreeStarPanel = highestScore * (commandSize + 5);
+        _startingWidthTwoStarPanel = (decentScore - highestScore) * (commandSize + 5);
         _threeStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthThreeStarPanel;
         _twoStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthTwoStarPanel;
         _oneStarPanel.GetComponent<LayoutElement>().preferredWidth = 50;
@@ -62,7 +66,6 @@ public class SequenceBarStarPanel : MonoBehaviour
     public void OnSequenceScroll(float value)
     {
         Vector2 _newPosition = new Vector3((_startingPosition.x + value), _startingPosition.y);
-        print(_newPosition);
         _starsScrollContent.GetComponent<RectTransform>().anchoredPosition = _newPosition;
     }
 
