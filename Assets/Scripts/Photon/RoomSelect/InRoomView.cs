@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Assets.Scripts.Photon.RoomSelect
 {
-    public class InRoomView : TGEMonoBehaviour
+    public class InRoomView : MonoBehaviour
     {
         public SimpleObjectPool PlayerPanelObjectPool;
         public GameObject PlayersViewPanel;
@@ -16,14 +16,13 @@ namespace Assets.Scripts.Photon.RoomSelect
         public Button PlayButton;
         public Text RoomName;
     
-        public override void Awake()
+        public void Awake()
         {
             Init();
         }
 
         public void Init()
-        {
-            Disable();
+        {            
             PlayButton.onClick.AddListener(StartGame);
 #if !UNITY_EDITOR
             PhotonNetwork.player.NickName = Environment.UserName;
@@ -34,15 +33,24 @@ namespace Assets.Scripts.Photon.RoomSelect
             //PhotonNetwork.player.NickName = Environment.UserName;
 
             //PlayButton.gameObject.SetActive(false);
-            RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
+
+            RoomEventManager.OnAllGameObjectsSpawned += OnAllGameObjectsSpawned;
+            Disable();
+        }
+
+        private void OnAllGameObjectsSpawned()
+        {
+            print($"{nameof(InRoomView)}: {nameof(OnAllGameObjectsSpawned)} with objectpool: {PlayerPanelObjectPool}");
             RoomEventManager.OnLocalPlayerLeftRoom += Disable;
+            RoomEventManager.OnLocalPlayerJoinedRoom += Enable;
             RoomEventManager.OnNetworkPlayerChanged += UpdatePlayersView;
             RoomEventManager.OnAllPlayersReady += OnAllPlayersReady;
             RoomEventManager.OnAnyPlayerUnready += OnAnyPlayerUnready;
-            RoomEventManager.OnBecomingMasterClient += OnBecomingMasterClient;           
+            RoomEventManager.OnBecomingMasterClient += OnBecomingMasterClient;
         }
 
         void OnDestroy() {
+            RoomEventManager.OnAllGameObjectsSpawned -= OnAllGameObjectsSpawned;
             RoomEventManager.OnLocalPlayerJoinedRoom -= Enable;
             RoomEventManager.OnLocalPlayerLeftRoom -= Disable;
             RoomEventManager.OnNetworkPlayerChanged -= UpdatePlayersView;
@@ -70,7 +78,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void Enable()
         {
-            base.Activate();
+            this.gameObject.SetActive(true);
             RoomName.text = PhotonNetwork.room.Name;
             OnAnyPlayerUnready();
             LeaveButton.onClick.RemoveAllListeners();
@@ -81,11 +89,12 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void Disable()
         {
             PlayButton.gameObject.SetActive(false);
-            base.Deactivate();
+            this.gameObject.SetActive(false);
         }
 
         public void UpdatePlayersView(List<PhotonPlayer> players)
         {
+            print($"{nameof(InRoomView)}: in {nameof(UpdatePlayersView)} with objectpool: {PlayerPanelObjectPool}");
             ClearPlayersView();
 
             foreach (var player in players)

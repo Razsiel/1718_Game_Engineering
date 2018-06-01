@@ -13,6 +13,8 @@ using System.Linq;
 using Assets.Data.Command;
 using Assets.Scripts.Lib.Helpers;
 using System.Text;
+using Utilities;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Photon.Level
 {
@@ -23,8 +25,10 @@ namespace Assets.Scripts.Photon.Level
 
         private GameInfo _gameInfo;
         public CommandLibrary CommandLib;
+        public SceneField MainMenu;
 
         public UnityAction<Room> TGEOnAllPlayersJoined;
+        public UnityAction TGEOnOtherPlayerLeft;
 
         //Our singleton instance of the Photonmanager
         public static PhotonManager Instance
@@ -46,14 +50,31 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnGameStart += OnGameStart;
         }
 
+        public void LeaveRoom()
+        {
+            PhotonNetwork.LeaveRoom(false);
+        }
+
         #region EventImplementations
         private void OnInitializePhoton()
         {
             EventManager.OnInitializePhoton -= OnInitializePhoton;
             this.photonView.viewID = (int)PhotonViewIndices.InLevel;
             TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
+            TGEOnOtherPlayerLeft += OnOtherPlayerLeft;
         }
 
+        private void OnOtherPlayerLeft()
+        {
+            LeaveRoom();
+            SceneManager.LoadScene(MainMenu);
+        }
+       
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer player)
+        {
+            TGEOnOtherPlayerLeft?.Invoke();
+        }
+      
         private void OnGameStart(GameInfo gameInfo)
         {
             EventManager.OnGameStart -= OnGameStart;
@@ -83,48 +104,13 @@ namespace Assets.Scripts.Photon.Level
 
         private void OnSequenceChanged(List<BaseCommand> sequence)
         {
-            //var listCommands = new ListContainer<CommandEnum> { List = new List<CommandEnum>() };
-            var listCommands = new ListContainer<SerializedLoopCommand> { List = new List<SerializedLoopCommand>() };
-
-            var commandOptions = CommandLib.Commands;
-
-            //Add the enum of the command to our list
-            //foreach (var bc in sequence) listCommands.List.Add(commandOptions.GetKey(bc));
-
-            print("Serializing commands");
+            var listCommands = new ListContainer<SerializedLoopCommand> { List = new List<SerializedLoopCommand>() };                      
             listCommands.List = GetSerializedCommands(sequence);
-                   
-            //print(testStringBuild(listCommands.List, 0));
-
+                             
             var seqJson = JsonUtility.ToJson(listCommands);
-
             this.photonView.RPC(nameof(UpdateOtherPlayersCommands), PhotonTargets.Others, seqJson);
         }
-
-        //private string testStringBuild(List<SerializedCommand> commands, int tabIndex)
-        //{
-        //    var sb = new StringBuilder();
-        //    foreach (var command in commands)
-        //    {
-        //        if (command is SerializedLoopCommand)
-        //        {
-        //            sb.AppendLine($"Loop");
-        //            tabIndex++;
-        //            for (int i = 0; i < tabIndex; i++)
-        //            {
-        //                sb.Append('\t');
-        //            }
-        //            sb.Append(testStringBuild((command as SerializedLoopCommand).Commands, tabIndex));
-        //            sb.Append('\n');
-        //        }
-        //        else
-        //        {
-        //            sb.AppendLine(command.Command.ToString());
-        //        }
-        //    }
-        //    return sb.ToString();
-        //}
-
+    
         private List<SerializedLoopCommand> GetSerializedCommands(List<BaseCommand> commands)
         {
             var serialized = new List<SerializedLoopCommand>();
@@ -146,26 +132,31 @@ namespace Assets.Scripts.Photon.Level
         }
         #endregion
 
+        public void GoToScene(SceneField scene)
+        {
+            Assert.IsNotNull(scene);
+
+            print($"{nameof(PhotonManager)}: Im the masterclient?: {PhotonNetwork.player.IsMasterClient} with scene: {scene.SceneName}");
+            if (PhotonNetwork.player.IsMasterClient)
+                PhotonNetwork.LoadLevel(scene);
+            else
+                this.photonView.RPC(nameof(MasterClientShouldLoadScene), PhotonTargets.MasterClient, scene.SceneName);
+        }
+
+        [PunRPC]
+        public void MasterClientShouldLoadScene(string sceneName, PhotonMessageInfo info)
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+
         [PunRPC]
         public void UpdateOtherPlayersCommands(string commandsJson, PhotonMessageInfo info)
         {
-            var commands = JsonUtility.FromJson<ListContainer<SerializedLoopCommand>>(commandsJson);
-            print($"{nameof(PhotonManager)}: received the commands and loaded them back to a list");
+            var commands = JsonUtility.FromJson<ListContainer<SerializedLoopCommand>>(commandsJson);           
             var baseCommands = GetBaseCommands(commands.List);
-            print($"{nameof(PhotonManager)}: received the basecommands list");
-            //TestJsonDeserialize(baseCommands);
-
-            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);
-            print($"{nameof(PhotonManager)}: Updated list of secondary player");
-            EventManager.SecondarySequenceChanged(baseCommands);
-            print($"{nameof(PhotonManager)}: Updated UI of the sequence");
-        }
-
-        private void TestJsonDeserialize(List<BaseCommand> commands)
-        {
-            foreach (BaseCommand lc in commands)
-                if (lc is LoopCommand)
-                    print($"Loop with loopcount: {((LoopCommand)lc).LoopCount} CommandsCount: {((LoopCommand)lc).Sequence.Count}");
+                     
+            _gameInfo.Players.GetNetworkPlayer().Player.UpdateSequence(baseCommands, false);           
+            EventManager.SecondarySequenceChanged(baseCommands);           
         }
 
         private List<BaseCommand> GetBaseCommands(List<SerializedLoopCommand> commands)
@@ -192,8 +183,7 @@ namespace Assets.Scripts.Photon.Level
 
         [PunRPC]
         public void UpdateReadyState(bool isReady, PhotonMessageInfo info)
-        {
-            print($"{nameof(PhotonManager)} in updatereadystate");
+        {            
             //The other player is now (un)ready
             if (!info.sender.Equals(PhotonNetwork.player))
             {
@@ -201,10 +191,16 @@ namespace Assets.Scripts.Photon.Level
                 var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
                 networkPlayer.IsReady = isReady;
                 networkPlayer.OnReady?.Invoke(isReady);
+
+                if (!isReady)
+                {
+                    this.photonView.RPC(nameof(UpdateUnreadyState), PhotonTargets.Others);
+                }
             }
 
-            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
-            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
+            // This print code throws linq-exceptions...
+//            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
+//            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
             if (_gameInfo.Players.All(x => x.Player.IsReady))
             {
                 print($"{nameof(PhotonManager)} everybody is ready");
@@ -240,8 +236,6 @@ namespace Assets.Scripts.Photon.Level
             this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
         }
 
-        //        private int amountOfSequenceRan = 0;
-
         [PunRPC]
         public void StartExecution(PhotonMessageInfo info)
         {
@@ -249,55 +243,23 @@ namespace Assets.Scripts.Photon.Level
             print($"{nameof(PhotonManager)} in startexecution");
             foreach (var player in _gameInfo.Players)
                 print($"Player {player.photonPlayer}, IsMasterClient: {player.photonPlayer.IsMasterClient}, IsLocalPlayer: {player.photonPlayer.IsLocal}");
-            EventManager.AllPlayersReady();
-
-            //EventManager.OnExecutionStarted?.Invoke();
-
-            //foreach(TGEPlayer p in gameManager.Players)
-            //{
-            //    p.Player.StartExecution();
-            //    //p.Player.OnPlayerSequenceRan += (Player player) => PlayerSequenceRan(player);
-            //}
+            EventManager.AllPlayersReady();          
         }
-
-        //        private void PlayerSequenceRan(Player p)
-        //        {
-        //            amountOfSequenceRan++;
-        //            if(amountOfSequenceRan > 1)
-        //            {
-        //                //if(!gameManager.LevelData.HasReachedAllGoals())
-        //                //{
-        //                //    //EventManager.OnLevelReset(gameManager.LevelData,
-        //                //    //  gameManager.Players.Select(x => x.Player).ToList());
-        //                //}
-        //                //else
-        //                //{
-        //                //    EventManager.AllLevelGoalsReached();
-        //                //}
-        //                amountOfSequenceRan = 0;
-        //            }
-
-        //            //p.OnPlayerSequenceRan -= PlayerSequenceRan;
-        //        }
 
         [PunRPC]
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
             print($"{nameof(PhotonManager)}: StopExecution RPC");
-            EventManager.SimulationStop();
-
-            //foreach(TGEPlayer p in gameManager.Players)
-            //{
-            //    p.Player.StopAllCoroutines();
-            //    //EventManager.LevelReset(gameManager.LevelData,
-            //    //                gameManager.Players.Select(x => x.Player).ToList());
-            //}
+            EventManager.SimulationStop();          
         }
 
-        //public void PlayersReady()
-        //{
-        //    TGEOnPlayersCreated?.Invoke();
-        //}      
+        public void OnDestroy()
+        {
+            EventManager.OnSequenceChanged -= OnSequenceChanged;
+            EventManager.OnPlayerReady -= OnPlayerReady;
+            EventManager.OnStopButtonClicked -= OnStopButtonClicked;
+            TGEOnOtherPlayerLeft -= OnOtherPlayerLeft;
+        }
     }
 }

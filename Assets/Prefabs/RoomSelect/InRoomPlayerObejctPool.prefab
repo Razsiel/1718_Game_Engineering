@@ -9,42 +9,42 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1477086879964172}
+  m_RootGameObject: {fileID: 1850980469289740}
   m_IsPrefabParent: 1
---- !u!1 &1477086879964172
+--- !u!1 &1850980469289740
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224027256478078070}
-  - component: {fileID: 114915003150849884}
+  - component: {fileID: 224233706444789274}
+  - component: {fileID: 114176100914038114}
   m_Layer: 5
-  m_Name: ButtonObjectPool
+  m_Name: InRoomPlayerObejctPool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &114915003150849884
+  m_IsActive: 1
+--- !u!114 &114176100914038114
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1477086879964172}
+  m_GameObject: {fileID: 1850980469289740}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c28b8b226a3f273468d1b5c16963801b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 1430792806484630, guid: 56f1a1fc663c27646b4e9c92d717a43b, type: 2}
---- !u!224 &224027256478078070
+  prefab: {fileID: 1520161714812198, guid: 9ec825dba9e592641b9a767b7ef6cc44, type: 2}
+--- !u!224 &224233706444789274
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1477086879964172}
+  m_GameObject: {fileID: 1850980469289740}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}

@@ -8,7 +8,7 @@ using UnityEngine;
 namespace Assets.Data.Command
 {
     [Serializable]
-    public class SerializedCommand
+    public abstract class SerializedCommand
     {
         [SerializeField] public CommandEnum Command;
 

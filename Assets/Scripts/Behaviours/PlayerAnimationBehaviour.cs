@@ -13,10 +13,9 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
     private Player _player;
     private bool _isJumping;
     private bool _isSimulating;
-    private Coroutine JumpAnimationCoroutine;
 
     private Tweener _currentAnimation;
-    private Sequence _currentSequence;
+    private Tween _jumpTween;
 
     void Awake() {
         EventManager.OnAllPlayersReady += StopJumping;
@@ -64,7 +63,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
     private void OnReset() {
         print("Completing player animation");
         _currentAnimation.Complete();
-        _currentSequence.Complete(false);
+        StopJumping();
     }
 
     public void AnimateMoveTo(Vector3 to) {
@@ -89,24 +88,36 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     // Ready and waiting
     public void AnimatePlayerReady(bool isReady) {
-        //print($"{nameof(PlayerAnimationBehaviour)}: AnimatePlayerReady isReady = {isReady} isJumping = {_isJumping}");
+        print($"{nameof(PlayerAnimationBehaviour)}: AnimatePlayerReady isReady = {isReady} isJumping = {_isJumping}");
+
+        StopJumping();
+
         if (isReady) {
             if (!_isJumping && !_isSimulating)
-                _currentSequence = transform.DOJump(transform.position, 0.8f, 1, 0.35f)
-                                            .OnComplete(() => { AnimatePlayerReady(isReady); });
-        }
-        else {
-            StopJumping();
+            {
+                _isJumping = true;
+                DoJumpAnimation();
+            }
         }
     }
 
-    private void StopJumping() {
-        _currentSequence?.Complete(false);
+    private void DoJumpAnimation()
+    {
+        if (_isJumping && !_isSimulating)
+        {
+            _jumpTween = transform.DOJump(transform.position, 0.8f, 1, 0.35f).SetAutoKill(false);
+            _jumpTween.OnComplete(() => _jumpTween.Restart());
+        }
+    }
+
+    private void StopJumping()
+    {
+        _jumpTween?.OnComplete(() => _jumpTween?.SetAutoKill(true));
         _isJumping = false;
     }
 
     public void AnimateInteract() {
-        _currentSequence = transform.DOJump(transform.position, 0.8f, 1, 0.8f);
+        _jumpTween = transform.DOJump(transform.position, 0.8f, 1, 0.8f);
     }
 
     public void AnimateBumpIntoWall() { }

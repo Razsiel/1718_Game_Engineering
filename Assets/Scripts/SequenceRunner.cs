@@ -89,6 +89,8 @@ public class SequenceRunner : MonoBehaviour
 
     private IEnumerator RunBothSequences(LevelData levelData, List<SequenceCycle> Cycles)
     {
+        yield return new WaitForSeconds(0.5f);
+
         // Run every SequenceStep
         for (int i = 0; i < Cycles.Count; i++)
         {

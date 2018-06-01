@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Photon;
 using UnityEngine;
@@ -33,6 +34,8 @@ namespace Assets.Scripts.Photon.RoomSelect
         //Called when the localplayer becomes the masterclient (through creating the room or someone leaving)
         public static UnityAction OnBecomingMasterClient;
 
+        //Called when the scene is done spawning all nessescary gameobjects
+        public static UnityAction OnAllGameObjectsSpawned;
         #endregion
 
         #region EventInvokes
@@ -44,6 +47,11 @@ namespace Assets.Scripts.Photon.RoomSelect
         public override void OnDisconnectedFromPhoton()
         {
             OnPhotonDisconnected?.Invoke();
+        }
+
+        public static void AllGameObjectsSpawned()
+        {
+            OnAllGameObjectsSpawned?.Invoke();
         }
 
         public override void OnReceivedRoomListUpdate()
