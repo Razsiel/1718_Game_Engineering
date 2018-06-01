@@ -106,6 +106,8 @@ public class SequenceBarBehaviour : MonoBehaviour
         commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
         commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
+        commandsListFlowLayoutGroup.padding.left = isMainCommandsList ? 10 : 0;
+        
 
 
         sequenceBar.GetComponent<ScrollRect>().content = commandsListPanel.GetComponent<RectTransform>();
