@@ -279,7 +279,51 @@ public class SequenceBarBehaviour : MonoBehaviour
             }
         }
         UpdateSequencebarInputWidth(_commandsListPanel.GetComponent<LayoutElement>());
+        UpdateStarPositions();
         print($"End of Update sequence bar");
+    }
+
+    private void UpdateStarPositions()
+    {
+        List<BaseCommand> expandedCommands = _gameInfo.LocalPlayer.Player.Sequence.Expanded(true).ToList();
+        int loopCount = 0;
+        int standardCommandCountWhileHighestScore = 0;
+        int standardCommandCountWhileDecentScore = 0;
+        int loopCountWhileInHighestScore = 0;
+        int loopCountWhileInDecentScore = 0;
+
+        foreach (var command in expandedCommands)
+        {
+            if (standardCommandCountWhileHighestScore == _highestScore)
+            {
+                loopCountWhileInHighestScore = loopCount;
+                print("loopcount in first part: " +loopCountWhileInHighestScore);
+            }
+
+            if (standardCommandCountWhileDecentScore == _decentScore)
+            {
+                loopCountWhileInDecentScore = loopCount;
+                print("loopcount in second part: " + loopCountWhileInDecentScore);
+            }
+
+            if (command is LoopCommand)
+            {
+                if (standardCommandCountWhileHighestScore < _highestScore)
+                    loopCountWhileInHighestScore++;
+                else
+                    loopCountWhileInDecentScore++;
+            }
+            else
+            {
+                if (standardCommandCountWhileHighestScore < _highestScore)
+                    standardCommandCountWhileHighestScore++;
+                else
+                    standardCommandCountWhileDecentScore++;
+            }
+        }
+
+        _panelScript.UpdateStarPanelWidths(loopCountWhileInHighestScore * 60, loopCountWhileInDecentScore * 60);
+
     }
 
     private void UpdateSequencebarInputWidth(LayoutElement commandsListLayoutElement)

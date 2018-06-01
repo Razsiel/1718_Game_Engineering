@@ -21,19 +21,20 @@ public class SequenceBarStarPanel : MonoBehaviour
     private GameObject _starsScrollContent;
     private Vector2 _startingPosition;
 
+    private float _startingWidthThreeStarPanel;
+    private float _startingWidthTwoStarPanel;
+
     private ScrollRect _scrollRect;
 
     public void Initialize(uint highestScore, uint decentScore, float commandSize)
     {
-        _threeStarPanel = Instantiate(StarPanel);
-        _twoStarPanel = Instantiate(StarPanel);
-        _oneStarPanel = Instantiate(StarPanel);
-        _starsScrollRect = Instantiate(StarsScrollRect);
-        _starsScrollContent = Instantiate(StarsScrollContent);
+        _starsScrollRect = Instantiate(StarsScrollRect, transform, false);
+        _starsScrollContent = Instantiate(StarsScrollContent, _starsScrollRect.transform, false);
+        _threeStarPanel = Instantiate(StarPanel, _starsScrollContent.transform, false);
+        _twoStarPanel = Instantiate(StarPanel, _starsScrollContent.transform, false);
+        _oneStarPanel = Instantiate(StarPanel, _starsScrollContent.transform, false);
 
-        _starsScrollRect.transform.SetParent(transform, false);
         _starsScrollRect.transform.SetSiblingIndex(1);
-        _starsScrollContent.transform.SetParent(_starsScrollRect.transform, false);
 
         _scrollRect = _starsScrollRect.GetComponent<ScrollRect>();
 
@@ -47,24 +48,30 @@ public class SequenceBarStarPanel : MonoBehaviour
         twoStarImage.sprite = TwoStarsSprite;
         oneStarImage.sprite = OneStarSprite;
 
-        _threeStarPanel.transform.SetParent(_starsScrollContent.transform, false);
-        _twoStarPanel.transform.SetParent(_starsScrollContent.transform, false);
-        _oneStarPanel.transform.SetParent(_starsScrollContent.transform, false);
-
-        _threeStarPanel.GetComponent<LayoutElement>().preferredWidth = highestScore * commandSize;
-        _twoStarPanel.GetComponent<LayoutElement>().preferredWidth = decentScore * commandSize;
+        _startingWidthThreeStarPanel = highestScore * commandSize;
+        _startingWidthTwoStarPanel = decentScore * commandSize;
+        _threeStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthThreeStarPanel;
+        _twoStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthTwoStarPanel;
         _oneStarPanel.GetComponent<LayoutElement>().preferredWidth = 50;
 
 
         _startingPosition = new Vector2(1000f, -25f);
-        _starsScrollContent.GetComponent<RectTransform>().localPosition = _startingPosition;
+        _starsScrollContent.GetComponent<RectTransform>().anchoredPosition = _startingPosition;
     }
 
     public void OnSequenceScroll(float value)
     {
-        Vector2 _newPosition = new Vector2((_startingPosition.x + value), _startingPosition.y);
-        print(_newPosition.x);
+        Vector2 _newPosition = new Vector3((_startingPosition.x + value), _startingPosition.y);
+        print(_newPosition);
+        _starsScrollContent.GetComponent<RectTransform>().anchoredPosition = _newPosition;
+    }
 
-        _starsScrollContent.GetComponent<RectTransform>().localPosition = _newPosition;
+    public void UpdateStarPanelWidths(float highScoreExtraWidth, float decentScoreExtraWidth)
+    {
+        _threeStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthThreeStarPanel;
+        _twoStarPanel.GetComponent<LayoutElement>().preferredWidth = _startingWidthTwoStarPanel;
+
+        _threeStarPanel.GetComponent<LayoutElement>().preferredWidth += highScoreExtraWidth;
+        _twoStarPanel.GetComponent<LayoutElement>().preferredWidth += decentScoreExtraWidth;
     }
 }
