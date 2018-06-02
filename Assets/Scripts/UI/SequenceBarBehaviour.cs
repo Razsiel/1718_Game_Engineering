@@ -25,6 +25,7 @@ public class SequenceBarBehaviour : MonoBehaviour
     private ScrollRect _scrollRect;
     private SequenceBarStarPanel _panelScript;
     private float _commandsListLocalPositionX;
+    private float _commandsSpacing;
 
     public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, bool isHost)
     {
@@ -37,6 +38,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         _sequenceInputWidth = _isMainSequenceBar ? 2000 : 1100;
         _commandSize = _isMainSequenceBar ? 95 : 55;
         _loopWidth = isMainSequenceBar ? 155 : 105;
+        _commandsSpacing = isMainSequenceBar ? 5 : 3;
         _scrollRect = GetComponent<ScrollRect>();
 
 
@@ -103,7 +105,7 @@ public class SequenceBarBehaviour : MonoBehaviour
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         commandsListFlowLayoutGroup.childAlignment = isMainCommandsList ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
-        commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
+        commandsListFlowLayoutGroup.spacing = new Vector2(_commandsSpacing, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
         commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
         commandsListFlowLayoutGroup.padding.left = isMainCommandsList ? 10 : 0;
@@ -297,9 +299,9 @@ public class SequenceBarBehaviour : MonoBehaviour
             {
                 float additionalWidth = 0;
                 if (((LoopCommand) command).Sequence.Count > 0)
-                    additionalWidth = _loopWidth - _commandSize;
+                    additionalWidth = _loopWidth - _commandSize + _commandsSpacing;
                 else
-                    additionalWidth = _loopWidth;
+                    additionalWidth = _loopWidth + _commandsSpacing;
 
                 if (standardCommandCount < _highestScore)
                 {
@@ -325,14 +327,20 @@ public class SequenceBarBehaviour : MonoBehaviour
         float width = 200;
         foreach (var a in playerCommands)
             if (a is LoopCommand)
-                width += _loopWidth;
+                width += _loopWidth + _commandsSpacing;
             else
-                width += 100;
+                width += _commandSize + _commandsSpacing;
 
         if (width > _sequenceInputWidth)
+        {
             commandsListLayoutElement.preferredWidth = width;
+            _panelScript.UpdateScrollContentWidth(width);
+        }
         else
+        {
             commandsListLayoutElement.preferredWidth = _sequenceInputWidth;
+            _panelScript.UpdateScrollContentWidth(_sequenceInputWidth);
+        }
     }
 
     private void SetLoopToWidthOfChildren(GameObject loop)
@@ -341,7 +349,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         foreach (Transform child in loop.transform)
         {
-            width += child.GetComponent<LayoutElement>().preferredWidth + 5;
+            width += child.GetComponent<LayoutElement>().preferredWidth + _commandsSpacing;
         }
 
         if (loop.transform.childCount == 0)
@@ -395,7 +403,6 @@ public class SequenceBarBehaviour : MonoBehaviour
             var slotReorderableList = slot.GetComponent<ReorderableList>();
             slotReorderableList.isContainerCommandList = true;
             slotReorderableList.indexInParent = index;
-            //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
             listInSlotFlow.childAlignment = isMainSequenceBar ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
             listInSlotFlow.padding.left = isMainSequenceBar ? 15 : 10;

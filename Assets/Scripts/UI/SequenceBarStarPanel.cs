@@ -77,4 +77,9 @@ public class SequenceBarStarPanel : MonoBehaviour
         _threeStarPanel.GetComponent<LayoutElement>().preferredWidth += highScoreExtraWidth;
         _twoStarPanel.GetComponent<LayoutElement>().preferredWidth += decentScoreExtraWidth;
     }
+
+    public void UpdateScrollContentWidth(float width)
+    {
+        _starsScrollContent.GetComponent<LayoutElement>().preferredWidth = width;
+    }
 }
