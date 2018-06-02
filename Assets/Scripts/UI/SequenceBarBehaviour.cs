@@ -107,8 +107,6 @@ public class SequenceBarBehaviour : MonoBehaviour
         commandsListFlowLayoutGroup.horizontal = true;
         commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
         commandsListFlowLayoutGroup.padding.left = isMainCommandsList ? 10 : 0;
-        
-
 
         sequenceBar.GetComponent<ScrollRect>().content = commandsListPanel.GetComponent<RectTransform>();
 
@@ -333,6 +331,8 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         if (width > _sequenceInputWidth)
             commandsListLayoutElement.preferredWidth = width;
+        else
+            commandsListLayoutElement.preferredWidth = _sequenceInputWidth;
     }
 
     private void SetLoopToWidthOfChildren(GameObject loop)
