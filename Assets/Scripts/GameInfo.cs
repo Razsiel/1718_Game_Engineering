@@ -36,17 +36,17 @@ namespace Assets.Scripts {
         public IEnumerable<BaseCommand> AllowedCommands {
             get {
                 // Only do the hard work the first time
-                if (_cachedAllowedCommands == null) {
-                    Assert.IsNotNull(Level);
-                    Assert.IsNotNull(Level.AllowedCommands);
-                    Assert.IsNotNull(AllCommands);
+//                if (_cachedAllowedCommands == null) {
+//                    Assert.IsNotNull(Level);
+//                    Assert.IsNotNull(Level.AllowedCommands);
+//                    Assert.IsNotNull(AllCommands);
                     _cachedAllowedCommands = Level.AllowedCommands
                                                   .Where(c => c.IsAllowed) // only select allowed commands before cross-referencing enum to values
                                                   .Join(AllCommands.Commands, // cross-ref source
                                                         command => command.CommandType, // key of outer list to cross ref with inner key
                                                         kvp => kvp.Key, // key of inner list
                                                         (command, kvp) => kvp.Value); // select the baseCommand
-                }
+//                }
                 return _cachedAllowedCommands;
             }
         }
