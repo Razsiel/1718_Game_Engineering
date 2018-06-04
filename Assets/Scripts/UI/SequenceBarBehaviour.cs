@@ -281,7 +281,8 @@ public class SequenceBarBehaviour : MonoBehaviour
             }
         }
         UpdateSequencebarInputWidth(_commandsListPanel.GetComponent<LayoutElement>());
-        UpdateStarPositions();
+        if(_isMainSequenceBar)
+            UpdateStarPositions();
         print($"End of Update sequence bar");
     }
 
@@ -334,12 +335,14 @@ public class SequenceBarBehaviour : MonoBehaviour
         if (width > _sequenceInputWidth)
         {
             commandsListLayoutElement.preferredWidth = width;
-            _panelScript.UpdateScrollContentWidth(width);
+            if(_isMainSequenceBar)
+                _panelScript.UpdateScrollContentWidth(width);
         }
         else
         {
             commandsListLayoutElement.preferredWidth = _sequenceInputWidth;
-            _panelScript.UpdateScrollContentWidth(_sequenceInputWidth);
+            if(_isMainSequenceBar)
+                _panelScript.UpdateScrollContentWidth(_sequenceInputWidth);
         }
     }
 
