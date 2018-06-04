@@ -65,6 +65,9 @@ namespace Assets.Scripts {
             head.transform.localRotation = Quaternion.identity;
             // Set player color
             GetComponent<MeshRenderer>().material = Data.PlayerColours[PlayerNumber];
+
+            // Reset sequencebar
+            Sequence.Clear();
         }
 
         private void OnPlayerReady(Player player, bool isReady) {
