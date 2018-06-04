@@ -148,6 +148,7 @@ GameObject:
   - component: {fileID: 224774305031122986}
   - component: {fileID: 222407079889856226}
   - component: {fileID: 114002666920598046}
+  - component: {fileID: 114587982248667496}
   m_Layer: 5
   m_Name: Placeholder
   m_TagString: Untagged
@@ -429,7 +430,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 2a36ab65c0774ca46942356a1da1c7ff, type: 3}
-    m_FontSize: 18
+    m_FontSize: 24
     m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 0
@@ -440,7 +441,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter room name...
+  m_Text: Enter team name...
 --- !u!114 &114002876640914588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1043,6 +1044,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114587982248667496
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1464705622503306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf6500c4c0c329c42893d0c1767d6d3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localizedKey: CREATE_TEAM_PLACEHOLDER
 --- !u!114 &114588901232751822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1193,9 +1206,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4be1f5a974bd694faa0a2113aef1bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RoomButtonPrefab: {fileID: 0}
   Panel: {fileID: 1168007265543734}
   Margin: {x: 0, y: 0, z: 0}
-  ButtonObjectPool: {fileID: 0}
 --- !u!114 &114760938712972258
 MonoBehaviour:
   m_ObjectHideFlags: 1

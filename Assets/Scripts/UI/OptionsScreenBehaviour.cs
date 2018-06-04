@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using RockVR.Video;
 using SmartLocalization;
 using UnityEngine;
@@ -17,16 +18,20 @@ public class OptionsScreenBehaviour : MonoBehaviour {
     [SerializeField] private Slider BgmVolumeSlider;
     [SerializeField] private Slider SfxVolumeSlider;
 
+    private string _videoSaveDirectory;
+
     void Start()
     {
         LanguageManager.SetDontDestroyOnLoad();
         PlayerPrefs.SetInt("RecordVideos", 0); // Disable video recording
+        _videoSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Progranimals\\Video";
 
         if (PlayerPrefs.GetInt("IHavePlayedBefore") == 0)
         {
             BgmVolumeSlider.value = 0.5f;
             SfxVolumeSlider.value = 0.5f;
             OnClick_LanguageFlagDutch();
+            Directory.CreateDirectory(_videoSaveDirectory);
 
             PlayerPrefs.SetInt("IHavePlayedBefore", 1);
             SaveSettings();
@@ -105,7 +110,7 @@ public class OptionsScreenBehaviour : MonoBehaviour {
 
     public void OnClickOpenVideoFolder()
     {
-        string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Progranimals\\Video";
-        Process.Start(@path);
+        Directory.CreateDirectory(_videoSaveDirectory);
+        Process.Start(@_videoSaveDirectory);
     }
 }
