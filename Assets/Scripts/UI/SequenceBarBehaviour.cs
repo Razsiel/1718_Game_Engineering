@@ -1,6 +1,7 @@
 ﻿using Assets.Data.Command;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,13 @@ public class SequenceBarBehaviour : MonoBehaviour
     private GameObject _highestScorePanel;
     private uint _decentScore;
     private uint _highestScore;
+    private int _sequenceInputWidth;
+    private float _commandSize;
+    private float _loopWidth;
+    private ScrollRect _scrollRect;
+    private SequenceBarStarPanel _panelScript;
+    private float _commandsListLocalPositionX;
+    private float _commandsSpacing;
 
     public void Initialize(bool isMainSequenceBar, RectTransform mainPanel, GameInfo gameInfo, bool isHost)
     {
@@ -27,9 +35,12 @@ public class SequenceBarBehaviour : MonoBehaviour
         _localPlayer = gameInfo.LocalPlayer.Player;
         _decentScore = _gameInfo.Level.LevelScore.DecentScore;
         _highestScore = _gameInfo.Level.LevelScore.HighestScore;
+        _sequenceInputWidth = _isMainSequenceBar ? 2000 : 1100;
+        _commandSize = _isMainSequenceBar ? 95 : 55;
+        _loopWidth = isMainSequenceBar ? 155 : 105;
+        _commandsSpacing = isMainSequenceBar ? 5 : 3;
+        _scrollRect = GetComponent<ScrollRect>();
 
-        _highestScorePanel = transform.parent.parent.GetChild(1).GetChild(1).gameObject;
-        _decentScorePanel = transform.parent.parent.GetChild(1).GetChild(2).gameObject;
 
         //The master player has an orange sequence bar, the client has blue
         if (isHost)
@@ -52,18 +63,20 @@ public class SequenceBarBehaviour : MonoBehaviour
         }
 
         InitializeCommandsList(_isMainSequenceBar);
-        InitializeScoreStars(_isMainSequenceBar);
+        _commandsListLocalPositionX = _commandsListPanel.transform.localPosition.x;
     }
 
-    private void InitializeScoreStars(bool isMainSequenceBar)
+    public void InitializeScoreStars(GameObject starsPanel)
     {
-        _highestScorePanel.GetComponent<LayoutElement>().preferredWidth = _highestScore * 100;
-        _decentScorePanel.GetComponent<LayoutElement>().preferredWidth = _decentScore * 100 - (_highestScore * 100) + 200;
+        _panelScript = starsPanel.GetComponent<SequenceBarStarPanel>();
+        _panelScript.Initialize(_highestScore, _decentScore, _commandSize);
+        _scrollRect.onValueChanged.AddListener(OnSequenceBarScroll);
     }
 
-    private void AdjustStarPositions()
+    private void OnSequenceBarScroll(Vector2 arg0)
     {
-
+       float difference = _commandsListPanel.transform.localPosition.x - _commandsListLocalPositionX;
+       _panelScript.OnSequenceScroll(difference);
     }
 
     void OnDestroy()
@@ -83,19 +96,19 @@ public class SequenceBarBehaviour : MonoBehaviour
         var commandsListLayoutElement = commandsListPanel.AddComponent<LayoutElement>();
         var commandsListFlowLayoutGroup = commandsListPanel.AddComponent<FlowLayoutGroup>();
 
-        commandsListLayoutElement.preferredWidth = isMainCommandsList ? 2000 : 1100;
+        commandsListLayoutElement.preferredWidth = _sequenceInputWidth;
         commandsListLayoutElement.preferredHeight = isMainCommandsList ? 125 : 75;
-        commandsListLayoutElement.flexibleWidth = 999;
+        commandsListLayoutElement.flexibleWidth = 0;
         commandsListLayoutElement.minHeight = 0;
 
         commandsListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
         commandsListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
         commandsListFlowLayoutGroup.childAlignment = isMainCommandsList ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
-        commandsListFlowLayoutGroup.spacing = isMainCommandsList ? new Vector2(5f, 0f) : new Vector2(3f, 0f);
+        commandsListFlowLayoutGroup.spacing = new Vector2(_commandsSpacing, 0f);
         commandsListFlowLayoutGroup.horizontal = true;
         commandsListFlowLayoutGroup.padding.top = isMainCommandsList ? 0 : 10;
-
+        commandsListFlowLayoutGroup.padding.left = isMainCommandsList ? 10 : 0;
 
         sequenceBar.GetComponent<ScrollRect>().content = commandsListPanel.GetComponent<RectTransform>();
 
@@ -257,7 +270,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
                 print($"We have done the recursion call");
                 //Set the loop and its contents widths to fit the children
-                SetWidthOfChildren(slot.transform.GetChild(1).gameObject);
+                SetLoopToWidthOfChildren(slot.transform.GetChild(1).gameObject);
                 slot.GetComponent<LayoutElement>().preferredWidth =
                     slot.transform.GetChild(1).GetComponent<LayoutElement>().preferredWidth;
                 slot.transform.GetChild(0).GetComponent<LayoutElement>().preferredWidth =
@@ -267,7 +280,85 @@ public class SequenceBarBehaviour : MonoBehaviour
                 print($"End of if");
             }
         }
+        UpdateSequencebarInputWidth(_commandsListPanel.GetComponent<LayoutElement>());
+        UpdateStarPositions();
         print($"End of Update sequence bar");
+    }
+
+    private void UpdateStarPositions()
+    {
+        List<BaseCommand> expandedCommands = _gameInfo.LocalPlayer.Player.Sequence.Expanded(true).ToList();
+        int loopCount = 0;
+        int standardCommandCount = 0;
+        float loopWidthInHighestScoreSegment = 0;
+        float loopWidthInDecentScoreSegment = 0;
+
+        foreach (var command in expandedCommands)
+        {
+            if (command is LoopCommand)
+            {
+                float additionalWidth = 0;
+                if (((LoopCommand) command).Sequence.Count > 0)
+                    additionalWidth = _loopWidth - _commandSize + _commandsSpacing;
+                else
+                    additionalWidth = _loopWidth + _commandsSpacing;
+
+                if (standardCommandCount < _highestScore)
+                {
+                    loopWidthInHighestScoreSegment += additionalWidth;
+                }else if (standardCommandCount >= _highestScore && standardCommandCount < _decentScore)
+                {
+                    loopWidthInDecentScoreSegment += additionalWidth;
+                }
+            }
+            else
+            {
+                standardCommandCount++;
+            }
+        }
+
+        _panelScript.UpdateStarPanelWidths(loopWidthInHighestScoreSegment, loopWidthInDecentScoreSegment);
+
+    }
+
+    private void UpdateSequencebarInputWidth(LayoutElement commandsListLayoutElement)
+    {
+        List<BaseCommand> playerCommands = _localPlayer.Sequence.Expanded(true).ToList();
+        float width = 200;
+        foreach (var a in playerCommands)
+            if (a is LoopCommand)
+                width += _loopWidth + _commandsSpacing;
+            else
+                width += _commandSize + _commandsSpacing;
+
+        if (width > _sequenceInputWidth)
+        {
+            commandsListLayoutElement.preferredWidth = width;
+            _panelScript.UpdateScrollContentWidth(width);
+        }
+        else
+        {
+            commandsListLayoutElement.preferredWidth = _sequenceInputWidth;
+            _panelScript.UpdateScrollContentWidth(_sequenceInputWidth);
+        }
+    }
+
+    private void SetLoopToWidthOfChildren(GameObject loop)
+    {
+        float width = _isMainSequenceBar ? 55 : 45;
+
+        foreach (Transform child in loop.transform)
+        {
+            width += child.GetComponent<LayoutElement>().preferredWidth + _commandsSpacing;
+        }
+
+        if (loop.transform.childCount == 0)
+        {
+            width = _loopWidth;
+        }
+
+        var itemLayout = loop.GetComponent<LayoutElement>();
+        itemLayout.preferredWidth = width;
     }
 
     private void AmountOfLoopsEdited(string newAmountOfLoops, List<int> indices)
@@ -275,36 +366,17 @@ public class SequenceBarBehaviour : MonoBehaviour
         _localPlayer.Sequence.LoopEdited(newAmountOfLoops, indices);
     }
 
-    private void SetWidthOfChildren(GameObject item)
-    {
-        float width = _isMainSequenceBar ? 55 : 45;
-
-        foreach(Transform child in item.transform)
-        {
-            width += child.GetComponent<LayoutElement>().preferredWidth + 5;
-        }
-
-        if(item.transform.childCount == 0)
-        {
-            width = _isMainSequenceBar ? 155 : 105;
-        }
-
-        var itemLayout = item.GetComponent<LayoutElement>();
-        itemLayout.preferredWidth = width;
-    }
 
     private GameObject CreateSequenceBarSlot(bool isMainSequenceBar, int index, Sprite image, bool isLoopCommandSlot, int amountOfLoops)
     {
-        int size = isMainSequenceBar ? 95 : 55;
-
         GameObject slot = new GameObject(index.ToString());
         var slotImage = slot.AddComponent<Image>();
         var slotContentSizeFitter = slot.AddComponent<ContentSizeFitter>();
         var slotLayoutElement = slot.AddComponent<LayoutElement>();
         var slotSlotScript = slot.AddComponent<SlotScript>();
 
-        slotLayoutElement.preferredHeight = size;
-        slotLayoutElement.preferredWidth = size;
+        slotLayoutElement.preferredHeight = _commandSize;
+        slotLayoutElement.preferredWidth = _commandSize;
         slotImage.sprite = image;
 
         //if Loop command, add reorderable list setup
@@ -322,7 +394,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             listInSlotContent.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             listInSlotLayout.preferredHeight = isMainSequenceBar ? 125 : 55;
-            listInSlotLayout.preferredWidth = isMainSequenceBar ? 155 : 105;
+            listInSlotLayout.preferredWidth = _loopWidth;
             listInSlotLayout.minHeight = 0;
 
             listInSlot.transform.SetParent(slot.transform, false);
@@ -331,14 +403,13 @@ public class SequenceBarBehaviour : MonoBehaviour
             var slotReorderableList = slot.GetComponent<ReorderableList>();
             slotReorderableList.isContainerCommandList = true;
             slotReorderableList.indexInParent = index;
-            //slotReorderableList.OnElementAdded.AddListener(EventManager.OnElementDroppedToMainSequenceBar);
 
             listInSlotFlow.childAlignment = isMainSequenceBar ? TextAnchor.MiddleLeft : TextAnchor.UpperLeft;
             listInSlotFlow.padding.left = isMainSequenceBar ? 15 : 10;
             listInSlotFlow.spacing = new Vector2(5f, 0);
 
-            slotLayoutElement.preferredHeight = size;
-            slotLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
+            slotLayoutElement.preferredHeight = _commandSize;
+            slotLayoutElement.preferredWidth = _loopWidth;
 
             GameObject loopImageAndInput = new GameObject("loop image & input");
             var loopAndImageFlowLayout = loopImageAndInput.AddComponent<FlowLayoutGroup>();
@@ -349,8 +420,8 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopAndImageContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             loopAndImageLayoutElement.minHeight = 0;
-            loopAndImageLayoutElement.preferredWidth = isMainSequenceBar ? 155 : 105;
-            loopAndImageLayoutElement.preferredHeight = size;
+            loopAndImageLayoutElement.preferredWidth = _loopWidth;
+            loopAndImageLayoutElement.preferredHeight = _commandSize;
 
             GameObject loopImage = new GameObject("image");
             loopImage.AddComponent<Image>().sprite = image;
@@ -362,7 +433,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             var loopImageLayoutElement = loopImage.AddComponent<LayoutElement>();
             loopImageLayoutElement.preferredWidth = isMainSequenceBar ? 125 : 75;
-            loopImageLayoutElement.preferredHeight = size;
+            loopImageLayoutElement.preferredHeight = _commandSize;
 
             GameObject loopInput = new GameObject("input");
             var loopInputLayoutElement = loopInput.AddComponent<LayoutElement>();
@@ -372,7 +443,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
             loopInputContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            loopInputLayoutElement.preferredHeight = size;
+            loopInputLayoutElement.preferredHeight = _commandSize;
             loopInputLayoutElement.preferredWidth = 30;
 
             var loopInputField = loopInput.AddComponent<InputField>();
@@ -393,7 +464,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             inputTextText.fontSize = 50;
             inputTextText.horizontalOverflow = HorizontalWrapMode.Overflow;
             inputTextText.verticalOverflow = VerticalWrapMode.Overflow;
-            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
+            inputText.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, _commandSize);
 
             loopInputField.textComponent = inputTextText;
             loopInputField.characterLimit = 1;
@@ -401,7 +472,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputField.targetGraphic = loopInputImage;
             loopInputField.contentType = InputField.ContentType.IntegerNumber;
             loopInputField.onEndEdit.AddListener((string newAmountOfLoops) => AmountOfLoopsEdited(newAmountOfLoops, slotSlotScript.indices));
-            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, size);
+            loopInputField.GetComponent<RectTransform>().sizeDelta = new Vector2(30f, _commandSize);
 
             inputText.transform.SetParent(loopInputField.transform, false);
             loopInput.transform.SetParent(loopInputField.transform, false);

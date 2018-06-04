@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts;
 using Assets.Scripts.DataStructures;
+using SmartLocalization;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
@@ -51,6 +52,42 @@ public class WinScreenBehaviour : MonoBehaviour {
         //HOTFIX
         Canvas.ForceUpdateCanvases();
 
-        _complimentText.text = "TODO: Hier komt een compliment".ToUpper();
+        if (totalScore == 3)
+        {
+            List<string> threeStarCompliments = new List<string>()
+            {
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_1"),
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_2"),
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_3")
+
+            };
+
+            _complimentText.text = GetRandomfromList(threeStarCompliments);
+        }
+        else if (totalScore == 2)
+        {
+            List<string> twoStarCompliments = new List<string>()
+            {
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_1"),
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_2"),
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_3")
+
+            };
+            _complimentText.text = GetRandomfromList(twoStarCompliments);
+        }
+        else
+        {
+            List<string> oneStarCompliments = new List<string>()
+            {
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_1"),
+                LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_2")
+            };
+            _complimentText.text = GetRandomfromList(oneStarCompliments);
+        }
+    }
+
+    private string GetRandomfromList(List<string> listOfStrings)
+    {
+        return listOfStrings[Random.Range(0, listOfStrings.Count)];
     }
 }

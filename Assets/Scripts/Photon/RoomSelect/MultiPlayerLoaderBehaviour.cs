@@ -9,8 +9,8 @@ namespace Assets.Scripts.Photon.RoomSelect
 {
     public class MultiPlayerLoaderBehaviour : MonoBehaviour
     {
+        [SerializeField] private GameObject _roomButtonPrefab;
         [SerializeField] private GameObject _roomSelect;
-        [SerializeField] private GameObject _roomButtonObjectPool;
         [SerializeField] private GameObject _photonManager;
         [SerializeField] private GameObject _InRoomScreen;
         [SerializeField] private GameObject _InRoomScreenPlayerObjectPool;
@@ -18,10 +18,9 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void Awake()
         {
-            var roomButtonObjectPool = Instantiate(_roomButtonObjectPool);
             var roomSelect = Instantiate(_roomSelect);
             var roomListView = roomSelect.GetComponentInChildren<RoomListView>();
-            roomListView.ButtonObjectPool = roomButtonObjectPool.GetComponent<SimpleObjectPool>();
+            roomListView.RoomButtonPrefab = _roomButtonPrefab;
             print($"roomlistview: {roomListView}");
 
             var photonManager = Instantiate(_photonManager);

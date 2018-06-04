@@ -78,6 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4be1f5a974bd694faa0a2113aef1bc1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _roomButtonPrefab: {fileID: 1430792806484630, guid: 56f1a1fc663c27646b4e9c92d717a43b,
+    type: 2}
   Panel: {fileID: 1565116572304746}
   Margin: {x: 0, y: 0, z: 0}
   ButtonObjectPool: {fileID: 0}
@@ -92,8 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 797b02c075d2b8a4c8b7655ee14a100a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonComponent: {fileID: 114234014725112986}
-  RoomNameExPlayers: r1
+  _buttonComponent: {fileID: 0}
+  _roomNameText: {fileID: 0}
+  _playerCountText: {fileID: 0}
 --- !u!114 &114234014725112986
 MonoBehaviour:
   m_ObjectHideFlags: 1
