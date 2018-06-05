@@ -56,6 +56,8 @@ namespace Assets.Scripts {
             EventManager.OnPlayerReady -= OnPlayerReady;
             EventManager.OnAllPlayersSpawned -= OnAllPlayerSpawned;
             EventManager.OnLevelReset -= OnLevelReset;
+
+            Sequence = null;
         }
 
         private void OnAllPlayerSpawned()

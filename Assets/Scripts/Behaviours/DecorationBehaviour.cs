@@ -23,6 +23,10 @@ namespace Assets.Scripts.Behaviours {
             }
         }
 
+        public void OnDestroy() {
+            Configuration.Destroy();
+        }
+
         private void OnActivate(Player player) {
             Debug.Log("OnActive!");
             switch (Configuration.Type)

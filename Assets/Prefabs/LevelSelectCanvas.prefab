@@ -1590,6 +1590,7 @@ MonoBehaviour:
   _levelTitle: {fileID: 0}
   _levelPreview: {fileID: 0}
   _contentContainer: {fileID: 0}
+  _mask: {fileID: 0}
 --- !u!114 &114107199039877184
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1696,6 +1697,7 @@ MonoBehaviour:
   _levelTitle: {fileID: 0}
   _levelPreview: {fileID: 0}
   _contentContainer: {fileID: 0}
+  _mask: {fileID: 0}
 --- !u!114 &114132346138820322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2298,6 +2300,11 @@ MonoBehaviour:
   LevelUIPrefab: {fileID: 1718347688396556, guid: 5065fea2962849d4197ad41e5532d3e8,
     type: 2}
   PlayButton: {fileID: 1416932110549466}
+  ButtonsToDisableInMP:
+  - {fileID: 1555299333036374}
+  - {fileID: 1831354951553208}
+  - {fileID: 1416932110549466}
+  - {fileID: 1594939605998872}
   LevelSelectPhotonManagerGO: {fileID: 0}
   SelectedLevelStars: {fileID: 114189121284675952}
   ThreeStars: {fileID: 21300000, guid: 44f4a1f33ffe9cb44b8bc72587aaa04e, type: 3}
@@ -3174,6 +3181,7 @@ MonoBehaviour:
   _levelTitle: {fileID: 0}
   _levelPreview: {fileID: 0}
   _contentContainer: {fileID: 0}
+  _mask: {fileID: 0}
 --- !u!114 &114515322574540740
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4851,6 +4859,7 @@ MonoBehaviour:
   _levelTitle: {fileID: 0}
   _levelPreview: {fileID: 0}
   _contentContainer: {fileID: 0}
+  _mask: {fileID: 0}
 --- !u!114 &114896748992871560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6907,7 +6916,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000045556404, y: -0.0000055705}
+  m_AnchoredPosition: {x: -0.000032253025, y: -0.0000055705}
   m_SizeDelta: {x: -0.12931013, y: 0.000011141}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224963483635065738
