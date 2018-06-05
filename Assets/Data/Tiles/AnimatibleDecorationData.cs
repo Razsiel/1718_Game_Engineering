@@ -16,8 +16,13 @@ public class AnimatibleDecorationData : DecorationData {
     [SerializeField] public Vector3 EndRotation;
     [SerializeField] public bool Walkable;
 
-    public override bool IsWalkable(CardinalDirection direction) {
-        return Walkable;
+    public override bool IsWalkable(CardinalDirection direction, CardinalDirection orientation = CardinalDirection.None) {
+        if (direction == orientation)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public override GameObject GenerateGameObject(Transform parent, bool hidden = false) {

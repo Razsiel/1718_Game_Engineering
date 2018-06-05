@@ -11,7 +11,7 @@ namespace Assets.Data.Tiles
     [CreateAssetMenu(menuName = "Data/Tiles/NonWalkableDecoration")]
     public class NonWalkableDecorationData : DecorationData
     {
-        public override bool IsWalkable(CardinalDirection direction) {
+        public override bool IsWalkable(CardinalDirection direction, CardinalDirection orientation = CardinalDirection.None) {
             Debug.Log("This decoration is not walkable, returning false");
             return false;
         }

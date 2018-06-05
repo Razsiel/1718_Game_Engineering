@@ -26,6 +26,7 @@ namespace Assets.Scripts.DataStructures {
         [SerializeField] public TriggerType TriggerType;
         [SerializeField] public Channel.Channel Channel;
         [SerializeField] public DecorationState DefaultState = DecorationState.Inactive;
+        [SerializeField] private DecorationState CurrentState;
 
         private TinyStateMachine<DecorationState, DecorationTrigger> Fsm; // Finite State Machine
 
@@ -64,7 +65,10 @@ namespace Assets.Scripts.DataStructures {
         }
 
         public bool IsWalkable(CardinalDirection direction) {
-            return IsActivated() || (DecorationData?.IsWalkable(direction) ?? false);
+            if (Type != ChannelType.Mechanism) // TODO MATTHIJS: optimize IsWalkable chain 
+                return true;
+
+            return (bool)DecorationData?.IsWalkable(direction, Orientation) || IsActivated();
         }
 
         public bool IsActivated() {
@@ -106,6 +110,8 @@ namespace Assets.Scripts.DataStructures {
             else {
                 Fsm.Fire(DecorationTrigger.Activate, player);
             }
+
+            this.CurrentState = Fsm.State;
         }
 
         public enum DecorationState {
