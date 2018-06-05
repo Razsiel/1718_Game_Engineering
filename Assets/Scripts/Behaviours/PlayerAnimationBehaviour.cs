@@ -16,11 +16,13 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     private Tweener _currentAnimation;
     private Tween _jumpTween;
+    private Vector3 _startPosition;
 
     void Awake() {
         EventManager.OnAllPlayersReady += StopJumping;
         EventManager.OnSimulationStop += OnSimulationEnded;
         EventManager.OnSimulate += OnSimulationStarted;
+        EventManager.OnAllPlayersSpawned += SetPlayerStartPosition;
 
         _isJumping = false;
     }
@@ -29,6 +31,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
         EventManager.OnAllPlayersReady -= StopJumping;
         EventManager.OnSimulationStop -= OnSimulationEnded;
         EventManager.OnSimulate -= OnSimulationStarted;
+        EventManager.OnAllPlayersSpawned -= SetPlayerStartPosition;
 
         if (_player != null) {
             _player.OnReady -= AnimatePlayerReady;
@@ -38,6 +41,11 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
             _player.OnInteract -= AnimateInteract;
             _player.OnFailMoveTo -= AnimateFailedMove;
         }
+    }
+
+    private void SetPlayerStartPosition()
+    {
+        _startPosition = _player.transform.position;
     }
 
     public void OnSimulationEnded() {
@@ -112,7 +120,9 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
 
     private void StopJumping()
     {
-        _jumpTween?.OnComplete(() => _jumpTween?.SetAutoKill(true));
+        _jumpTween.Kill();
+        _player.transform.position = _startPosition;
+
         _isJumping = false;
     }
 
