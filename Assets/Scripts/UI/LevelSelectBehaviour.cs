@@ -20,14 +20,13 @@ public class LevelSelectBehaviour : MonoBehaviour {
     public HorizontalScrollSnap LevelScroller;
     public GameObject LevelUIPrefab;
     public GameObject PlayButton;
+    public GameObject[] ButtonsToDisableInMP;
     public GameObject LevelSelectPhotonManagerGO;
     public Image SelectedLevelStars;
     public Sprite ThreeStars;
     public Sprite TwoStars;
     public Sprite OneStars;
     private LevelSelectPhotonManager _levelSelectPhotonManager;
-
-    public static UnityAction<int> SelectedLevelChanged;
 
     void Awake() {
         GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
@@ -59,7 +58,7 @@ public class LevelSelectBehaviour : MonoBehaviour {
         if (_gameInfo.IsMultiplayer) {
             //if(_gameInfo.LocalPlayer.photonPlayer.IsMasterClient) 
             this._levelSelectPhotonManager = LevelSelectPhotonManagerGO.GetComponent<LevelSelectPhotonManager>();
-            _levelSelectPhotonManager.Init(PlayButton, LevelScene, _gameInfo, LevelScroller);
+            _levelSelectPhotonManager.Init(LevelScene, _gameInfo, LevelScroller, ButtonsToDisableInMP);
         }
 
         _selectedLevel = levels[0];

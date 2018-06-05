@@ -130,5 +130,9 @@ namespace Assets.Scripts.DataStructures {
             }
             Fsm.Fire(Fsm.State == DecorationState.Active ? DecorationTrigger.Deactivate : DecorationTrigger.Activate);
         }
+
+        public void Destroy() {
+            Fsm = null;
+        }
     }
 }
