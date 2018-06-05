@@ -14,6 +14,7 @@ public class WinScreenBehaviour : MonoBehaviour {
     [SerializeField] private Text _complimentText;
     [SerializeField] private GameObject _playerScorePrefab;
     [SerializeField] private Image _scoreImage;
+    [SerializeField] private Sprite[] _scoreImages;
 
     private bool _isMultiplayer;
 
@@ -21,6 +22,7 @@ public class WinScreenBehaviour : MonoBehaviour {
         Assert.IsNotNull(_complimentText);
         Assert.IsNotNull(_playerScorePrefab);
         Assert.IsNotNull(_scoreImage);
+        Assert.IsNotNull(_scoreImages);
         GlobalData.SceneDataLoader.OnSceneLoaded += OnSceneLoaded;
     }
 
@@ -34,6 +36,7 @@ public class WinScreenBehaviour : MonoBehaviour {
 
     void OnDestroy()
     {
+        GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
         EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
     }
 
@@ -52,38 +55,37 @@ public class WinScreenBehaviour : MonoBehaviour {
         //HOTFIX
         Canvas.ForceUpdateCanvases();
 
-        if (totalScore == 3)
-        {
-            List<string> threeStarCompliments = new List<string>()
-            {
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_1"),
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_2"),
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_3")
+        List<string> compliments;
+        switch (totalScore) {
+            case 3:
+                compliments = new List<string>()
+                {
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_1"),
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_2"),
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_THREE_STARS_3")
 
-            };
+                };
+                break;
+            case 2:
+                compliments = new List<string>()
+                {
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_1"),
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_2"),
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_3")
 
-            _complimentText.text = GetRandomfromList(threeStarCompliments);
+                };
+                break;
+            default:
+                compliments = new List<string>()
+                {
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_1"),
+                    LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_2")
+                };
+                break;
         }
-        else if (totalScore == 2)
-        {
-            List<string> twoStarCompliments = new List<string>()
-            {
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_1"),
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_2"),
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_TWO_STARS_3")
 
-            };
-            _complimentText.text = GetRandomfromList(twoStarCompliments);
-        }
-        else
-        {
-            List<string> oneStarCompliments = new List<string>()
-            {
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_1"),
-                LanguageManager.Instance.GetTextValue("COMPLIMENT_ONE_STAR_2")
-            };
-            _complimentText.text = GetRandomfromList(oneStarCompliments);
-        }
+        _complimentText.text = GetRandomfromList(compliments);
+        _scoreImage.sprite = _scoreImages[totalScore];
     }
 
     private string GetRandomfromList(List<string> listOfStrings)
