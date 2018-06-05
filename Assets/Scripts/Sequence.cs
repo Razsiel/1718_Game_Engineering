@@ -20,7 +20,7 @@ namespace Assets.Scripts
         }
 
         public void SequenceChanged() {
-            EventManager.SequenceChanged();
+            EventManager.SequenceChanged(Commands);
         }
 
         public IEnumerator<BaseCommand> GetEnumerator() {
