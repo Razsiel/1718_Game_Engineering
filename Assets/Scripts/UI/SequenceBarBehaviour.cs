@@ -300,7 +300,7 @@ public class SequenceBarBehaviour : MonoBehaviour
             {
                 float additionalWidth = 0;
                 if (((LoopCommand) command).Sequence.Count > 0)
-                    additionalWidth = _loopWidth - _commandSize + _commandsSpacing;
+                    additionalWidth = _loopWidth - _commandSize;
                 else
                     additionalWidth = _loopWidth + _commandsSpacing;
 

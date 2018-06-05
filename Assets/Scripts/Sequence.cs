@@ -320,7 +320,15 @@ namespace Assets.Scripts
                         expanded.Add(command);
 
                     var loop = command as LoopCommand;
-                    for (int i = 0; i < loop.LoopCount; i++) {
+                    if (!returnLoop)
+                    {
+                        for (int i = 0; i < loop.LoopCount; i++)
+                        {
+                            expanded.AddRange(loop.Sequence.Expanded(returnLoop));
+                        }
+                    }
+                    else
+                    {
                         expanded.AddRange(loop.Sequence.Expanded(returnLoop));
                     }
                 }
