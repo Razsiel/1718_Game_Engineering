@@ -260,6 +260,8 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerReady -= OnPlayerReady;
             EventManager.OnStopButtonClicked -= OnStopButtonClicked;
             TGEOnOtherPlayerLeft -= OnOtherPlayerLeft;
+            EventManager.OnPlayerSpawned -= OnPlayerSpawned;
+            EventManager.OnGameStart -= OnGameStart;
         }
     }
 }
