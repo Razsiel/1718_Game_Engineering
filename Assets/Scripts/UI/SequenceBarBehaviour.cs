@@ -112,7 +112,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
         sequenceBar.GetComponent<ScrollRect>().content = commandsListPanel.GetComponent<RectTransform>();
 
-        AddReorderableListToComponent(sequenceBar, commandsListFlowLayoutGroup, _mainPanel, isMainCommandsList, isMainCommandsList);
+        AddReorderableListToComponent(sequenceBar, commandsListFlowLayoutGroup, _mainPanel);
 
         _commandsListPanel = commandsListPanel;
 
@@ -127,14 +127,15 @@ public class SequenceBarBehaviour : MonoBehaviour
 
     }
 
-    public void AddReorderableListToComponent(GameObject component, LayoutGroup contentLayoutGroup, RectTransform draggableArea, bool isDraggable, bool isRearrangeable)
+    public void AddReorderableListToComponent(GameObject component, LayoutGroup contentLayoutGroup, RectTransform draggableArea)
     {
         var reorderableList = component.AddComponent<ReorderableList>();
         reorderableList.ContentLayout = contentLayoutGroup;
         reorderableList.DraggableArea = draggableArea;
-        reorderableList.IsDraggable = isDraggable;
+        reorderableList.IsDraggable = _isMainSequenceBar;
+        reorderableList.IsDropable = _isMainSequenceBar;
 
-        if(isRearrangeable)
+        if(_isMainSequenceBar)
             reorderableList.OnElementAdded.AddListener(RearrangeElementsInSequence);
     }
 
@@ -402,7 +403,7 @@ public class SequenceBarBehaviour : MonoBehaviour
 
             listInSlot.transform.SetParent(slot.transform, false);
 
-            AddReorderableListToComponent(slot, listInSlotFlow, _mainPanel, true, true);
+            AddReorderableListToComponent(slot, listInSlotFlow, _mainPanel);
             var slotReorderableList = slot.GetComponent<ReorderableList>();
             slotReorderableList.isContainerCommandList = true;
             slotReorderableList.indexInParent = index;
@@ -450,9 +451,9 @@ public class SequenceBarBehaviour : MonoBehaviour
             loopInputLayoutElement.preferredWidth = 30;
 
             var loopInputField = loopInput.AddComponent<InputField>();
-
             loopImage.transform.SetParent(loopImageAndInput.transform, false);
             loopInput.transform.SetParent(loopImageAndInput.transform, false);
+            loopInputField.readOnly = !_isMainSequenceBar;
 
             loopImageAndInput.transform.SetParent(slot.transform, false);
             loopImageAndInput.transform.SetSiblingIndex(0);
