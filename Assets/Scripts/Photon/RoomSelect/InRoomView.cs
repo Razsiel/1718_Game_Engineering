@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.DataStructures;
+using Assets.Scripts.Lib.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
+using ExitGames.Client.Photon;
 
 namespace Assets.Scripts.Photon.RoomSelect
 {
@@ -99,12 +101,17 @@ namespace Assets.Scripts.Photon.RoomSelect
 
             foreach (var player in players)
             {
+                var hashtable = player.CustomProperties;
+                bool isReady = false;
+                hashtable.TryGetTypedValue(PhotonConnectionManager.ReadyKey, out isReady);
+
                 GameObject newPlayerPanel = PlayerPanelObjectPool.GetObject();
                 newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform, false);
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
                 playerPanel.Setup(player.NickName, this, player.IsLocal);
+                playerPanel.PlayerReadyState.isOn = isReady;
             }           
         }
 
