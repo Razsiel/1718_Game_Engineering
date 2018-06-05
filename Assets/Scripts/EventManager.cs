@@ -110,9 +110,9 @@ public class EventManager {
         OnElementDroppedToMainSequenceBar?.Invoke(arg0);
     }
 
-    public static void SequenceChanged()
+    public static void SequenceChanged(List<BaseCommand> commands)
     {
-        OnSequenceChanged?.Invoke(GlobalData.Instance.GameInfo.LocalPlayer.Player.Sequence.Commands);
+        OnSequenceChanged?.Invoke(commands);
     }
 
     public static void SecondarySequenceChanged(List<BaseCommand> commands)
