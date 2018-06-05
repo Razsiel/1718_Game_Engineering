@@ -135,10 +135,11 @@ namespace Assets.Data.Levels
             }
 
             // Checks the current tile to see whether it can be exited from the direction
-            var canLeaveCurrent = current.Value.CanExit(direction);
+            var oppositeDirection = direction.ToOppositeDirection();
+            var canLeaveCurrent = current.Value.IsWalkable(direction);
             // Checks the destination tile to see whether it can be entered/walked into from the given direction
-            var canEnterDestination = destination.Value.IsWalkable(direction);
-
+            var canEnterDestination = destination.Value.IsWalkable(oppositeDirection);
+            
             // Final check whether the player can actually move
             var canMove = canLeaveCurrent && canEnterDestination;
 

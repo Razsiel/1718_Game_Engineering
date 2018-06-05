@@ -10,7 +10,7 @@ namespace Assets.Data.Tiles {
         [SerializeField] public Mesh Mesh;
         [SerializeField] public Material Material;
 
-        public virtual bool IsWalkable(CardinalDirection direction) {
+        public virtual bool IsWalkable(CardinalDirection direction, CardinalDirection orientation = CardinalDirection.None) {
             return true;
         }
 
