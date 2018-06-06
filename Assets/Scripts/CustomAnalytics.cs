@@ -23,6 +23,13 @@ public class CustomAnalytics : MonoBehaviour
         EventManager.OnMonologueEnded += LogMonologueTimespan;
     }
 
+    void OnDestroy() {
+        EventManager.OnLevelLoaded -= OnLevelStart;
+        EventManager.OnReadyButtonClicked -= IncrementSequenceRanAmount;
+        EventManager.OnAllLevelGoalsReached -= SendDataOnLevelComplete;
+        EventManager.OnMonologueEnded -= LogMonologueTimespan;
+    }
+
     private void OnLevelStart(GameInfo gameInfo)
     {
         _gameInfo = gameInfo;
