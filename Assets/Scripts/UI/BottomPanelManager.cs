@@ -56,11 +56,10 @@ public class BottomPanelManager : MonoBehaviour
 	    EventManager.OnInitializeUi += Initialize;
 	    EventManager.OnAllPlayersReady += SetReadyButtonStateOnAllPlayersReady;
         EventManager.OnSimulationStop += OnSimulationStop;
-	    //EventManager.OnUserInputEnable += ShowBottomPanel;
-	    //EventManager.OnUserInputDisable += HideBottomPanel;
-	}
+    }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         EventManager.OnAllPlayersReady -= SetReadyButtonStateOnAllPlayersReady;
         EventManager.OnSimulationStop -= OnSimulationStop;
         EventManager.OnInitializeUi -= Initialize;
@@ -264,4 +263,5 @@ public class BottomPanelManager : MonoBehaviour
     {
         _secondarySequenceBar.SetActive(true);
     }
+
 }
