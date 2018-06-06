@@ -85,9 +85,15 @@ namespace Assets.Scripts.Photon.Level
         private void OnPlayerSpawned(Player player)
         {
             EventManager.OnPlayerSpawned -= OnPlayerSpawned;
+            EventManager.OnMonologueEnded += OnMonologueEnded;
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnPlayerReady += OnPlayerReady;
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
+        }
+
+        private void OnMonologueEnded()
+        {
+            this.photonView.RPC(nameof(OtherPlayShouldUpdateSequence), PhotonTargets.Others);
         }
 
         private void OnStopButtonClicked()
@@ -147,6 +153,14 @@ namespace Assets.Scripts.Photon.Level
         public void MasterClientShouldLoadScene(string sceneName, PhotonMessageInfo info)
         {
             PhotonNetwork.LoadLevel(sceneName);
+        }
+
+        [PunRPC]
+        public void OtherPlayShouldUpdateSequence(PhotonMessageInfo info)
+        {
+            var sequence = _gameInfo.LocalPlayer.Player.Sequence.Commands;
+            if(sequence != null)
+                EventManager.SequenceChanged(sequence);
         }
 
         [PunRPC]
@@ -260,6 +274,7 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnPlayerReady -= OnPlayerReady;
             EventManager.OnStopButtonClicked -= OnStopButtonClicked;
             TGEOnOtherPlayerLeft -= OnOtherPlayerLeft;
+            EventManager.OnMonologueEnded -= OnMonologueEnded;
         }
     }
 }
