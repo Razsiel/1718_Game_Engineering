@@ -18,7 +18,7 @@ namespace Assets.Scripts {
     public class Player : TGEMonoBehaviour {
         public int PlayerNumber;
         public PlayerData Data;
-        public Sequence Sequence { get; private set; }
+        public Sequence Sequence { get; private set; } = new Sequence();
 
         public UnityAction<Vector3> OnMoveTo;
         public UnityAction<Vector3> OnFailMoveTo;
