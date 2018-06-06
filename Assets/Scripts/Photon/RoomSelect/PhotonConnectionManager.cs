@@ -76,6 +76,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             //RoomEventManager.OnLocalPlayerJoinedRoom += OnLocalPlayerJoinedRoom;
             //RoomEventManager.OnLocalPlayerLeftRoom += OnLocalPlayerLeftRoom;
 
+            UpdateRooms();
             RoomEventManager.OnPhotonReceivedRoomListUpdate += UpdateRooms;
             RoomEventManager.OnNetworkPlayerJoinedRoom += NetworkPlayerChanged;
             RoomEventManager.OnNetworkPlayerLeftRoom += NetworkPlayerChanged;
