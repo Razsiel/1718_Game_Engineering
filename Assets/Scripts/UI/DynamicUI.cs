@@ -31,13 +31,18 @@ namespace Assets.Scripts.UI
         public void Awake()
         {
             EventManager.OnInitializeUi += Initialize;
+            EventManager.OnPlayerSpawned += OnPlayerSpawned;
+        }
+
+        private void OnPlayerSpawned(Player player) {
+            _player = player;
+            Assert.IsNotNull(_player);
         }
 
         private void Initialize(GameInfo gameInfo)
         {
             EventManager.OnInitializeUi -= Initialize;
             _gameInfo = gameInfo;
-            _player = _gameInfo.LocalPlayer.Player;
 
             InitializeIngameMenuPanel();
             InitializeCommandPanel();
@@ -157,6 +162,7 @@ namespace Assets.Scripts.UI
         public void OnDestroy()
         {
             EventManager.OnInitializeUi -= Initialize;
+            EventManager.OnPlayerSpawned -= OnPlayerSpawned;
         }
     }
 }

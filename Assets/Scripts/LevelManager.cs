@@ -13,8 +13,7 @@ using UnityEngine.Assertions;
 using UnityEngine;
 
 public class LevelManager : TGEMonoBehaviour {
-    [SerializeField]
-    public GameObject PlayerPrefab;
+    [SerializeField] public GameObject PlayerPrefab;
     private GameObject _levelObject;
 
     public override void Awake() {
@@ -39,22 +38,25 @@ public class LevelManager : TGEMonoBehaviour {
         var levelData = gameInfo.Level;
         var players = gameInfo.Players;
         Assert.IsNotNull(PlayerPrefab);
-        Assert.IsNotNull(levelData);
-        Assert.IsNotNull(players);
         Assert.IsTrue(players.Any());
-        
+
         // Create level objects in scene
-        _levelObject = PresentLevel(levelData, players, this.transform);
+        _levelObject = PresentLevel(levelData, gameInfo, this.transform);
         Assert.IsNotNull(_levelObject);
-        
+
         EventManager.LevelLoaded(gameInfo);
     }
 
-    public GameObject PresentLevel(LevelData data, List<TGEPlayer> players, Transform parent = null, bool hideInHierarchy = false) {
-        Destroy(_levelObject);
-
+    public GameObject PresentLevel(LevelData data, GameInfo gameInfo, Transform parent = null,
+                                   bool hideInHierarchy = false) {
+        Assert.IsNotNull(data);
         data.Init();
         var grid = data.GridMapData;
+        var players = gameInfo.Players;
+
+        Assert.IsNotNull(grid);
+        Assert.IsNotNull(players);
+        Destroy(_levelObject);
 
         GameObject root = new GameObject("Level Object") {
             hideFlags = hideInHierarchy ? HideFlags.HideAndDontSave : HideFlags.NotEditable
@@ -88,14 +90,13 @@ public class LevelManager : TGEMonoBehaviour {
                         colorBehaviour.PlayerNumber = playerGoal.PlayerNumber;
                     }
                 }
-                
+
                 tileTransform.localScale /= data.TileScale;
             }
         }
 
         // Create player objects and set players to start position in scene;
-        for (int i = 0; i < players.Count; i++)
-        {
+        for (int i = 0; i < players.Count; i++) {
             var playerObject = Instantiate(PlayerPrefab, Vector3.zero, Quaternion.identity, parent);
             var playerComponent = playerObject.GetComponent<Player>();
             var playerAnimation = playerObject.GetComponent<PlayerAnimationBehaviour>();
@@ -104,8 +105,9 @@ public class LevelManager : TGEMonoBehaviour {
             //if(players.Count == 1) playerComponent.PlayerNumber = 0;
             //else if(players[i].photonPlayer.IsMasterClient) playerComponent.PlayerNumber = 0;
             //else playerComponent.PlayerNumber = 1;
-            if(players.Count > 1)
-                print($"{nameof(LevelManager)}: playerNumber: {i}, MasterClient: {players[i].photonPlayer.IsMasterClient}");
+            if (players.Count > 1)
+                print(
+                    $"{nameof(LevelManager)}: playerNumber: {i}, MasterClient: {players[i].photonPlayer.IsMasterClient}");
 
             playerComponent.PlayerNumber = i;
 
@@ -120,8 +122,7 @@ public class LevelManager : TGEMonoBehaviour {
         return root;
     }
 
-    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition)
-    {
+    private void PresentPlayerOnPosition(LevelData levelData, Player player, PlayerStartPosition playerStartPosition) {
         var playerWorldPosition = GridHelper.GridToWorldPosition(levelData, playerStartPosition.StartPosition);
         playerWorldPosition.y = 1;
         player.ViewDirection = playerStartPosition.Facing;
@@ -129,10 +130,8 @@ public class LevelManager : TGEMonoBehaviour {
         player.transform.rotation = Quaternion.Euler(player.ViewDirection.ToEuler());
     }
 
-    private void ResetPlayers(List<Player> players, LevelData levelData)
-    {
-        foreach (var player in players)
-        {
+    private void ResetPlayers(List<Player> players, LevelData levelData) {
+        foreach (var player in players) {
             player.Reset();
             PresentPlayerOnPosition(levelData, player, levelData.GetPlayerStartPosition(player.PlayerNumber));
         }

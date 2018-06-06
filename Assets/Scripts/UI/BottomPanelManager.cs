@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
-using Debug = System.Diagnostics.Debug;
 using Sequence = Assets.Scripts.Sequence;
 
 public class BottomPanelManager : MonoBehaviour
