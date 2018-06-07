@@ -31,6 +31,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 1
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: 4b1d4ebe3b204b64cb2af13c76ff39d7, type: 2}
@@ -47,9 +48,35 @@ MonoBehaviour:
         TriggerType: 0
         Channel: 1
         DefaultState: 0
+        CurrentState: 0
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        DecorationData: {fileID: 11400000, guid: 140539a05b4343c4f93cc78bbcf5cb7d,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 8}
+        Scale: 1
+        Rotation: -90
+        Orientation: 0
+        Type: 0
+        TriggerType: 0
+        Channel: 1
+        DefaultState: 0
+        CurrentState: 0
   - _tiles:
-    - Tile: {fileID: 0}
-      DecorationConfigs: []
+    - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
+      DecorationConfigs:
+      - ChannelMaterials: []
+        DecorationData: {fileID: 11400000, guid: 1a0772902b1321b4e80f28f95240ce2c,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 0
+        Type: 0
+        TriggerType: 0
+        Channel: 0
+        DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
