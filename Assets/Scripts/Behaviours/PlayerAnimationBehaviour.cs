@@ -62,7 +62,7 @@ public class PlayerAnimationBehaviour : MonoBehaviour {
         _player.OnReady += AnimatePlayerReady;
         _player.OnMoveTo += AnimateMoveTo;
         _player.OnTurn += AnimateTurn;
-        _player.OnWait += AnimateWait;
+//        _player.OnWait += AnimateWait; TODO: Fix wait animation
         _player.OnInteract += AnimateInteract;
         _player.OnFailMoveTo += AnimateFailedMove;
         _player.OnReset += OnReset;
