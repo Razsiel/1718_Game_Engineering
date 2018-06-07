@@ -16,17 +16,14 @@ namespace Assets.Scripts {
         public bool IsMultiplayer { get; set; }
         public CommandLibrary AllCommands { get; set; }
 
-        private TGEPlayer _localPlayer;
         public TGEPlayer LocalPlayer {
             get {
-                if (_localPlayer == null) {
-                    Assert.IsNotNull(Players);
-                    Assert.IsTrue(Players.Any());
-                    _localPlayer = IsMultiplayer
-                        ? Players.SingleOrDefault(p => p.photonPlayer.IsLocal) ?? Players.First()
-                        : Players.First();
-                    Assert.IsNotNull(_localPlayer);
-                }
+                Assert.IsNotNull(Players);
+                Assert.IsTrue(Players.Any());
+                var _localPlayer = IsMultiplayer
+                    ? Players.SingleOrDefault(p => p.photonPlayer.IsLocal) ?? Players.First()
+                    : Players.First();
+                Assert.IsNotNull(_localPlayer);
                 return _localPlayer;
             }
         }
@@ -40,12 +37,15 @@ namespace Assets.Scripts {
 //                    Assert.IsNotNull(Level);
 //                    Assert.IsNotNull(Level.AllowedCommands);
 //                    Assert.IsNotNull(AllCommands);
-                    _cachedAllowedCommands = Level.AllowedCommands
-                                                  .Where(c => c.IsAllowed) // only select allowed commands before cross-referencing enum to values
-                                                  .Join(AllCommands.Commands, // cross-ref source
-                                                        command => command.CommandType, // key of outer list to cross ref with inner key
-                                                        kvp => kvp.Key, // key of inner list
-                                                        (command, kvp) => kvp.Value); // select the baseCommand
+                _cachedAllowedCommands = Level.AllowedCommands
+                                              .Where(
+                                                  c => c
+                                                      .IsAllowed) // only select allowed commands before cross-referencing enum to values
+                                              .Join(AllCommands.Commands, // cross-ref source
+                                                    command => command
+                                                        .CommandType, // key of outer list to cross ref with inner key
+                                                    kvp => kvp.Key, // key of inner list
+                                                    (command, kvp) => kvp.Value); // select the baseCommand
 //                }
                 return _cachedAllowedCommands;
             }
