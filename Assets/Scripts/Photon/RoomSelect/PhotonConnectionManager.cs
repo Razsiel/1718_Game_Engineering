@@ -200,6 +200,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             RoomEventManager.OnNetworkPlayerLeftRoom -= NetworkPlayerChanged;
             RoomEventManager.OnLocalPlayerReadyStateChanged -= OnLocalPlayerReadyStateChanged;
             RoomEventManager.OnPlayerPropertiesChanged -= OnPlayerPropertiesChanged;
+            GlobalData.SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
         }
     }
 }
