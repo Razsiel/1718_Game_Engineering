@@ -42,6 +42,10 @@ public class WinScreenBehaviour : MonoBehaviour {
 
     private void ShowWinScreen(Dictionary<TGEPlayer, int> playerInfo, int totalScore) {
         EventManager.OnPlayersScoreDetermined -= ShowWinScreen;
+        
+        //Enable input so win screen buttons are pressable
+        EventManager.UserInputEnable();
+
         this.gameObject.SetActive(true);
 
         foreach (var playerWithScore in playerInfo) {

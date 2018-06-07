@@ -59,6 +59,8 @@ namespace Assets.Scripts.Photon.Level
         private void OnInitializePhoton()
         {
             EventManager.OnInitializePhoton -= OnInitializePhoton;
+            EventManager.OnMonologueEnded += OnMonologueEnded;
+            EventManager.OnUserInputEnable += OnMonologueEnded;
             this.photonView.viewID = (int)PhotonViewIndices.InLevel;
             TGEOnAllPlayersJoined?.Invoke(PhotonNetwork.room);
             TGEOnOtherPlayerLeft += OnOtherPlayerLeft;
@@ -78,14 +80,14 @@ namespace Assets.Scripts.Photon.Level
         private void OnGameStart(GameInfo gameInfo)
         {
             EventManager.OnGameStart -= OnGameStart;
+            
             _gameInfo = gameInfo;
             EventManager.OnPlayerSpawned += OnPlayerSpawned;
         }
 
         private void OnPlayerSpawned(Player player)
         {
-            EventManager.OnPlayerSpawned -= OnPlayerSpawned;
-            EventManager.OnMonologueEnded += OnMonologueEnded;
+            EventManager.OnPlayerSpawned -= OnPlayerSpawned;          
             EventManager.OnSequenceChanged += OnSequenceChanged;
             EventManager.OnPlayerReady += OnPlayerReady;
             EventManager.OnStopButtonClicked += OnStopButtonClicked;
@@ -158,9 +160,18 @@ namespace Assets.Scripts.Photon.Level
         [PunRPC]
         public void OtherPlayShouldUpdateSequence(PhotonMessageInfo info)
         {
-            var sequence = _gameInfo.LocalPlayer.Player.Sequence.Commands;
-            if(sequence != null)
-                EventManager.SequenceChanged(sequence);
+            //var sequence = _gameInfo?.LocalPlayer?.Player?.Sequence?.Commands;
+            print($"{nameof(PhotonManager)}: in {nameof(OtherPlayShouldUpdateSequence)}");
+            var gameInfo = _gameInfo;
+            print(gameInfo);
+            var localPlayer = _gameInfo?.LocalPlayer;
+            print(localPlayer);
+            var player = localPlayer?.Player;
+            print(localPlayer);
+            var sequence = player?.Sequence;
+            print(sequence);
+            if(sequence != null)               
+                OnSequenceChanged(sequence.Commands);
         }
 
         [PunRPC]
@@ -275,6 +286,7 @@ namespace Assets.Scripts.Photon.Level
             EventManager.OnStopButtonClicked -= OnStopButtonClicked;
             TGEOnOtherPlayerLeft -= OnOtherPlayerLeft;
             EventManager.OnMonologueEnded -= OnMonologueEnded;
+            EventManager.OnUserInputEnable -= OnMonologueEnded;
         }
     }
 }
