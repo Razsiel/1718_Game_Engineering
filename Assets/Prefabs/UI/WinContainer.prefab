@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 222070029417646540}
   - component: {fileID: 114549211632485908}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -822,7 +822,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4836ad2a4fb58294aa42fa82c40b214e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85c6e91e613a61e4882eee12342caef7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -919,6 +919,14 @@ MonoBehaviour:
   _playerScorePrefab: {fileID: 1140556490417930, guid: a23798fb62cb1ad448be28d7f0c1b638,
     type: 2}
   _scoreImage: {fileID: 114592535170220428}
+  _scoreImages:
+  - {fileID: 21300000, guid: 4fdc743fed329d04eb73d13cc9a1169a, type: 3}
+  - {fileID: 21300000, guid: d2ab655652884d540a63968a3227ef88, type: 3}
+  - {fileID: 21300000, guid: 44f4a1f33ffe9cb44b8bc72587aaa04e, type: 3}
+  _objectToDisableMP:
+  - {fileID: 1524897143152428}
+  - {fileID: 1991798199540496}
+  - {fileID: 1944424704968996}
 --- !u!114 &114658322551237592
 MonoBehaviour:
   m_ObjectHideFlags: 1

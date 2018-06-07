@@ -68,13 +68,11 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         private void OnAnyPlayerUnready()
         {
-            PlayButton.GetComponentInChildren<Text>().color = Color.grey;
             PlayButton.interactable = false;
         }
 
         private void OnAllPlayersReady()
         {
-            PlayButton.GetComponentInChildren<Text>().color = Color.black;
             PlayButton.interactable = true;
         }
 

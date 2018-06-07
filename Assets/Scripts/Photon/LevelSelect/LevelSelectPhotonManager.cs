@@ -15,24 +15,30 @@ namespace Assets.Scripts.Photon.LevelSelect
 {
     public class LevelSelectPhotonManager : MonoBehaviour
     {
-        public GameObject PlayButton;
         public SceneField LevelScene;
         private GameInfo _gameInfo;
         //public LevelLibrary LevelLibrary;
         private HorizontalScrollSnap _horizontalScrollSnap;
 
-        public void Init(GameObject playButton, SceneField levelScene, GameInfo gameInfo, HorizontalScrollSnap scrollSnap)
+        public void Init(SceneField levelScene, GameInfo gameInfo, HorizontalScrollSnap scrollSnap, GameObject[] buttonsToDisableInMp)
         {
-            this.PlayButton = playButton;
             this.LevelScene = levelScene;
             this._gameInfo = gameInfo;
             this._horizontalScrollSnap = scrollSnap;
             this.photonView.viewID = (int)PhotonViewIndices.LevelSelect;
-            PlayButton.SetActive(PhotonNetwork.player.IsMasterClient);
+            var isMaster = PhotonNetwork.player.IsMasterClient;
+            foreach (var go in buttonsToDisableInMp) {
+                go.SetActive(isMaster);
+            }
 
-            LevelSelectBehaviour.SelectedLevelChanged += SelectedLevelChanged;
+            if (isMaster) {
+                _horizontalScrollSnap.OnSelectionPageChangedEvent.AddListener(page => {
+                    this.photonView.RPC(nameof(SelectedLevelChanged), PhotonTargets.Others, page);
+                });
+            }
         }
 
+        [PunRPC]
         private void SelectedLevelChanged(int page)
         {
             _horizontalScrollSnap.GoToScreen(page);

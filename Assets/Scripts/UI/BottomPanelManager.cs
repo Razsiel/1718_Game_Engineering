@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
-using Debug = System.Diagnostics.Debug;
 using Sequence = Assets.Scripts.Sequence;
 
 public class BottomPanelManager : MonoBehaviour
@@ -56,11 +55,10 @@ public class BottomPanelManager : MonoBehaviour
 	    EventManager.OnInitializeUi += Initialize;
 	    EventManager.OnAllPlayersReady += SetReadyButtonStateOnAllPlayersReady;
         EventManager.OnSimulationStop += OnSimulationStop;
-	    //EventManager.OnUserInputEnable += ShowBottomPanel;
-	    //EventManager.OnUserInputDisable += HideBottomPanel;
-	}
+    }
 
-    void OnDestroy() {
+    void OnDestroy()
+    {
         EventManager.OnAllPlayersReady -= SetReadyButtonStateOnAllPlayersReady;
         EventManager.OnSimulationStop -= OnSimulationStop;
         EventManager.OnInitializeUi -= Initialize;
@@ -264,4 +262,5 @@ public class BottomPanelManager : MonoBehaviour
     {
         _secondarySequenceBar.SetActive(true);
     }
+
 }
