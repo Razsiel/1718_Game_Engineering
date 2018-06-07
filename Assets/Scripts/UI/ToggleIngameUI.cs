@@ -12,19 +12,25 @@ public class ToggleIngameUI : MonoBehaviour
 
     private void Awake()
     {
-        EventManager.OnUserInputEnable += ToggleInputBlock;
-        EventManager.OnUserInputDisable += ToggleInputBlock;
+        EventManager.OnUserInputEnable += EnableInput;
+        EventManager.OnUserInputDisable += BlockInput;
     }
 
     private void OnDestroy()
     {
-        EventManager.OnUserInputEnable -= ToggleInputBlock;
-        EventManager.OnUserInputDisable -= ToggleInputBlock;
+        EventManager.OnUserInputEnable -= EnableInput;
+        EventManager.OnUserInputDisable -= BlockInput;
     }
 
-    private void ToggleInputBlock()
+    private void BlockInput()
     {
-        _commandPanelBlocker.raycastTarget = !_commandPanelBlocker.raycastTarget;
-        _sequenceBarBlocker.raycastTarget = !_sequenceBarBlocker.raycastTarget;
+        _commandPanelBlocker.raycastTarget = true;
+        _sequenceBarBlocker.raycastTarget = true;
+    }
+
+    private void EnableInput()
+    {
+        _commandPanelBlocker.raycastTarget = false;
+        _sequenceBarBlocker.raycastTarget = false;
     }
 }
