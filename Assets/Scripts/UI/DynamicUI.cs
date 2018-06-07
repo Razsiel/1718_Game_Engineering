@@ -33,6 +33,11 @@ namespace Assets.Scripts.UI
             EventManager.OnInitializeUi += Initialize;
         }
 
+        private void OnAllPlayersSpawned() {
+            _player = _gameInfo.LocalPlayer.Player;
+            Assert.IsNotNull(_player);
+        }
+
         private void Initialize(GameInfo gameInfo)
         {
             EventManager.OnInitializeUi -= Initialize;
@@ -156,7 +161,7 @@ namespace Assets.Scripts.UI
 
         public void OnDestroy()
         {
-            EventManager.OnInitializeUi -= Initialize;
+            EventManager.OnInitializeUi -= Initialize;         
         }
     }
 }

@@ -24,13 +24,14 @@ namespace Assets.Scripts.Photon.RoomSelect
         private void Awake()
         {
             _instance = this;
-            RoomEventManager.OnPhotonConnected += () => 
-            {                          
-                //PhotonNetwork.CreateRoom("Room1"); PhotonNetwork.CreateRoom("Room2", null, TypedLobby.Default);
-                print("In lobby: " + PhotonNetwork.insideLobby + "Rooms: " + PhotonNetwork.GetRoomList());
-            };
+            RoomEventManager.OnPhotonConnected += OnPhotonConnected;
             RoomEventManager.OnPhotonReceivedRoomListUpdate += UpdateRooms;
             RoomEventManager.OnLocalPlayerJoinedRoom += JoinedRoom;          
+        }
+
+        private void OnPhotonConnected()
+        {
+            print("In lobby: " + PhotonNetwork.insideLobby + "Rooms: " + PhotonNetwork.GetRoomList());
         }
 
         private void JoinedRoom()
@@ -43,6 +44,13 @@ namespace Assets.Scripts.Photon.RoomSelect
             var rooms = PhotonNetwork.GetRoomList();
             print("Rooms: " + rooms.Length);
             roomListView.UpdateListView(rooms);
-        }     
+        }
+
+        public void OnDestroy()
+        {
+            RoomEventManager.OnPhotonConnected -= OnPhotonConnected;
+            RoomEventManager.OnPhotonReceivedRoomListUpdate -= UpdateRooms;
+            RoomEventManager.OnLocalPlayerJoinedRoom -= JoinedRoom;
+        }
     }
 }
