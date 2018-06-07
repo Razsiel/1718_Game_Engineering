@@ -50,6 +50,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 2
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
@@ -71,6 +72,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 1
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
   - _tiles:
@@ -94,6 +96,19 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 3
         DefaultState: 0
+        CurrentState: 0
+      - ChannelMaterials: []
+        DecorationData: {fileID: 11400000, guid: 22ae16caf42deb2428b5812645994b7c,
+          type: 2}
+        RelativePosition: {x: 0, y: 16, z: 8}
+        Scale: 1
+        Rotation: 90
+        Orientation: 5
+        Type: 0
+        TriggerType: 1
+        Channel: 3
+        DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 11400000, guid: b4de40f84b8dbda4cb40fcdee9e1c019, type: 2}
@@ -112,6 +127,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 2
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
   - _tiles:
@@ -133,6 +149,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 1
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
     - Tile: {fileID: 0}
@@ -153,6 +170,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 1
         DefaultState: 1
+        CurrentState: 0
       - ChannelMaterials:
         - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
         - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
@@ -167,6 +185,7 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 3
         DefaultState: 0
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
   - _tiles:
@@ -194,6 +213,22 @@ MonoBehaviour:
         TriggerType: 1
         Channel: 2
         DefaultState: 1
+        CurrentState: 0
+      - ChannelMaterials:
+        - {fileID: 2100000, guid: 59f62f02069d6df47b65c65bf835b176, type: 2}
+        - {fileID: 2100000, guid: 172a18ba7d76ad146a2081ffd5161c5b, type: 2}
+        - {fileID: 2100000, guid: e876209c3008938488dfb3d8fd01d204, type: 2}
+        DecorationData: {fileID: 11400000, guid: 140539a05b4343c4f93cc78bbcf5cb7d,
+          type: 2}
+        RelativePosition: {x: 8, y: 16, z: 0}
+        Scale: 1
+        Rotation: 0
+        Orientation: 0
+        Type: 0
+        TriggerType: 1
+        Channel: 2
+        DefaultState: 1
+        CurrentState: 0
     - Tile: {fileID: 0}
       DecorationConfigs: []
   _width: 5
