@@ -29,7 +29,7 @@ namespace Assets.Scripts.Lib.Extensions
         {
             int unrounded = (int)Math.Floor(a);
             decimal fraction = a - unrounded;
-            if(fraction < 0.5m) return unrounded;
+            if(fraction <= 0.5m) return unrounded;
             else return unrounded + 1;
         }
     }
