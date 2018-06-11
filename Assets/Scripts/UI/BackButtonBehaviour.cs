@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Utilities;
 
@@ -13,6 +14,8 @@ namespace Assets.Scripts.UI {
         private GameInfo _gameInfo;
         [SerializeField] private SceneField _previousSinglePlayerScene;
         [SerializeField] private SceneField _previousMultiplayerPlayerScene;
+
+        public static UnityAction OnLeaveScene;
 
         void Awake() {
             Assert.IsNotNull(_previousSinglePlayerScene);
@@ -26,6 +29,7 @@ namespace Assets.Scripts.UI {
         }
 
         public void Back() {
+            OnLeaveScene?.Invoke();
             if (_gameInfo.IsMultiplayer) {
                 PhotonNetwork.LoadLevel(_previousMultiplayerPlayerScene);
             }

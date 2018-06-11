@@ -10,15 +10,21 @@ using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 using Utilities;
 using MonoBehaviour = Photon.MonoBehaviour;
+using Assets.Scripts.UI;
+using Photon;
+using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Photon.LevelSelect
 {
-    public class LevelSelectPhotonManager : MonoBehaviour
+    public class LevelSelectPhotonManager : PunBehaviour
     {
         public SceneField LevelScene;
         private GameInfo _gameInfo;
         //public LevelLibrary LevelLibrary;
         private HorizontalScrollSnap _horizontalScrollSnap;
+        public static UnityAction TGEOnOtherPlayerLeft;
+        public SceneField MainScene;
 
         public void Init(SceneField levelScene, GameInfo gameInfo, HorizontalScrollSnap scrollSnap, GameObject[] buttonsToDisableInMp)
         {
@@ -36,6 +42,20 @@ namespace Assets.Scripts.Photon.LevelSelect
                     this.photonView.RPC(nameof(SelectedLevelChanged), PhotonTargets.Others, page);
                 });
             }
+
+            TGEOnOtherPlayerLeft += OnOtherPlayerDisconnected;
+            BackButtonBehaviour.OnLeaveScene += OnLeaveScene;
+        }
+
+        private void OnLeaveScene()
+        {
+            PhotonNetwork.LeaveRoom(false);
+        }
+
+        private void OnOtherPlayerDisconnected()
+        {
+            PhotonNetwork.LeaveRoom(false);
+            SceneManager.LoadScene(MainScene);
         }
 
         [PunRPC]
@@ -67,6 +87,17 @@ namespace Assets.Scripts.Photon.LevelSelect
                     }
                 };
             }
+        }
+
+        public void OnDestroy()
+        {
+            BackButtonBehaviour.OnLeaveScene -= OnLeaveScene;
+            TGEOnOtherPlayerLeft -= OnOtherPlayerDisconnected;
+        }
+
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+        {
+            TGEOnOtherPlayerLeft?.Invoke();
         }
     }
 }
