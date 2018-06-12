@@ -16,18 +16,6 @@ public class SlotScript : MonoBehaviour
 
     void Start()
     {
-        //_sequenceBar = this.transform.parent.gameObject.GetComponent<SequenceBar>();
-    }
 
-    public GameObject Item
-    {
-        get
-        {
-            if (transform.childCount > 0)
-            {
-                return transform.gameObject;
-            }
-            return null;
-        }
     }
 }

@@ -55,21 +55,11 @@ namespace Assets.Scripts
                 //If its a loop, get the commands inside the loop
                 if (commands[indices[i]] is LoopCommand)
                 {
-                    //If the loop has children, get them
-                    if (((LoopCommand)commands[indices[i]]).Sequence != null)
-                    {
-                        commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
-                    }//If the loop has no children, initialize the loop 
-                    else
-                    {
-                        ((LoopCommand) commands[indices[i]]).Init();
-                        commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
-                    }
+                    //Initialize loop if you need to
+                    if (((LoopCommand)commands[indices[i]]).Sequence == null)
+                        ((LoopCommand)commands[indices[i]]).Init();
 
-                }//If its not a loop then i dont know what is going on
-                else
-                {
-                    Debug.Log("Huh??");
+                    commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
                 }
             }
             
@@ -126,7 +116,7 @@ namespace Assets.Scripts
 
                 List<BaseCommand> commands = Commands;
 
-                fromCommand = GetCommandForListOfindices(fromIndices, commands, fromCommand);
+                fromCommand = GetCommandForListOfindices(fromIndices, commands);
 
                 if (ToIndicesIsGreaterThanFromIndices(toIndices, fromIndices))
                 {
@@ -158,38 +148,34 @@ namespace Assets.Scripts
             return true;
         }
 
-        private BaseCommand GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands, BaseCommand command)
+        private BaseCommand GetCommandForListOfindices(List<int> indices, List<BaseCommand> commands)
         {
             if (indices.Count == 1)
             {
                 return commands[indices[0]];
             }
+
+            BaseCommand command = null;
             for (int i = 0; i < indices.Count; i++)
             {
+                //If we're at the last index to check, return the command
+                if (i == indices.Count - 1)
+                {
+                    return commands[indices[i]];
+                }
+
                 if (commands[indices[i]] is LoopCommand)
                 {
                     //If the loop has children, get them
                     if (((LoopCommand)commands[indices[i]]).Sequence != null &&
                         ((LoopCommand)commands[indices[i]]).Sequence.Commands.Count > 0)
                     {
-                        //If we're at the last index to check, take the loop
-                        if (i == indices.Count - 1)
-                        {
-                            command = ((LoopCommand)commands[indices[i]]);
-                        }
-                        Debug.Log("pak de kinderen van de loop");
-
-
                         commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
                     } //If the loop has no children
                     else
                     {
                         command = commands[indices[i]];
                     }
-                }
-                else
-                {
-                    command = commands[indices[i]];
                 }
             }
 
@@ -212,7 +198,7 @@ namespace Assets.Scripts
             List<BaseCommand> commands = Commands;
             BaseCommand command = null;
 
-            command = GetCommandForListOfindices(indices, commands, command);
+            command = GetCommandForListOfindices(indices, commands);
 
             if (command == null)
                 return true;
@@ -274,14 +260,11 @@ namespace Assets.Scripts
                     if (((LoopCommand) commands[indices[i]]).Sequence != null && 
                         ((LoopCommand)commands[indices[i]]).Sequence.Commands.Count != 0)
                     {
-                        Debug.Log("pak de kinderen van de loop");
 
                         commands = ((LoopCommand)commands[indices[i]]).Sequence.Commands;
                     }//If the loop has no children, remove the loop
                     else
-                    {
-                        Debug.Log("verwijderen de lege loop");
-                    
+                    {                    
                         commands.RemoveAt(indices[i]);
                         SequenceChanged();
                         return;
@@ -289,10 +272,8 @@ namespace Assets.Scripts
                 }//If its not a loop, the command has to be deleted
                 else
                 {
-                    Debug.Log("verwijderen command: " + commands[indices[i]].Name);
 
                     commands.RemoveAt(indices[i]);
-                    //I dont know why sequence changed is not called unless i put it here
                     SequenceChanged();
                     return;
                 }
@@ -302,7 +283,7 @@ namespace Assets.Scripts
         public void LoopEdited(string newAmountOfLoops, List<int> indices)
         {
             LoopCommand command = null;
-            command = (LoopCommand) GetCommandForListOfindices(indices, Commands, command);
+            command = (LoopCommand) GetCommandForListOfindices(indices, Commands);
             command.LoopCount = int.Parse(newAmountOfLoops);
             SequenceChanged();
         }
