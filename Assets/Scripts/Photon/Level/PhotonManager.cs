@@ -167,7 +167,7 @@ namespace Assets.Scripts.Photon.Level
             var localPlayer = _gameInfo?.LocalPlayer;
             print(localPlayer);
             var player = localPlayer?.Player;
-            print(localPlayer);
+            print(player);
             var sequence = player?.Sequence;
             print(sequence);
             if(sequence != null)               

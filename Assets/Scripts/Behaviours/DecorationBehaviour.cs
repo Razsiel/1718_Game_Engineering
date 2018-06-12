@@ -45,8 +45,8 @@ namespace Assets.Scripts.Behaviours {
                     }
                     break;
                 case ChannelType.Decoration:
-                    this.transform.DOShakePosition(
-                        1f, (player.ViewDirection.ToVector3() + new Vector3(0.15f, 0.15f, 0.15f)) * 2f);
+//                    this.transform.DOShakePosition( TODO: Fix decoration animation
+//                        1f, (player.ViewDirection.ToVector3() + new Vector3(0.15f, 0.15f, 0.15f)) * 2f);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

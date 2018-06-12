@@ -65,10 +65,10 @@ namespace Assets.Scripts.DataStructures {
         }
 
         public bool IsWalkable(CardinalDirection direction) {
-            if (Type != ChannelType.Mechanism) // TODO MATTHIJS: optimize IsWalkable chain 
+            if (Type != ChannelType.Mechanism || Orientation != direction) // TODO MATTHIJS: optimize IsWalkable chain 
                 return true;
-
-            return (bool)DecorationData?.IsWalkable(direction, Orientation) || IsActivated();
+            
+            return IsActivated();
         }
 
         public bool IsActivated() {
