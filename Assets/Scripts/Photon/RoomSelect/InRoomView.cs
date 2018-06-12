@@ -17,7 +17,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public Button LeaveButton;
         public Button PlayButton;
         public Text RoomName;
-    
+        
         public void Awake()
         {
             Init();
@@ -27,14 +27,10 @@ namespace Assets.Scripts.Photon.RoomSelect
         {            
             PlayButton.onClick.AddListener(StartGame);
 #if !UNITY_EDITOR
-            PhotonNetwork.player.NickName = Environment.UserName;
+            PhotonNetwork.player.NickName = Environment.UserName + " " + Guid.NewGuid().ToString().Substring(0, 6);           
 #else
             PhotonNetwork.player.NickName = Guid.NewGuid().ToString();
 #endif
-
-            //PhotonNetwork.player.NickName = Environment.UserName;
-
-            //PlayButton.gameObject.SetActive(false);
 
             RoomEventManager.OnAllGameObjectsSpawned += OnAllGameObjectsSpawned;
             Disable();
@@ -51,7 +47,8 @@ namespace Assets.Scripts.Photon.RoomSelect
             RoomEventManager.OnBecomingMasterClient += OnBecomingMasterClient;
         }
 
-        void OnDestroy() {
+        void OnDestroy()
+        {
             RoomEventManager.OnAllGameObjectsSpawned -= OnAllGameObjectsSpawned;
             RoomEventManager.OnLocalPlayerJoinedRoom -= Enable;
             RoomEventManager.OnLocalPlayerLeftRoom -= Disable;
@@ -83,7 +80,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             OnAnyPlayerUnready();
             LeaveButton.onClick.RemoveAllListeners();
             LeaveButton.onClick.AddListener(LeaveRoom);
-            UpdatePlayersView(PhotonConnectionManager.Instance.GetAllPlayersInRoom());
+            UpdatePlayersView(RoomSelectPhotonManager.Instance.GetAllPlayersInRoom());
         }
 
         public void Disable()
@@ -93,23 +90,21 @@ namespace Assets.Scripts.Photon.RoomSelect
         }
 
         public void UpdatePlayersView(List<PhotonPlayer> players)
-        {
-            print($"{nameof(InRoomView)}: in {nameof(UpdatePlayersView)} with objectpool: {PlayerPanelObjectPool}");
+        {            
             ClearPlayersView();
 
             foreach (var player in players)
             {
                 var hashtable = player.CustomProperties;
                 bool isReady = false;
-                hashtable.TryGetTypedValue(PhotonConnectionManager.ReadyKey, out isReady);
+                hashtable.TryGetTypedValue(RoomSelectPhotonManager.ReadyKey, out isReady);
 
                 GameObject newPlayerPanel = PlayerPanelObjectPool.GetObject();
                 newPlayerPanel.transform.SetParent(PlayersViewPanel.gameObject.transform, false);
 
                 InRoomPlayerView playerPanel = newPlayerPanel.GetComponent<InRoomPlayerView>();
                 print(playerPanel);
-                playerPanel.Setup(player.NickName, this, player.IsLocal);
-                playerPanel.PlayerReadyState.isOn = isReady;
+                playerPanel.Setup(player.NickName, this, player.IsLocal, isReady);              
             }           
         }
 
@@ -123,12 +118,12 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public void LeaveRoom()
         {
-            PhotonConnectionManager.Instance.LeaveRoom();
+            RoomSelectPhotonManager.Instance.LeaveRoom();
         }
 
         public void StartGame()
         {            
-            PhotonConnectionManager.Instance.SendGoToLevelSelect();
+            RoomSelectPhotonManager.Instance.SendGoToLevelSelect();
         }
     }
 }

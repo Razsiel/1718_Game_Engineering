@@ -12,13 +12,11 @@ namespace Assets.Scripts.DataStructures
     {
         public uint HighestScore;
         public uint DecentScore;
-        //public uint BadScore;
 
-        public LevelScore(uint highestScore, uint decentScore/*, uint badScore*/)
+        public LevelScore(uint highestScore, uint decentScore)
         {
             this.HighestScore = highestScore;
-            this.DecentScore = decentScore;
-            //this.BadScore = badScore;            
+            this.DecentScore = decentScore;                
         }        
     }
 }

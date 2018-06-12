@@ -34,7 +34,7 @@ public class IngameMenuBehaviour : ModalPanel
     {
         if (GlobalData.Instance.GameInfo.IsMultiplayer)
         {
-            PhotonManager.Instance.LeaveRoom();           
+            LevelPhotonManager.Instance.LeaveRoom();           
         }
         // Inform other player
         // TableFlip
@@ -46,7 +46,7 @@ public class IngameMenuBehaviour : ModalPanel
     {
         if(GlobalData.Instance.GameInfo.IsMultiplayer)
         {
-            PhotonManager.Instance.GoToScene(LevelSelect);
+            LevelPhotonManager.Instance.GoToScene(LevelSelect);
         }
         else
             SceneManager.LoadScene(LevelSelect.SceneName);

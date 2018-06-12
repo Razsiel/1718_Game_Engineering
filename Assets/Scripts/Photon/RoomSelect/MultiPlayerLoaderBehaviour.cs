@@ -24,7 +24,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             print($"roomlistview: {roomListView}");
 
             var photonManager = Instantiate(_photonManager);
-            var photonConnectionManager = photonManager.GetComponent<PhotonConnectionManager>();
+            var photonConnectionManager = photonManager.GetComponent<RoomSelectPhotonManager>();
             photonConnectionManager.LevelSelectScene = _levelSelectScene;
             photonConnectionManager.RoomListView = roomListView;
             photonManager.GetComponent<PhotonView>().viewID = (int)PhotonViewIndices.RoomSelect;
