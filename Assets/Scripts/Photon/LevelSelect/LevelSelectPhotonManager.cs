@@ -20,11 +20,11 @@ namespace Assets.Scripts.Photon.LevelSelect
     public class LevelSelectPhotonManager : PunBehaviour
     {
         public SceneField LevelScene;
-        private GameInfo _gameInfo;
-        //public LevelLibrary LevelLibrary;
-        private HorizontalScrollSnap _horizontalScrollSnap;
-        public static UnityAction TGEOnOtherPlayerLeft;
+        private GameInfo _gameInfo;     
+        private HorizontalScrollSnap _horizontalScrollSnap;        
         public SceneField MainScene;
+
+        public static UnityAction TGEOnOtherPlayerLeft;
 
         public void Init(SceneField levelScene, GameInfo gameInfo, HorizontalScrollSnap scrollSnap, GameObject[] buttonsToDisableInMp)
         {
@@ -75,8 +75,7 @@ namespace Assets.Scripts.Photon.LevelSelect
         {
             _gameInfo.Level = _gameInfo.LevelLibrary.Levels.Single(x => x.Name == level);
             if (_gameInfo.Players == null || _gameInfo.Players.Count < 2)
-            {
-                print("Setting players again because the previous attempt failed");
+            {               
                 _gameInfo.Players = new List<TGEPlayer>
                 {
                     new TGEPlayer { photonPlayer = PhotonNetwork.masterClient },

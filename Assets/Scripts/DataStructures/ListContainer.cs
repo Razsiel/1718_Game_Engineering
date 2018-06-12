@@ -5,6 +5,10 @@ using System;
 
 namespace Assets.Scripts.DataStructures
 {
+    /// <summary>
+    /// Class used to store lists that can be json serialized
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable]
     public class ListContainer<T>
     {
