@@ -19,6 +19,10 @@ namespace Assets.Scripts.UI
         public GameObject BottomPanel;
         public GameObject WinScreen;
         public GameObject IngameMenuPanel;
+        public GameObject CommandPanel;
+        public GameObject CommandsList;
+        public GameObject CommandButton;
+
         private GameObject _winScreenMask;
         private GameObject _commandPanel;
         private GameObject _commandListPanel;
@@ -50,6 +54,20 @@ namespace Assets.Scripts.UI
             InitializeCommandList();
 
             CreateCommands();
+
+            AddReorderableListToCommandPanel();
+
+        }
+
+        private void AddReorderableListToCommandPanel()
+        {
+            var _commandPanelReorderableList = _commandPanel.AddComponent<ReorderableList>();
+            _commandPanelReorderableList.IsDraggable = true;
+            _commandPanelReorderableList.CloneDraggedObject = true;
+            _commandPanelReorderableList.IsDropable = false;
+            _commandPanelReorderableList.ContentLayout = _commandListPanel.GetComponent<VerticalLayoutGroup>();
+            _commandPanelReorderableList.DraggableArea = transform.GetChild(0).GetComponent<RectTransform>();
+            _commandPanelReorderableList.OnElementAdded.AddListener(EventManager.ElementDroppedToMainSequenceBar);
         }
 
         private void InitializeIngameMenuPanel()
@@ -60,49 +78,12 @@ namespace Assets.Scripts.UI
 
         private void InitializeCommandList()
         {
-            _commandListPanel = new GameObject("Commands List");
-            _commandListPanel.transform.SetParent(_commandPanel.transform, false);
-
-            var _cmdListPanelVerticalLayout = _commandListPanel.AddComponent<VerticalLayoutGroup>();
-
-            _cmdListPanelVerticalLayout.childAlignment = TextAnchor.LowerRight;
-            _cmdListPanelVerticalLayout.spacing = 5;
-            _cmdListPanelVerticalLayout.childControlHeight = true;
-            _cmdListPanelVerticalLayout.childControlWidth = true;
-            _cmdListPanelVerticalLayout.childForceExpandHeight = true;
-            _cmdListPanelVerticalLayout.childForceExpandWidth = true;
-
-            var commandListContentSizeFitter = _commandListPanel.AddComponent<ContentSizeFitter>();
-            commandListContentSizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            commandListContentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
-
-            var _commandPanelReorderableList = _commandPanel.AddComponent<ReorderableList>();
-            _commandPanelReorderableList.CloneDraggedObject = true;
-            _commandPanelReorderableList.IsDraggable = true;
-            _commandPanelReorderableList.IsDropable = false;
-            _commandPanelReorderableList.ContentLayout = _cmdListPanelVerticalLayout;
-            _commandPanelReorderableList.DraggableArea = transform.GetChild(0).GetComponent<RectTransform>();
-            _commandPanelReorderableList.OnElementAdded.AddListener(EventManager.ElementDroppedToMainSequenceBar);
+            _commandListPanel = Instantiate(CommandsList, _commandPanel.transform, false);
         }
 
         private void InitializeCommandPanel()
         {
-            _commandPanel = new GameObject("Command Panel");
-            _commandPanel.transform.SetParent(transform.GetChild(0), false);
-            var image = _commandPanel.AddComponent<Image>();
-            image.color = new Color(0,0,0,0);
-
-            _cmdFlowLayoutGroup = _commandPanel.AddComponent<FlowLayoutGroup>();
-
-            _cmdFlowLayoutGroup.childAlignment = TextAnchor.UpperRight;
-            _cmdFlowLayoutGroup.horizontal = false;
-
-            var cmdRectTransform = _commandPanel.GetComponent<RectTransform>();
-            _commandPanel.transform.localPosition = new Vector3(-150,0,0);
-
-            cmdRectTransform.anchorMin = new Vector2(1, 0.5f);
-            cmdRectTransform.anchorMax = new Vector2(1f, 0.5f);
-            cmdRectTransform.sizeDelta = new Vector2(300, 700);
+            _commandPanel = Instantiate(CommandPanel, transform.GetChild(0), false);
         }
 
         public void CreateCommands() {
@@ -111,12 +92,9 @@ namespace Assets.Scripts.UI
                 CreateCommandButton(command, _commandListPanel, () => {
                     if (command is LoopCommand)
                     {
-                        //BaseCommand newCommand = ScriptableObject.CreateInstance<LoopCommand>();
                         var newCommand = Instantiate(_gameInfo.AllCommands.LoopCommand) as LoopCommand as BaseCommand;
                         newCommand = newCommand.Init();
-                        //newCommand.Icon = _gameInfo.AllCommands.LoopCommand.Icon;
-                        //newCommand.Name = _gameInfo.AllCommands.LoopCommand.Name;
-                        //newCommand.Priority = _gameInfo.AllCommands.LoopCommand.Priority;
+
                         _player.Sequence.Add(newCommand);
                     }
                     else
@@ -136,23 +114,16 @@ namespace Assets.Scripts.UI
             return CreateCommandButton(command, parent.transform, onClick);
         }
 
-        private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick) {
+        private GameObject CreateCommandButton(BaseCommand command, Transform parent, UnityAction onClick)
+        { 
+            var commandObject = Instantiate(CommandButton, parent, false);
 
-            var commandObject = new GameObject(command.Name);
-
-            commandObject.transform.SetParent(parent, false);
-            commandObject.AddComponent<CanvasRenderer>();
-
-            commandObject.AddComponent<Image>();
             commandObject.GetComponent<Image>().sprite = command.Icon;
-            var layoutElement = commandObject.AddComponent<LayoutElement>();
-            var button = commandObject.AddComponent<Button>();
-            var commandScript = commandObject.AddComponent<CommandPanelCommand>();
+            var button = commandObject.GetComponent<Button>();
+            var commandScript = commandObject.GetComponent<CommandPanelCommand>();
 
             commandScript.command = command;
 
-            layoutElement.preferredWidth = 95;
-            layoutElement.preferredHeight = 95;
             Assert.IsNotNull(button);
             button.onClick.AddListener(onClick);
 
