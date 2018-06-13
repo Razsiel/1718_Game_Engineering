@@ -65,10 +65,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 941acdc3125921741ac0ebb6443d15a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayButton: {fileID: 0}
   LevelScene:
-    sceneAsset: {fileID: 0}
-    sceneName: 
+    sceneAsset: {fileID: 102900000, guid: 66e4b0cfd2f7a4f45a0330a7bc4dc13a, type: 3}
+    sceneName: Scenes/Levels/LevelScene
+  MainScene:
+    sceneAsset: {fileID: 102900000, guid: 5bea99599f6ce9344a9f483645457523, type: 3}
+    sceneName: Scenes/Main
 --- !u!224 &224605565246109282
 RectTransform:
   m_ObjectHideFlags: 1

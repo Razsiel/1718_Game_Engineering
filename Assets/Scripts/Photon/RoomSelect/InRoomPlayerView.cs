@@ -22,11 +22,11 @@ namespace Assets.Scripts.Photon.RoomSelect
             Assert.IsNotNull(PlayerReadyState);
         }
 
-        public void Setup(string playerName, InRoomView parentView, bool isLocalPlayer)
+        public void Setup(string playerName, InRoomView parentView, bool isLocalPlayer, bool isReady)
         {
             this.ParentView = parentView;
             this.PlayerName.text = playerName;
-            this.PlayerReadyState.isOn = false;
+            this.PlayerReadyState.isOn = isReady;
          
             Assert.IsNotNull(parentView);
 
@@ -36,8 +36,7 @@ namespace Assets.Scripts.Photon.RoomSelect
                 PlayerReadyState.onValueChanged.AddListener(delegate { PlayerReadyStateChanged(); });
             }
             else
-            {
-                print("binding event right now");
+            {              
                 RoomEventManager.OnNetworkPlayerPropertiesChanged += OnPlayerPropertiesChanged;
             }
         }

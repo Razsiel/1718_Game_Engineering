@@ -111,12 +111,12 @@ namespace Assets.Scripts {
 
         private void StartMultiplayer()
         {
-            PhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
+            LevelPhotonManager.Instance.TGEOnAllPlayersJoined += OnAllPlayersJoined;
             EventManager.InitializePhoton();
         }
 
         private void OnAllPlayersJoined(Room room) {
-            PhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
+            LevelPhotonManager.Instance.TGEOnAllPlayersJoined -= OnAllPlayersJoined;
             print($"{nameof(GameStateManager)} All players joing room: {room}");
             EventManager.GameStart(_gameInfo);
         }

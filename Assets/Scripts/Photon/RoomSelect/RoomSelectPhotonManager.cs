@@ -15,10 +15,10 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Assets.Scripts.Photon.RoomSelect
 {
-    public class PhotonConnectionManager : global::Photon.MonoBehaviour
+    public class RoomSelectPhotonManager : global::Photon.MonoBehaviour
     {
         #region classdata
-        public static PhotonConnectionManager Instance
+        public static RoomSelectPhotonManager Instance
         {
             get
             {
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Photon.RoomSelect
             }
         }
 
-        private static PhotonConnectionManager _instance;
+        private static RoomSelectPhotonManager _instance;
         //public GameObject BtnCreateRoom;
         //public RoomSelectView RoomSelectCanvas;
         //public InRoomView InRoomCanvas;
@@ -55,27 +55,15 @@ namespace Assets.Scripts.Photon.RoomSelect
             PhotonNetwork.automaticallySyncScene = true;
 
             var connected = PhotonNetwork.ConnectUsingSettings("1.1");
-            //Assert.IsTrue(connected);
-            print("lobby: " + PhotonNetwork.lobby + "In lobby: " + PhotonNetwork.insideLobby);
-            //Show Error Because we dont have internet
-            //if(connected)
-            //    RoomEventManager.OnPhotonConnected += RoomListManager.Instance.UpdateRooms;
-            print("photon connected = " + connected);
-
-            RoomEventManager.OnAllGameObjectsSpawned += OnAllGameObjectsSpawned;
-
-           
+                      
+            RoomEventManager.OnAllGameObjectsSpawned += OnAllGameObjectsSpawned;          
         }
 
         private void OnAllGameObjectsSpawned()
         {
             var customProperties = new Hashtable() { { ReadyKey, false } };
             PhotonNetwork.player.SetCustomProperties(customProperties);
-
-            //Implement Callbacks
-            //RoomEventManager.OnLocalPlayerJoinedRoom += OnLocalPlayerJoinedRoom;
-            //RoomEventManager.OnLocalPlayerLeftRoom += OnLocalPlayerLeftRoom;
-
+         
             UpdateRooms();
             RoomEventManager.OnPhotonReceivedRoomListUpdate += UpdateRooms;
             RoomEventManager.OnNetworkPlayerJoinedRoom += NetworkPlayerChanged;
