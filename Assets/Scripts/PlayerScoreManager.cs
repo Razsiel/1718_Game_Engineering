@@ -34,11 +34,9 @@ public class PlayerScoreManager : MonoBehaviour
         Assert.IsNotNull(sequence);
 
         foreach(var bc in sequence)
-        {
-            print($"{nameof(PlayerScoreManager)}: in foreach with basecommand { bc.GetType().Name }");
+        {            
             if(!bc.CountsTowardsScore)
-            {
-                print($"{nameof(PlayerScoreManager)}: in if doesnt count towards score");
+            {                
                 if(bc is LoopCommand)
                     count += DetermineSequenceCount(((LoopCommand)bc).Sequence, 0);               
             }
@@ -54,17 +52,14 @@ public class PlayerScoreManager : MonoBehaviour
     {
         EventManager.OnAllLevelGoalsReached -= DeterminePlayersScore;
 
-        print($"{nameof(PlayerScoreManager)}: in {nameof(DeterminePlayersScore)}");
         var starCount = 0;
         var playerScoreDic = new Dictionary<TGEPlayer, int>();
 
         foreach(var player in _gameInfo.Players)
-        {
-            print($"{nameof(PlayerScoreManager)}: in foreach");
-            var count = DetermineSequenceCount(player.Player.Sequence, 0);
-            print($"{nameof(PlayerScoreManager)}: seqCount: {count}");
-            var stars = DetermineStars(count, _gameInfo.Level.LevelScore);
-            print($"{nameof(PlayerScoreManager)}: personal stars: {stars}");
+        {          
+            var count = DetermineSequenceCount(player.Player.Sequence, 0);            
+            var stars = DetermineStars(count, _gameInfo.Level.LevelScore); 
+                       
             Assert.IsTrue(stars > 0 && stars <= 3);
             starCount += stars;
             playerScoreDic.Add(player, stars);
@@ -100,5 +95,11 @@ public class PlayerScoreManager : MonoBehaviour
             return 1;
         else
             return -1;     
+    }
+
+    public void OnDestroy()
+    {
+        SceneDataLoader.OnSceneLoaded -= OnSceneLoaded;
+        EventManager.OnAllLevelGoalsReached -= DeterminePlayersScore;
     }
 }

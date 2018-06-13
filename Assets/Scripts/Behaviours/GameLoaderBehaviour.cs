@@ -41,7 +41,7 @@ namespace Assets.Scripts.Behaviours
                 if (gameInfo.IsMultiplayer)
                 {
                     var photonManager = Instantiate(_photonPrefab, managersRoot.transform);
-                    photonManager.GetComponent<PhotonManager>().CommandLib = _commandLibrary;
+                    photonManager.GetComponent<LevelPhotonManager>().CommandLib = _commandLibrary;
                 }
             };
 

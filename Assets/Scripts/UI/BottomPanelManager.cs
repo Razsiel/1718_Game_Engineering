@@ -108,8 +108,6 @@ public class BottomPanelManager : MonoBehaviour
         var layoutElement = playerIcon.AddComponent<LayoutElement>();
         image.sprite = isHost ? _mainPlayerIcon : _secondaryPlayerIcon;
 
-        //var contentSizeFitter = secondaryPlayerIcon.AddComponent<ContentSizeFitter>();
-
         if (!isMainPlayerIcon)
         {
             playerIcon.AddComponent<Button>().onClick.AddListener(SecondaryPlayerIconClicked);
@@ -117,7 +115,6 @@ public class BottomPanelManager : MonoBehaviour
 
         layoutElement.preferredWidth = layoutElement.preferredHeight = isMainPlayerIcon ? 125 : 75;
         layoutElement.flexibleWidth = 0;
-        //contentSizeFitter.horizontalFit = contentSizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
     }
 
     private void InitializeSequenceBars()
@@ -131,8 +128,7 @@ public class BottomPanelManager : MonoBehaviour
 
     private void InitializeMainSequenceBar()
     {
-        _mainSequenceBar = Instantiate(MainSequenceBar);
-        _mainSequenceBar.transform.SetParent(transform.GetChild(2), false);
+        _mainSequenceBar = Instantiate(MainSequenceBar, transform.GetChild(2), false);
         _mainSequenceBar.transform.SetSiblingIndex(1);
 
         if (!_gameInfo.IsMultiplayer)
@@ -145,16 +141,13 @@ public class BottomPanelManager : MonoBehaviour
 
     private void InitializeSequenceBarStars()
     {
-        _sequenceBarStars = Instantiate(SequenceBarStars);
-        _sequenceBarStars.transform.SetParent(transform, false);
+        _sequenceBarStars = Instantiate(SequenceBarStars, transform, false);
         _sequenceBarStars.transform.SetSiblingIndex(1);
     }
 
     private void InitializeSecondarySequenceBar()
     {
-        _secondarySequenceBar = Instantiate(SecondarySequenceBar);
-
-        _secondarySequenceBar.transform.SetParent(transform.GetChild(0), false);
+        _secondarySequenceBar = Instantiate(SecondarySequenceBar, transform.GetChild(0), false);
         _secondarySequenceBar.transform.SetSiblingIndex(1);
 
         _secondarySequenceBar.AddComponent<SequenceBarBehaviour>().Initialize(false, _mainPanel, _gameInfo, !_isHost);
@@ -245,22 +238,6 @@ public class BottomPanelManager : MonoBehaviour
 
     private void SecondaryPlayerIconClicked()
     {
-        if(_secondaryBarIsHidden)
-            ShowSecondarySequenceBar();
-        else
-            HideSecondarySequenceBar();
-
-        _secondaryBarIsHidden = !_secondaryBarIsHidden;
+        _secondarySequenceBar.SetActive(!_secondarySequenceBar.GetActive());
     }
-
-    void HideSecondarySequenceBar()
-    {
-        _secondarySequenceBar.SetActive(false);
-    }
-
-    void ShowSecondarySequenceBar()
-    {
-        _secondarySequenceBar.SetActive(true);
-    }
-
 }

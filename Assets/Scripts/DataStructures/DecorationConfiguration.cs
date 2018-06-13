@@ -133,6 +133,7 @@ namespace Assets.Scripts.DataStructures {
 
         public void Destroy() {
             Fsm = null;
+            DecorationChannelManager.Instance.UnRegisterFromChannel(Channel, OnInteract);
         }
     }
 }

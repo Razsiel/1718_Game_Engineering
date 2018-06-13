@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using Assets.Scripts.Photon;
 using Assets.Scripts.DataStructures;
 using Assets.Scripts.Photon.Level;
+using UnityEngine.Assertions;
 
 namespace Assets.Scripts.Photon.RoomSelect
 {
@@ -12,22 +13,23 @@ namespace Assets.Scripts.Photon.RoomSelect
     {
         public GameObject RoomButtonPrefab;
         public GameObject Panel;
-        public Vector3 Margin;
-
+        
         public void UpdateListView(RoomInfo[] rooms)
         {
             RemoveButtons();
             AddButtons(rooms);      
         }
 
-        private void AddButtons(IReadOnlyCollection<RoomInfo> rooms) {
-            print("Creating buttons for rooms: " + rooms.Count);
-            //Add button foreach room
+        private void AddButtons(IReadOnlyCollection<RoomInfo> rooms)
+        {         
+            Assert.IsNotNull(RoomButtonPrefab);
+            Assert.IsNotNull(Panel);
+
             foreach (RoomInfo roomInfo in rooms)
             {
-                GameObject newButton = Instantiate(RoomButtonPrefab, Panel.transform, false);
+                var newButton = Instantiate(RoomButtonPrefab, Panel.transform, false);
 
-                RoomListButton button = newButton.GetComponent<RoomListButton>();
+                var button = newButton.GetComponent<RoomListButton>();
                 button.Setup(roomInfo);
             }
         }

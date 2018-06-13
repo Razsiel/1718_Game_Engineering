@@ -29,7 +29,7 @@ namespace Assets.Scripts.Photon.RoomSelect
 
         public override void Submit()
         {
-            PhotonConnectionManager.Instance.CreateRoom(RoomName.text);
+            RoomSelectPhotonManager.Instance.CreateRoom(RoomName.text);
             RoomName.text = string.Empty;
             base.Close();
         }

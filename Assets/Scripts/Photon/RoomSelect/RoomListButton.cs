@@ -35,7 +35,7 @@ namespace Assets.Scripts.Photon.RoomSelect
         public void OnClick() {
             Assert.IsNotNull(_roomName);
             Debug.Log("HandleClick: RoomListView" + " RoomName: " + _roomName);
-            PhotonConnectionManager.Instance.JoinRoom(_roomName);
+            RoomSelectPhotonManager.Instance.JoinRoom(_roomName);
         }
     }
 }

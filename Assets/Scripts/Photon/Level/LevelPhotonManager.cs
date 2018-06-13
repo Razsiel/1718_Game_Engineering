@@ -1,27 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using UnityEngine.Events;
-using ExitGames.Client.Photon;
-using System.Collections.Generic;
-using System.Reflection;
-using Assets.Data.Levels;
-using UnityEngine.Assertions;
-using Photon;
+﻿using Assets.Data.Command;
 using Assets.Scripts.DataStructures;
-using System.Linq;
-using Assets.Data.Command;
 using Assets.Scripts.Lib.Helpers;
-using System.Text;
-using Utilities;
+using Photon;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using Utilities;
 
 namespace Assets.Scripts.Photon.Level
 {
-    public class PhotonManager : PunBehaviour
+    public class LevelPhotonManager : PunBehaviour
     {
         //Backing field of our singleton instance
-        private static PhotonManager _instance;
+        private static LevelPhotonManager _instance;
 
         private GameInfo _gameInfo;
         public CommandLibrary CommandLib;
@@ -31,22 +25,21 @@ namespace Assets.Scripts.Photon.Level
         public UnityAction TGEOnOtherPlayerLeft;
 
         //Our singleton instance of the Photonmanager
-        public static PhotonManager Instance
+        public static LevelPhotonManager Instance
         {
             get { return _instance; }
             private set { _instance = value; }
         }
 
         //Private because of SingleTon
-        private PhotonManager() { }
+        private LevelPhotonManager() { }
 
         void Awake()
         {
-            print($"{nameof(PhotonManager)}: in awake");
+            print($"{nameof(LevelPhotonManager)}: in awake");
             Instance = this;
 
             EventManager.OnInitializePhoton += OnInitializePhoton;
-
             EventManager.OnGameStart += OnGameStart;
         }
 
@@ -100,7 +93,7 @@ namespace Assets.Scripts.Photon.Level
 
         private void OnStopButtonClicked()
         {
-            print($"{nameof(PhotonManager)}: OnStopButtonClicked");
+            print($"{nameof(LevelPhotonManager)}: OnStopButtonClicked");
             SendStopExecution();
         }
 
@@ -143,8 +136,7 @@ namespace Assets.Scripts.Photon.Level
         public void GoToScene(SceneField scene)
         {
             Assert.IsNotNull(scene);
-
-            print($"{nameof(PhotonManager)}: Im the masterclient?: {PhotonNetwork.player.IsMasterClient} with scene: {scene.SceneName}");
+            
             if (PhotonNetwork.player.IsMasterClient)
                 PhotonNetwork.LoadLevel(scene);
             else
@@ -161,7 +153,7 @@ namespace Assets.Scripts.Photon.Level
         public void OtherPlayShouldUpdateSequence(PhotonMessageInfo info)
         {
             //var sequence = _gameInfo?.LocalPlayer?.Player?.Sequence?.Commands;
-            print($"{nameof(PhotonManager)}: in {nameof(OtherPlayShouldUpdateSequence)}");
+            print($"{nameof(LevelPhotonManager)}: in {nameof(OtherPlayShouldUpdateSequence)}");
             var gameInfo = _gameInfo;
             print(gameInfo);
             var localPlayer = _gameInfo?.LocalPlayer;
@@ -212,7 +204,7 @@ namespace Assets.Scripts.Photon.Level
             //The other player is now (un)ready
             if (!info.sender.Equals(PhotonNetwork.player))
             {
-                print($"{nameof(PhotonManager)}: Readystate of Network player: {info.sender} is now {isReady}");
+                print($"{nameof(LevelPhotonManager)}: Readystate of Network player: {info.sender} is now {isReady}");
                 var networkPlayer = _gameInfo.Players.GetNetworkPlayer().Player;
                 networkPlayer.IsReady = isReady;
                 networkPlayer.OnReady?.Invoke(isReady);
@@ -223,18 +215,14 @@ namespace Assets.Scripts.Photon.Level
                 }
             }
 
-            // This print code throws linq-exceptions...
-//            print($"{nameof(PhotonManager)} in startexecution: Me: {_gameInfo.Players.GetLocalPlayer().Player.IsReady} Network: {_gameInfo.Players.GetNetworkPlayer().Player.IsReady}");
-//            print($"{nameof(PhotonManager)} im the masterclient unready player = {_gameInfo.Players.SingleOrDefault(x => !x.Player.IsReady)?.photonPlayer}");
             if (_gameInfo.Players.All(x => x.Player.IsReady))
             {
-                print($"{nameof(PhotonManager)} everybody is ready");
+                print($"{nameof(LevelPhotonManager)} everybody is ready");
                 if (_gameInfo.LocalPlayer.photonPlayer.IsMasterClient)
                     SendStartExecution();
                 else
                     this.photonView.RPC(nameof(MasterClientShouldStart), PhotonTargets.MasterClient);
             }
-
         }
 
         [PunRPC]
@@ -251,23 +239,20 @@ namespace Assets.Scripts.Photon.Level
 
         private void SendStartExecution()
         {
-            print($"{nameof(PhotonManager)} in sendstartexecution");
+            print($"{nameof(LevelPhotonManager)} in sendstartexecution");
             this.photonView.RPC(nameof(StartExecution), PhotonTargets.All);
         }
 
         private void SendStopExecution()
         {
-            print($"{nameof(PhotonManager)}: SendStopExecution RPC");
+            print($"{nameof(LevelPhotonManager)}: SendStopExecution RPC");
             this.photonView.RPC(nameof(StopExecution), PhotonTargets.All);
         }
 
         [PunRPC]
         public void StartExecution(PhotonMessageInfo info)
         {
-            //Start the execution on both players
-            print($"{nameof(PhotonManager)} in startexecution");
-            foreach (var player in _gameInfo.Players)
-                print($"Player {player.photonPlayer}, IsMasterClient: {player.photonPlayer.IsMasterClient}, IsLocalPlayer: {player.photonPlayer.IsLocal}");
+            //Start the execution on both players                       
             EventManager.AllPlayersReady();          
         }
 
@@ -275,7 +260,7 @@ namespace Assets.Scripts.Photon.Level
         public void StopExecution(PhotonMessageInfo info)
         {
             //Stop the execution
-            print($"{nameof(PhotonManager)}: StopExecution RPC");
+            print($"{nameof(LevelPhotonManager)}: StopExecution RPC");
             EventManager.SimulationStop();          
         }
 
